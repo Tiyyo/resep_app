@@ -1,0 +1,63 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./app/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    extend: {
+      fontFamily: {
+        nunito: ["Nunito", "sans-serif"],
+      },
+      fontWeight: {
+        light: 200,
+        normal: 400,
+        bold: 700,
+      },
+      colors: {
+        primary: {
+          100: "#FFFBF7",
+          200: "rgba(255,246,238,1)",
+          300: "#fff0df",
+        },
+        secondary: {
+          200: "#eac0c2",
+        },
+        text: {
+          100: "rgb(124, 102, 102)",
+          200: "rgb(160, 86, 86)",
+          300: "rgb(74, 64, 64)",
+          accent: "#243143f3",
+          accent_soft: "#6783a999",
+        },
+        white: {
+          100: "rgba(196, 196, 196, 0.91)",
+          200: "rgba(255, 253, 253, 0.977)",
+        },
+      },
+      maxHeight: {
+        header: "27vh",
+      },
+      borderRadius: {
+        custom: "0% 100% 75% 25% / 100% 100% 0% 0% ",
+        50: "5em",
+      },
+      backdropGrayscale: {
+        50: ".9",
+      },
+      fontSize: {
+        5: "0.5em",
+        6: "0.625em",
+        7: "0.75em",
+        8: "0.875em",
+        10: "1em",
+        11: "1.25em",
+        15: "1.5em",
+        20: "2em",
+        25: "2.5em",
+      },
+      flex: {
+        10: "1 1 10%",
+        80: "1 2 80%",
+      },
+    },
+  },
+  plugins: [],
+};
