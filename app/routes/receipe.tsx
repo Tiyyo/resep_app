@@ -289,6 +289,7 @@ export default function () {
           if (ingredient.macros && qtyPerServ) {
             macroIngrPerServ[macro] = recipe.calcUnitMacro(
               macro,
+
               ingredient.macros,
               qtyPerServ
             );

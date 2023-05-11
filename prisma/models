@@ -1,0 +1,173 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id              String       @id @default(uuid())
+  username        String       @unique
+  email           String       @unique
+  password        String  
+  roleId          Int          
+  role            Roles        @relation("userRole", fields : [roleId], references : [id])
+  profile         Profiles?
+}
+
+model Roles  {
+  id              Int          @id @default(autoincrement())
+  role            String       @unique @relation("userRole")       
+
+}
+
+model Genders {
+  id              Int         @id @default(autoincrement())
+  gender          String      @unique
+}
+
+model Activity_levels  {
+  id              Int         @id @default(autoincrement())
+  activity_level  String      @unique
+  description     String
+}
+
+model Profiles  {
+  id                Int                  @id @default(autoincrement())
+  userId            Int                  
+  user              Users                @relation(fields : [userId], references : [id])
+  avatar            String?    
+  age               DateTime  
+  height            Int    
+  weight            Decimal  
+  genderId          Int
+  gender            Genders              @relation(fields : [genderId], references : [id])
+  activity_levelId  Int         
+  activity_level    Activity_levels      @relation(fields : [activity_levelId], references : [id])
+  reviews           Reviews[]             
+  
+}
+
+model Recipes  {
+  id                Int            @id @default(autoincrement())
+  name              String         @unique
+  prep_time         Int           
+  cook_time         Int         
+  authorId          Int   
+  author            Users          @relation(fields : [authorId] , references : [id])
+  created_at        DateTime       @default(now())         
+  picture           String?         
+  servings          Int     
+  macro_recipeId    Int
+  macro_recipe      Macros         @relation(fields : [macro_recipeId] , references : [id] )
+  tag               RecipesOnTags[]
+  reviews           ReviewsOnRecipes[]
+  measures          IngredientsOnRecipes[]
+
+}
+
+model Ingredients  {
+  id               Int              @id @default(autoincrement())
+  name             String           @unique
+  unit_weight      Decimal?
+  unit_measureId   Int
+  unit_measure     Unit_measures    @relation(fields : [unit_measureId] , references : [id]) 
+  unit_computeId   Int
+  unit_compute     Unit_computes    @relation(fields : [unit_computeId] ,  references : [id]) 
+  macrosId         Int?
+  macros           Macros           @relation(fields : [macrosId] , references : [id]) 
+  iconId           Int?
+  icon             Icons            @relation(fields : [iconId] , references : [id])
+  recipes          IngredientsOnRecipes[]
+
+}
+
+model  Unit_measures  {
+  id              Int             @id@default(autoincrement())
+  name            String          @unique
+}
+
+model  Unit_computes  {
+  id              Int             @id @default(autoincrement())
+  name            String          @unique
+}
+
+model Icons  {
+  id              Int             @id @default(autoincrement())
+  name            String          @unique
+  link            String          
+
+}
+
+model Tags  {
+  id                Int               @id @default(autoincrement())
+  name_tag          String            @unique
+  recipe            RecipesOnTags[]   
+}
+
+model Reviews  {
+  id                Int               @id @default(autoincrement())
+  authorId          Int   
+  author            Profiles          @relation( fields : [authorId] , references : [id]) 
+  comment           String    
+  rating            Int 
+  recipes           ReviewsOnRecipes[]
+  created_at        DateTime          @default(now())
+  updated_at        DateTime?                  
+}
+
+model Macros {
+  id                Int               @id @default(autoincrement())
+  nutrient          String?           @unique            
+  calories          Decimal
+  proteins          Decimal
+  carbs             Decimal
+  lipids            Decimal
+  water             Decimal
+}
+
+model Favorites  {
+  id                Int               @id @default(autoincrement())
+  userId            Int           
+  owner             Users             @relation( fields : [userId] , references : [id])
+  recipes           Recipes[]
+}
+
+model IngredientsOnRecipes  {
+  qty               Decimal
+  ingredientId      Int
+  ingredient        Ingredients       @relation( fields : [ingredientId] , references : [id] )
+  recipeId          Int 
+  recipe            Recipes           @relation( fields : [recipeId] , references : [id])
+
+  @@id ([ingredientId , recipeId])
+}
+
+model ReviewsOnRecipes  {
+  id                Int               @id @default(autoincrement())
+  reviewId          Int
+  review            Reviews           @relation( fields : [reviewId] , references : [id])
+  recipeId          Int
+  recipe            Recipes           @relation( fields : [recipeId] , references : [id])
+
+}
+
+model RecipesOnTags  {
+  tagId             Int
+  tag               Tags              @relation(fields : [tagId] , references : [id])
+  recipeId          Int 
+  recipe            Recipes           @relation(fields : [recipeId] , references : [id])
+
+  @@id([tagId , recipeId])
+}
+
+
+
+
+
+
