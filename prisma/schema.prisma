@@ -15,17 +15,11 @@ model Users {
   username    String        @unique
   email       String        @unique
   password    String  
-  roles       Roles         @relation(fields : [role] , references : [id])
-  role        Int  
+  admin       Boolean       @default(false)
   profile     Profiles? 
 
 }
 
-model Roles {
-  id       Int        @id @default(autoincrement())
-  Roles    String     @unique
-  users    Users[]
-}
 
 model Profiles  {
   id                Int                  @id @default(autoincrement())
@@ -75,6 +69,7 @@ model Recipes  {
   measures          IngredientsOnRecipes[]
   favoriteId        Int
   favorite          Favorites       @relation( fields : [favoriteId] , references : [id])
+  youtube_link      String          
 
 }
 
@@ -82,6 +77,8 @@ model Ingredients  {
   id               Int              @id @default(autoincrement())
   name             String           @unique
   unit_weight      Decimal?
+  categoryId       Int
+  category         Ingredient_categories @relation(fields : [categoryId] , references : [id])
   unit_measureId   Int
   unit_measure     Unit_measures    @relation(fields : [unit_measureId] , references : [id]) 
   unit_computeId   Int
@@ -94,22 +91,31 @@ model Ingredients  {
 
 }
 
+model Ingredient_categories  {
+  id               Int            @id   @default(autoincrement())
+  name    String         @unique
+  ingredients      Ingredients[]
+
+}
+
 model  Unit_measures  {
   id              Int             @id@default(autoincrement())
   name            String          @unique
+  abreviation     String
   ingredients     Ingredients[]
 }
 
 model  Unit_computes  {
   id              Int             @id @default(autoincrement())
   name            String          @unique
+  abreviation     String        
   ingredients     Ingredients[]
 }
 
 model Icons  {
   id              Int             @id @default(autoincrement())
   name            String          @unique
-  link            String   
+  file            Bytes   
   ingredients     Ingredients[]       
 
 }

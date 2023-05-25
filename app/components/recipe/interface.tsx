@@ -9,11 +9,11 @@ interface Macro {
 interface Ingredients {
   name: string;
   category: string;
-  unit_weight: number | null;
-  usual_portion: number | null;
+  unit_weight?: number | null;
+  usual_portion?: number | null;
   unit_compute: string | null;
   unit_measure: string | null;
-  icons: {
+  icons?: {
     h100: string;
   };
   macros?: Macro;
