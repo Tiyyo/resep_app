@@ -1,14 +1,17 @@
 import { Authenticator } from "remix-auth";
 import { GoogleStrategy } from "remix-auth-google";
-import {storage} from "./auth.server"
+import {createUserSession, storage} from "./auth.server"
 import { prisma } from "./db.server";
+import { redirect } from "@remix-run/node";
 const randomize = require('randomatic')
 
 
 type User_Id = string
 
 
-export const authentificator = new Authenticator<User_Id>(storage)
+export const authentificator = new Authenticator<User_Id>(storage , {
+    sessionKey: "userId",
+  })
 
 let googleStrategy = new GoogleStrategy (
     {
@@ -21,13 +24,14 @@ let googleStrategy = new GoogleStrategy (
             const user = await prisma.users.upsert(
                 { 
                 where : { email : profile.emails[0].value},
+                update : {},
                 create : {email : profile.emails[0].value,
                           password : randomPassword, 
-                          username : 'aller'
             }})
-            return user.id as string
+            return user.id
         } catch (err) {
-            console.error(err)
+            console.log(err)
+            return "Oups something went wrong "
         }
     }
 )

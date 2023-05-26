@@ -71,19 +71,16 @@ export async function requireUserId (request : Request, redirectTo : string = ne
     const session = await getUserSession(request)
 
     const userId = await session.get('userId')
-
-    console.log(userId, typeof userId, "CREDENTIALS");
+    
     if(!userId || typeof userId !== "string") {
         const searchParams = new URLSearchParams([["redirectTo", redirectTo]])
 
-        throw redirect(`/login?${searchParams}`)
+        throw redirect(`/auth/login?${searchParams}`)
     }
      return userId
 }
 
 function getUserSession (request : Request) {
-    console.log(storage.getSession(request.headers.get('Cookie')));
-    console.log("GET SESSION ");
     return storage.getSession(request.headers.get('Cookie'))
 }
 
@@ -114,7 +111,7 @@ export async function getUser (request : Request) {
 export async function logout ( request :Request) {
     const session = await getUserSession(request)
 
-    return redirect("/login", {
+    return redirect("/auth/login", {
         headers : {
             "Set-Cookie" : await storage.destroySession(session)
         }

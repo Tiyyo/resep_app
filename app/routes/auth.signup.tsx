@@ -58,7 +58,7 @@ export async function action ({request} : ActionArgs) {
 
 
 export default function () {
-const actionData = useActionData<typeof action>()
+const actionData = useActionData()
 
   const [formData, setFormData] = useState({
     username : "" , 
@@ -90,7 +90,7 @@ const actionData = useActionData<typeof action>()
           htmlFor="username"
           label="Username"
           onChange={(e) => handleInputChange(e, "username")}
-          error={actionData?.fieldErrors?.username!}
+          error={actionData?.fieldErrors?.username}
         >
           <UserIcon />
         </FormField>
@@ -133,21 +133,9 @@ const actionData = useActionData<typeof action>()
         <Button
           type="submit"
           value="Sign up"
-          sx="basis-1/2 bg-secondary-400 text-white-200 hover:bg-secondary-300"
+          sx="w-3/4 bg-secondary-400 text-white-200 hover:bg-secondary-300"
         >
           <LoginIcon />
-        </Button>
-        <Button
-          type="button"
-          value="Sign up with Google"
-          sx="basis-1/2   hover:text-secondary-300 "
-        >
-          <img
-            className="w-6 h-6"
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            loading="lazy"
-            alt="google logo"
-          />
         </Button>
       </div>
       <p className="absolute bottom-2 left-1/2 -translate-x-1/2">

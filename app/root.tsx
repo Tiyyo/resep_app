@@ -44,9 +44,9 @@ export function ErrorBoundary({ error }: { error: Error }) {
       <body>
         <div>
           <h1>Oups ... I dit it again </h1>
-          <p>{error.message}</p>
+          <p>{error?.message}</p>
           <p>The stack trace is:</p>
-          <pre>{error.stack}</pre>
+          <pre>{error?.stack}</pre>
         </div>
         <ScrollRestoration />
         <Scripts />

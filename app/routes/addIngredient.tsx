@@ -4,7 +4,6 @@ import type { ActionArgs, redirect } from "@remix-run/node"
 import {  getCategories } from "../api/get.ingredient.categories";
 import { getUnitMeasures } from "~/api/get.unit_measures";
 import { getUnitComputes } from "~/api/get.unit_computes";
-import { postGender } from "~/api/post.gender";
 
 
 
