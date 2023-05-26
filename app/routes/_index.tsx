@@ -1,6 +1,12 @@
-import type { V2_MetaFunction } from "@remix-run/node";
+import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
+import { Link, isRouteErrorResponse, useRouteError } from "@remix-run/react";
+import { requireUserId } from "~/utils/auth.server";
 
-import { Link } from "@remix-run/react";
+export async function loader({request}: LoaderArgs) {
+  await requireUserId(request)
+  return null
+};
+
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "New Remix App" }];
@@ -18,4 +24,21 @@ export default function Index() {
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary () {
+  const error = useRouteError()
+
+  if (!isRouteErrorResponse(error)) {
+    return <p> An Error occured</p>
+  }
+
+  if (error.status === 404) {
+    return (
+      <>
+      <h2>Error 404</h2>
+      <button> Rafraichir </button>
+      </>
+    )
+  }
 }

@@ -1,7 +1,9 @@
+import type { HTMLInputTypes } from "../types/input.types"
+
 export interface FormFieldProps {
     htmlFor: string
     label: string
-    type?: string
+    type: HTMLInputTypes
     value?: any
     onChange?: (...args: any) => any
     error? : string

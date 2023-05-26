@@ -1,4 +1,6 @@
-import { Link, useActionData } from "@remix-run/react";
+import type { LoaderArgs } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
+import { Form, Link, isRouteErrorResponse, useActionData, useNavigation, useRouteError } from "@remix-run/react";
 import { useState } from "react";
 import AtIcon from "~/assets/icons/AtIcon";
 import EyeIcon from "~/assets/icons/Eye";
@@ -7,10 +9,47 @@ import LoginIcon from "~/assets/icons/LoginIcon";
 import Button from "~/components/button";
 import Checkbox from "~/components/checkbox";
 import { FormField } from "~/components/form_field";
+import { getUser } from "~/utils/auth.server";
+import { withZod } from "@remix-validated-form/with-zod";
+import { validationError } from "remix-validated-form";
+import * as Z from "zod";
+import type { ActionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { login } from "~/utils/auth.server";
+import ErrorIcon from "~/assets/icons/ErrorIcon";
+
+
+export async function loader({ request }: LoaderArgs) {
+  return (await getUser(request)) ? redirect("/") : null;
+}
+
+export const validator = withZod(
+  Z.object({
+    email: Z.string().email({ message: "This is not an valid email" }),
+    password: Z.string(),
+    rememberMe : Z.string().transform(value => value === 'on').optional()
+  })
+);
+
+export async function action({ request }: ActionArgs) {
+  const formData = await request.formData()
+  const action = formData.get("action");
+  console.log(formData.get("email"));
+  if (action === "user") {
+    console.log(action);
+    return null;
+  } else {
+    const data = await validator.validate(formData);
+    if (data.error) return validationError(data.error);
+    const { email, password, rememberMe } = data.data;
+
+    return await login({ email, password, rememberMe });
+  }
+}
 
 export default function () {
   const actionData = useActionData();
-
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,7 +65,7 @@ export default function () {
     }));
   };
   return (
-    <form className="w-4/5">
+    <Form method="post" className="w-4/5">
     <h2 className="text-3xl font-bold text-secondary-300 my-5 text-center">
       Hello Again !
     </h2>
@@ -37,7 +76,7 @@ export default function () {
         label="Email"
         type="text"
         onChange={(e) => handleInputChange(e, "email")}
-        error={""}
+        error={actionData?.fieldErrors?.email}
       >
         <AtIcon />
       </FormField>
@@ -46,7 +85,9 @@ export default function () {
         label="Password"
         type="password"
         subIcon={<EyeSlash/>}
-        onChange={(e) => handleInputChange(e, "password")}>
+        onChange={(e) => handleInputChange(e, "password")}
+        error={actionData?.fieldErrors?.password}
+        >
           <EyeIcon/>
       </FormField>
     </div>
@@ -60,7 +101,8 @@ export default function () {
       <Button type="submit" value="Login" sx="basis-1/2 bg-secondary-400 text-white-200 hover:bg-secondary-300">
         <LoginIcon/>
       </Button>
-      <Button type="button" value="Login with Google" sx="basis-1/2   hover:text-secondary-300 ">
+      <form method="post" action="/auth/google">
+      <Button action="google_auth" name="_action" type="submit" value="Login with Google" sx="basis-1/2   hover:text-secondary-300 ">
       <img
           className="w-6 h-6"
           src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -68,13 +110,39 @@ export default function () {
           alt="google logo"
         />
       </Button>
+      </form>
     </div>
+    {actionData?.error ? (
+        <div className="text-11 font-semibold text-center text-red-600 w-full center gap-x-4 py-1 px-2 text-red">
+          <ErrorIcon/>
+          <p>{actionData?.error}</p>
+        </div>
+      ) : (
+        ""
+      )}
     <p className="absolute bottom-2 left-1/2 -translate-x-1/2">
       Don't have account ?
       <span className="text-secondary-300 font-bold">
         <Link to="/auth/signup"> Sign up</Link>
       </span>
     </p>
-  </form>
+  </Form>
   );
+}
+
+export function ErrorBoundary () {
+  const error = useRouteError()
+
+  if (!isRouteErrorResponse(error)) {
+    return <p> An Error occured</p>
+  }
+
+  if (error.status === 404) {
+    return (
+      <>
+      <h2>Error 404</h2>
+      <button> Rafraichir </button>
+      </>
+    )
+  }
 }

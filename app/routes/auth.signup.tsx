@@ -1,4 +1,4 @@
-import { Link, useActionData } from "@remix-run/react";
+import { Form, Link, useActionData } from "@remix-run/react";
 import { useState } from "react";
 import AtIcon from "~/assets/icons/AtIcon";
 import EyeIcon from "~/assets/icons/Eye";
@@ -8,13 +8,62 @@ import UserIcon from "~/assets/icons/UserIcon";
 import Button from "~/components/button";
 import Checkbox from "~/components/checkbox";
 import { FormField } from "~/components/form_field";
+import { withZod } from "@remix-validated-form/with-zod";
+import { validationError } from "remix-validated-form";
+import * as Z from "zod";
+import type { ActionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { register } from "~/utils/auth.server";
+
+export const validator = withZod(
+  Z.object({
+    username: Z.string()
+      .min(4, { message: "Must be at least 4 characters long" })
+      .max(24, { message: "Must be 24 of fewer characters long" })
+      .trim()
+      .toLowerCase(),
+    email: Z.string().email({ message: "This is not an valid email" }),
+    password: Z.string()
+      .min(8, { message: "Must contains at least 8 characters" })
+      .max(24, { message: "Must be 24 or fewer characters long" })
+      .trim()
+      .refine((value) => /\w*[a-z]\w*/.test(value), {
+        message: "Must contain one lowercase",
+      })
+      .refine((value) => /\w*[A-Z]\w*/.test(value), {
+        message: "Must contain one uppercase",
+      })
+      .refine((value) => /\d/.test(value), {
+        message: "Must contain one number",
+      })
+      .refine((value) => /[ `!@#$%^&*()_+\-=\]{};':"\\|,.<>?~]/.test(value), {
+        message: "Must containe one special character",
+      }),
+    confirmedPassword: Z.string(),
+    termsAndService : Z.string().transform(value => value === 'on')
+  }).refine((data) => data.password === data.confirmedPassword, {
+    message: "Passwords don't match !",
+    path: ["confirm"],
+  })
+);
+
+export async function action ({request} : ActionArgs) {
+  const data = await validator.validate(await request.formData());
+  if (data.error) return validationError(data.error);
+
+  const {username, email , password }= data.data
+
+  return await register({username, email, password})
+} 
+
 
 export default function () {
-  const actionData = useActionData();
+const actionData = useActionData<typeof action>()
 
   const [formData, setFormData] = useState({
+    username : "" , 
     email: "",
-    password: "",
+    password: "",   
   });
 
   const handleInputChange = (
@@ -27,7 +76,7 @@ export default function () {
     }));
   };
   return (
-    <form className="w-4/5">
+    <Form method="post" className="w-4/5">
       <h2 className="text-3xl font-bold text-secondary-300 my-5 text-center">
         Sign up for free !
       </h2>
@@ -41,7 +90,7 @@ export default function () {
           htmlFor="username"
           label="Username"
           onChange={(e) => handleInputChange(e, "username")}
-          error=""
+          error={actionData?.fieldErrors?.username!}
         >
           <UserIcon />
         </FormField>
@@ -50,7 +99,7 @@ export default function () {
           label="Email"
           type="text"
           onChange={(e) => handleInputChange(e, "email")}
-          error={""}
+          error={actionData?.fieldErrors?.email}
         >
           <AtIcon />
         </FormField>
@@ -60,7 +109,7 @@ export default function () {
           type="password"
           subIcon={<EyeSlash />}
           onChange={(e) => handleInputChange(e, "password")}
-          error={'Wrong password'}
+          error={actionData?.fieldErrors?.password}
         >
           <EyeIcon />
         </FormField>
@@ -69,11 +118,15 @@ export default function () {
           label="Confirm your password"
           type="password"
           onChange={(e) => handleInputChange(e, "password")}
-        >
-        </FormField>
+          error={actionData?.fieldErrors?.confirm}
+        ></FormField>
       </div>
       <div className="text-7 flex justify-between px-2">
-      <Checkbox label="I confirm that I have read and agree to FreshBooks Terms of Service and Privacy Policy." name="termsAndService" />
+        <Checkbox
+          label="I confirm that I have read and agree to FreshBooks Terms of Service and Privacy Policy."
+          name="termsAndService"
+          error={actionData?.fieldErrors?.termsAndService}
+        />
 
       </div>
       <div className="flex gap-x-6 center my-6 ">
@@ -100,9 +153,9 @@ export default function () {
       <p className="absolute bottom-2 left-1/2 -translate-x-1/2">
         Already have an account ?
         <span className="text-secondary-300 font-bold">
-          <Link to="/auth/login">Log iin</Link>
+          <Link to="/auth/login">Log in</Link>
         </span>
       </p>
-    </form>
+    </Form>
   );
 }
