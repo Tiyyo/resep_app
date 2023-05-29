@@ -28,13 +28,13 @@ model Profiles  {
   userId            String               @unique 
   user              Users                @relation(fields : [userId], references : [id])
   avatar            String?    
-  age               DateTime  
-  height            Int    
-  weight            Decimal  
-  genderId          Int
-  gender            Genders              @relation(fields : [genderId], references : [id])
-  activity_levelId  Int         
-  activity_level    Activity_levels      @relation(fields : [activity_levelId], references : [id])
+  age               DateTime?  
+  height            Int?    
+  weight            Decimal ? 
+  genderId          Int?
+  gender            Genders?              @relation(fields : [genderId], references : [id])
+  activity_levelId  Int?         
+  activity_level    Activity_levels?      @relation(fields : [activity_levelId], references : [id])
   reviews           Reviews[] 
   recipes           Recipes[]  
   favorites         Favorites[]
