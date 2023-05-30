@@ -84,7 +84,7 @@ function getUserSession (request : Request) {
     return storage.getSession(request.headers.get('Cookie'))
 }
 
-async function getUserId (request : Request) {
+export async function getUserId (request : Request) {
     const session = await getUserSession(request)
     const userId = session.get("userId")
     if (!userId || typeof userId !== "string") return null
@@ -116,4 +116,18 @@ export async function logout ( request :Request) {
             "Set-Cookie" : await storage.destroySession(session)
         }
     })
+}
+
+export async function isAdmin (request : Request) {
+    try {
+        const userId = await getUserId(request)
+        if(userId) {
+            const user = await prisma.users.findUnique({
+                where : {id : userId}
+            })
+            return user?.admin
+        }
+    } catch(err) {
+        return json({error : 'Invalid request '}, {status : 400})
+    }
 }

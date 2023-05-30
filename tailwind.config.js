@@ -35,6 +35,7 @@ module.exports = {
           100: "#FFFFFF",
           300: "rgba(196, 196, 196, 0.91)",
           200: "rgba(255, 253, 253, 0.977)",
+          light : "rgba(255, 255, 255, 1)"
         },
         black : {
           light : "#272727d9", 
@@ -66,6 +67,12 @@ module.exports = {
         10: "1 1 10%",
         80: "1 2 80%",
       },
+      gridTemplateColumns : {
+        main :  "20% 80%"
+      },
+      gridTemplateRows : {
+        main : "12% 23% 65%"
+      }
     },
   },
   plugins: [],
