@@ -63,15 +63,18 @@ module.exports = {
         20: "2em",
         25: "2.5em",
       },
+      boxShadow : {
+        morph : 'inset -6px -6px 8px #ece8e1,inset 6px 6px 8px #fffcf3;'
+      },
       flex: {
         10: "1 1 10%",
         80: "1 2 80%",
       },
       gridTemplateColumns : {
-        main :  "20% 80%"
+        main :  "300px 1fr"
       },
       gridTemplateRows : {
-        main : "12% 23% 65%"
+        main : "75px 1fr 3fr"
       }
     },
   },
