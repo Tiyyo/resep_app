@@ -1,9 +1,13 @@
 import { NavLink, Outlet, useFetcher } from "@remix-run/react";
 import { useEffect, useState } from "react";
+import SideMenu from "../side_menu";
+import type{ LayoutMainProp } from "./interfaces";
 
-export default function LayoutMain() {
+
+export default function LayoutMain({menu} : LayoutMainProp) {
   const [data, setData] = useState({ admin: false, profile: null });
   const fetcher = useFetcher();
+  
 
   useEffect(() => {
     if (fetcher.state === "idle" && fetcher.data == undefined) {
@@ -40,7 +44,7 @@ export default function LayoutMain() {
         </div>
         <div className="p-4">
           <div className=" border border-black rounded-xl h-full">
-            <h2>Side Menu</h2>
+            <SideMenu menu={menu}/>
           </div>
         </div>
         <div className="p-4 row-start-2 row-end-4 col-start-2 col-end-3">
