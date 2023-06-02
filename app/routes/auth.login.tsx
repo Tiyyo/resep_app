@@ -42,7 +42,6 @@ export const validator = withZod(
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const action = formData.get("action");
-  console.log(formData.get("email"));
   if (action === "user") {
     return null;
   } else {
