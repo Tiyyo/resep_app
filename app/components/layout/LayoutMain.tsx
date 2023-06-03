@@ -5,7 +5,7 @@ import type{ LayoutMainProp } from "./interfaces";
 
 
 export default function LayoutMain({menu} : LayoutMainProp) {
-  const [data, setData] = useState({ admin: false, profile: null });
+  const [data, setData] = useState<{admin : boolean , profile : any}>({ admin: false, profile: null });
   const fetcher = useFetcher();
   
 
@@ -44,12 +44,11 @@ export default function LayoutMain({menu} : LayoutMainProp) {
         </div>
         <div className="p-4">
           <div className=" border border-black rounded-xl h-full">
-            <SideMenu menu={menu}/>
+            {menu ? <SideMenu menu={menu}/> : ""}        
           </div>
         </div>
         <div className="p-4 row-start-2 row-end-4 col-start-2 col-end-3">
           <div className="rounded-xl border border-black h-full">
-            <h2>Outlet</h2>
             <Outlet />
           </div>
         </div>

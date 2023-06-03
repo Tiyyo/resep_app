@@ -105,6 +105,7 @@ model  Unit_measures  {
   name            String          @unique
   abreviation     String
   ingredients     Ingredients[]
+  IngredientsOnRecipes IngredientsOnRecipes[]
 }
 
 model  Unit_computes  {
@@ -141,11 +142,11 @@ model Reviews  {
 
 model Macros {
   id                Int               @id @default(autoincrement())
-  nutrient          String?           @unique            
+  food              String?           @unique            
   calories          Decimal
   proteins          Decimal
   carbs             Decimal
-  lipids            Decimal
+  fat               Decimal
   water             Decimal
   ingredients       Ingredients[]
   recipe            Recipes?
@@ -160,6 +161,8 @@ model Favorites  {
 
 model IngredientsOnRecipes  {
   qty               Decimal
+  unit_measure_id   Int
+  unit_measure      Unit_measures     @relation( fields : [unit_measure_id] , references : [id])
   ingredientId      Int
   ingredient        Ingredients       @relation( fields : [ingredientId] , references : [id] )
   recipeId          Int 

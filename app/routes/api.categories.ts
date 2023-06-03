@@ -1,4 +1,3 @@
-import { Ingredient_categories } from "@prisma/client";
 import type { ActionArgs} from "@remix-run/node";
 import {  json } from "@remix-run/node";
 import { deleteCategories } from "~/api/delete.request";
@@ -34,19 +33,19 @@ export async function action({request}:ActionArgs) {
         case "patch" : {
             const name = formData.get('category_name')
             const categoryId = formData.get('category_id')
+            let id : number | null = null;
 
             if (typeof name !== "string") {
                 return json({ error: "name argument should be a string" }, { status: 400 });
             }
 
-            console.log('WORKING');
-
-              let id = parseInt(categoryId, 10)
-              id as number
-              
-              if (typeof id !== "number") {
+            if (typeof categoryId === 'string') {
+                id = parseInt(categoryId, 10)
+            }
+                     
+            if (typeof id !== "number") {
                   return json({ error: "id argument should be a number" }, { status: 400 });
-              }
+            }
             const updateCategory = await patchCategories({name , id})
             
             if(updateCategory.id === id) {
@@ -57,10 +56,12 @@ export async function action({request}:ActionArgs) {
         }
         case "delete" : {
             const categoryId = formData.get('category_id')
+            let id : number | null = null;
 
-            let id = parseInt(categoryId, 10)
-            id as number
-            
+            if (typeof categoryId === 'string') {
+                id = parseInt(categoryId, 10)
+            }
+          
             if (typeof id !== "number") {
                 return json({ error: "id argument should be a number" }, { status: 400 });
             }

@@ -1,12 +1,9 @@
-import type { ActionArgs, LoaderArgs } from "@remix-run/node";
+import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, useActionData, useFetcher, useLoaderData } from "@remix-run/react";
+import {  useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { getCategories } from "~/api/get.all.request";
-import { addCategory } from "~/api/post.request";
-import DeleteIcon from "~/assets/icons/DeleteIcon";
-import EditIcon from "~/assets/icons/EditIcon";
-import ValidIcon from "~/assets/icons/ValidIcon";
+import Categories from "~/components/categories";
 import { FormField } from "~/components/form_field";
 
 export async function loader ({request} : LoaderArgs) {
@@ -14,49 +11,18 @@ export async function loader ({request} : LoaderArgs) {
     return json({categories})
 }
 
-export async function action({ request }: ActionArgs) {
-  const formData = await request.formData();
-  const name = formData.get("category");
-  if (typeof name !== "string") {
-    return json({ error: "name argument should be a string" }, { status: 400 });
-  }
-  const createCategory = await addCategory(name);
 
-  const errors = { error: "this is an error" };
-
-  if (createCategory) {
-    // console.log(createCategory, "Create Category");
-    return json(
-      {
-        error: "Failed to insert into database",
-        fields: { name: "This category already exist in database" },
-      },
-      { status: 400 }
-    );
-  } else {
-    return json(
-      {
-        error: "Failed to insert into database",
-        fields: { name: "This category already exist in database" },
-      },
-      { status: 400 }
-    );
-  }
-}
-    
-
-
-export default function () {
+export default function CategoryPanel() {
     const {categories} = useLoaderData<typeof loader>()
     const addCategory = useFetcher()
     const [errorText, setErrorText] = useState("")
 
     const addFormState = addCategory.state
-    const addFormRef = useRef()
+    const addFormRef = useRef<HTMLFormElement>(null)
 
     useEffect(() => {
-      if(addCategory.type === 'done' ) {
-        addFormRef.current?.reset();
+      if(addCategory.type === 'done' && addFormRef && addFormRef.current ) {
+        addFormRef.current.reset();
         setErrorText(addCategory?.data?.fields?.name)
       }
     }, [addFormState, addCategory.type])
@@ -73,50 +39,10 @@ export default function () {
       </> : ""}
       </div>
 
-      {categories.length > 0 ? <div className="flex justify-around flex-wrap gap-4 ">
-        {categories.map((c) => <Category key={c.id} data={c}/>)}
+      {categories.length > 0 ? <div className="grid grid-cols-250 place-items-center gap-4 ">
+        {categories.map((c) => <Categories key={c.id} data={c}/>)}
       </div> :  <p>Database doesn't contain any categories</p>}
     </div>
   );
 }
 
-function Category ({data}) {
-  const [isDisabled, setIsDisabled] = useState<boolean>(true)
-  const deleteCategory = useFetcher()
-  const patchCategory = useFetcher()
-
-  console.log(patchCategory.state)
-
-  const handleClick = (e?: any):void => {
-    if(patchCategory.state === "idle")
-    setIsDisabled(!isDisabled)
-  }
-
-  const handleSubmit = ():void => {
-      console.log(patchCategory.submit());
-  } 
-
-
-  return (
-    <div className="flex gap-x-2">
-      <patchCategory.Form method="PATCH" action="/api/categories">
-        <label htmlFor="name"></label>
-        <input type="text" name="category_id" value={data.id} hidden/>
-        <input type="text" name="category_name" defaultValue={data?.name} disabled={isDisabled}/>
-        {isDisabled ?<button type="button" onClick={() => handleClick()}>
-          <EditIcon/>
-        </button> : <button type="submit" onClick={() => handleClick()}>
-          <ValidIcon/>
-        </button>}
-        
-        
-      </patchCategory.Form>
-      <deleteCategory.Form method="DELETE" action="/api/categories">
-        <input type="text" name="category_id" value={data.id} hidden/>
-        <button type="submit">
-          <DeleteIcon/>
-        </button>
-      </deleteCategory.Form>
-    </div>
-  )
-}

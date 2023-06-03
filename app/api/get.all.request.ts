@@ -17,3 +17,16 @@ export async function getUnitMeasures() {
     await prisma.$disconnect()
     return unitMeasures
 }
+
+export async function getMacros () {
+    const macros = await prisma.macros.findMany()
+    await prisma.$disconnect()
+    return macros 
+}
+
+
+export async function getAll(model : any) {
+    const results = await prisma[`${model}`].findMany()
+    await prisma.$disconnect()
+    return results
+}

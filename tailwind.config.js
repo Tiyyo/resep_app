@@ -71,7 +71,8 @@ module.exports = {
         80: "1 2 80%",
       },
       gridTemplateColumns : {
-        main :  "300px 1fr"
+        main :  "300px 1fr",
+        250 :  'repeat(auto-fit, minmax(280px , 1fr))'
       },
       gridTemplateRows : {
         main : "75px 1fr 3fr"
