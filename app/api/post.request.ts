@@ -43,3 +43,57 @@ export async function addMacros(form: any) {
     }
 
 }
+
+interface FormIconProps {
+  name : string
+  imageS3Url : string
+  tags? : string[]
+}
+
+export async function addIcons (form : FormIconProps) {
+
+
+    try {
+    if(form.tags) {
+      let createTags = form.tags.map((tag) => {
+        return {
+          tag : {
+            connectOrCreate: {
+              where: {
+                name: tag.toLowerCase(),
+              },
+              create: {
+                name: tag.toLowerCase(),
+              },
+            },
+          }
+        }
+      })
+  
+          const createIcon = await prisma.icons.create({
+               data : {
+                  name : form.name,
+                  link : form.imageS3Url,
+                  tags : {
+                    create : createTags
+                  }
+              }, 
+              include : {
+                  tags : true
+              }
+          })
+          return createIcon
+    } else {
+      const createIcon = await prisma.icons.create({
+        data : {
+           name : form.name,
+           link : form.imageS3Url,
+        }, 
+      }) 
+    }
+    } catch (error : any) {
+        return error.message 
+
+    }
+    
+}

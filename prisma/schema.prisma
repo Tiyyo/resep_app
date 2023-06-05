@@ -81,10 +81,10 @@ model Ingredients  {
   unit_weight      Decimal?
   categoryId       Int
   category         Ingredient_categories @relation(fields : [categoryId] , references : [id])
-  unit_measureId   Int
-  unit_measure     Unit_measures    @relation(fields : [unit_measureId] , references : [id]) 
-  unit_computeId   Int
-  unit_compute     Unit_computes    @relation(fields : [unit_computeId] ,  references : [id]) 
+  // unit_measureId   Int
+  // unit_measure     Unit_measures    @relation(fields : [unit_measureId] , references : [id]) 
+  // unit_computeId   Int
+  // unit_compute     Unit_computes    @relation(fields : [unit_computeId] ,  references : [id]) 
   macrosId         Int?
   macros           Macros?           @relation(fields : [macrosId] , references : [id]) 
   iconId           Int?
@@ -104,29 +104,44 @@ model  Unit_measures  {
   id              Int             @id@default(autoincrement())
   name            String          @unique
   abreviation     String
-  ingredients     Ingredients[]
+  equivalent      Decimal?
+  // ingredients     Ingredients[]  
   IngredientsOnRecipes IngredientsOnRecipes[]
 }
 
 model  Unit_computes  {
   id              Int             @id @default(autoincrement())
   name            String          @unique
-  abreviation     String        
-  ingredients     Ingredients[]
+  abreviation     String
+  IngredientsOnRecipes IngredientsOnRecipes[]        
+  // unit_measure    Unit_measures[]
+  // ingredients     Ingredients[]
 }
+
 
 model Icons  {
   id              Int             @id @default(autoincrement())
-  name            String          @unique
-  file            Bytes   
-  ingredients     Ingredients[]       
+  name            String          @unique 
+  link            String
+  ingredients     Ingredients[]
+  tags            TagsOnIcons[]       
 
 }
 
 model Tags  {
   id                Int               @id @default(autoincrement())
-  name_tag          String            @unique
-  recipe            RecipesOnTags[]   
+  name              String            @unique
+  recipe            RecipesOnTags[]  
+  icons             TagsOnIcons[]
+
+}
+
+model TagsOnIcons {
+  icon      Icons     @relation( fields : [iconId] , references : [id])
+  iconId    Int
+  tag       Tags      @relation (fields : [tag_name] , references : [name])
+  tag_name  String
+  @@id([iconId, tag_name])
 }
 
 model Reviews  {
@@ -163,6 +178,8 @@ model IngredientsOnRecipes  {
   qty               Decimal
   unit_measure_id   Int
   unit_measure      Unit_measures     @relation( fields : [unit_measure_id] , references : [id])
+  unit_compute_id   Int? 
+  unit_compute      Unit_computes?  @relation(fields : [unit_compute_id] , references : [id])
   ingredientId      Int
   ingredient        Ingredients       @relation( fields : [ingredientId] , references : [id] )
   recipeId          Int 
