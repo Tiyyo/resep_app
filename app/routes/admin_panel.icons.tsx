@@ -3,12 +3,13 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import { getIcons } from "~/api/get.all.request";
 import { addIcons } from "~/api/post.request";
+import DeleteIcon from "~/assets/icons/DeleteIcon";
 import { uploadImage } from "~/utils/s3.server";
 
 export async function loader ({request} : LoaderArgs ) {
   const icons = await getIcons()
 
-  return json(icons)
+  return json({icons})
 }
 
 //-- Can't use 2 times request object had to make a copy first
@@ -22,8 +23,8 @@ export async function action ({request} : ActionArgs) {
   let tags : string[] | null = null
   if(rawTags && typeof rawTags === "string"){
      tags = rawTags.split(' ')
-     tags.forEach((t, index) =>  {
-        if (t === "") {
+     tags.forEach((tag, index) =>  {
+        if (tag === "") {
           tags.splice(index, 1)
         }
      })
@@ -43,9 +44,9 @@ export async function action ({request} : ActionArgs) {
 
 
 export default function EditIcons() {
-  const loaderData = useLoaderData<typeof loader>()
+  const {icons} = useLoaderData<typeof loader>()
 
-  console.log(loaderData);
+  console.log(icons);
   return (
     <div>
       Icons edition here Doja
@@ -77,6 +78,26 @@ export default function EditIcons() {
       </Form>
       <div>Image Icon</div>
       <img src="https://groc-app.s3.eu-west-3.amazonaws.com/cliip2s2z0005wovz85i929ur.png" alt="" />
+      <div>
+        {icons.length > 0 ? <>{icons.map((icon) => {return (<div key={icon.id} className="center">
+            <img src={icon.link} alt="" className="h-10 aspect-square rounded-full overflow-hidden"/>
+            <Form method="PATCH">
+              <input type="file" name="image"/>
+              <input type="text" name="tag" defaultValue={icon.tags.join(' ')}/>
+              <input type="submit" defaultValue={'Valid'} />
+            </Form>
+            <Form method="DELETE">
+                {/* <input type="text" name="iconId" id="iconId" defaultValue={icon.id} hidden /> */}
+                <button type="submit" value={icon.id}>
+                  <DeleteIcon/>
+                </button>
+            </Form>
+  
+          </div>)
+        })}</> : <p>Database don't contain any icon</p>}
+
+      </div>
+
     </div>
   );
 }

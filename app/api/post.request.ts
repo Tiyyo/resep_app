@@ -90,6 +90,7 @@ export async function addIcons (form : FormIconProps) {
            link : form.imageS3Url,
         }, 
       }) 
+      return createIcon
     }
     } catch (error : any) {
         return error.message 

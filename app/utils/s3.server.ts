@@ -3,7 +3,8 @@ import { unstable_parseMultipartFormData, writeAsyncIterableToWritable} from "@r
 import type { UploadHandler} from "@remix-run/node";
 import { PassThrough } from "stream"
 import cuid from "cuid"
-
+import sharp from "sharp"
+import DeleteObjectRequest from "aws-sdk/clients/s3";
 
 const tinify = require('tinify')
 tinify.key = process.env.TINIFY_API_KEY
@@ -35,28 +36,28 @@ function resizeFile (file : File, width : number, height : number, name : string
     return resized
 }
 
-// async function convert8bitToFile(data: AsyncIterable<Uint8Array>, filename : string): Promise<Buffer> {
-//     const chunks = [];
-//     let totalLength = 0 ;
+async function convertToBuffer(data: AsyncIterable<Uint8Array>): Promise<Buffer> {
+    const chunks = [];
+    let totalLength = 0 ;
 
-//     for await (const x of data) {
-//             chunks.push(x);
-//             totalLength += x.length
-//     }
-//     const buffer = Buffer.concat(chunks, totalLength)
+    for await (const chunck of data) {
+            chunks.push(chunck);
+            totalLength += chunck.length
+    }
+    const buffer = Buffer.concat(chunks, totalLength)
 
-//     // const file = new File(blob, filename, { type: 'contentType' });
-//     // const buffer = Buffer.from(file)
+    // const file = new File(blob, filename, { type: 'contentType' });
+    // const buffer = Buffer.from(file)
 
-//     // if (file && file instanceof File) {
-//     //     // Convert the file stream to a Buffer
-//     //     const chunks = [];
-//     //     for await (const chunk of file.stream()) {
-//     //       chunks.push(chunk);
-//     //     }
-//     //     const buffer = Buffer.concat(chunks
-//     return buffer
-// }
+    // if (file && file instanceof File) {
+    //     // Convert the file stream to a Buffer
+    //     const chunks = [];
+    //     for await (const chunk of file.stream()) {
+    //       chunks.push(chunk);
+    //     }
+    //     const buffer = Buffer.concat(chunks
+    return buffer
+}
 
 // function typedArrayToBuffer(array: Uint8Array): ArrayBuffer {
 //     return array.buffer.slice(array.byteOffset, array.byteLength + array.byteOffset)
@@ -98,7 +99,11 @@ const uploadHandler: UploadHandler = async ({ name, data, filename }) => {
     if (name !== "image") {
         return undefined
     }
-    const uploadedFileLocation = await uploadStreamToS3(data, filename!);
+
+   const buffer = await convertToBuffer(data)
+   const resizedBuffer = await sharp(buffer).resize({height : 100 , width : 100 , fit : "cover"}).toBuffer()
+
+    const uploadedFileLocation = await uploadStreamToS3(resizedBuffer, filename!);
     return uploadedFileLocation;
 };
 
@@ -110,6 +115,15 @@ export async function uploadImage(request: Request) {
 
     const file = formData.get("image")?.toString() || "";
     return file;
+}
+
+export async function deleteImageFromBucket (link) {
+
+  const response = await s3.deleteObject({Bucket : bucketName , Key : link} , (err, data) => {
+    console.log(err);
+    console.log(data);
+  })
+
 }
 
   

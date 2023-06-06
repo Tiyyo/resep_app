@@ -34,3 +34,17 @@ export async function deleteMacro (macroId : number) {
         return error.message
     }
 } 
+
+export async function deleteIcon (iconId : number) {
+    try {
+        const deleteIcon = await prisma.icons.delete({
+            where : { 
+                id : iconId
+            }
+        })
+        await prisma.$disconnect()
+        return deleteIcon
+    } catch(error : any) {
+        return error.message
+    }
+}
