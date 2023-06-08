@@ -11,7 +11,6 @@ export async function action({ request }: ActionArgs) {
     const formData = await request.formData();
     const method = request.method.toLowerCase()
 
-
     switch (method) {
         case "post": {
             let food: string | null = null
@@ -103,8 +102,12 @@ export async function action({ request }: ActionArgs) {
             const formConverted = convertStringToNumber(numberFields)
             let form = { ...formConverted, food: food?.toLowerCase() }
 
+            console.log(form , 'DATA FROM INPUT');
+
             const newMacro = await patchMacros(form)
+            console.log(newMacro , 'DATA ADDED TO DB');
             if(newMacro.id === form.id){
+                console.log('condition id new macro working');
                 return json({ status: 200 })
             } else {
                 return json({error : newMacro} , {status : 400})

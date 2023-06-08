@@ -1,5 +1,6 @@
 import { json } from "@remix-run/node"
 import { prisma } from "~/utils/db.server"
+import { Prisma } from "@prisma/client"
 
 /**
  * 
@@ -46,5 +47,21 @@ export async function deleteIcon (iconId : number) {
         return deleteIcon
     } catch(error : any) {
         return error.message
+    }
+}
+
+export async function deleteIngredient (ingredientId : number) {
+    try {
+        const deleteIngredient = await prisma.ingredients.delete({
+            where : {
+                id : ingredientId 
+            }
+        })
+        return deleteIngredient
+    } catch(error) {
+        if(error instanceof Prisma.PrismaClientKnownRequestError) {
+            return json({error})
+        }
+        return json({error : error});
     }
 }

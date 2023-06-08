@@ -78,6 +78,7 @@ function Input({
   style,
   inputWidth,
   defaultValue,
+  step
 }: InputProps) {
   const [textAlign, setTextAlign] = useState<TextAlign | null>("text-start");
 
@@ -97,7 +98,7 @@ function Input({
         type={type}
         name={name}
         id={name}
-        step={0.1}
+        step={0.2}
         defaultValue={defaultValue}
       />
       <p>{unit}</p>
@@ -176,6 +177,7 @@ function Table({ data }) {
                       type="number"
                       name="water"
                       defaultValue={el.water}
+                      step={0.1}
                     />
                     <button type="submit">Valid Edit</button>
                   </editMacro.Form>

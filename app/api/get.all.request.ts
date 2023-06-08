@@ -71,3 +71,17 @@ export async function getIcons () {
     }
 }
 
+export async function getIngredients () {
+    try {
+        const ingredients = await prisma.ingredients.findMany({
+            include : {
+                category : true,
+                macros : true,
+                icon : true,
+            }
+        })
+        return ingredients
+    } catch (error : any) {
+        return error.message
+    }
+}

@@ -9,19 +9,25 @@ export default function SelectSearch({
   placeholder,
   index,
 }: SelectSearchProps) {
-  const options = data
-    .map((d) => {
-      return {
-        value: d[`${index}` as keyof typeof d],
-        label: d[`${filterBy}` as keyof typeof d],
-      };
-    })
-    .slice(0, optionMax ?? 5);
+
+
+  const getOptions = () => {
+    if (data && data.length > 0 ) {
+        const options = data
+        .map((d) => {
+          return {
+            value: d[`${index}` as keyof typeof d],
+            label: d[`${filterBy}` as keyof typeof d],
+          };
+        })
+        return options
+    }
+  }
 
   return (
     <Select
       name={name}
-      options={options}
+      options={getOptions()}
       placeholder={placeholder ?? "Search"}
     />
   );
