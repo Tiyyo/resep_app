@@ -31,8 +31,8 @@ export async function deleteMacro (macroId : number) {
         })
         await prisma.$disconnect()
         return deletedMacro
-    } catch (error : any) {
-        return error.message
+    } catch (error) {
+        console.log(error);
     }
 } 
 

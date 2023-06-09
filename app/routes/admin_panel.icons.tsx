@@ -1,14 +1,16 @@
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { getIcons } from "~/api/get.all.request";
 import { addIcons } from "~/api/post.request";
 import DeleteIcon from "~/assets/icons/DeleteIcon";
+import FileInput from "~/components/file_input";
+import Input from "~/components/input";
+import SubmitButton from "~/components/submit_button";
 import { uploadImage } from "~/utils/s3.server";
 
 export async function loader ({request} : LoaderArgs ) {
   const icons = await getIcons()
-
   return json({icons})
 }
 
@@ -36,68 +38,70 @@ export async function action ({request} : ActionArgs) {
     name , tags , imageS3Url
   }
   const newIcon= await addIcons(form)
-  console.log(newIcon);
-
  return null;
 };
 
 
 
 export default function EditIcons() {
+  // ts errors remix bugs open issue here
+  //https://github.com/remix-run/remix/issues/3931
   const {icons} = useLoaderData<typeof loader>()
+  const actionData = useActionData()
 
-  console.log(icons);
+  console.log(actionData);
+
+  // useEffect(() => {
+  //   if(addCategory.state === 'idle' && addFormRef && addFormRef.current ) {
+  //     addFormRef.current.reset();
+  //     setErrorText(addCategory?.data?.fields?.name)
+  //   }
+  // }, [addFormState, addCategory.state, addCategory?.data?.fields?.name])
+
   return (
-    <div>
-      Icons edition here Doja
+    <div className="pt-5">
       <Form method="POST" encType="multipart/form-data">
-        <label htmlFor="name">Name this icon</label>
-        <input type="text" name="name" />
-
-        <label htmlFor="tags">Give some tags to help to reference this icon</label>
-        <input type="text" name="tags" />
-        <label
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          htmlFor="file_input"
-        >
-          Upload file
-        </label>
-        <input
-          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-          aria-describedby="file_input_help"
-          name="image"
-          type="file"
-        />
-        <p
-          className="mt-1 text-sm text-gray-500 dark:text-gray-300"
-          id="file_input_help"
-        >
-          SVG, PNG, JPG or GIF (MAX. 800x400px).
-        </p>
-        <input type="submit" value={"Create Icon"}/>
+        <div className="flex center gap-x-4">
+          <Input name="name" placeholder="Icon name" />
+          <Input name="tags" placeholder="Tags" />
+          <FileInput />
+          <SubmitButton text="Create icon" />
+        </div>
       </Form>
-      <div>Image Icon</div>
-      <img src="https://groc-app.s3.eu-west-3.amazonaws.com/cliip2s2z0005wovz85i929ur.png" alt="" />
       <div>
-        {icons.length > 0 ? <>{icons.map((icon) => {return (<div key={icon.id} className="center">
-            <img src={icon.link} alt="" className="h-10 aspect-square rounded-full overflow-hidden"/>
-            <Form method="PATCH">
-              <input type="file" name="image"/>
-              <input type="text" name="tag" defaultValue={icon.tags.join(' ')}/>
-              <input type="submit" defaultValue={'Valid'} />
-            </Form>
-            <Form method="DELETE">
-                {/* <input type="text" name="iconId" id="iconId" defaultValue={icon.id} hidden /> */}
-                <button type="submit" value={icon.id}>
-                  <DeleteIcon/>
-                </button>
-            </Form>
-  
-          </div>)
-        })}</> : <p>Database don't contain any icon</p>}
-
+        {icons.length > 0 ? (
+          <>
+            {icons.map((icon) => {
+              return (
+                <div key={icon.id} className="center">
+                  <img
+                    src={icon.link}
+                    alt=""
+                    className="h-10 aspect-square rounded-full overflow-hidden"
+                  />
+                  <Form method="PATCH">
+                    <input type="file" name="image" />
+                    <input
+                      type="text"
+                      name="tag"
+                      defaultValue={icon.tags.join(" ")}
+                    />
+                    <input type="submit" defaultValue={"Valid"} />
+                  </Form>
+                  <Form method="DELETE">
+                    <input type="text" name="iconId" id="iconId" defaultValue={icon.id} hidden />
+                    <button type="submit" value={icon.id}>
+                      <DeleteIcon />
+                    </button>
+                  </Form>
+                </div>
+              );
+            })}
+          </>
+        ) : (
+          <p>Database don't contain any icon</p>
+        )}
       </div>
-
     </div>
   );
 }

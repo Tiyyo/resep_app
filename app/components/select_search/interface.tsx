@@ -3,6 +3,7 @@ export interface SelectSearchProps {
     name : string
     index : string
     filterBy: string;
+    getState? : (args : any) => any
     optionMax: number | 5;
     placeholder? : string
   }

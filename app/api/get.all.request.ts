@@ -1,23 +1,24 @@
 import { prisma } from "~/utils/db.server"
 import { Prisma } from "@prisma/client"
 import { json } from "@remix-run/node"
+// import { PrismaClientKnownRequestError } from "@prisma/client/runtime"
 
 
-// Make this work
+// // Make this work
 
-// export async function getAll(model ) {
-//     const results = await prisma[`${model}`].findMany()
-//     await prisma.$disconnect()
-//     return results
-// }
+// // export async function getAll(model ) {
+// //     const results = await prisma[`${model}`].findMany()
+// //     await prisma.$disconnect()
+// //     return results
+// // }
 
 export async function getCategories() {
     try {
         const categories = await prisma.ingredient_categories.findMany()
         await prisma.$disconnect()
         return categories
-    } catch (error: any) {
-        return error.message
+    } catch (error ) {
+        console.log(error);
     }
 }
 
@@ -26,8 +27,8 @@ export async function getUnitComputes() {
         const unitComputes = await prisma.unit_computes.findMany()
         await prisma.$disconnect()
         return unitComputes
-    } catch (error: any) {
-        return error.message
+    } catch (error) {
+        console.log(error);
     }
 
 }
@@ -38,8 +39,8 @@ export async function getUnitMeasures() {
         await prisma.$disconnect()
         return unitMeasures
     }
-    catch (error: any) {
-        return error.message
+    catch (error) {
+        console.log(error);
     }
 }
 
@@ -49,8 +50,8 @@ export async function getMacros() {
         await prisma.$disconnect()
         return macros
     }
-    catch (error: any) {
-        return error.message
+    catch (error) {
+        console.log(error);
     }
 }
 
@@ -64,10 +65,10 @@ export async function getIcons () {
         const result = icons.map((icon) => {
             return {...icon, tags : icon.tags.map((tag) => tag.tag_name)}
         })
-
+        await prisma.$disconnect()
         return result
-    } catch (error : any) {
-        return error.message
+    } catch (error) {
+        throw new Error("can't acces data");
     }
 }
 
@@ -80,8 +81,9 @@ export async function getIngredients () {
                 icon : true,
             }
         })
+        await prisma.$disconnect()
         return ingredients
-    } catch (error : any) {
-        return error.message
+    } catch (error) {
+        console.log(error);
     }
 }

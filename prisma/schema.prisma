@@ -51,6 +51,7 @@ model Activity_levels  {
   id              Int         @id @default(autoincrement())
   activity_level  String      @unique
   description     String
+  factor          Decimal
   profiles        Profiles[]
 }
 

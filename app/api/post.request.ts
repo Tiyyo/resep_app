@@ -1,13 +1,23 @@
 import { prisma } from "~/utils/db.server"
-import { Prisma } from "@prisma/client"
+import { Ingredient_categories, Macros, Prisma } from "@prisma/client"
 import { json } from "@remix-run/node"
+
+type ErrorMessage = {
+  error : string
+}
+
+interface FormIconProps {
+  name: string
+  imageS3Url: string
+  tags?: string[]
+}
 
 
 /**
  * 
  * @param {string} name 
  */
-export async function addCategory(name: string) {
+export async function addCategory(name: string) : Promise<Ingredient_categories | ErrorMessage | undefined> {
   let category
   category = {
     name
@@ -19,12 +29,16 @@ export async function addCategory(name: string) {
     return createCategory
 
   } catch (error) {
-    return json({ error: 'This category already exist in database' }, { status: 400 })
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return {error :'There is a unique constraint violation , Already exists in database' }
+      }
+    }
   }
 
 }
 
-export async function addMacros(form: any) {
+export async function addMacros(form: any): Promise<Macros | ErrorMessage | undefined> {
   let macro: Prisma.MacrosCreateInput
   try {
     macro = {
@@ -38,21 +52,19 @@ export async function addMacros(form: any) {
     const createMacro = await prisma.macros.create({ data: macro })
     await prisma.$disconnect()
     return createMacro
-  } catch (error: any) {
-    return json({ error: error.message })
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw ({error : 'Already exists in database'})
+      }
+      throw ({error : 'Unable to add item to database'})
+
+    }
   }
-
 }
 
-interface FormIconProps {
-  name: string
-  imageS3Url: string
-  tags?: string[]
-}
 
 export async function addIcons(form: FormIconProps) {
-
-
   try {
     if (form.tags) {
       let createTags = form.tags.map((tag) => {

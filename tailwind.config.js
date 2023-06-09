@@ -12,6 +12,9 @@ module.exports = {
         bold: 700,
       },
       colors: {
+        main : {
+          300 : '#fff0d3'
+        },
         primary: {
           // 100: "#FFFBF7",
           100 : "#FFF8F2",
@@ -26,7 +29,7 @@ module.exports = {
         },
         text: {
           light : "#00000096",
-          100: "rgb(124, 102, 102)",
+          100: "#fffefc",
           200: "rgb(160, 86, 86)",
           300: "rgb(74, 64, 64)",
           accent: "#243143f3",

@@ -5,9 +5,9 @@ export default function SelectSearch({
   name,
   data,
   filterBy,
-  optionMax,
   placeholder,
   index,
+  getState,
 }: SelectSearchProps) {
 
 
@@ -24,11 +24,14 @@ export default function SelectSearch({
     }
   }
 
+  console.log(data , 'DATA SEACH');
+
   return (
     <Select
       name={name}
       options={getOptions()}
       placeholder={placeholder ?? "Search"}
+      onChange={(e) => getState(e)}
     />
   );
 }

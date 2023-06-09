@@ -1,46 +1,51 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { Link, isRouteErrorResponse, useFetcher, useLoaderData, useRouteError } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { getMacros } from "~/api/get.all.request";
 import DeleteIcon from "~/assets/icons/DeleteIcon";
+import Input from "~/components/input";
+import SubmitButton from "~/components/submit_button";
 
 export async function loader({ request }: LoaderArgs) {
   const macros = await getMacros();
-  return json({ macros });
+  return json({macros})
 }
 
 export default function MacrosPanel() {
   const { macros } = useLoaderData();
-  const addMacro = useFetcher();
-  const deleteMacro = useFetcher();
-  const editMacro = useFetcher();
+  const addMacros = useFetcher();
+  const [errorText, setErrorText] = useState<string>("")
+
+  console.log(addMacros);
+
 
   const addMacroFormRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (
-      addMacro.state === "idle" &&
+      addMacros.state === "idle" &&
       addMacroFormRef &&
       addMacroFormRef.current
     ) {
       addMacroFormRef.current.reset();
+      setErrorText(addMacros?.data?.fields?.name)
     }
-  }, [addMacro.state]);
+  }, [addMacros.state, addMacros?.data?.fields?.name]);
 
   return (
-    <div>
-      <addMacro.Form method="POST" action="/api/macros" ref={addMacroFormRef}>
-        <div className="flex gap-x-2">
-          <Input label="Food" name="food" type="text" unit="" inputWidth="25" />
-          <Input label="Calories" unit="g" type="number" name="calories" />
-          <Input label="Proteins" unit="g" type="number" name="proteins" />
-          <Input label="Carbs" unit="g" type="number" name="carbs" />
-          <Input label="Fat" unit="g" type="number" name="fat" />
-          <Input label="Water" unit="g" type="number" name="water" />
-          <button type="submit">Add food</button>
+    <div className="pt-5">
+      <addMacros.Form method="POST" action="/api/macros" ref={addMacroFormRef}>
+        <div className="flex center gap-x-4">
+          <Input label="Food" name="food" type="text" unit="" width="25" />
+          <Input label="Calories" unit="g" type="number" name="calories" width="12" />
+          <Input label="Proteins" unit="g" type="number" name="proteins" width="12"/>
+          <Input label="Carbs" unit="g" type="number" name="carbs" width="12"/>
+          <Input label="Fat" unit="g" type="number" name="fat" width="12"/>
+          <Input label="Water" unit="ml" type="number" name="water" width="12"/>
+          <SubmitButton text="Add food"/>
         </div>
-      </addMacro.Form>
+      </addMacros.Form>
       <div>
         {macros.length > 0 ? (
           <Table data={macros} />
@@ -51,64 +56,10 @@ export default function MacrosPanel() {
     </div>
   );
 }
-interface InputProps {
-  label: string;
-  unit: string;
-  type: string;
-  name: string;
-  step?: number;
-  inputWidth?: string;
-  style?: string;
-  defaultValue?: string;
-}
 
-type TextAlign =
-  | "text-end"
-  | "text-start"
-  | "text-center"
-  | "text-right"
-  | "text-left"
-  | "text-justify";
-
-function Input({
-  label,
-  unit,
-  type,
-  name,
-  style,
-  inputWidth,
-  defaultValue,
-  step
-}: InputProps) {
-  const [textAlign, setTextAlign] = useState<TextAlign | null>("text-start");
-
-  useEffect(() => {
-    if (type === "number") {
-      setTextAlign("text-end");
-    } else {
-      setTextAlign("text-start");
-    }
-  }, [type]);
-
-  return (
-    <div className={`center w-15 h-11 ${style}`}>
-      <label htmlFor={name}>{label} :</label>
-      <input
-        className={`w-${inputWidth ?? 10} ${textAlign}`}
-        type={type}
-        name={name}
-        id={name}
-        step={0.2}
-        defaultValue={defaultValue}
-      />
-      <p>{unit}</p>
-    </div>
-  );
-}
-
-function Row() {
-  return;
-}
+// function Row() {
+//   return;
+// }
 
 function Table({ data }) {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -117,6 +68,7 @@ function Table({ data }) {
 
   return (
     <div>
+
       <div>
         <label>Seach</label>
         <input type="text" onChange={(e) => setSearchValue(e.target.value)} />
@@ -140,7 +92,7 @@ function Table({ data }) {
                       name="food"
                       type="text"
                       unit=""
-                      inputWidth="25"
+                      width="25"
                       defaultValue={el.food}
                     />
                     <Input
@@ -197,4 +149,23 @@ function Table({ data }) {
       )}
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  console.log(error);
+
+  if (!isRouteErrorResponse(error)) {
+    return (<Link to="/admin_panel/macros">Refresh</Link>);
+  }
+
+  if (error.status === 404) {
+    return (
+      <>
+        <h2>Error 404</h2>
+        <button> Rafraichir </button>
+      </>
+    );
+  }
 }

@@ -1,44 +1,35 @@
-import type { ActionArgs } from "@remix-run/node";
+import { ActionArgs, redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
+import { withZod } from "@remix-validated-form/with-zod";
 import { deleteMacro } from "~/api/delete.request";
 import { patchMacros } from "~/api/patch.request";
 import { addMacros } from "~/api/post.request";
 import { convertStringToNumber } from "~/helpers/convert.to.number";
+import * as Z from "zod";
+import { validationError } from "remix-validated-form";
+import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
 
+export const validator = withZod(
+    Z.object({
+        food : Z.string().toLowerCase(),
+        calories : Z.string(),
+        proteins: Z.string(),
+        carbs : Z.string(),
+        fat : Z.string(),
+        water : Z.string(),
+        id : Z.string().optional()
+    })
+)
 
 
 export async function action({ request }: ActionArgs) {
-    const formData = await request.formData();
     const method = request.method.toLowerCase()
 
     switch (method) {
         case "post": {
-            let food: string | null = null
-            let calories: string | null = null
-            let proteins: string | null = null
-            let carbs: string | null = null
-            let fat: string | null = null
-            let water: string | null = null
-
-
-            if (typeof formData.get('food') === "string") {
-                food = formData.get('food') as string
-            }
-            if (typeof formData.get('calories') === "string") {
-                calories = formData.get('calories') as string
-            }
-            if (typeof formData.get('proteins') === "string") {
-                proteins = formData.get('proteins') as string
-            }
-            if (typeof formData.get('carbs') === "string") {
-                carbs = formData.get('carbs') as string
-            }
-            if (typeof formData.get('fat') === "string") {
-                fat = formData.get('fat') as string
-            }
-            if (typeof formData.get('water') === "string") {
-                water = formData.get('water') as string
-            }
+            const formData = await validator.validate(await request.formData())
+            if (formData.error) return validationError(formData.error)
+            const {food, calories, proteins, carbs, fat, water} = formData.data
 
             const numberFields = {
                 calories,
@@ -51,44 +42,17 @@ export async function action({ request }: ActionArgs) {
             const formConverted = convertStringToNumber(numberFields)
             let form = { ...formConverted, food: food?.toLowerCase() }
 
-            const newMacro = await addMacros(form)
-            if(newMacro.id){
-                return json({ status: 200 })
-            } else {
-                return json({error : newMacro} , {status : 400})
+            try {
+                const newMacro = await addMacros(form)
+                return json({newMacro} , {status : 200})
+                } catch (error) {
+                console.log(error);
             }
         }
         case "patch": {
-            let id: string | null = null
-            let food: string | null = null
-            let calories: string | null = null
-            let proteins: string | null = null
-            let carbs: string | null = null
-            let fat: string | null = null
-            let water: string | null = null
-
-
-            if (typeof formData.get('id') === "string") {
-                id = formData.get('id') as string
-            }
-            if (typeof formData.get('food') === "string") {
-                food = formData.get('food') as string
-            }
-            if (typeof formData.get('calories') === "string") {
-                calories = formData.get('calories') as string
-            }
-            if (typeof formData.get('proteins') === "string") {
-                proteins = formData.get('proteins') as string
-            }
-            if (typeof formData.get('carbs') === "string") {
-                carbs = formData.get('carbs') as string
-            }
-            if (typeof formData.get('fat') === "string") {
-                fat = formData.get('fat') as string
-            }
-            if (typeof formData.get('water') === "string") {
-                water = formData.get('water') as string
-            }
+            const formData = await validator.validate(await request.formData())
+            if (formData.error) return validationError(formData.error)
+            const {food, calories, proteins, carbs, fat, water , id} = formData.data
 
             const numberFields = {
                 id,
@@ -105,15 +69,14 @@ export async function action({ request }: ActionArgs) {
             console.log(form , 'DATA FROM INPUT');
 
             const newMacro = await patchMacros(form)
-            console.log(newMacro , 'DATA ADDED TO DB');
             if(newMacro.id === form.id){
-                console.log('condition id new macro working');
                 return json({ status: 200 })
             } else {
                 return json({error : newMacro} , {status : 400})
             }
         }
         case "delete": {
+            const formData =await request.formData()
             let id : string | null = null
             let deletedMacro = {} ;
             if (typeof formData.get('id') === "string") {
@@ -138,3 +101,4 @@ export async function action({ request }: ActionArgs) {
 
     }
 }
+

@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import type { ActionArgs} from "@remix-run/node";
 import {  json } from "@remix-run/node";
 import { deleteCategories } from "~/api/delete.request";
@@ -15,9 +16,11 @@ export async function action({request}:ActionArgs) {
             if (typeof name !== "string") {
               return json({ error: "name argument should be a string" }, { status: 400 });
             }
-        
+
             const newCategory = await addCategory(name);
-            if (newCategory.id) {
+
+            // fixed typescript error
+            if (newCategory && newCategory.id) {
                 return json({status : 200})
               } else {
                 return json(
