@@ -31,7 +31,7 @@ export default function CategoryPanel() {
     }, [addFormState, addCategory.state, addCategory?.data?.fields?.name])
 
   return (
-    <div className="overflow-y-scroll flex flex-col gap-y-4 pt-5">
+    <div className="overflow-y-scroll flex flex-col gap-y-4 pt-5 ">
       <addCategory.Form method="post" action="/api/categories" ref={addFormRef}>
         <div className="flex justify-center gap-x-3">
           <Input name="category" placeholder="Category name"/>

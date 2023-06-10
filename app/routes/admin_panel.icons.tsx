@@ -1,13 +1,16 @@
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import { Form, useActionData, useLoaderData, useNavigation } from "@remix-run/react";
+import { useEffect, useRef, useState } from "react";
+import { deleteIcon } from "~/api/delete.request";
 import { getIcons } from "~/api/get.all.request";
 import { addIcons } from "~/api/post.request";
 import DeleteIcon from "~/assets/icons/DeleteIcon";
+import Error from "~/components/error";
 import FileInput from "~/components/file_input";
 import Input from "~/components/input";
 import SubmitButton from "~/components/submit_button";
-import { uploadImage } from "~/utils/s3.server";
+import { deleteImageFromBucket, uploadImage } from "~/utils/s3.server";
 
 export async function loader ({request} : LoaderArgs ) {
   const icons = await getIcons()
@@ -20,9 +23,11 @@ export async function action ({request} : ActionArgs) {
   const formData = await copyRequest.formData()
   const name = formData.get('name')
   const rawTags = formData.get('tags')
-  const imageS3Url = await uploadImage(request);
+  const {imageLink , imageKey} = await uploadImage(request);
+
 
   let tags : string[] | null = null
+
   if(rawTags && typeof rawTags === "string"){
      tags = rawTags.split(' ')
      tags.forEach((tag, index) =>  {
@@ -33,12 +38,20 @@ export async function action ({request} : ActionArgs) {
   }
 
   // check existence params
-  console.log({name, tags, imageS3Url });
+
   const form = {
-    name , tags , imageS3Url
+    name , tags , imageLink ,imageKey
   }
-  const newIcon= await addIcons(form)
- return null;
+
+  try {
+    const newIcon= await addIcons(form)
+    console.log(newIcon);
+    return json({status : 200 })  
+  } catch (error : any) {
+    const deletedIcon = await deleteImageFromBucket(form.imageKey)
+    return json({error : error.message},  {status : 400})
+  }
+
 };
 
 
@@ -47,26 +60,27 @@ export default function EditIcons() {
   // ts errors remix bugs open issue here
   //https://github.com/remix-run/remix/issues/3931
   const {icons} = useLoaderData<typeof loader>()
+  const addIconFormRef = useRef<HTMLFormElement>(null)
   const actionData = useActionData()
+  const navigation = useNavigation()
 
-  console.log(actionData);
 
-  // useEffect(() => {
-  //   if(addCategory.state === 'idle' && addFormRef && addFormRef.current ) {
-  //     addFormRef.current.reset();
-  //     setErrorText(addCategory?.data?.fields?.name)
-  //   }
-  // }, [addFormState, addCategory.state, addCategory?.data?.fields?.name])
+  useEffect(() => {
+    if(navigation.state === 'idle' && addIconFormRef && addIconFormRef.current ) {
+      addIconFormRef.current.reset();
+    }
+  }, [navigation.state, addIconFormRef])
 
   return (
     <div className="pt-5">
-      <Form method="POST" encType="multipart/form-data">
+      <Form method="POST" encType="multipart/form-data" ref={addIconFormRef}>
         <div className="flex center gap-x-4">
           <Input name="name" placeholder="Icon name" />
           <Input name="tags" placeholder="Tags" />
           <FileInput />
           <SubmitButton text="Create icon" />
         </div>
+        <Error message={actionData?.error}/>
       </Form>
       <div>
         {icons.length > 0 ? (

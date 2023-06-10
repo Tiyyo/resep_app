@@ -1,5 +1,5 @@
 
-export function convertStringToNumber (values : { [key: string]: string | null}) : { [key: string]: number | null } {
+export function convertStringToNumber (values : { [key: string]: string | null | undefined}) {
     let copy : { [key: string]: number | null } = {}
 
     for (let key in values) {

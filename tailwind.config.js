@@ -11,6 +11,11 @@ module.exports = {
         normal: 400,
         bold: 700,
       },
+      minHeight : {
+        6 : "1.5rem",
+        7 : "1.7rem",
+        8 : "2rem"
+      },
       colors: {
         main : {
           300 : '#fff0d3'

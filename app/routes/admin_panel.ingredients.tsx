@@ -1,120 +1,123 @@
-import { Macros } from "@prisma/client";
+import type { Macros } from "@prisma/client";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, useFetcher, useLoaderData } from "@remix-run/react";
-import { useState } from "react";
-import { ZodNull } from "zod";
+import { Form, useActionData, useFetcher, useLoaderData, useNavigation } from "@remix-run/react";
+import { useEffect, useRef, useState } from "react";
+import { promiseHash } from "remix-utils";
 import {
   getCategories,
   getIcons,
   getIngredients,
   getMacros,
 } from "~/api/get.all.request";
-import { addIngredients } from "~/api/post.request";
-import Categories from "~/components/categories";
-import { FormField } from "~/components/form_field";
-import SelectInput from "~/components/recipe/select_input";
+import { IngredientCreateForm, addIngredients } from "~/api/post.request";
+import Error from "~/components/error";
+import Input from "~/components/input";
 import SelectSearch from "~/components/select_search";
+import SubmitButton from "~/components/submit_button";
 import { convertStringToNumber } from "~/helpers/convert.to.number";
+import * as Z from "zod";
+import { validationError } from "remix-validated-form";
+import { withZod } from "@remix-validated-form/with-zod";
 
-export async function loader({ request }: LoaderArgs) {
-  const categories = await getCategories();
-  const macros = await getMacros();
-  const icons = await getIcons();
-  const ingredients = await getIngredients();
-  return json({ categories, macros, icons, ingredients });
+
+export async function loader ({request} : LoaderArgs) {
+  return json(
+    await promiseHash({
+      categories : getCategories(),
+      macros : getMacros(),
+      icons : getIcons(),
+      ingredients : getIngredients()
+    })
+  )
+}
+
+export const validator = withZod(
+  Z.object({
+    name : Z.string().toLowerCase(),
+    categoryId : Z.string(),
+    unitWeight : Z.string().optional(),
+    macrosId : Z.string().optional(),
+    iconId : Z.string().optional(),
+  })
+)
+
+interface IngredientCreateObject {
+  name : string
+  categoryId : number
+  iconId? : number | null,
+  macrosId? : number | null
+  unitWeight? : number | null
 }
 
 export async function action({ request }: ActionArgs) {
-  const formData = await request.formData();
 
-  let iconId: string | null;
-  let macroId: string | null;
-  let categoryId: string | null;
-  let unitWeight: string | null;
-  const name = formData.get("name");
+  const formData = await validator.validate(await request.formData())
+  if( formData.error) return validationError(formData.error)
 
-  if (typeof formData.get("iconId") === "string" && formData.get("iconId")) {
-    iconId = formData.get("iconId") as string;
+  const {iconId, categoryId, macrosId, name, unitWeight} = formData.data
+
+  const fieldToConvert = {
+    iconId , categoryId, macrosId, unitWeight
   }
 
-  if (typeof formData.get("macroId") === "string" && formData.get("macroId")) {
-    macroId = formData.get("macroId") as string;
+  const formConverted = convertStringToNumber(fieldToConvert)
+  let form : IngredientCreateForm
+
+   form = {
+    name,
+    categoryId : formConverted.categoryId,
+    iconId : formConverted.iconId,
+    macrosId : formConverted.macrosId,
+    unitWeight : formConverted.unitWeight
+   }
+
+  try {
+    await addIngredients(form);
+    return json({status : 200})
+  } catch(error : any) {
+    return json({error : error.message},  {status : 400})
   }
 
-  if (
-    typeof formData.get("categoryId") === "string" &&
-    formData.get("categoryId")
-  ) {
-    categoryId = formData.get("categoryId") as string;
-  }
-
-  if (
-    typeof formData.get("unitWeight") === "string" &&
-    formData.get("unitWeight")
-  ) {
-    unitWeight = formData.get("unitWeight") as string;
-  }
-
-  const idsTypeString = {
-    iconId,
-    macroId,
-    categoryId,
-    unitWeight,
-  };
-
-  const IdsTypeNumber = convertStringToNumber(idsTypeString);
-
-  const form = { ...IdsTypeNumber, name };
-
-  // convert falsy values to null
-  for (const key in form) {
-    if (!form[key as keyof typeof form]) form[key as keyof typeof form] = null;
-  }
-
-  const newIngredients = await addIngredients(form);
-
-  return newIngredients;
 }
 
 export default function () {
+  // can't type useLoaderData bugs still not fixed 
+  // convert type to Serialize object
   const { categories, macros, icons, ingredients } =
-    useLoaderData<typeof loader>();
+    useLoaderData();
+  const navigation = useNavigation()
+  const addIngredientFormRef = useRef<HTMLFormElement>(null)
+  const actionData = useActionData()
+
+  useEffect(() => {
+    if(navigation.state == 'idle' && addIngredientFormRef && addIngredientFormRef.current) {
+      addIngredientFormRef.current.reset()
+    }
+  }, [navigation.state])
 
   return (
     <div>
-      Ingredients edtion goes here
       <Form method="POST">
-        <label htmlFor="name">Name this ingredient</label>
-        <input type="text" id="name" name="name" />
-        <label htmlFor="unitWeight">
-          Average weight for one unit ingredient
-        </label>
-        <input
-          type="number"
-          id="unitWeight"
-          name="unitWeight"
-          defaultValue={undefined}
-          placeholder=""
-        />
-        <div>
+        <div className="flex flex-wrap justify-center gap-3 mt-3">
+        <Input name="name" placeholder="Ingredient name" label="Name"/>
+        <Input type="text" width="10" name="unitWeight" label="Average weight for 1 unit" placeholder="g/ml"/>
           <SelectSearch
             name="categoryId"
             data={categories}
             index="id"
             filterBy="name"
-            optionMax={categories.length}
             placeholder="Pick a category"
-          />
-          <SelectSearch
-            name="macroId"
+            />
+            <SelectSearch
+            name="macrosId"
             data={macros}
             index="id"
             filterBy="food"
             optionMax={5}
-            placeholder="Search for a food reference"
-          />
-          <SelectSearch
+            placeholder="Food reference"
+            />
+            <SelectSearch
             name="iconId"
             data={icons}
             index="id"
@@ -122,8 +125,9 @@ export default function () {
             optionMax={5}
             placeholder="Search for an Icon"
           />
+          <SubmitButton text="Add ingredient"/>
         </div>
-        <button type="submit">Add ingredients</button>
+        <Error message={actionData?.error}/>
       </Form>
       <div>
         {/* {/*--- do check exist and length/*} */}
@@ -213,7 +217,7 @@ function FullRow({ ingredient }) {
   return (
     <div className="flex pt-5">
       <div className="aspect-square h-7 rounded-full overflow-hidden">
-        <img src={ingredient.icon.link} alt="" />
+        {/* <img src={ingredient.icon.link} alt="" /> */}
       </div>
       <div>{ingredient.name}</div>
       <div>{ingredient.category.name}</div>

@@ -1,6 +1,7 @@
 import { prisma } from "~/utils/db.server"
-import { Ingredient_categories, Macros, Prisma } from "@prisma/client"
-import { json } from "@remix-run/node"
+import {  Prisma } from "@prisma/client"
+import type { Ingredient_categories, Ingredients, Macros,  } from "@prisma/client"
+
 
 type ErrorMessage = {
   error : string
@@ -8,8 +9,10 @@ type ErrorMessage = {
 
 interface FormIconProps {
   name: string
-  imageS3Url: string
+  imageLink: string
+  imageKey : string
   tags?: string[]
+
 }
 
 
@@ -85,7 +88,8 @@ export async function addIcons(form: FormIconProps) {
       const createIcon = await prisma.icons.create({
         data: {
           name: form.name,
-          link: form.imageS3Url,
+          link: form.imageLink,
+          image_key : form.imageKey,
           tags: {
             create: createTags
           }
@@ -99,16 +103,21 @@ export async function addIcons(form: FormIconProps) {
       const createIcon = await prisma.icons.create({
         data: {
           name: form.name,
-          link: form.imageS3Url,
+          link: form.imageLink,
+          image_key : form.imageKey,
         },
       })
       return createIcon
     }
-  } catch (error: any) {
-    return error.message
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw new Error("Can't add 2 items with the same name")
+      }
+      throw new Error('Unable to add item to database')
 
+    }
   }
-
 }
 
 // interface IngredientProps extends Prisma.Ingredients {
@@ -117,43 +126,39 @@ export async function addIcons(form: FormIconProps) {
 //   icon : number | null | undefined
 // }
 
-export async function addIngredients(form) {
+export interface IngredientCreateForm {
+  name : string
+  unitWeight? : number | null
+  categoryId : number | null
+  macrosId? : number | null
+  iconId? : number | null
+}
 
-  let ingredient 
-
-  ingredient = {
-    name: form.name,
-    unit_weight: form.unitWeight,
-    category: form.categoryId,
-    macros: form.macroId,
-    icon: form.iconId,
-  }
-
+export async function addIngredients(form : IngredientCreateForm) {
 
   try {
     const newIngredient = await prisma.ingredients.create({ data: {
-        name : ingredient.name, 
-        unit_weight : ingredient.unit_weight,
+        name : form.name, 
+        unit_weight : form.unitWeight,
         category : {
-          connect : {id : ingredient.category}
+          connect : {id : form.categoryId}
         },
         macros : {
-          connect : {id : ingredient.macros}
+          connect : {id : form.macrosId}
         },
         icon : {
-          connect : {id : ingredient.icon}
+          connect : {id : form.iconId}
         }
       }, 
     })
-
     await prisma.$disconnect()
     return newIngredient
   } catch (error: any) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === "P2002") {
-          return {error :'There is a unique constraint violation , Already exists in database' }
+          throw new Error("Can't add 2 items with the same name")
         }
+        throw new Error('Unable to add item to database')
     }
-    return {error : error};
   }
 }

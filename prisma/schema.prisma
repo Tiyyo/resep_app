@@ -32,7 +32,7 @@ model Profiles  {
   height            Int?    
   weight            Decimal ? 
   genderId          Int?
-  gender            Genders?              @relation(fields : [genderId], references : [id])
+  gender            Genders?              @relation(fields : [genderId], references : [id], onDelete: SetNull)
   activity_levelId  Int?         
   activity_level    Activity_levels?      @relation(fields : [activity_levelId], references : [id])
   reviews           Reviews[] 
@@ -65,8 +65,8 @@ model Recipes  {
   created_at        DateTime       @default(now())         
   picture           String?         
   servings          Int     
-  macro_recipeId    Int            @unique
-  macro_recipe      Macros         @relation(fields : [macro_recipeId] , references : [id] )
+  macro_recipeId    Int ?           @unique
+  macro_recipe      Macros?         @relation(fields : [macro_recipeId] , references : [id], onDelete : SetNull)
   tag               RecipesOnTags[]
   reviews           ReviewsOnRecipes[]
   measures          IngredientsOnRecipes[]
@@ -81,15 +81,15 @@ model Ingredients  {
   name             String           @unique
   unit_weight      Decimal?
   categoryId       Int
-  category         Ingredient_categories @relation(fields : [categoryId] , references : [id])
+  category         Ingredient_categories @relation(fields : [categoryId] , references : [id] )
   // unit_measureId   Int
   // unit_measure     Unit_measures    @relation(fields : [unit_measureId] , references : [id]) 
   // unit_computeId   Int
   // unit_compute     Unit_computes    @relation(fields : [unit_computeId] ,  references : [id]) 
   macrosId         Int?
-  macros           Macros?           @relation(fields : [macrosId] , references : [id]) 
+  macros           Macros?          @relation(fields : [macrosId] , references : [id] , onDelete : SetNull) 
   iconId           Int?
-  icon             Icons?            @relation(fields : [iconId] , references : [id])
+  icon             Icons?            @relation(fields : [iconId] , references : [id] , onDelete : SetNull)
   recipes          IngredientsOnRecipes[]
 
 }
@@ -124,6 +124,7 @@ model Icons  {
   id              Int             @id @default(autoincrement())
   name            String          @unique 
   link            String
+  image_key       String
   ingredients     Ingredients[]
   tags            TagsOnIcons[]       
 
@@ -138,9 +139,9 @@ model Tags  {
 }
 
 model TagsOnIcons {
-  icon      Icons     @relation( fields : [iconId] , references : [id])
+  icon      Icons     @relation( fields : [iconId] , references : [id] , onDelete : Cascade)
   iconId    Int
-  tag       Tags      @relation (fields : [tag_name] , references : [name])
+  tag       Tags      @relation (fields : [tag_name] , references : [name] , onDelete : Cascade)
   tag_name  String
   @@id([iconId, tag_name])
 }
