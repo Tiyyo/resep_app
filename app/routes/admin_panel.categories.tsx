@@ -3,10 +3,13 @@ import { json } from "@remix-run/node";
 import {  useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { getCategories } from "~/api/get.all.request";
+import DeleteIcon from "~/assets/icons/DeleteIcon";
+import EditIcon from "~/assets/icons/EditIcon";
 import Categories from "~/components/categories";
 import Error from "~/components/error";
 import Input from "~/components/input";
 import SubmitButton from "~/components/submit_button";
+import Table from "~/components/table_html";
 
 export async function loader ({request} : LoaderArgs) {
       const categories = await getCategories()
@@ -30,20 +33,19 @@ export default function CategoryPanel() {
       }
     }, [addFormState, addCategory.state, addCategory?.data?.fields?.name])
 
+ 
   return (
     <div className="overflow-y-scroll flex flex-col gap-y-4 pt-5 ">
       <addCategory.Form method="post" action="/api/categories" ref={addFormRef}>
         <div className="flex justify-center gap-x-3">
-          <Input name="category" placeholder="Category name"/>
-          <SubmitButton text="Add Category"/>
+          <Input name="category" placeholder="Category name" />
+          <SubmitButton text="Add Category" />
         </div>
       </addCategory.Form>
-      <Error message={errorText}/>
-
-      {categories && categories.length > 0 ? <div className="grid grid-cols-250 place-items-center gap-4 ">
-        {categories.map((c) => <Categories key={c.id} data={c}/>)}
-      </div> :  <p>Database doesn't contain any categories</p>}
+      <Error message={errorText} />
+      <Table data={categories}/>
     </div>
   );
 }
+
 

@@ -19,6 +19,7 @@ export default function Categories ({data} : {data : Category}) {
   
   
     return (
+
       <div className="flex flex-nowrap gap-x-2">
         <patchCategory.Form method="PATCH" action="/api/categories">
           <label htmlFor="name"></label>

@@ -10,6 +10,7 @@ import Error from "~/components/error";
 import FileInput from "~/components/file_input";
 import Input from "~/components/input";
 import SubmitButton from "~/components/submit_button";
+import Table from "~/components/table_html";
 import { deleteImageFromBucket, uploadImage } from "~/utils/s3.server";
 
 export async function loader ({request} : LoaderArgs ) {
@@ -83,6 +84,7 @@ export default function EditIcons() {
         <Error message={actionData?.error}/>
       </Form>
       <div>
+        {icons && icons.length > 1 ? <Table data={icons} endpoint="/api/icons"/> : ""} 
         {icons.length > 0 ? (
           <>
             {icons.map((icon) => {

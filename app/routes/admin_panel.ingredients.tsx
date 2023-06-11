@@ -19,6 +19,7 @@ import { convertStringToNumber } from "~/helpers/convert.to.number";
 import * as Z from "zod";
 import { validationError } from "remix-validated-form";
 import { withZod } from "@remix-validated-form/with-zod";
+import Table from "~/components/table_html";
 
 
 export async function loader ({request} : LoaderArgs) {
@@ -41,14 +42,6 @@ export const validator = withZod(
     iconId : Z.string().optional(),
   })
 )
-
-interface IngredientCreateObject {
-  name : string
-  categoryId : number
-  iconId? : number | null,
-  macrosId? : number | null
-  unitWeight? : number | null
-}
 
 export async function action({ request }: ActionArgs) {
 
@@ -129,6 +122,7 @@ export default function () {
         </div>
         <Error message={actionData?.error}/>
       </Form>
+      {ingredients && ingredients.length > 1 ? <Table data={ingredients}/> : ""}
       <div>
         {/* {/*--- do check exist and length/*} */}
         {ingredients.map((ingredient) => {
@@ -221,6 +215,7 @@ function FullRow({ ingredient }) {
       </div>
       <div>{ingredient.name}</div>
       <div>{ingredient.category.name}</div>
+
 
       <RowMacro macros={ingredient.macros} allMacros={macros} />
 

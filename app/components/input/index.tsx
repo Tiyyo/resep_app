@@ -31,7 +31,7 @@ export default function Input({
         id={name}
         defaultValue={defaultValue}
         step={step ?? "0.1"}
-        className={`pl-2 pr-1 text-8 h-9 bg-main-300 rounded-md placeholder:pl-2 placeholder:text-7 focus-visible:outline-secondary-300 w-${
+        className={`pl-2 pr-1 text-8 h-9 bg-main-300 rounded-md placeholder:pl-1 placeholder:text-7 focus-visible:outline-secondary-300 w-${
           width ?? "40"
         } ${textAlign}`}
       />
