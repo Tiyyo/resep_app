@@ -9,7 +9,7 @@ import Categories from "~/components/categories";
 import Error from "~/components/error";
 import Input from "~/components/input";
 import SubmitButton from "~/components/submit_button";
-import Table from "~/components/table_html";
+import Table from "~/components/table";
 
 export async function loader ({request} : LoaderArgs) {
       const categories = await getCategories()
@@ -43,7 +43,7 @@ export default function CategoryPanel() {
         </div>
       </addCategory.Form>
       <Error message={errorText} />
-      <Table data={categories}/>
+      <Table data={categories} endpoint="/api/categories"/>
     </div>
   );
 }

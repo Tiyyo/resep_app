@@ -58,7 +58,7 @@ export async function action({request}:ActionArgs) {
 
         }
         case "delete" : {
-            const categoryId = formData.get('category_id')
+            const categoryId = formData.get('id')
             let id : number | null = null;
 
             if (typeof categoryId === 'string') {

@@ -19,7 +19,7 @@ import { convertStringToNumber } from "~/helpers/convert.to.number";
 import * as Z from "zod";
 import { validationError } from "remix-validated-form";
 import { withZod } from "@remix-validated-form/with-zod";
-import Table from "~/components/table_html";
+import Table from "~/components/table";
 
 
 export async function loader ({request} : LoaderArgs) {
@@ -122,7 +122,7 @@ export default function () {
         </div>
         <Error message={actionData?.error}/>
       </Form>
-      {ingredients && ingredients.length > 1 ? <Table data={ingredients}/> : ""}
+      {ingredients && ingredients.length > 0 ? <Table data={ingredients}/> : ""}
       <div>
         {/* {/*--- do check exist and length/*} */}
         {ingredients.map((ingredient) => {

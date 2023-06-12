@@ -6,7 +6,7 @@ import { getMacros } from "~/api/get.all.request";
 import DeleteIcon from "~/assets/icons/DeleteIcon";
 import Input from "~/components/input";
 import SubmitButton from "~/components/submit_button";
-import Table from "~/components/table_div";
+import Table from "~/components/table";
 
 export async function loader({ request }: LoaderArgs) {
   const macros = await getMacros();

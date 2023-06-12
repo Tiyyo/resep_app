@@ -23,6 +23,7 @@ export const validator = withZod(
 
 export async function action({ request }: ActionArgs) {
     const method = request.method.toLowerCase()
+    console.log(method);
 
     switch (method) {
         case "post": {
@@ -65,7 +66,6 @@ export async function action({ request }: ActionArgs) {
             const formConverted = convertStringToNumber(numberFields)
             let form = { ...formConverted, food: food?.toLowerCase() }
 
-            console.log(form , 'DATA FROM INPUT');
 
             const newMacro = await patchMacros(form)
             if(newMacro.id === form.id){
@@ -76,8 +76,10 @@ export async function action({ request }: ActionArgs) {
         }
         case "delete": {
             const formData =await request.formData()
-            let id : string | null = null
+            let id : string |null = null
+
             let deletedMacro = {} ;
+
             if (typeof formData.get('id') === "string") {
                 id = formData.get('id') as string
             }
@@ -87,12 +89,15 @@ export async function action({ request }: ActionArgs) {
 
             const formConverted = convertStringToNumber(values)
           
-            if(formConverted.id) {
-                 deletedMacro = await deleteMacro(formConverted.id)
+            try {
+                if(formConverted.id) {
+                    await deleteMacro(formConverted.id)   
+                    return json({status : 200})
+                }
+                throw new Error ('No id provided')
+            } catch (error) {
+                console.log(error);
             }
-
-            return deletedMacro.id === formConverted.id ? json({status : 200}) : json({error : deletedMacro})
-    
         }
         default: {
             throw new Error('Invalid method')

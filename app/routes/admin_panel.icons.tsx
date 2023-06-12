@@ -1,6 +1,6 @@
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData, useLoaderData, useNavigation } from "@remix-run/react";
+import { Form, Link, isRouteErrorResponse, useActionData, useLoaderData, useNavigation, useRouteError } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { deleteIcon } from "~/api/delete.request";
 import { getIcons } from "~/api/get.all.request";
@@ -10,7 +10,7 @@ import Error from "~/components/error";
 import FileInput from "~/components/file_input";
 import Input from "~/components/input";
 import SubmitButton from "~/components/submit_button";
-import Table from "~/components/table_html";
+import Table from "~/components/table";
 import { deleteImageFromBucket, uploadImage } from "~/utils/s3.server";
 
 export async function loader ({request} : LoaderArgs ) {
@@ -43,6 +43,8 @@ export async function action ({request} : ActionArgs) {
   const form = {
     name , tags , imageLink ,imageKey
   }
+
+  console.log(tags);
 
   try {
     const newIcon= await addIcons(form)
@@ -84,8 +86,8 @@ export default function EditIcons() {
         <Error message={actionData?.error}/>
       </Form>
       <div>
-        {icons && icons.length > 1 ? <Table data={icons} endpoint="/api/icons"/> : ""} 
-        {icons.length > 0 ? (
+        {icons && icons.length > 0 ? <Table data={icons} endpoint="/api/icons" /> : ""} 
+        {/* {icons.length > 0 ? (
           <>
             {icons.map((icon) => {
               return (
@@ -104,20 +106,33 @@ export default function EditIcons() {
                     />
                     <input type="submit" defaultValue={"Valid"} />
                   </Form>
-                  <Form method="DELETE">
-                    <input type="text" name="iconId" id="iconId" defaultValue={icon.id} hidden />
-                    <button type="submit" value={icon.id}>
-                      <DeleteIcon />
-                    </button>
-                  </Form>
                 </div>
               );
             })}
           </>
         ) : (
           <p>Database don't contain any icon</p>
-        )}
+        )} */}
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  console.log(error);
+
+  if (!isRouteErrorResponse(error)) {
+    return (<Link to="/admin_panel/icons">Refresh</Link>);
+  }
+
+  if (error.status === 404) {
+    return (
+      <>
+        <h2>Error 404</h2>
+        <button> Rafraichir </button>
+      </>
+    );
+  }
 }

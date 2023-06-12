@@ -1,4 +1,5 @@
-import { ActionArgs, json } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import type { ActionArgs } from "@remix-run/node";
 import { deleteIngredient } from "~/api/delete.request";
 
 export async function action({request}:ActionArgs) {
@@ -13,7 +14,7 @@ export async function action({request}:ActionArgs) {
             // bloc de code
         }
         case "delete" : {
-            const ingredientId = formData.get('ingredientId')
+            const ingredientId = formData.get('id')
 
             if(typeof ingredientId === "string" && ingredientId) {
                 const deletedIngr = await deleteIngredient(+ingredientId)
