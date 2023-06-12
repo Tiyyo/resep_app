@@ -67,6 +67,11 @@ export default function EditIcons() {
   const actionData = useActionData()
   const navigation = useNavigation()
 
+  const dataTable = icons.map((icon) => {
+    return {id : icon.id,image: icon.link, name : icon.name, tags : icon.tags, }
+  })
+
+
 
   useEffect(() => {
     if(navigation.state === 'idle' && addIconFormRef && addIconFormRef.current ) {
@@ -86,7 +91,7 @@ export default function EditIcons() {
         <Error message={actionData?.error}/>
       </Form>
       <div>
-        {icons && icons.length > 0 ? <Table data={icons} endpoint="/api/icons" /> : ""} 
+        {icons && icons.length > 0 ? <Table data={dataTable} image={true} endpoint="/api/icons" search="name"/> : ""} 
         {/* {icons.length > 0 ? (
           <>
             {icons.map((icon) => {

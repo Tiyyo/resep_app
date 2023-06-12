@@ -18,7 +18,7 @@ export async function deleteCategories (categoryId : number) {
         await prisma.$disconnect()
         return deleteCategory
     } catch (error : any) {
-        return error.message
+        throw new Error (error.message)
     }
 } 
 
@@ -31,8 +31,8 @@ export async function deleteMacro (macroId : number) {
         })
         await prisma.$disconnect()
         return deletedMacro
-    } catch (error) {
-        console.log(error);
+    } catch (error : any) {
+        throw new Error (error.message)
     }
 } 
 
@@ -46,7 +46,7 @@ export async function deleteIcon (iconId : number) {
         await prisma.$disconnect()
         return deleteIcon
     } catch(error : any) {
-        return error.message
+        throw new Error (error.message)
     }
 }
 
@@ -58,10 +58,7 @@ export async function deleteIngredient (ingredientId : number) {
             }
         })
         return deleteIngredient
-    } catch(error) {
-        if(error instanceof Prisma.PrismaClientKnownRequestError) {
-            return json({error})
-        }
-        return json({error : error});
+    } catch(error : any) {
+        throw new Error (error.message)
     }
 }

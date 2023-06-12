@@ -90,7 +90,6 @@ export async function uploadImage(request: Request) {
 
     const file = formData.get("image")?.toString() || "";
     const splitString = file.split(" ")
-    console.log(splitString);
     return {imageLink : splitString[0] , imageKey : splitString[1]};
 }
 
@@ -105,7 +104,7 @@ export async function deleteImageFromBucket (imageKey : string) {
   }
 
   if (params && params.Key && params.Bucket) {
-    await s3.deleteObject(params , async (error, data) => {
+    s3.deleteObject(params , async (error, data) => {
         if (error) {
           throw new Error("Image couldn't be delete from bucket");
         } else {

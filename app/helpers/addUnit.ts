@@ -1,6 +1,5 @@
 export function addUnit(arg: string) {
     let unit: string
-    console.log(arg);
     switch (arg) {
         case 'calories':
             unit = "(kcal)"

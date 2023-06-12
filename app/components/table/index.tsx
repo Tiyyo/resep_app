@@ -4,13 +4,28 @@ import EditIcon from "~/assets/icons/EditIcon";
 import { addUnit } from "~/helpers/addUnit";
 import { capitalize } from "~/helpers/capitalize";
 import type { TableBodyProps, TableProps } from "./interface";
+import { useState } from "react";
 
 export default function Table({
   data,
   endpoint,
   isMultiData,
+  search,
+  image
 }: TableProps) {
   const keys = Object.keys(data[0]);
+  const [searchParams, setSearchParams] = useState<{
+    fields: string;
+    value: string;
+  }>();
+
+  const filterData = data.filter((f) => {
+    if (searchParams?.fields) {
+      return f[searchParams.fields].includes(searchParams.value)
+    } else {
+      return f
+    }
+  });
 
 
   return (
@@ -19,31 +34,88 @@ export default function Table({
         {/* head color banner */}
       </div>
       <table className="bg-main-300 table-auto">
-        <TableHead keys={keys} />
+        <TableHead
+          keys={keys}
+          search={search ?? undefined}
+          getSearchParams={setSearchParams}
+        />
         {data.length === 1 ? (
-          <TableBody data={data[0]} keys={keys} endpoint={endpoint ? endpoint : ""} isMultiData={isMultiData ?? false}/>
+          <TableBody
+            data={data[0]}
+            keys={keys}
+            image={image ?? false}
+            endpoint={endpoint ? endpoint : ""}
+            isMultiData={isMultiData ?? false}
+          />
         ) : (
-          <TableBody data={data} keys={keys} endpoint={endpoint ? endpoint : ""} isMultiData={isMultiData ?? false}/>
+          <TableBody
+            data={filterData}
+            keys={keys}
+            image={image ?? false}
+            endpoint={endpoint ? endpoint : ""}
+            isMultiData={isMultiData ?? false}
+          />
         )}
       </table>
     </div>
   );
 }
 
-function TableHead({ keys }: { keys: Array<string> }) {
+// find right type for setState
+
+
+function activateSearch(
+  arg: string,
+  search: string | undefined,
+  setState: any
+) {
+  if (!search) {
+    return (
+      <th scope="col" key={arg} className="px-4 py-2 text-left">
+        {capitalize(arg) + addUnit(arg)}
+      </th>
+    );
+  }
+  if (arg.toLowerCase() !== search.toLowerCase()) {
+    return (
+      <th scope="col" key={arg} className="px-4 py-2 text-left">
+        {capitalize(arg) + addUnit(arg)}
+      </th>
+    );
+  } else {
+    return (
+      <th scope="col" key={arg} className="px-4 py-2 text-left">
+        <div className="flex gap-x-2">
+          {capitalize(arg) + addUnit(arg)}
+          <input
+            type="text"
+            className="rounded-md bg-primary-100 text-7"
+            onChange={(e) =>
+              setState({ fields: search, value: e.target.value })
+            }
+          />
+        </div>
+      </th>
+    );
+  }
+}
+
+function TableHead({
+  keys,
+  search,
+  getSearchParams,
+}: {
+  keys: Array<string>;
+  search: string | undefined;
+  getSearchParams: any;
+}) {
+  // const [searchParams,setSearchParams] = useState<{fields : string , value : string}>()
+
   return (
     <thead className="">
       <tr className="bg-main-300">
         {keys && keys.length > 0 ? (
-          <>
-            {keys.map((k) => {
-              return (
-                <th scope="col" key={k} className="px-4 py-2 text-left">
-                  {capitalize(k) + addUnit(k)}
-                </th>
-              );
-            })}
-          </>
+          <>{keys.map((k) => activateSearch(k, search, getSearchParams))}</>
         ) : null}
         <th className="px-4 py-2">Actions</th>
       </tr>
@@ -51,41 +123,51 @@ function TableHead({ keys }: { keys: Array<string> }) {
   );
 }
 
-function TableBody({
-  data,
-  keys,
-  endpoint,
-  isMultiData
-}: TableBodyProps) {
+// display image instead , image props should be set to true and a field sho
+function displayImageCells (key : string , d : any, image : boolean) : string | JSX.Element {
+    if (key.toLowerCase() === "image" && image) {
+      return (<div className="rounded-full overflow-hidden h-6 aspect-square">
+        <img src={d.image} alt="icon of an ingredient"/>
+      </div>)
+    } 
+    return d[key]
+}
+
+
+function TableBody({ data, keys, endpoint, image }: TableBodyProps) {
   const deleteItem = useFetcher();
 
   return (
+
     <tbody>
       {data && data.length ? (
         <>
           {data.map((d) => {
             return (
               <tr
-                key={d.id}
-                className="even:bg-main-300 odd:bg-primary-300 text-8"
+              key={d.id}
+              className="even:bg-main-300 odd:bg-primary-300 text-8"
               >
                 {keys.map((k) => {
                   return (
                     <td key={d.id + k} className="px-4 py-1">
                       {typeof d[k] === "object" ? (
                         <>{d[k].map((el: string) => el).join(" ")}</>
-                      ) : (
-                        d[k]
+                        ) : (
+                          displayImageCells(k, d, image)
                       )}
                     </td>
                   );
                 })}
                 <td className="text-right px-4 py-2">
                   <div className="flex gap-x-2">
-                    <div className="">
+                    <div className="" >
                       <EditIcon size="4" />
                     </div>
-                    <deleteItem.Form method="DELETE" action={endpoint ? endpoint : ""} >
+                    <deleteItem.Form
+                      method="DELETE"
+                      action={endpoint ? endpoint : ""}
+                      >
                       <button type="submit" name="id" value={d.id}>
                         <DeleteIcon size="4" />
                       </button>
@@ -97,7 +179,11 @@ function TableBody({
           })}
         </>
       ) : (
-        <tr>Database doesn't contain any items</tr>
+        <tr className="">
+          <td colSpan={keys.length + 1} className="py-4 text-center">
+            Database doesn't contain any items
+          </td>
+        </tr>
       )}
     </tbody>
   );

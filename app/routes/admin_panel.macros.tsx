@@ -3,7 +3,6 @@ import { json } from "@remix-run/node";
 import { Link, isRouteErrorResponse, useFetcher, useLoaderData, useRouteError } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { getMacros } from "~/api/get.all.request";
-import DeleteIcon from "~/assets/icons/DeleteIcon";
 import Input from "~/components/input";
 import SubmitButton from "~/components/submit_button";
 import Table from "~/components/table";
@@ -17,9 +16,6 @@ export default function MacrosPanel() {
   const { macros } = useLoaderData();
   const addMacros = useFetcher();
   const [errorText, setErrorText] = useState<string>("")
-
-  console.log(addMacros);
-
 
   const addMacroFormRef = useRef<HTMLFormElement>(null);
 
@@ -49,7 +45,7 @@ export default function MacrosPanel() {
       </addMacros.Form>
       <div>
         {macros && macros.length > 0 ? (
-          <Table data={macros} endpoint="/api/macros"/>
+          <Table data={macros} endpoint="/api/macros" search="food"/>
         ) : (
           "No macro nutriment in database"
         )}
