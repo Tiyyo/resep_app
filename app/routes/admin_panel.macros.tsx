@@ -13,6 +13,7 @@ import { getMacros } from "~/api/get.all.request";
 import Input from "~/components/input";
 import SubmitButton from "~/components/submit_button";
 import Table from "~/components/table";
+import UpdateMacroForm from "~/components/update_forms";
 
 export async function loader({ request }: LoaderArgs) {
   const macros = await getMacros();
@@ -39,6 +40,7 @@ export default function MacrosPanel() {
 
   return (
     <>
+    <Outlet context={{ UpdateForm : UpdateMacroForm }}/>
       <div className="pt-5">
         <addMacros.Form
           method="POST"
@@ -87,7 +89,6 @@ export default function MacrosPanel() {
           )}
         </div>
       </div>
-      <Outlet />
     </>
   );
 }

@@ -7,7 +7,7 @@ type ErrorMessage = {
   error : string
 }
 
-interface FormIconProps {
+export interface FormIconProps {
   name: string
   imageLink: string
   imageKey : string

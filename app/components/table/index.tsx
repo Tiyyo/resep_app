@@ -123,7 +123,7 @@ function TableHead({
   );
 }
 
-// display image instead , image props should be set to true and a field sho
+// display image instead , image props should be set to true and a field should be name "image"
 function displayImageCells (key : string , d : any, image : boolean) : string | JSX.Element {
     if (key.toLowerCase() === "image" && image) {
       return (<div className="rounded-full overflow-hidden h-6 aspect-square">
@@ -137,10 +137,8 @@ function displayImageCells (key : string , d : any, image : boolean) : string | 
 function TableBody({ data, keys, endpoint, image }: TableBodyProps) {
   const deleteItem = useFetcher();
   const location = useLocation()
-  console.log(location);
 
   return (
-
     <tbody>
       {data && data.length ? (
         <>
@@ -164,8 +162,8 @@ function TableBody({ data, keys, endpoint, image }: TableBodyProps) {
                 <td className="text-right px-4 py-2">
                   <div className="flex gap-x-2">
                     <div className="" >
-                      <Link to={location.pathname + "/update"}>
-                        <EditIcon size="4" />
+                      <Link to={location.pathname + "/update/" + d.id}>
+                        <EditIcon size="5" />
                       </Link>
                     </div>
                     <deleteItem.Form
@@ -173,7 +171,7 @@ function TableBody({ data, keys, endpoint, image }: TableBodyProps) {
                       action={endpoint ? endpoint : ""}
                       >
                       <button type="submit" name="id" value={d.id}>
-                        <DeleteIcon size="4" />
+                        <DeleteIcon size="5" />
                       </button>
                     </deleteItem.Form>
                   </div>

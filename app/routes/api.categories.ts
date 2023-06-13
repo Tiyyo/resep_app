@@ -1,42 +1,42 @@
-import { Prisma } from "@prisma/client";
-import type { ActionArgs} from "@remix-run/node";
-import {  json } from "@remix-run/node";
+import type { ActionArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { deleteCategories } from "~/api/delete.request";
 import { patchCategories } from "~/api/patch.request";
 import { addCategory } from "~/api/post.request";
 
 
-export async function action({request}:ActionArgs) {
+export async function action({ request }: ActionArgs) {
     const formData = await request.formData();
     const method = request.method.toLowerCase()
 
-    switch (method){
+    switch (method) {
         case "post": {
             const name = formData.get("category");
             if (typeof name !== "string") {
-              return json({ error: "name argument should be a string" }, { status: 400 });
+                return json({ error: "name argument should be a string" }, { status: 400 });
             }
 
             const newCategory = await addCategory(name);
 
             // fixed typescript error
             if (newCategory && newCategory.id) {
-                return json({status : 200})
-              } else {
+                return json({ status: 200 })
+            } else {
                 return json(
-                  {
-                    error: "Failed to insert into database",
-                    fields: { name: "This category already exist in database" },
-                  },
-                  { status: 400 }
+                    {
+                        error: "Failed to insert into database",
+                        fields: { name: "This category already exist in database" },
+                    },
+                    { status: 400 }
                 );
-              }
+            }
 
         }
-        case "patch" : {
-            const name = formData.get('category_name')
-            const categoryId = formData.get('category_id')
-            let id : number | null = null;
+        case "patch": {
+            const name = formData.get('category')
+            const categoryId = formData.get('id')
+
+            let id: number;
 
             if (typeof name !== "string") {
                 return json({ error: "name argument should be a string" }, { status: 400 });
@@ -45,38 +45,40 @@ export async function action({request}:ActionArgs) {
             if (typeof categoryId === 'string') {
                 id = parseInt(categoryId, 10)
             }
-                     
+
             if (typeof id !== "number") {
-                  return json({ error: "id argument should be a number" }, { status: 400 });
+                return json({ error: "id argument should be a number" }, { status: 400 });
             }
-            const updateCategory = await patchCategories({name , id})
-            
-            if(updateCategory.id === id) {
-                return json({status : 200})
+
+            try {
+                const updateCategory = await patchCategories({ name, id })
+                return redirect("/admin_panel/categories")
+
+            } catch (error) {
+                throw new Error("Couldn't add items to database");
             }
-            return json({error : updateCategory})
 
         }
-        case "delete" : {
+        case "delete": {
             const categoryId = formData.get('id')
-            let id : number | null = null;
+            let id: number | null = null;
 
             if (typeof categoryId === 'string') {
                 id = parseInt(categoryId, 10)
             }
-          
+
             if (typeof id !== "number") {
                 return json({ error: "id argument should be a number" }, { status: 400 });
             }
-            const deletedCategory = await deleteCategories(id)
+            try {
+                const deletedCategory = await deleteCategories(id)
+                return json({ status: 200 })
 
-            if (deletedCategory.id === id) {
-                return json({status : 200})
+            } catch (error) {
+                throw new Error("Items can't be deleted");
             }
-            return json({error : 'Something went wrong'})
-          
         }
-        default : {
+        default: {
             throw new Error('Invalid method')
         }
 

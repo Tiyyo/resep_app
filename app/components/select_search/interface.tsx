@@ -1,3 +1,8 @@
+interface Option {
+  label : string 
+  value : number | string
+}
+
 export interface SelectSearchProps {
     data: Array<object>;
     name : string
@@ -7,5 +12,6 @@ export interface SelectSearchProps {
     getState? : (args : any) => any
     optionMax?: number;
     placeholder? : string
+    defaultValue? : Option
   }
   

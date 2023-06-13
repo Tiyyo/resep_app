@@ -1,15 +1,13 @@
-import type { Macros } from "@prisma/client";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Form,
   Outlet,
   useActionData,
-  useFetcher,
   useLoaderData,
   useNavigation,
 } from "@remix-run/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { promiseHash } from "remix-utils";
 import {
   getCategories,
@@ -17,7 +15,8 @@ import {
   getIngredients,
   getMacros,
 } from "~/api/get.all.request";
-import { IngredientCreateForm, addIngredients } from "~/api/post.request";
+import type { IngredientCreateForm } from "~/api/post.request";
+import { addIngredients } from "~/api/post.request";
 import Error from "~/components/error";
 import Input from "~/components/input";
 import SelectSearch from "~/components/select_search";
@@ -27,6 +26,7 @@ import * as Z from "zod";
 import { validationError } from "remix-validated-form";
 import { withZod } from "@remix-validated-form/with-zod";
 import Table from "~/components/table";
+import { UpdateIngredientsForm } from "~/components/update_forms";
 
 export async function loader({ request }: LoaderArgs) {
   return json(
@@ -120,6 +120,7 @@ export default function () {
 
   return (
     <div>
+      <Outlet context={{ UpdateForm : UpdateIngredientsForm}}/>
       <Form method="POST">
         <div className="flex flex-wrap justify-center gap-3 mt-3">
           <Input name="name" placeholder="Ingredient name" label="Name" />
@@ -162,7 +163,6 @@ export default function () {
       ) : (
         ""
       )}
-      <Outlet context={{ingredient : 'ingredient'}}/>
     </div>
   );
 }

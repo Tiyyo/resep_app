@@ -1,5 +1,5 @@
-import { ActionArgs, redirect } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import type{ ActionArgs  } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { withZod } from "@remix-validated-form/with-zod";
 import { deleteMacro } from "~/api/delete.request";
 import { patchMacros } from "~/api/patch.request";
@@ -23,7 +23,6 @@ export const validator = withZod(
 
 export async function action({ request }: ActionArgs) {
     const method = request.method.toLowerCase()
-    console.log(method);
 
     switch (method) {
         case "post": {
@@ -45,8 +44,9 @@ export async function action({ request }: ActionArgs) {
             try {
                 const newMacro = await addMacros(form)
                 return json({newMacro} , {status : 200})
-                } catch (error) {
-                console.log(error);
+                } 
+            catch (error) {
+                throw new Error("Couldn't add items to database");
             }
         }
         case "patch": {
@@ -65,13 +65,13 @@ export async function action({ request }: ActionArgs) {
 
             const formConverted = convertStringToNumber(numberFields)
             let form = { ...formConverted, food: food?.toLowerCase() }
-
-
-            const newMacro = await patchMacros(form)
-            if(newMacro.id === form.id){
-                return json({ status: 200 })
-            } else {
-                return json({error : newMacro} , {status : 400})
+ 
+            try {
+                const newMacros = await patchMacros(form)
+                return redirect("/admin_panel/macros")
+                
+            } catch (error) {
+                throw new Error("Something went wrong !");               
             }
         }
         case "delete": {
@@ -91,7 +91,7 @@ export async function action({ request }: ActionArgs) {
           
             try {
                 if(formConverted.id) {
-                    await deleteMacro(formConverted.id)   
+                    await deleteMacro(formConverted.id)                     
                     return json({status : 200})
                 }
                 throw new Error ('No id provided')

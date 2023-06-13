@@ -12,6 +12,7 @@ export default function SelectSearch({
   width,
   pageSize,
   getState,
+  defaultValue,
 }: SelectSearchProps) {
 
   const getOptions = () => {
@@ -77,6 +78,7 @@ export default function SelectSearch({
       isRtl={false}
       instanceId={name}
       id={name}
+      defaultValue={defaultValue}
       // onChange={(e) => getState(e)}
       unstyled
       styles={{
