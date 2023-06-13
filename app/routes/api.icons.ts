@@ -1,7 +1,7 @@
 import { deleteIcon } from "~/api/delete.request";
 import { convertStringToNumber } from "~/helpers/convert.to.number";
-import content_managment from "./content_managment";
 import { deleteImageFromBucket } from "~/utils/s3.server";
+import type { ActionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 
 export async function action ({request} : ActionArgs) {
@@ -26,7 +26,7 @@ export async function action ({request} : ActionArgs) {
             try {
                 if(idNumber.id){
                     const deletedIcon = await deleteIcon(idNumber.id)
-                    await deleteImageFromBucket(deletedIcon.imageKey)
+                    await deleteImageFromBucket(deletedIcon.image_key)
                     return json({status : 200})
                 }
                 throw new Error("No icon id provided");            

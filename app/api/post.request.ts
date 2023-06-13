@@ -128,14 +128,15 @@ export async function addIcons(form: FormIconProps) {
 
 export interface IngredientCreateForm {
   name : string
-  unitWeight? : number | null
-  categoryId : number | null
-  macrosId? : number | null
-  iconId? : number | null
+  unitWeight? : number | undefined
+  categoryId : number 
+  macrosId? : number | undefined
+  iconId? : number | undefined
 }
 
 export async function addIngredients(form : IngredientCreateForm) {
 
+  console.log(typeof form.unitWeight, 'BEFORE ADD');
   try {
     const newIngredient = await prisma.ingredients.create({ data: {
         name : form.name, 
@@ -152,6 +153,7 @@ export async function addIngredients(form : IngredientCreateForm) {
       }, 
     })
     await prisma.$disconnect()
+    console.log(newIngredient);
     return newIngredient
   } catch (error: any) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
