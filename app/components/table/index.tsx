@@ -1,8 +1,8 @@
 import { Link, useFetcher, useLocation } from "@remix-run/react";
 import DeleteIcon from "~/assets/icons/DeleteIcon";
 import EditIcon from "~/assets/icons/EditIcon";
-import { addUnit } from "~/helpers/addUnit";
-import { capitalize } from "~/helpers/capitalize";
+import { addUnit } from "~/utils/addUnit";
+import { capitalize } from "~/utils/capitalize";
 import type { TableBodyProps, TableProps } from "./interface";
 import { useState } from "react";
 

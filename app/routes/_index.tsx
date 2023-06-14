@@ -3,8 +3,11 @@ import {
   isRouteErrorResponse,
   useRouteError,
 } from "@remix-run/react";
-import LayoutMain from "~/components/layout/LayoutMain";
-import LayoutPage from "~/components/layout/LayoutPage";
+import { EXAMPLE_MENU } from "~/constants/menus";
+import AppLayout from "~/layout/LayoutApp";
+import LayoutMain from "~/layout/LayoutMain";
+import LayoutPage from "~/layout/LayoutPage";
+import RoutesLayout from "~/layout/LayoutRoutes";
 
 
 
@@ -15,9 +18,9 @@ export const meta: V2_MetaFunction = () => {
 
 export default function Index() {
   return (
-    <LayoutPage>
-      <LayoutMain/>
-    </LayoutPage>
+    <AppLayout>
+      <RoutesLayout menu={EXAMPLE_MENU}/>
+    </AppLayout>
   );
 }
 

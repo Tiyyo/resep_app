@@ -21,8 +21,8 @@ import Input from "~/components/input";
 import SubmitButton from "~/components/submit_button";
 import Table from "~/components/table";
 import { UpdateIconsForm } from "~/components/update_forms";
-import { wordsToArray } from "~/helpers/wrodsToArray";
-import { deleteImageFromBucket, uploadImage } from "~/utils/s3.server";
+import { wordsToArray } from "~/utils/wrodsToArray";
+import { deleteImageFromBucket, uploadImage } from "~/service/s3.server";
 
 export async function loader({ request }: LoaderArgs) {
   const icons = await getIcons();

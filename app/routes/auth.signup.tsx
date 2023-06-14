@@ -12,7 +12,7 @@ import { withZod } from "@remix-validated-form/with-zod";
 import { validationError } from "remix-validated-form";
 import * as Z from "zod";
 import type { ActionArgs } from "@remix-run/node";
-import { register } from "~/utils/auth.server";
+import { register } from "~/service/auth.server";
 
 export const validator = withZod(
   Z.object({

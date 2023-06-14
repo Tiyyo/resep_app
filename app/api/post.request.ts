@@ -1,4 +1,4 @@
-import { prisma } from "~/utils/db.server"
+import { prisma } from "~/service/db.server"
 import {  Prisma } from "@prisma/client"
 import type { Ingredient_categories, Ingredients, Macros,  } from "@prisma/client"
 

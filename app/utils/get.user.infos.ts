@@ -1,5 +1,5 @@
-import { getUserId } from "./auth.server";
-import { prisma } from "./db.server";
+import { getUserId } from "../service/auth.server";
+import { prisma } from "../service/db.server";
 
 export async function getProfile ( request : Request) {
     const userId = await getUserId(request)

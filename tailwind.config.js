@@ -80,11 +80,13 @@ module.exports = {
         80: "1 2 80%",
       },
       gridTemplateColumns : {
+        app : '5% 15% 80%',
         main :  "300px 1fr",
         250 :  'repeat(auto-fit, minmax(280px , 1fr))'
       },
       gridTemplateRows : {
-        main : "75px 1fr 3fr"
+        main : "75px 1fr 3fr",
+        app : "6.5% 1fr", 
       }
     },
   },

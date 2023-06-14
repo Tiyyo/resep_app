@@ -2,7 +2,7 @@ import { json, createCookieSessionStorage, redirect } from "@remix-run/node";
 import { prisma } from "./db.server";
 import type { RegisterForm, LoginForm } from "./types.server";
 import bcrypt from "bcryptjs";
-import createUser from "./users.server";
+import createUser from "../utils/users.server";
 
 const sessionSecret = process.env.SESSION_SECRET
 

@@ -16,13 +16,13 @@ import LoginIcon from "~/assets/icons/LoginIcon";
 import Button from "~/components/button";
 import Checkbox from "~/components/checkbox";
 import { FormField } from "~/components/form_field";
-import { getUser } from "~/utils/auth.server";
+import { getUser } from "~/service/auth.server";
 import { withZod } from "@remix-validated-form/with-zod";
 import { validationError } from "remix-validated-form";
 import * as Z from "zod";
 import type { ActionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { login } from "~/utils/auth.server";
+import { login } from "~/service/auth.server";
 import ErrorIcon from "~/assets/icons/ErrorIcon";
 
 export async function loader({ request }: LoaderArgs) {

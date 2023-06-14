@@ -21,7 +21,7 @@ import Error from "~/components/error";
 import Input from "~/components/input";
 import SelectSearch from "~/components/select_search";
 import SubmitButton from "~/components/submit_button";
-import { convertStringToNumber } from "~/helpers/convert.to.number";
+import { convertStringToNumber } from "~/utils/convert.to.number";
 import * as Z from "zod";
 import { validationError } from "remix-validated-form";
 import { withZod } from "@remix-validated-form/with-zod";

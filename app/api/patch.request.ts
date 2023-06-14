@@ -1,5 +1,5 @@
 import type { FormPropsEditIcon } from "~/routes/api.icons"
-import { prisma } from "~/utils/db.server"
+import { prisma } from "~/service/db.server"
 
 export async function patchCategories(object: { name: string, id: number }) {
     try {

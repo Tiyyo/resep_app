@@ -1,5 +1,5 @@
-import type { RegisterForm } from "./types.server";
-import {prisma} from "./db.server"
+import type { RegisterForm } from "../service/types.server";
+import {prisma} from "../service/db.server"
 import bcrypt from "bcryptjs"
 
 export default async function createUser( user : RegisterForm) {

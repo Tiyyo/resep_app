@@ -1,10 +1,10 @@
 import { deleteIcon } from "~/api/delete.request";
-import { convertStringToNumber } from "~/helpers/convert.to.number";
-import { deleteImageFromBucket, uploadImage } from "~/utils/s3.server";
+import { convertStringToNumber } from "~/utils/convert.to.number";
+import { deleteImageFromBucket, uploadImage } from "~/service/s3.server";
 import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { wordsToArray } from "~/helpers/wrodsToArray";
-import { FormIconProps } from "~/api/post.request";
+import { wordsToArray } from "~/utils/wrodsToArray";
+import type { FormIconProps } from "~/api/post.request";
 import { patchIcons } from "~/api/patch.request";
 
 export interface FormPropsEditIcon extends FormIconProps {

@@ -4,7 +4,7 @@ import { withZod } from "@remix-validated-form/with-zod";
 import { deleteMacro } from "~/api/delete.request";
 import { patchMacros } from "~/api/patch.request";
 import { addMacros } from "~/api/post.request";
-import { convertStringToNumber } from "~/helpers/convert.to.number";
+import { convertStringToNumber } from "~/utils/convert.to.number";
 import * as Z from "zod";
 import { validationError } from "remix-validated-form";
 

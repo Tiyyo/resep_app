@@ -1,5 +1,5 @@
 import { Outlet} from "@remix-run/react";
-import LayoutPage from "~/components/layout/LayoutPage";
+import LayoutPage from "~/layout/LayoutPage";
 
 export default function Login() {
   return (

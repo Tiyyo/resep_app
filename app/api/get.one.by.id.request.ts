@@ -1,4 +1,4 @@
-import { prisma } from "~/utils/db.server"
+import { prisma } from "~/service/db.server"
 
 export async function getMacrosById (macroId : number) {
     try {

@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node"
-import { prisma } from "~/utils/db.server"
+import { prisma } from "~/service/db.server"
 import { Prisma } from "@prisma/client"
 
 /**

@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useFetcher } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import SideMenu from "../side_menu";
+import SideMenu from "../components/side_menu";
 import type{ LayoutMainProp } from "./interfaces";
 
 
