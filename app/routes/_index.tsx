@@ -5,8 +5,6 @@ import {
 } from "@remix-run/react";
 import { EXAMPLE_MENU } from "~/constants/menus";
 import AppLayout from "~/layout/LayoutApp";
-import LayoutMain from "~/layout/LayoutMain";
-import LayoutPage from "~/layout/LayoutPage";
 import RoutesLayout from "~/layout/LayoutRoutes";
 
 
@@ -20,6 +18,8 @@ export default function Index() {
   return (
     <AppLayout>
       <RoutesLayout menu={EXAMPLE_MENU}/>
+      {/* Need these class to be read by tailwind at least once for string concatanation */}
+      <div className=" h-4 pl-6 hidden"></div>
     </AppLayout>
   );
 }
