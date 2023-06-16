@@ -1,4 +1,4 @@
-import type{ ActionArgs  } from "@remix-run/node";
+import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { withZod } from "@remix-validated-form/with-zod";
 import { deleteMacro } from "~/api/delete.request";
@@ -10,13 +10,13 @@ import { validationError } from "remix-validated-form";
 
 export const validator = withZod(
     Z.object({
-        food : Z.string().toLowerCase(),
-        calories : Z.string(),
+        food: Z.string().toLowerCase(),
+        calories: Z.string(),
         proteins: Z.string(),
-        carbs : Z.string(),
-        fat : Z.string(),
-        water : Z.string(),
-        id : Z.string().optional()
+        carbs: Z.string(),
+        fat: Z.string(),
+        water: Z.string(),
+        id: Z.string().optional()
     })
 )
 
@@ -28,7 +28,7 @@ export async function action({ request }: ActionArgs) {
         case "post": {
             const formData = await validator.validate(await request.formData())
             if (formData.error) return validationError(formData.error)
-            const {food, calories, proteins, carbs, fat, water} = formData.data
+            const { food, calories, proteins, carbs, fat, water } = formData.data
 
             const numberFields = {
                 calories,
@@ -43,8 +43,8 @@ export async function action({ request }: ActionArgs) {
 
             try {
                 const newMacro = await addMacros(form)
-                return json({newMacro} , {status : 200})
-                } 
+                return json({ newMacro }, { status: 200 })
+            }
             catch (error) {
                 throw new Error("Couldn't add items to database");
             }
@@ -52,7 +52,7 @@ export async function action({ request }: ActionArgs) {
         case "patch": {
             const formData = await validator.validate(await request.formData())
             if (formData.error) return validationError(formData.error)
-            const {food, calories, proteins, carbs, fat, water , id} = formData.data
+            const { food, calories, proteins, carbs, fat, water, id } = formData.data
 
             const numberFields = {
                 id,
@@ -65,36 +65,34 @@ export async function action({ request }: ActionArgs) {
 
             const formConverted = convertStringToNumber(numberFields)
             let form = { ...formConverted, food: food?.toLowerCase() }
- 
+
             try {
-                const newMacros = await patchMacros(form)
+                await patchMacros(form)
                 return redirect("/admin_panel/macros")
-                
+
             } catch (error) {
-                throw new Error("Something went wrong !");               
+                throw new Error("Something went wrong !");
             }
         }
         case "delete": {
-            const formData =await request.formData()
-            let id : string |null = null
-
-            let deletedMacro = {} ;
+            const formData = await request.formData()
+            let id: string | null = null
 
             if (typeof formData.get('id') === "string") {
                 id = formData.get('id') as string
             }
             const values = {
-                id : id
+                id: id
             }
 
             const formConverted = convertStringToNumber(values)
-          
+
             try {
-                if(formConverted.id) {
-                    await deleteMacro(formConverted.id)                     
-                    return json({status : 200})
+                if (formConverted.id) {
+                    await deleteMacro(formConverted.id)
+                    return json({ status: 200 })
                 }
-                throw new Error ('No id provided')
+                throw new Error('No id provided')
             } catch (error) {
                 console.log(error);
             }

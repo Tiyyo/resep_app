@@ -1,13 +1,11 @@
-import { EXAMPLE_MENU } from "~/constants/menus";
+import type { Item } from "aws-sdk/clients/mediastoredata";
 import TreeMenu from "../tree_menu";
-import type { SideMenuProps } from "./interface";
 
-
-export default function SideMenu({menu} : SideMenuProps) {
+export default function SideMenu({menu} : {menu : Item[]}) {
 
   return (
     <div className="">
-      {menu ?  <TreeMenu  menu={menu}/> : ""}  
+      {menu ?  <TreeMenu  level={1} menu={menu}/> : ""}  
     </div>
     );
 }

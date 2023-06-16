@@ -19,7 +19,7 @@ export default function Index() {
     <AppLayout>
       <RoutesLayout menu={EXAMPLE_MENU}/>
       {/* Need these class to be read by tailwind at least once for string concatanation */}
-      <div className=" h-4 pl-6 hidden"></div>
+      <div className=" h-4 w-14 pl-6 hidden"></div>
     </AppLayout>
   );
 }

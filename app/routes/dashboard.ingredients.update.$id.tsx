@@ -5,7 +5,6 @@ import { promiseHash } from "remix-utils";
 import {
   getCategories,
   getIcons,
-  getIngredients,
   getMacros,
 } from "~/api/get.all.request";
 import { getIngredientsById } from "~/api/get.one.by.id.request";

@@ -29,11 +29,8 @@ export default function Table({
 
 
   return (
-    <div className="w-fit mx-auto bg-main-300 my-8">
-      <div className="h-5 w-full rounded-t-2xl bg-secondary-300">
-        {/* head color banner */}
-      </div>
-      <table className="bg-main-300 table-auto">
+    <div className="w-full mx-auto ">
+      <table className="bg-main-300 table-auto mx-auto">
         <TableHead
           keys={keys}
           search={search ?? undefined}
@@ -113,7 +110,7 @@ function TableHead({
 
   return (
     <thead className="">
-      <tr className="bg-main-300">
+      <tr className="bg-secondary-100">
         {keys && keys.length > 0 ? (
           <>{keys.map((k) => activateSearch(k, search, getSearchParams))}</>
         ) : null}
@@ -127,7 +124,7 @@ function TableHead({
 function displayImageCells (key : string , d : any, image : boolean) : string | JSX.Element {
     if (key.toLowerCase() === "image" && image) {
       return (<div className="rounded-full overflow-hidden h-6 aspect-square">
-        <img src={d.image} alt="icon of an ingredient"/>
+        <img src={d.image} alt="icon of an ingredient object-center"/>
       </div>)
     } 
     return d[key]
@@ -146,7 +143,7 @@ function TableBody({ data, keys, endpoint, image }: TableBodyProps) {
             return (
               <tr
               key={d.id}
-              className="even:bg-main-300 odd:bg-primary-300 text-8"
+              className="even:bg-white-100 odd:bg-primary-300 text-8"
               >
                 {keys.map((k) => {
                   return (

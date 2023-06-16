@@ -7,16 +7,8 @@ export type Item = {
     children? : Item[]
 }
 
-export type MenuItem = {
-    name : string
-    link : string
-    children? : Array<Item>
-}
-
-export type PlainMenu = Array<MenuItem>
-
 export interface TreeMenuProps {
     level : number
-    menu : PlainMenu
+    menu : Item[]
     props? : any
 }

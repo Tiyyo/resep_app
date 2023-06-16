@@ -12,7 +12,14 @@ export interface FormIconProps {
   imageLink: string
   imageKey : string
   tags?: string[]
+}
 
+export interface IngredientCreateForm {
+  name : string
+  unitWeight? : number | undefined | null
+  categoryId : number 
+  macrosId? : number | undefined | null
+  iconId? : number | undefined | null
 }
 
 
@@ -126,13 +133,6 @@ export async function addIcons(form: FormIconProps) {
 //   icon : number | null | undefined
 // }
 
-export interface IngredientCreateForm {
-  name : string
-  unitWeight? : number | undefined
-  categoryId : number 
-  macrosId? : number | undefined
-  iconId? : number | undefined
-}
 
 export async function addIngredients(form : IngredientCreateForm) {
 

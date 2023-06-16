@@ -16,12 +16,10 @@ export async function action({ request }: ActionArgs) {
                 return json({ error: "name argument should be a string" }, { status: 400 });
             }
 
-            const newCategory = await addCategory(name);
-
-            // fixed typescript error
-            if (newCategory && newCategory.id) {
+            try {
+                await addCategory(name);
                 return json({ status: 200 })
-            } else {
+            } catch (error) {
                 return json(
                     {
                         error: "Failed to insert into database",
@@ -36,7 +34,7 @@ export async function action({ request }: ActionArgs) {
             const name = formData.get('category')
             const categoryId = formData.get('id')
 
-            let id: number;
+            let id: number | undefined = undefined;
 
             if (typeof name !== "string") {
                 return json({ error: "name argument should be a string" }, { status: 400 });
@@ -51,7 +49,7 @@ export async function action({ request }: ActionArgs) {
             }
 
             try {
-                const updateCategory = await patchCategories({ name, id })
+                await patchCategories({ name, id })
                 return redirect("/admin_panel/categories")
 
             } catch (error) {
@@ -71,7 +69,7 @@ export async function action({ request }: ActionArgs) {
                 return json({ error: "id argument should be a number" }, { status: 400 });
             }
             try {
-                const deletedCategory = await deleteCategories(id)
+                await deleteCategories(id)
                 return json({ status: 200 })
 
             } catch (error) {

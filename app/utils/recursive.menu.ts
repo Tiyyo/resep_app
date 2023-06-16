@@ -1,4 +1,7 @@
-export const mapRecursive = (oldArray, callback, newArray = []) => {
+import type { Item } from "~/components/tree_menu/interface"
+
+
+export const mapRecursive = (oldArray : Item[], callback : ( item : Item) => Item, newArray : Item[] = []) : Item[] => {
     if(oldArray.length <= 0 ) {
       return newArray
     } else {

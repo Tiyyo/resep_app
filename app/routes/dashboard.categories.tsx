@@ -1,14 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
-import { useEffect, useRef, useState } from "react";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import { getCategories } from "~/api/get.all.request";
-import DeleteIcon from "~/assets/icons/DeleteIcon";
-import EditIcon from "~/assets/icons/EditIcon";
-import Categories from "~/components/categories";
-import Error from "~/components/error";
-import Input from "~/components/input";
-import SubmitButton from "~/components/submit_button";
 import Table from "~/components/table";
 import { UpdateCategoriesForm } from "~/components/update_forms";
 
@@ -18,35 +11,11 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export default function CategoryPanel() {
-  const { categories } = useLoaderData<typeof loader>();
-  const addCategory = useFetcher();
-  const [errorText, setErrorText] = useState<string>("");
-
-  const addFormState = addCategory.state;
-  const addFormRef = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    if (addCategory.state === "idle" && addFormRef && addFormRef.current) {
-      addFormRef.current.reset();
-      setErrorText(addCategory?.data?.fields?.name);
-    }
-  }, [addFormState, addCategory.state, addCategory?.data?.fields?.name]);
-
+  const { categories } = useLoaderData();
   return (
     <>
-    <Outlet context={{ UpdateForm : UpdateCategoriesForm}}/>
+      <Outlet context={{ UpdateForm: UpdateCategoriesForm }} />
       <div className="overflow-y-scroll flex flex-col gap-y-4 pt-5 ">
-        <addCategory.Form
-          method="post"
-          action="/api/categories"
-          ref={addFormRef}
-        >
-          <div className="flex justify-center gap-x-3">
-            <Input name="category" placeholder="Category name" />
-            <SubmitButton text="Add Category" />
-          </div>
-        </addCategory.Form>
-        <Error message={errorText} />
         <Table data={categories} endpoint="/api/categories" />
       </div>
     </>
