@@ -18,7 +18,7 @@ export default function () {
     servings: 4,
     original_serving: 4,
     picture: "/images/chicken_curry_coconut.jpg",
-    tags: ["Chicken, Coconut milk, Asia, Curry"],
+    tags: ["Chicken, Coconut, milk, Asia, Curry"],
     macrosPerServ: {
       calories: null,
       proteins: null,

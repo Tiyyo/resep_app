@@ -72,7 +72,7 @@ model Recipes  {
   measures          IngredientsOnRecipes[]
   favoriteId        Int
   favorite          Favorites       @relation( fields : [favoriteId] , references : [id])
-  youtube_link      String          
+  youtube_link      String?          
 
 }
 

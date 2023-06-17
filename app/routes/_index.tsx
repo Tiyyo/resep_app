@@ -1,13 +1,9 @@
-import type { V2_MetaFunction } from "@remix-run/node";
-import {
-  isRouteErrorResponse,
-  useRouteError,
-} from "@remix-run/react";
-import { EXAMPLE_MENU } from "~/constants/menus";
-import AppLayout from "~/layout/LayoutApp";
-import RoutesLayout from "~/layout/LayoutRoutes";
+import { redirect, type LoaderArgs, type V2_MetaFunction } from "@remix-run/node";
+import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
 
-
+export async function loader ({request} : LoaderArgs) {
+  return redirect("/home/recipes")
+}
 
 
 export const meta: V2_MetaFunction = () => {
@@ -16,11 +12,10 @@ export const meta: V2_MetaFunction = () => {
 
 export default function Index() {
   return (
-    <AppLayout>
-      <RoutesLayout menu={EXAMPLE_MENU}/>
+    <>
       {/* Need these class to be read by tailwind at least once for string concatanation */}
       <div className=" h-4 w-14 pl-6 hidden"></div>
-    </AppLayout>
+    </>
   );
 }
 
