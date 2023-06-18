@@ -1,7 +1,7 @@
-import Cook from "~/assets/icons/Cook";
+import Cook from "~/assets/icons/CookIcon";
 import LikeIcon from "~/assets/icons/Like";
-import Prep from "~/assets/icons/Prep";
-import Servings from "~/assets/icons/Servings";
+import Prep from "~/assets/icons/PrepIcon";
+import Servings from "~/assets/icons/ServingsIcon";
 
 export default function RecipeInfos({
   prepTime,

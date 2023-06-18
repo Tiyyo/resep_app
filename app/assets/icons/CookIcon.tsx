@@ -1,11 +1,4 @@
-import { Icons } from "./interface";
-export default function ({
-  size,
-  outlineColor,
-  fillColor,
-  height,
-  width,
-}: Icons) {
+export default function CookIcon({ size }: { size?: string }) {
   return (
     <svg
       id="Layer_1"
@@ -14,6 +7,8 @@ export default function ({
       viewBox="0 0 122.88 86.48"
       height="18"
       fill="#7C6666"
+      stroke="currentColor"
+      className={`w-${size ?? "6"} h-${size ?? "6"}`}
     >
       <title>hot-springs</title>
       <path

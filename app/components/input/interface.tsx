@@ -8,6 +8,7 @@ export interface InputProps {
     style?: string;
     placeholder? : string
     defaultValue?: string;
+    pattern? : string
 }
 
 export type TextAlign =

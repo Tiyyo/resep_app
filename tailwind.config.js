@@ -54,6 +54,9 @@ module.exports = {
       maxHeight: {
         header: "27vh",
       },
+      maxWidth : {
+        xxs : '225px'
+      },
       borderRadius: {
         custom: "0% 100% 75% 25% / 100% 100% 0% 0% ",
         50: "5em",

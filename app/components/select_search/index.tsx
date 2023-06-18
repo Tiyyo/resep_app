@@ -30,7 +30,7 @@ export default function SelectSearch({
   const placeholderStyles = "text-gray-500 text-7 pl-2 py-0.5";
   const controlStyles =
     "rounded-md bg-main-300 hover:cursor-pointer min-h-6 h-8";
-  const selectInputStyles = "pl-2 py-0.5 h-6";
+  const selectInputStyles = "pl-2 py-0.5 h-6 min-w-max max-w-xxs";
   const valueContainerStyles = `pl-2 gap-1 w-${width ?? "32"}`;
   const menuStyles =
     "p-1 mt-2 border border-secondary-400 bg-main-300 rounded-md";

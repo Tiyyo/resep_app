@@ -72,8 +72,16 @@ model Recipes  {
   measures          IngredientsOnRecipes[]
   favoriteId        Int
   favorite          Favorites       @relation( fields : [favoriteId] , references : [id])
-  youtube_link      String?          
+  youtube_link      String? 
+  level             String  
+  difficulty        Difficulties   @relation(fields : [level], references : [name])        
 
+}
+
+model Difficulties {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  recipes   Recipes[]
 }
 
 model Ingredients  {
@@ -145,6 +153,7 @@ model TagsOnIcons {
   tag_name  String
   @@id([iconId, tag_name])
 }
+
 
 model Reviews  {
   id                Int               @id @default(autoincrement())

@@ -1,12 +1,4 @@
-import { Icons } from "./interface";
-
-export default function ({
-  size,
-  outlineColor,
-  fillColor,
-  height,
-  width,
-}: Icons) {
+export default function PrepIcon({ size }: { size?: string }) {
   return (
     <svg
       version="1.1"
@@ -18,10 +10,8 @@ export default function ({
       fill="currentColor"
       viewBox="0 0 122.79 122.88"
       strokeWidth={1.5}
-      stroke={outlineColor ? outlineColor : "current"}
-      className={`fill-${fillColor ? fillColor : "transparent"} stroke-${
-        outlineColor ? outlineColor : "none"
-      } w-${height ? height : "5"} h-${width ? width : "5"}`}
+      stroke="currentColor"
+      className={`w-${size ?? "6"} h-${size ?? "6"}`}
     >
       <g>
         <path

@@ -12,7 +12,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <LayoutPage>
-      <div className="grid grid-cols-app grid-rows-app h-full">
+      <div className="grid grid-cols-app grid-rows-app h-full min-h-screen">
         <div className="col-start-1 col-end-2 row-start-1 center border-r ">
           logo
         </div>

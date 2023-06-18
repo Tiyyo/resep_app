@@ -1,18 +1,19 @@
-export default function AddPlusIcon({size} : {size? : string}) {
+export default function AddPlusIcon({ size }: { size?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      fill="none"
+      width="24"
+      height="24"
       viewBox="0 0 24 24"
-      strokeWidth={1.5}
+      fill="none"
       stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={`w-${size ?? "6"} h-${size ?? "6"}`}
     >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-      />
+      <line x1="12" x2="12" y1="5" y2="19" />
+      <line x1="5" x2="19" y1="12" y2="12" />
     </svg>
   );
 }

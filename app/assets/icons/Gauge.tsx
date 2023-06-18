@@ -1,12 +1,4 @@
-import { Icons } from "./interface";
-
-export default function ({
-  size,
-  outlineColor,
-  fillColor,
-  height,
-  width,
-}: Icons) {
+export default function GaugeIcon({ size }: { size?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -17,8 +9,7 @@ export default function ({
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-      className="lucide lucide-gauge"
+      className={`w-${size ?? "6"} h-${size ?? "6"}`}
     >
       <path d="m12 14 4-4"></path>
       <path d="M3.34 19a10 10 0 1 1 17.32 0"></path>
