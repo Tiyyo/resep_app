@@ -35,15 +35,15 @@ export default function () {
   const dataIngr = ingredients.map((ingr : any) => {
     return {
       id: ingr.id,
-      image: ingr.icon.link,
+      image: ingr.icon?.link,
       name: ingr.name,
       unit_weight: ingr.unit_weight ?? "",
       category: ingr.category.name,
-      calories: ingr.macros.calories,
-      proteins: ingr.macros.proteins,
-      carbs: ingr.macros.carbs,
-      fat: ingr.macros.fat,
-      water: ingr.macros.water,
+      calories: ingr.macros?.calories,
+      proteins: ingr.macros?.proteins,
+      carbs: ingr.macros?.carbs,
+      fat: ingr.macros?.fat,
+      water: ingr.macros?.water,
     };
   });
 

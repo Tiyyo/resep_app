@@ -1,25 +1,25 @@
 import { prisma } from "~/service/db.server"
-import {  Prisma } from "@prisma/client"
-import type { Ingredient_categories, Ingredients, Macros,  } from "@prisma/client"
+import { Prisma } from "@prisma/client"
+import type { Ingredient_categories, Ingredients, Macros, } from "@prisma/client"
 
 
 type ErrorMessage = {
-  error : string
+  error: string
 }
 
 export interface FormIconProps {
   name: string
   imageLink: string
-  imageKey : string
+  imageKey: string
   tags?: string[]
 }
 
 export interface IngredientCreateForm {
-  name : string
-  unitWeight? : number | undefined | null
-  categoryId : number 
-  macrosId? : number | undefined | null
-  iconId? : number | undefined | null
+  name: string
+  unitWeight?: number | undefined | null
+  categoryId: number
+  macrosId?: number | undefined | null
+  iconId?: number | undefined | null
 }
 
 
@@ -27,7 +27,7 @@ export interface IngredientCreateForm {
  * 
  * @param {string} name 
  */
-export async function addCategory(name: string) : Promise<Ingredient_categories | ErrorMessage | undefined> {
+export async function addCategory(name: string): Promise<Ingredient_categories | ErrorMessage | undefined> {
   let category
   category = {
     name
@@ -41,7 +41,7 @@ export async function addCategory(name: string) : Promise<Ingredient_categories 
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
-        return {error :'There is a unique constraint violation , Already exists in database' }
+        return { error: 'There is a unique constraint violation , Already exists in database' }
       }
     }
   }
@@ -65,9 +65,9 @@ export async function addMacros(form: any): Promise<Macros | ErrorMessage | unde
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
-        throw ({error : 'Already exists in database'})
+        throw ({ error: 'Already exists in database' })
       }
-      throw ({error : 'Unable to add item to database'})
+      throw ({ error: 'Unable to add item to database' })
 
     }
   }
@@ -96,7 +96,7 @@ export async function addIcons(form: FormIconProps) {
         data: {
           name: form.name,
           link: form.imageLink,
-          image_key : form.imageKey,
+          image_key: form.imageKey,
           tags: {
             create: createTags
           }
@@ -111,7 +111,7 @@ export async function addIcons(form: FormIconProps) {
         data: {
           name: form.name,
           link: form.imageLink,
-          image_key : form.imageKey,
+          image_key: form.imageKey,
         },
       })
       return createIcon
@@ -134,33 +134,124 @@ export async function addIcons(form: FormIconProps) {
 // }
 
 
-export async function addIngredients(form : IngredientCreateForm) {
+export async function addIngredients(form: IngredientCreateForm) {
 
-  console.log(typeof form.unitWeight, 'BEFORE ADD');
+  //--- Maybe not mandatory 
+  if (form.macrosId === null) {
+    form.macrosId = undefined
+  }
+  if (form.iconId === null) {
+    form.iconId = undefined
+  }
+  //---
+
   try {
-    const newIngredient = await prisma.ingredients.create({ data: {
-        name : form.name, 
-        unit_weight : form.unitWeight,
-        category : {
-          connect : {id : form.categoryId}
-        },
-        macros : {
-          connect : {id : form.macrosId}
-        },
-        icon : {
-          connect : {id : form.iconId}
-        }
-      }, 
+    const newIngredient = await prisma.ingredients.create({
+      data: {
+        name: form.name,
+        unit_weight: form.unitWeight,
+        category: form.categoryId && { connect: { id: form.categoryId } },
+        macros: form.macrosId && { connect: { id: form.macrosId } },
+        icon: form.iconId && { connect: { id: form.iconId } },
+      },
     })
     await prisma.$disconnect()
-    console.log(newIngredient);
     return newIngredient
   } catch (error: any) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === "P2002") {
-          throw new Error("Can't add 2 items with the same name")
-        }
-        throw new Error('Unable to add item to database')
+      if (error.code === "P2002") {
+        throw new Error("Can't add 2 items with the same name")
+      }
+      throw new Error('Unable to add item to database')
     }
   }
 }
+
+export async function addRecipes(form: any) {
+
+  const createMeasures = form.measures.map((measure) => {
+    return {
+      measure: {
+        create: {
+          qty: measure.quantity,
+          unit_measure: measure.unitId,
+          ingredient: measure.ingredientId
+        }
+      }
+    }
+  })
+
+  const createTags = form.tags.map((tag) => {
+    return {
+      tag: {
+        connectOrCreate: {
+          where: {
+            name: tag.toLowerCase(),
+          },
+          create: {
+            name: tag.toLowerCase(),
+          },
+        },
+      }
+    }
+  })
+
+  console.log(createMeasures);
+  console.log(createTags, 'CREATE TAGS')
+
+  try {
+    const newRecipe = await prisma.recipes.create({
+      data: {
+        name: form.name,
+        prep_time: form.prepTime,
+        cook_time: form.cookTime,
+        author: {
+          connect: {
+            id: form.author
+          }
+        },
+        servings: form.servings,
+        macro_recipe: form.macrosId ?? undefined,
+        difficulty: {
+          connectOrCreate: {
+            where: {
+              name: form.difficulty,
+            },
+            create: {
+              name: form.difficulty,
+            },
+          },
+        },
+        tags: form.tags && {
+          create: form.tags.map((tag) => {
+            return {
+              tag: {
+                connectOrCreate: {
+                  where: {
+                    name: tag.toLowerCase(),
+                  },
+                  create: {
+                    name: tag.toLowerCase(),
+                  },
+                },
+              }
+            }
+          })
+        },
+        measures: {
+          create: form.measures.map((measure) => {
+            return {
+              qty: measure.qty,
+              unit_measure_id: measure.unit_measure,
+              ingredientId: measure.ingredient
+            }
+          })
+        }
+      }
+    })
+    return newRecipe.id
+  } catch (error) {
+    console.log(error)
+  }
+}
+

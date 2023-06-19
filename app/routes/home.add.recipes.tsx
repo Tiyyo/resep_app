@@ -1,7 +1,7 @@
 import { Ingredients, Unit_measures } from "@prisma/client";
 import { ActionArgs, json, type LoaderArgs } from "@remix-run/node";
 import { Form, useFetcher, useLoaderData } from "@remix-run/react";
-import { KeyboardEventHandler, useState } from "react";
+import {  useState } from "react";
 import { promiseHash } from "remix-utils";
 import { getIngredients, getUnitMeasures } from "~/api/get.all.request";
 import AddPlusIcon from "~/assets/icons/AddPlusIcon";
@@ -84,7 +84,7 @@ function addStep(arr: string[], deleteStep) {
         <textarea
           className="`pl-2 pr-1 text-8 w-96 bg-main-300 rounded-md placeholder:pl-1 placeholder:text-7 focus-visible:outline-secondary-300 resize-none"
           key={index}
-          name="step"
+          name="instructions"
           rows={4}
         ></textarea>
       </>
@@ -100,7 +100,7 @@ function addTag(arr: string[], deleteTag): any {
         className="bg-main-300 h-10 flex w-fit items-center px-4 text-10 gap-x-2 rounded-md  font-semibold"
       >
         <p>{el}</p>
-        <input name="tags" defaultValue={el} disabled hidden />
+        <input name="tags" defaultValue={el} hidden />
         <div
           data-index={index}
           onClick={deleteTag}
@@ -133,19 +133,19 @@ export default function () {
   };
 
   const deleteTag = (e) => {
-    const index = e.currentTarget.dataset;
+    const index = e.currentTarget.dataset.index;
     const copy = [...tags];
     copy.splice(index, 1);
     setTags(copy);
   };
   const deleteMeasures = (e) => {
-    const index = e.currentTarget.dataset;
+    const index = e.currentTarget.dataset.index;
     const copy = [...measures];
     copy.splice(index, 1);
     setMeasures(copy);
   };
   const deleteStep = (e) => {
-    const index = e.currentTarget.dataset;
+    const index = e.currentTarget.dataset.index;
     const copy = [...setps];
     copy.splice(index, 1);
     setStep(copy);
@@ -153,6 +153,7 @@ export default function () {
 
   const handleKeyPress = (e) => {
     if (e.code.toLowerCase() === "enter" && e.target?.value?.length >= 1) {
+      e.preventDefault();
       addOneTag((e.target as HTMLInputElement)?.value.trim());
       e.target.value = "";
     }
@@ -169,7 +170,7 @@ export default function () {
         <input type="text" name="author" defaultValue={profile.id} hidden />
         <div className="flex gap-y-2 items-center flex-col w-96">
           <p>Name</p>
-          <Input name="name" type="text" width="96" placeholder="(required)" />
+          <Input name="name" type="text" width="96" placeholder="Name your recipe" />
         </div>
 
         <div className="flex gap-y-2 items-center flex-col">
@@ -232,6 +233,7 @@ export default function () {
 
         <div className="flex w-full justify-evenly">
           <div className="flex flex-col items-center">
+            <p className="text-7 my-2">(at least 3 ingredients are required)</p>
             <button
               type="button"
               onClick={addOneIngr}
@@ -248,6 +250,7 @@ export default function () {
           </div>
 
           <div className="flex flex-col items-center">
+            <p className="text-7 my-2">(at least 1 intrusction is required)</p>
             <button
               type="button"
               onClick={addOneStep}
@@ -266,7 +269,7 @@ export default function () {
         <div className="flex gap-y-2 items-center flex-col">
           <p>
             Add a youtube link to help to recreate this recipe at home{" "}
-            <span className="text-7">(required)</span>
+            <span className="text-7">(optional)</span>
           </p>
           <Input type="url" name="ytLink" pattern="https://www.youtube.com/*" />
         </div>

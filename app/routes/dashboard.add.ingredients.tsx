@@ -16,7 +16,7 @@ import {
   useLoaderData,
   useNavigation,
 } from "@remix-run/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Error from "~/components/error";
 
 export async function loader({ request }: LoaderArgs) {
@@ -31,26 +31,33 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export default function () {
+  const [clear, setClear] = useState(false)
+  
   const { categories, macros, icons } = useLoaderData();
   const navigation = useNavigation();
   const addIngredientFormRef = useRef<HTMLFormElement>(null);
   const actionData = useActionData();
   const addIngredient = useFetcher()
 
+
   useEffect(() => {
     if (
-      navigation.state == "idle" &&
+      addIngredient.state === "idle" &&
       addIngredientFormRef &&
       addIngredientFormRef.current
     ) {
+      console.log('When this is working');
       addIngredientFormRef.current.reset();
+      setClear(true)
+      console.log(clear);
     }
-  }, [navigation.state]);
+    return () => setClear(false)
+  }, [addIngredient.state]);
 
   return (
     // fixed top-0 left-0 bg-black-light min-h-screen w-full
     <div className="center w-full ">
-      <addIngredient.Form method="POST" action="/api/ingredients">
+      <addIngredient.Form method="POST" action="/api/ingredients" ref={addIngredientFormRef}>
         <div className="flex flex-col flex-wrap items-center justify-center gap-y-8 first-letter:mt-3">
           <div className="center gap-x-12 ">
             <Input name="name" placeholder="Ingredient name" label="Name" />
@@ -61,6 +68,7 @@ export default function () {
               name="unitWeight"
               label="Average weight for 1 unit"
               placeholder="g/ml"
+              
             />
           </div>
           <div className="center gap-x-12">
@@ -70,6 +78,7 @@ export default function () {
               index="id"
               filterBy="name"
               placeholder="Pick a category"
+              clear={clear}
             />
             <SelectSearch
               name="macrosId"
@@ -78,6 +87,7 @@ export default function () {
               filterBy="food"
               optionMax={5}
               placeholder="Food reference"
+              clear={clear}
             />
             <SelectSearch
               name="iconId"
@@ -86,6 +96,7 @@ export default function () {
               filterBy="name"
               optionMax={5}
               placeholder="Search for an Icon"
+              clear={clear}
             />
           </div>
           <div className="center ">

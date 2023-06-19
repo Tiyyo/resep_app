@@ -1,7 +1,7 @@
-import Select from "react-select";
+import Select, { SelectOptionActionMeta } from "react-select";
 import type { SelectSearchProps } from "./interface";
-import {useHydrated} from "remix-utils"
-
+import { useHydrated } from "remix-utils";
+import { useEffect, useRef } from "react";
 
 export default function SelectSearch({
   name,
@@ -10,11 +10,10 @@ export default function SelectSearch({
   placeholder,
   index,
   width,
-  pageSize,
   getState,
   defaultValue,
+  clear,
 }: SelectSearchProps) {
-
   const getOptions = () => {
     if (data && data.length > 0) {
       const options = data.map((d) => {
@@ -68,70 +67,85 @@ export default function SelectSearch({
   // };
   const isHydrated = useHydrated();
 
+  const ref = useRef<any>(null);
+
+  const handleClear = () => {
+    ref.current?.clearValue();
+  };
+
+  useEffect(() => {
+    if (clear) {
+      handleClear();
+    }
+  }, [clear]);
+
   return isHydrated ? (
-    <Select
-      name={name}
-      options={getOptions()}
-      placeholder={placeholder ?? "Search"}
-      pageSize={5}
-      isClearable={true}
-      isRtl={false}
-      instanceId={name}
-      id={name}
-      defaultValue={defaultValue}
-      // onChange={(e) => getState(e)}
-      unstyled
-      styles={{
-        input: (base) => ({
-          ...base,
-          "input:focus": {
-            boxShadow: "none",
-          },
-        }),
-        // On mobile, the label will truncate automatically, so we want to
-        // override that behaviour.
-        multiValueLabel: (base) => ({
-          ...base,
-          whiteSpace: "normal",
-          overflow: "visible",
-        }),
-        control: (base) => ({
-          ...base,
-          transition: "none",
-        }),
-      }}
-      // components={{ DropdownIndicator, ClearIndicator, MultiValueRemove }}
-      classNames={{
-        // control: ({ isFocused }) =>
+    <>
+      <Select
+        ref={ref}
+        name={name}
+        options={getOptions()}
+        placeholder={placeholder ?? "Search"}
+        pageSize={5}
+        isClearable={true}
+        isRtl={false}
+        instanceId={name}
+        id={name}
+        defaultValue={defaultValue}
+        // onChange={(e) => getState(e)}
+        unstyled
+        styles={{
+          input: (base) => ({
+            ...base,
+            "input:focus": {
+              boxShadow: "none",
+            },
+          }),
+          // On mobile, the label will truncate automatically, so we want to
+          // override that behaviour.
+          multiValueLabel: (base) => ({
+            ...base,
+            whiteSpace: "normal",
+            overflow: "visible",
+          }),
+          control: (base) => ({
+            ...base,
+            transition: "none",
+          }),
+        }}
+        // components={{ DropdownIndicator, ClearIndicator, MultiValueRemove }}
+        classNames={{
+          // control: ({ isFocused }) =>
 
-        //     isFocused ? controlStyles.focus : controlStyles.nonFocus,
-        //     controlStyles.base,
-        // ,
-        control: () => controlStyles,
-        placeholder: () => placeholderStyles,
-        input: () => selectInputStyles,
-        valueContainer: () => valueContainerStyles,
-        menu: () => menuStyles,
-        noOptionsMessage: () => noOptionsMessageStyles,
-        dropdownIndicator: () => dropdownIndicatorStyles,
-        indicatorSeparator: () => indicatorSeparatorStyles,
-        option: () => optionStyles,
-        indicatorsContainer: () => indicatorsContainerStyles,
-        // option: ({ isFocused, isSelected }) =>
-        //   clsx(
-        //     isFocused && optionStyles.focus,
-        //     isSelected && optionStyles.selected,
-        //     optionStyles.base,
-        //   ),
+          //     isFocused ? controlStyles.focus : controlStyles.nonFocus,
+          //     controlStyles.base,
+          // ,
+          control: () => controlStyles,
+          placeholder: () => placeholderStyles,
+          input: () => selectInputStyles,
+          valueContainer: () => valueContainerStyles,
+          menu: () => menuStyles,
+          noOptionsMessage: () => noOptionsMessageStyles,
+          dropdownIndicator: () => dropdownIndicatorStyles,
+          indicatorSeparator: () => indicatorSeparatorStyles,
+          option: () => optionStyles,
+          indicatorsContainer: () => indicatorsContainerStyles,
+          // option: ({ isFocused, isSelected }) =>
+          //   clsx(
+          //     isFocused && optionStyles.focus,
+          //     isSelected && optionStyles.selected,
+          //     optionStyles.base,
+          //   ),
 
-        singleValue: () => singleValueStyles,
-        multiValue: () => multiValueStyles,
-        multiValueLabel: () => multiValueLabelStyles,
-        multiValueRemove: () => multiValueRemoveStyles,
-        clearIndicator: () => clearIndicatorStyles,
-        groupHeading: () => groupHeadingStyles,
-      }}
-      // {...props}
-    />
+          singleValue: () => singleValueStyles,
+          multiValue: () => multiValueStyles,
+          multiValueLabel: () => multiValueLabelStyles,
+          multiValueRemove: () => multiValueRemoveStyles,
+          clearIndicator: () => clearIndicatorStyles,
+          groupHeading: () => groupHeadingStyles,
+        }}
+        // {...props}
+      />
+    </>
   ) : null;
 }

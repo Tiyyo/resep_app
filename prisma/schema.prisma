@@ -67,15 +67,29 @@ model Recipes  {
   servings          Int     
   macro_recipeId    Int ?           @unique
   macro_recipe      Macros?         @relation(fields : [macro_recipeId] , references : [id], onDelete : SetNull)
-  tag               RecipesOnTags[]
+  tags              RecipesOnTags[]
   reviews           ReviewsOnRecipes[]
   measures          IngredientsOnRecipes[]
-  favoriteId        Int
-  favorite          Favorites       @relation( fields : [favoriteId] , references : [id])
+  instructions      InstructionOnRecipes[]
+  favoriteId        Int?
+  favorite          Favorites?       @relation( fields : [favoriteId] , references : [id])
   youtube_link      String? 
   level             String  
-  difficulty        Difficulties   @relation(fields : [level], references : [name])        
+  difficulty        Difficulties   @relation(fields : [level], references : [name])
+}
 
+model Instructions {
+  id              Int        @id @default(autoincrement())
+  description     String    
+  recipes         InstructionOnRecipes[]
+}
+
+model InstructionOnRecipes {
+   @@id([recipeId, instruction_id])
+  instruction_id    Int
+  instructions      Instructions           @relation( fields : [instruction_id] , references : [id])
+  recipeId          Int
+  recipe            Recipes           @relation( fields : [recipeId] , references : [id])
 }
 
 model Difficulties {
@@ -114,6 +128,7 @@ model  Unit_measures  {
   name            String          @unique
   abreviation     String
   equivalent      Decimal?
+  unit            String          @default("grams")
   // ingredients     Ingredients[]  
   IngredientsOnRecipes IngredientsOnRecipes[]
 }

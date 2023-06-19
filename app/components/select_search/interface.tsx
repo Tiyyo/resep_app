@@ -13,5 +13,6 @@ export interface SelectSearchProps {
     optionMax?: number;
     placeholder? : string
     defaultValue? : Option
+    clear? : boolean
   }
   

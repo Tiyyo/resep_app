@@ -84,7 +84,6 @@ export async function action({ request }: ActionArgs) {
 
             try {
                 const updateIngredient = await patchIngredients(form)
-                console.log(updateIngredient);
                 return redirect('/admin_panel/ingredients')
             } catch (error) {
                 console.log(error);

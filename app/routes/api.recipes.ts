@@ -1,34 +1,99 @@
-import { json } from "@remix-run/node"
+import { type ActionArgs, json } from "@remix-run/node"
+import { withZod } from "@remix-validated-form/with-zod"
+import { addRecipes } from "~/api/post.request"
+import { addMacrosToRecipe } from "~/utils/recipe.builder.server"
+import * as Z from "zod";
+import { validationError } from "remix-validated-form";
 
-export async function action({ request }) {
-    const formData = await request.formData()
-    const ingredients = formData.getAll('ingredient') // string // mandatory
-    const quantity = formData.getAll('quantity') // number // mandatory
-    const unit = formData.getAll('unit') // string // mandatory
-    const name = formData.get('name')  // string // mandatory
-    const prepTime = formData.get('prepTime') //number // mandatory
-    const cookTime = formData.get('cookTime')  //number // mandatory
-    const author = formData.get('author') /// number // mandatory
-    const servings = formData.get('servings') // number // mandatory 
-    const tags = formData.getAll('tags') // Array string
-    const ytLink = formData.get('ytLink') // string
-    const level = formData.get('level') // string // mandaroy
+export const validator = withZod(
+    Z.object({
+        id: Z.string().optional(),
+        ingredient: Z.string().array().min(3),
+        quantity: Z.string().array().min(3), 
+        unit: Z.string().array().min(3),
+        name: Z.string(),
+        prepTime: Z.string(),
+        cookTime: Z.string(),
+        author: Z.string(),
+        servings: Z.string(),
+        tags: Z.string().array().optional(),
+        ytLink: Z.string().optional(),
+        level: Z.union([Z.literal('easy'),Z.literal('medium'),Z.literal('hard')]),
+        instructions: Z.string().array().min(1),
+    }).refine(
+        (value) => {
+            return value.ingredient.length === value.quantity.length && value.ingredient.length === value.unit.length
+        },
+        {message : "Ingredient ,quantity and unit should have the same length"}
+    )
+)
 
-    console.log(ingredients, quantity, unit, name, prepTime, cookTime, author, tags, servings, ytLink, level);
 
-    const length = ingredients.length
+export async function action({ request } : ActionArgs) {
+    const method = request.method.toLowerCase()
 
-    let measures = []
-    for (let i = 0; i < length; i++) {
-        let measure = {
-            ingredientId: ingredients[i],
-            unitId: unit[i],
-            quantity: quantity[i]
+    switch (method){
+        case "post": {
+            const formData = await validator.validate(await request.formData())
+            console.log(formData);
+            if (formData.error) return validationError(formData.error)
+            const { ingredient : ingredients, quantity : qty, unit : units, name, prepTime, cookTime, author, servings, tags, ytLink, level, instructions } = formData.data
+
+            let measures = []
+            for (let i = 0; i < ingredients.length; i++) {
+                let measure = {
+                    ingredient: ingredients[i],
+                    unit_measure: units[i],
+                    qty: qty[i]
+                }
+                measures.push(measure)
+            }
+
+            const form = {
+                name,
+                prepTime,
+                cookTime,
+                author,
+                tags,
+                servings,
+                ytLink,
+                level,
+                qty,
+                measures,
+                instructions
+            }
+
+            try {
+                const newRecipe = await addMacrosToRecipe(form)
+                console.log(newRecipe);
+            } catch (error) {
+                console.log(error);
+            }
+
+            console.log(form);
+
+
+            return json({status : 200})
         }
-        measures.push(measure)
+        case "patch" : {
+            // bloc de code
+        }
+        case "delete" : {
+            // bloc de code
+        }
+        default : {
+            throw new Error('Invalid method')
+        }
+
     }
+    
+    // console.log(newRecipe);
 
-    console.log(measures);
-
-    return json({ status: 200 })
+    // try {
+    //     const newRecipe = await addRecipes(form)
+    //     console.log(newRecipe);
+    //     return json({form} , {status : 200})
+    // } catch (error) {
+    //     console.log(error);
+    // }
 }

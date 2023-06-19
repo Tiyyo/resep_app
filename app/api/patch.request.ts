@@ -115,3 +115,27 @@ export async function patchIngredients(form) {
         throw new Error(error.message);
     }
 }
+
+export async function addMacrosToRecipe(macros , id) {
+    try {
+        const updateRecipe = await prisma.recipes.update({
+            where : {
+                id : id
+            },
+            data : {
+                macro_recipe : {
+                    create : {
+                        calories : macros.calories ,
+                        proteins : macros.proteins,
+                        carbs : macros.carbs,
+                        fat : macros.fat,
+                        water : macros.water
+                    }
+                }
+            }
+        })
+        return updateRecipe
+    } catch (error) {
+        console.log(error);
+    }
+}

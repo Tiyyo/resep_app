@@ -12,12 +12,12 @@ if (!sessionSecret) {
 
 export const storage = createCookieSessionStorage({
     cookie : {
-        name : "generic-name", // has to be change 
+        name : "generic-name", // has to be changed 
         secure : process.env.NODE_ENV === "production",
         secrets : [sessionSecret], 
         sameSite : "lax",
         path : "/",
-        maxAge : 60*60,
+        maxAge : 60*60*12,
         httpOnly : true,
     }
 })

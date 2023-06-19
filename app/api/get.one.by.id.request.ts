@@ -61,3 +61,33 @@ export async function getIngredientsById (ingredientId : number) {
         throw new Error("Can't find item with associated id");   
     }
 }
+
+export async function getRecipeById(recipeId) {
+    try {
+        const recipe = await prisma.recipes.findUnique({
+            where : {
+                id : recipeId
+            },
+            include : {
+                author : true,
+                macro_recipe : true,
+                measures : {
+                    include : {
+                        ingredient : {
+                            include : {
+                                macros : true
+                            }
+                        } ,
+                        unit_measure : true,
+                    }
+                },
+                difficulty : true,
+                favorite : true,
+                reviews : true,
+            }
+        })
+        return recipe
+    } catch (error) {
+        console.log(error);
+    }
+}
