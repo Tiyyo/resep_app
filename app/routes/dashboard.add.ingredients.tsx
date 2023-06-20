@@ -64,7 +64,7 @@ export default function () {
 
             <Input
               type="number"
-              width="12"
+              width="14"
               name="unitWeight"
               label="Average weight for 1 unit"
               placeholder="g/ml"

@@ -1,7 +1,7 @@
 import { Ingredients, Unit_measures } from "@prisma/client";
 import { ActionArgs, json, type LoaderArgs } from "@remix-run/node";
 import { Form, useFetcher, useLoaderData } from "@remix-run/react";
-import {  useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { promiseHash } from "remix-utils";
 import { getIngredients, getUnitMeasures } from "~/api/get.all.request";
 import AddPlusIcon from "~/assets/icons/AddPlusIcon";
@@ -29,7 +29,8 @@ function addMeasure(
   arr: string[],
   ingredients: Ingredients,
   units: Unit_measures,
-  deleteMeasures
+  deleteMeasures,
+  clear
 ) {
   return arr.map((el, index) => {
     return (
@@ -41,6 +42,7 @@ function addMeasure(
             filterBy="name"
             name="ingredient"
             placeholder="Pick an ingredient"
+            clear={clear}
           />
         </div>
         <div className="basis-[80px] shrink-0 grow-0">
@@ -53,6 +55,7 @@ function addMeasure(
             filterBy="abreviation"
             name="unit"
             placeholder=""
+            clear={clear}
           />
         </div>
         <div
@@ -159,6 +162,21 @@ export default function () {
     }
   };
 
+  const addrecipeRef = useRef<HTMLFormElement>(null)
+  const [clear, setClear] = useState(false)
+
+  useEffect(() => {
+    if (
+      addRecipe.state === "idle" &&
+      addrecipeRef &&
+      addrecipeRef.current
+    ) {
+      addrecipeRef.current.reset();
+      setClear(true)
+    }
+    return () => setClear(false)
+  }, [addRecipe.state]);
+
   //   <span className="text-7">(required)</span>
   return (
     <div className="p-8">
@@ -166,6 +184,7 @@ export default function () {
         method="POST"
         action="/api/recipes"
         className="flex items-center flex-col gap-y-8"
+        ref={addrecipeRef}
       >
         <input type="text" name="author" defaultValue={profile.id} hidden />
         <div className="flex gap-y-2 items-center flex-col w-96">
@@ -245,7 +264,7 @@ export default function () {
               </div>
             </button>
             <div className="flex items-center flex-col w-full gap-y-4">
-              {addMeasure(measures, ingredients, units, deleteMeasures)}
+              {addMeasure(measures, ingredients, units, deleteMeasures, clear)}
             </div>
           </div>
 

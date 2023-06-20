@@ -1,7 +1,6 @@
 import { type ActionArgs, json } from "@remix-run/node"
 import { withZod } from "@remix-validated-form/with-zod"
-import { addRecipes } from "~/api/post.request"
-import { addMacrosToRecipe } from "~/utils/recipe.builder.server"
+import { buildRecipe } from "~/utils/recipe.builder.server"
 import * as Z from "zod";
 import { validationError } from "remix-validated-form";
 
@@ -35,7 +34,6 @@ export async function action({ request } : ActionArgs) {
     switch (method){
         case "post": {
             const formData = await validator.validate(await request.formData())
-            console.log(formData);
             if (formData.error) return validationError(formData.error)
             const { ingredient : ingredients, quantity : qty, unit : units, name, prepTime, cookTime, author, servings, tags, ytLink, level, instructions } = formData.data
 
@@ -64,16 +62,13 @@ export async function action({ request } : ActionArgs) {
             }
 
             try {
-                const newRecipe = await addMacrosToRecipe(form)
+                const newRecipe = await buildRecipe(form)
                 console.log(newRecipe);
-            } catch (error) {
-                console.log(error);
+                return json({status : 200})
+            } catch (error : any) {
+                console.log(error );
+                return json({error : error.message})
             }
-
-            console.log(form);
-
-
-            return json({status : 200})
         }
         case "patch" : {
             // bloc de code

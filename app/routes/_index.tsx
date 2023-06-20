@@ -1,10 +1,9 @@
 import { redirect, type LoaderArgs, type V2_MetaFunction } from "@remix-run/node";
 import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
 
-export async function loader ({request} : LoaderArgs) {
-  return redirect("/home/recipes")
+export async function loader({ request }: LoaderArgs) {
+  return redirect("/home")
 }
-
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Groc ! Have control over your macros" }];

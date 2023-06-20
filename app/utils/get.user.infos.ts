@@ -4,7 +4,7 @@ import { prisma } from "../service/db.server";
 export async function getProfile ( request : Request) {
     const userId = await getUserId(request)
     if (userId) {
-        const profile = await prisma.profiles.findUnique({ where : { userId }})
+        const profile = await prisma.profiles.findUnique({ where : { user_id : userId }})
         return profile
     }
 }

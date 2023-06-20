@@ -62,7 +62,7 @@ export async function getIngredientsById (ingredientId : number) {
     }
 }
 
-export async function getRecipeById(recipeId) {
+export async function getRecipeById(recipeId : number) {
     try {
         const recipe = await prisma.recipes.findUnique({
             where : {

@@ -167,37 +167,22 @@ export async function addIngredients(form: IngredientCreateForm) {
   }
 }
 
-export async function addRecipes(form: any) {
+export async function addRecipes(form) {
 
-  const createMeasures = form.measures.map((measure) => {
+  const createInstruction = form.instructions.map((instruction: string) => {
     return {
-      measure: {
+      instructions: {
         create: {
-          qty: measure.quantity,
-          unit_measure: measure.unitId,
-          ingredient: measure.ingredientId
+          description: instruction
         }
       }
     }
   })
 
-  const createTags = form.tags.map((tag) => {
-    return {
-      tag: {
-        connectOrCreate: {
-          where: {
-            name: tag.toLowerCase(),
-          },
-          create: {
-            name: tag.toLowerCase(),
-          },
-        },
-      }
-    }
-  })
+  const createMeasure = form.measures.map((m) => {
+      return { qty: m.qty, unit_measure_id: m.unit_measure, ingredient_id: m.ingredient }
+    })
 
-  console.log(createMeasures);
-  console.log(createTags, 'CREATE TAGS')
 
   try {
     const newRecipe = await prisma.recipes.create({
@@ -223,7 +208,7 @@ export async function addRecipes(form: any) {
           },
         },
         tags: form.tags && {
-          create: form.tags.map((tag) => {
+          create: form.tags.map((tag: string) => {
             return {
               tag: {
                 connectOrCreate: {
@@ -239,14 +224,12 @@ export async function addRecipes(form: any) {
           })
         },
         measures: {
-          create: form.measures.map((measure) => {
-            return {
-              qty: measure.qty,
-              unit_measure_id: measure.unit_measure,
-              ingredientId: measure.ingredient
-            }
-          })
-        }
+          create: createMeasure
+        },
+        instructions: {
+          create: createInstruction
+          ,
+        },
       }
     })
     return newRecipe.id
@@ -254,4 +237,12 @@ export async function addRecipes(form: any) {
     console.log(error)
   }
 }
+
+// form.measures.map((measure) => {
+//   return {
+//     qty: measure.qty,
+//     unit_measure_id: measure.unit_measure,
+//     ingredientId: measure.ingredient
+//   }
+// })
 

@@ -1,19 +1,6 @@
-// const form = {
-//     name,
-//     prepTime,
-//     cookTime,
-//     author,
-//     tags,
-//     servings,
-//     ytLink,
-//     level,
-//     measures,
-// }
-
-import { NumberReference } from "aws-sdk/clients/connect"
-import { Icon } from "aws-sdk/clients/quicksight"
-import { NumberFilter } from "aws-sdk/clients/securityhub"
+import { Decimal } from "@prisma/client/runtime"
 import { getRecipeById } from "~/api/get.one.by.id.request"
+import { addMacrosToRecipe } from "~/api/patch.request"
 import { addRecipes } from "~/api/post.request"
 
 type difficulty = 'easy' | 'hard' | 'medium'
@@ -32,28 +19,38 @@ interface RecipeRawForm {
     author: string
     servings: string
     level: difficulty
+    picture?: string
     tags?: string[]
     measures: MeasureRaw[]
+    instructions: string[]
     ytLink?: string
 
 }
 
+
 interface Macros {
     id: number
     food?: string | null
-    calories: number
-    proteins: number
-    carbs: number
-    fat: number
-    water: number
+    calories: number | Decimal
+    proteins: number | Decimal
+    carbs: number | Decimal
+    fat: number | Decimal
+    water: number | Decimal
 }
 
 interface UnitMeasure {
     id: number
-    equivalent: number
-    unit: 'grams' | 'mililiters'
+    equivalent: number | Decimal | null
+    unit: string //--'grams' | 'mililiters'
     abreviation: string
     name: string
+}
+
+interface Icon {
+    id: number
+    name: string
+    link: string
+    image_key: string
 }
 
 interface Ingredient {
@@ -64,13 +61,13 @@ interface Ingredient {
     macrosId?: number | null
     macros?: Macros | null
     name: string
-    unit_weight?: number | null
+    unit_weight?: number | null | Decimal
 }
 
 interface Measure {
     ingredient: Ingredient
     ingredientId: number
-    qty: number
+    qty: number | Decimal
     recipeId: number
     unit_compute?: string | null
     unit_measure_id: number
@@ -78,40 +75,6 @@ interface Measure {
 }
 
 type Measures = Array<Measure>
-
-
-// export const recipe = {
-//     name : "Recipe Name",
-//     prepTime : "20",
-//     cookTime : "20",
-//     author : "2",
-//     servings :"4",
-//     level : "easy",
-//     tags : ['chicken' , 'asia' , 'curry'],
-//     measures : [
-//         {   
-//             qty : "100",
-//             ingredient : "6",
-//             unit_measure : "2"
-//         },
-//         {   
-//             qty : "1",
-//             ingredient : "15",
-//             unit_measure : "11"
-//         },
-//         {   
-//             qty : "1",
-//             ingredient : "17",
-//             unit_measure : "11"
-//         },
-//         {   
-//             qty : "300",
-//             ingredient : "20",
-//             unit_measure : "5"
-//         },
-//     ],
-//     ytLink : "url",
-// }
 
 function convertStringToNumber(rawForm: RecipeRawForm) {
     const convertRecipe = {
@@ -122,8 +85,9 @@ function convertStringToNumber(rawForm: RecipeRawForm) {
         servings: parseInt(rawForm.author),
         difficulty: rawForm.level,
         tags: rawForm.tags ?? undefined,
-        picture: rawForm ?? undefined,
+        picture: rawForm.picture ?? undefined,
         ytLink: rawForm.ytLink ?? undefined,
+        instructions: rawForm.instructions,
         measures: rawForm.measures.map((m) => {
             return {
                 qty: parseFloat(m.qty),
@@ -140,17 +104,22 @@ const calcQty = (measure: Measure): number => {
 
     if (measure.unit_measure.name === "pieces") {
         return measure.ingredient.unit_weight
-            ? (qty = measure.qty * measure.ingredient?.unit_weight)
+            ? (qty = (measure.qty as number) * (measure.ingredient?.unit_weight as number))
             : 1;
     }
-    qty = measure.qty * measure.unit_measure.equivalent;
-    return qty;
+    if (measure.unit_measure.equivalent) {
+        qty = (measure.qty as number) * (measure.unit_measure.equivalent as number);
+        return qty;
+    }
+    return qty
 };
 
 async function addPartialRecipe(rawForm: RecipeRawForm) {
     const rawRecipe = convertStringToNumber(rawForm)
+
     try {
         const newRecipeId = await addRecipes(rawRecipe)
+
         if (newRecipeId) {
             const partialRecipe = await getRecipeById(newRecipeId)
             return partialRecipe
@@ -160,10 +129,16 @@ async function addPartialRecipe(rawForm: RecipeRawForm) {
     }
 }
 
-function computeTotalMacro(measures: Measures, servings: number, calcQty: (m: Measure) => number) {
+export async function computeTotalMacro(measures: Measures, servings: number) {
     const result = measures.map((m) => {
-        if(!m.ingredient.macros){
-            throw new Error('There is no macros to compute')
+        if (!m.ingredient.macros) {
+            return {
+                calories: 0,
+                proteins: 0,
+                carbs: 0,
+                fat: 0,
+                water: 0,
+            }
         }
         return {
             calories: (calcQty(m) * m.ingredient.macros.calories) / 100,
@@ -172,24 +147,36 @@ function computeTotalMacro(measures: Measures, servings: number, calcQty: (m: Me
             fat: (calcQty(m) * m.ingredient.macros.fat) / 100,
             water: (calcQty(m) * m.ingredient.macros.water) / 100,
         }
-    }).reduce((acc, curr) => {
-        return {
-            calories: +(acc.calories + curr.calories / servings).toFixed(1),
-            proteins: +(acc.proteins + curr.proteins / servings).toFixed(1),
-            carbs: +(acc.carbs + curr.carbs / servings).toFixed(1),
-            fat: +(acc.fat + curr.fat / servings).toFixed(1),
-            water: +(acc.water + curr.water / servings).toFixed(1),
-        };
-    });
+    })
+        .reduce((acc, curr) => {
+            return {
+                calories: acc.calories + curr.calories,
+                proteins: acc.proteins + curr.proteins,
+                carbs: acc.carbs + curr.carbs,
+                fat: acc.fat + curr.fat,
+                water: acc.water + curr.water,
+            };
+        });
+
+    for (const key in result) {
+        result[key as keyof typeof result] = +(result[key as keyof typeof result] / servings).toFixed(1)
+    }
 
     return result
 }
 
 
-export async function addMacrosToRecipe(rawForm: RecipeRawForm) {
+export async function buildRecipe(rawForm: RecipeRawForm) {
     const partialRecipe = await addPartialRecipe(rawForm)
-    const macro_recipe = computeTotalMacro(partialRecipe.measures, partialRecipe.servings, calcQty)
-    const updateRecipe = addMacrosToRecipe(macro_recipe, partialRecipe.id )
+
+    if (!partialRecipe) {
+        throw new Error("Couldn't add raw data to the database");
+    }
+
+
+    const macro_recipe = await computeTotalMacro(partialRecipe.measures, partialRecipe.servings)
+
+    const updateRecipe = addMacrosToRecipe(macro_recipe, partialRecipe.id)
 
     return updateRecipe
 

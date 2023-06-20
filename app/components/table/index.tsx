@@ -11,22 +11,30 @@ export default function Table({
   endpoint,
   isMultiData,
   search,
-  image
+  image,
 }: TableProps) {
-  const keys = Object.keys(data[0]);
   const [searchParams, setSearchParams] = useState<{
     fields: string;
     value: string;
   }>();
 
+  console.log(data, 'DATA');
+
+  if (data.length < 1) {
+    console.log('data doesnt exists');
+    return <div className="w-full h-full center"><p>Database is Empty</p></div>;
+  }
+
+
+  const keys = Object.keys(data[0]) ?? "";
+
   const filterData = data.filter((f) => {
     if (searchParams?.fields) {
-      return f[searchParams.fields].includes(searchParams.value)
+      return f[searchParams.fields].includes(searchParams.value);
     } else {
-      return f
+      return f;
     }
   });
-
 
   return (
     <div className="w-full mx-auto ">
@@ -60,7 +68,6 @@ export default function Table({
 
 // find right type for setState
 
-
 function activateSearch(
   arg: string,
   search: string | undefined,
@@ -69,21 +76,21 @@ function activateSearch(
   if (!search) {
     return (
       <th scope="col" key={arg} className="px-4 py-2 text-left">
-        {capitalize(arg).replace('-' , ' ') + addUnit(arg)}
+        {capitalize(arg).replace("-", " ") + addUnit(arg)}
       </th>
     );
   }
   if (arg.toLowerCase() !== search.toLowerCase()) {
     return (
       <th scope="col" key={arg} className="px-4 py-2 text-left">
-        {capitalize(arg).replace('-' , ' ') + addUnit(arg)}
+        {capitalize(arg).replace("-", " ") + addUnit(arg)}
       </th>
     );
   } else {
     return (
       <th scope="col" key={arg} className="px-4 py-2 text-left">
         <div className="flex gap-x-2">
-          {capitalize(arg).replace('_' , ' ') + addUnit(arg)}
+          {capitalize(arg).replace("_", " ") + addUnit(arg)}
           <input
             type="text"
             className="rounded-md bg-primary-100 text-7"
@@ -121,19 +128,24 @@ function TableHead({
 }
 
 // display image instead , image props should be set to true and a field should be name "image"
-function displayImageCells (key : string , d : any, image : boolean) : string | JSX.Element {
-    if (key.toLowerCase() === "image" && image) {
-      return (<div className="rounded-full overflow-hidden h-6 aspect-square">
-        <img src={d.image} alt="icon of an ingredient object-center"/>
-      </div>)
-    } 
-    return d[key]
+function displayImageCells(
+  key: string,
+  d: any,
+  image: boolean
+): string | JSX.Element {
+  if (key.toLowerCase() === "image" && image) {
+    return (
+      <div className="rounded-full overflow-hidden h-6 aspect-square">
+        <img src={d.image} alt="icon of an ingredient object-center" />
+      </div>
+    );
+  }
+  return d[key];
 }
-
 
 function TableBody({ data, keys, endpoint, image }: TableBodyProps) {
   const deleteItem = useFetcher();
-  const location = useLocation()
+  const location = useLocation();
 
   return (
     <tbody>
@@ -142,23 +154,23 @@ function TableBody({ data, keys, endpoint, image }: TableBodyProps) {
           {data.map((d) => {
             return (
               <tr
-              key={d.id}
-              className="even:bg-white-100 odd:bg-primary-300 text-8"
+                key={d.id}
+                className="even:bg-white-100 odd:bg-primary-300 text-8"
               >
                 {keys.map((k) => {
                   return (
                     <td key={d.id + k} className="px-4 py-1">
                       {typeof d[k] === "object" ? (
                         <>{d[k].map((el: string) => el).join(" ")}</>
-                        ) : (
-                          displayImageCells(k, d, image)
+                      ) : (
+                        displayImageCells(k, d, image)
                       )}
                     </td>
                   );
                 })}
                 <td className="text-right px-4 py-2">
                   <div className="flex gap-x-2">
-                    <div className="" >
+                    <div className="">
                       <Link to={location.pathname + "/update/" + d.id}>
                         <EditIcon size="5" />
                       </Link>
@@ -166,7 +178,7 @@ function TableBody({ data, keys, endpoint, image }: TableBodyProps) {
                     <deleteItem.Form
                       method="DELETE"
                       action={endpoint ? endpoint : ""}
-                      >
+                    >
                       <button type="submit" name="id" value={d.id}>
                         <DeleteIcon size="5" />
                       </button>

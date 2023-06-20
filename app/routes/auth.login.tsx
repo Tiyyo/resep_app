@@ -26,7 +26,7 @@ import { login } from "~/service/auth.server";
 import ErrorIcon from "~/assets/icons/ErrorIcon";
 
 export async function loader({ request }: LoaderArgs) {
-  return (await getUser(request)) ? redirect("/") : null;
+  return (await getUser(request)) ? redirect("/home") : null;
 }
 
 export const validator = withZod(

@@ -39,6 +39,7 @@ export function FormField({
           value={value}
           className="block px-2.5 pb-2 pt-3 w-full text-sm text-gray-900 rounded-xl border appearance-none dark:text-white dark:border-gray-600 dark:focus:border-secondary-300 focus:outline-none focus:ring-0 focus:border-secondary-300 peer"
           placeholder=" "
+          autoComplete={type === "password" ? "off" : "on"} 
         />
         <label
           htmlFor={htmlFor}

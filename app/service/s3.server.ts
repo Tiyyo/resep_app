@@ -111,11 +111,7 @@ export async function deleteImageFromBucket (imageKey : string) {
           console.log('Delete succesfully');
         }
     })
-
   }
-
-
-
 }
 
   

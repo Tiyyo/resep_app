@@ -19,15 +19,15 @@ export async function loader({ request }: LoaderArgs) {
 export default function MacrosPanel() {
   const { macros } = useLoaderData();
 
+  console.log(macros);
+
   return (
     <>
-    <Outlet context={{ UpdateForm : UpdateMacroForm }}/>
+      <Outlet context={{ UpdateForm: UpdateMacroForm }} />
       <div className="">
         <div>
-          {macros && macros.length > 0 ? (
+          {macros && (
             <Table data={macros} endpoint="/api/macros" search="food" />
-          ) : (
-            "No macro nutriment in database"
           )}
         </div>
       </div>

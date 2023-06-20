@@ -28,14 +28,14 @@ let googleStrategy = new GoogleStrategy (
                 create : {email : profile.emails[0].value,
                           password : randomPassword, 
             }})
+
             const userProfile = await prisma.profiles.upsert(
                 {
-                    where : {userId : user.id},
+                    where : {user_id: user.id},
                     update : {},
-                    create : {userId  : user.id , avatar : profile.photos[0].value }
+                    create : {user_id  : user.id , avatar : profile.photos[0].value, username : profile.name.givenName}
                 }
             )
-            console.log(userProfile);
             return user.id
         } catch (err) {
             console.log(err)

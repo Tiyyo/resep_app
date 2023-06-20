@@ -16,7 +16,6 @@ export async function loader({ request }: LoaderArgs) {
   return json({ icons });
 }
 
-
 export default function EditIcons() {
   // ts errors remix bugs open issue here
   //https://github.com/remix-run/remix/issues/3931
@@ -31,15 +30,13 @@ export default function EditIcons() {
       <Outlet context={{ UpdateForm: UpdateIconsForm }} />
       <div>
         <div>
-          {icons && icons.length > 0 ? (
+          {icons && (
             <Table
               data={dataTable}
               image={true}
               endpoint="/api/icons"
               search="name"
             />
-          ) : (
-            ""
           )}
         </div>
       </div>
