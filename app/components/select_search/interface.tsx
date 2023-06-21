@@ -4,7 +4,7 @@ interface Option {
 }
 
 export interface SelectSearchProps {
-    data: Array<object>;
+    data: Array<any>;
     name : string
     index : string
     filterBy: string;

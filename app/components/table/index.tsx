@@ -18,10 +18,7 @@ export default function Table({
     value: string;
   }>();
 
-  console.log(data, 'DATA');
-
   if (data.length < 1) {
-    console.log('data doesnt exists');
     return <div className="w-full h-full center"><p>Database is Empty</p></div>;
   }
 
@@ -59,6 +56,7 @@ export default function Table({
             image={image ?? false}
             endpoint={endpoint ? endpoint : ""}
             isMultiData={isMultiData ?? false}
+            search={search ?? undefined}
           />
         )}
       </table>
@@ -143,7 +141,7 @@ function displayImageCells(
   return d[key];
 }
 
-function TableBody({ data, keys, endpoint, image }: TableBodyProps) {
+function TableBody({ data, keys, endpoint, image, search }: TableBodyProps) {
   const deleteItem = useFetcher();
   const location = useLocation();
 
@@ -152,6 +150,7 @@ function TableBody({ data, keys, endpoint, image }: TableBodyProps) {
       {data && data.length ? (
         <>
           {data.map((d) => {
+            if( search && !d[search]) return null
             return (
               <tr
                 key={d.id}

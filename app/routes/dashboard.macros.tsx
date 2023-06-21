@@ -19,8 +19,6 @@ export async function loader({ request }: LoaderArgs) {
 export default function MacrosPanel() {
   const { macros } = useLoaderData();
 
-  console.log(macros);
-
   return (
     <>
       <Outlet context={{ UpdateForm: UpdateMacroForm }} />
@@ -41,7 +39,7 @@ export function ErrorBoundary() {
   console.log(error);
 
   if (!isRouteErrorResponse(error)) {
-    return <Link to="/admin_panel/macros">Refresh</Link>;
+    return <Link to="/dashboard/macros">Refresh</Link>;
   }
 
   if (error.status === 404) {

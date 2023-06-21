@@ -28,7 +28,7 @@ interface RecipeRawForm {
 }
 
 
-interface Macros {
+export interface Macros {
     id: number
     food?: string | null
     calories: number | Decimal
@@ -38,7 +38,7 @@ interface Macros {
     water: number | Decimal
 }
 
-interface UnitMeasure {
+export interface UnitMeasure {
     id: number
     equivalent: number | Decimal | null
     unit: string //--'grams' | 'mililiters'
@@ -46,14 +46,14 @@ interface UnitMeasure {
     name: string
 }
 
-interface Icon {
+export interface Icon {
     id: number
     name: string
     link: string
     image_key: string
 }
 
-interface Ingredient {
+export interface Ingredient {
     id: number
     categoryId: number
     iconId?: number | null
@@ -64,7 +64,7 @@ interface Ingredient {
     unit_weight?: number | null | Decimal
 }
 
-interface Measure {
+export interface Measure {
     ingredient: Ingredient
     ingredientId: number
     qty: number | Decimal
@@ -74,7 +74,7 @@ interface Measure {
     unit_measure: UnitMeasure
 }
 
-type Measures = Array<Measure>
+export type Measures = Array<Measure>
 
 function convertStringToNumber(rawForm: RecipeRawForm) {
     const convertRecipe = {
@@ -141,11 +141,11 @@ export async function computeTotalMacro(measures: Measures, servings: number) {
             }
         }
         return {
-            calories: (calcQty(m) * m.ingredient.macros.calories) / 100,
-            proteins: (calcQty(m) * m.ingredient.macros.proteins) / 100,
-            carbs: (calcQty(m) * m.ingredient.macros.carbs) / 100,
-            fat: (calcQty(m) * m.ingredient.macros.fat) / 100,
-            water: (calcQty(m) * m.ingredient.macros.water) / 100,
+            calories: (calcQty(m) * (m.ingredient.macros.calories as number)) / 100,
+            proteins: (calcQty(m) * (m.ingredient.macros.proteins as number)) / 100,
+            carbs: (calcQty(m) * (m.ingredient.macros.carbs as number)) / 100,
+            fat: (calcQty(m) * (m.ingredient.macros.fat as number)) / 100,
+            water: (calcQty(m) * (m.ingredient.macros.water as number)) / 100,
         }
     })
         .reduce((acc, curr) => {

@@ -7,35 +7,34 @@ import { validationError } from "remix-validated-form";
 export const validator = withZod(
     Z.object({
         id: Z.string().optional(),
-        ingredient: Z.string().array().min(3),
-        quantity: Z.string().array().min(3), 
-        unit: Z.string().array().min(3),
-        name: Z.string(),
-        prepTime: Z.string(),
-        cookTime: Z.string(),
+        ingredient: Z.string().array().min(3, { message: "At least 3 ingredients are required" }),
+        quantity: Z.string().array().min(3, { message: "At least 3 ingredients are required" }),
+        unit: Z.string().array().min(3, { message: "At least 3 ingredients are required" }),
+        name: Z.string().min(12, { message: "Must be a at least 12 characters long" }),
+        prepTime: Z.string().min(1, { message: 'Required' }),
+        cookTime: Z.string().min(1, { message: 'Required' }),
         author: Z.string(),
-        servings: Z.string(),
+        servings: Z.string().min(1, { message: 'Required' }),
         tags: Z.string().array().optional(),
-        ytLink: Z.string().optional(),
-        level: Z.union([Z.literal('easy'),Z.literal('medium'),Z.literal('hard')]),
-        instructions: Z.string().array().min(1),
+        ytLink: Z.string().startsWith('https://www.youtube.com/', { message: "Only youtube links are allowed" }).optional(),
+        level: Z.union([Z.literal('easy'), Z.literal('medium'), Z.literal('hard')]),
+        instructions: Z.string().array().min(1, { message: "At least 1 instructions  is required" }),
     }).refine(
-        (value) => {
-            return value.ingredient.length === value.quantity.length && value.ingredient.length === value.unit.length
-        },
-        {message : "Ingredient ,quantity and unit should have the same length"}
+        (value) => value.ingredient.length === value.quantity.length && value.ingredient.length === value.unit.length,
+        { message: "Ingredient ,quantity and unit should have the same length", path: ["ingredients"] }
     )
 )
 
 
-export async function action({ request } : ActionArgs) {
+export async function action({ request }: ActionArgs) {
     const method = request.method.toLowerCase()
 
-    switch (method){
+    switch (method) {
         case "post": {
             const formData = await validator.validate(await request.formData())
+            console.log(formData.error);
             if (formData.error) return validationError(formData.error)
-            const { ingredient : ingredients, quantity : qty, unit : units, name, prepTime, cookTime, author, servings, tags, ytLink, level, instructions } = formData.data
+            const { ingredient: ingredients, quantity: qty, unit: units, name, prepTime, cookTime, author, servings, tags, ytLink, level, instructions } = formData.data
 
             let measures = []
             for (let i = 0; i < ingredients.length; i++) {
@@ -64,24 +63,24 @@ export async function action({ request } : ActionArgs) {
             try {
                 const newRecipe = await buildRecipe(form)
                 console.log(newRecipe);
-                return json({status : 200})
-            } catch (error : any) {
-                console.log(error );
-                return json({error : error.message})
+                return json({ status: 200 })
+            } catch (error: any) {
+                console.log(error);
+                return json({ error: error.message })
             }
         }
-        case "patch" : {
+        case "patch": {
             // bloc de code
         }
-        case "delete" : {
+        case "delete": {
             // bloc de code
         }
-        default : {
+        default: {
             throw new Error('Invalid method')
         }
 
     }
-    
+
     // console.log(newRecipe);
 
     // try {
