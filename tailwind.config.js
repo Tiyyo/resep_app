@@ -11,6 +11,9 @@ module.exports = {
         normal: 400,
         bold: 700,
       },
+      height: {
+        body: "calc(100vh - 75px)",
+      },
       minHeight : {
         6 : "1.5rem",
         7 : "1.7rem",
@@ -83,13 +86,13 @@ module.exports = {
         80: "1 2 80%",
       },
       gridTemplateColumns : {
-        app : '5% 15% 80%',
+        app : 'minmax(75px, 95px) minmax(200px, 250px) 1fr',
         main :  "300px 1fr",
         250 :  'repeat(auto-fit, minmax(280px , 1fr))'
       },
       gridTemplateRows : {
         main : "75px 1fr 3fr",
-        app : "6.5% 1fr", 
+        app : "75px 1fr", 
       }
     },
   },

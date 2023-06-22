@@ -9,7 +9,12 @@ interface MeasureRaw {
     qty: string
     ingredient: string
     unit_measure: string
+}
 
+interface Images {
+    link: string    
+    imageKey: string
+    width: number
 }
 
 interface RecipeRawForm {
@@ -19,11 +24,11 @@ interface RecipeRawForm {
     author: string
     servings: string
     level: difficulty
-    picture?: string
     tags?: string[]
     measures: MeasureRaw[]
     instructions: string[]
     ytLink?: string
+    image?: Images
 
 }
 
@@ -77,6 +82,8 @@ export interface Measure {
 export type Measures = Array<Measure>
 
 function convertStringToNumber(rawForm: RecipeRawForm) {
+    
+
     const convertRecipe = {
         name: rawForm.name,
         prepTime: parseInt(rawForm.prepTime, 10),
@@ -85,7 +92,7 @@ function convertStringToNumber(rawForm: RecipeRawForm) {
         servings: parseInt(rawForm.author),
         difficulty: rawForm.level,
         tags: rawForm.tags ?? undefined,
-        picture: rawForm.picture ?? undefined,
+        image: rawForm.image?? undefined,
         ytLink: rawForm.ytLink ?? undefined,
         instructions: rawForm.instructions,
         measures: rawForm.measures.map((m) => {

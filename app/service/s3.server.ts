@@ -64,13 +64,21 @@ export async function uploadStreamToS3(data: any, filename: string) {
 // second step
 const uploadHandler: UploadHandler = async ({ name, data, filename }) => {
 
-    if (name !== "image") {
+    console.log(name , 'NAME INPUT');
+    if (!name.includes("image")) {
         return undefined
     }
 
    const buffer = await convertToBuffer(data)
+   if(!buffer) {  
+    return undefined
+    }
+  //  console.log(buffer , 'RAW BUFFER');
+   const resizedBuffer = resizeImageByHisNameInput(name , buffer)
+  //   console.log(resizedBuffer , 'RESIZED BUFFER');
+  
 
-   const resizedBuffer = sharp(buffer).resize({height : 100 , width : 100 })
+  //  const resizedBuffer = sharp(buffer).resize({height : 100 , width : 100 })
 
     try {
        const {location , imageKey} = await uploadStreamToS3(resizedBuffer, filename!);
@@ -82,13 +90,13 @@ const uploadHandler: UploadHandler = async ({ name, data, filename }) => {
 };
 
 // frist step after action start 
-export async function uploadImage(request: Request) {
+export async function uploadImage(request: Request, nameInput: string) {
     const formData = await unstable_parseMultipartFormData(
         request,
         uploadHandler
     );
 
-    const file = formData.get("image")?.toString() || "";
+    const file = formData.get(nameInput)?.toString() || "";
     const splitString = file.split(" ")
     return {imageLink : splitString[0] , imageKey : splitString[1]};
 }
@@ -112,6 +120,20 @@ export async function deleteImageFromBucket (imageKey : string) {
         }
     })
   }
+}
+
+function resizeImageByHisNameInput (nameInput : string, buffer : Buffer) {
+
+    switch (nameInput) {
+      case 'image_icon' :
+        const resizedBufferIcon = sharp(buffer).resize({height : 100 , width : 100 })
+        return resizedBufferIcon
+      case 'image_recipe' :
+        const resizedBufferRecipe = sharp(buffer).resize({height : 400 , width : 400 })
+        return resizedBufferRecipe
+        default:
+          return null
+    }
 }
 
   

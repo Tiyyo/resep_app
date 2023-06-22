@@ -193,9 +193,9 @@ model IngredientsOnRecipes {
   unit_measure_id Int
   unit_measure    Unit_measures @relation(fields: [unit_measure_id], references: [id])
   ingredient_id    Int
-  ingredient      Ingredients   @relation(fields: [ingredient_id], references: [id], onDelete: Cascade)
+  ingredient      Ingredients   @relation(fields: [ingredient_id], references: [id], onDelete: Restrict)
   recipe_id       Int
-  recipe          Recipes       @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+  recipe          Recipes       @relation(fields: [recipe_id], references: [id], onDelete: Restrict)
 
   @@id([ingredient_id, recipe_id])
 }

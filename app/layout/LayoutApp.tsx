@@ -10,6 +10,7 @@ import NotificationIcon from "~/assets/icons/NotificationIcon";
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const profile = useProfileData();
 
+
   return (
     <LayoutPage>
       <div className="grid grid-cols-app grid-rows-app h-full min-h-screen">
@@ -62,7 +63,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <SettingIcons size="9" />
           </NavLink>
         </nav>
-        <div className="col-start-2 col-end-4 row-start-2">{children}</div>
+        <>{children}</>
       </div>
     </LayoutPage>
   );

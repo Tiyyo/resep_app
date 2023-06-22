@@ -3,6 +3,7 @@ import { withZod } from "@remix-validated-form/with-zod"
 import { buildRecipe } from "~/utils/recipe.builder.server"
 import * as Z from "zod";
 import { validationError } from "remix-validated-form";
+import { uploadImage } from "~/service/s3.server";
 
 export const validator = withZod(
     Z.object({
@@ -27,12 +28,13 @@ export const validator = withZod(
 
 
 export async function action({ request }: ActionArgs) {
-    const method = request.method.toLowerCase()
+    const copyRequest = request.clone();
+    const method = copyRequest.method.toLowerCase()
 
     switch (method) {
         case "post": {
-            const formData = await validator.validate(await request.formData())
-            console.log(formData.error);
+            const formData = await validator.validate(await copyRequest.formData())
+            const { imageLink, imageKey } = await uploadImage(request, "image_recipe");
             if (formData.error) return validationError(formData.error)
             const { ingredient: ingredients, quantity: qty, unit: units, name, prepTime, cookTime, author, servings, tags, ytLink, level, instructions } = formData.data
 
@@ -57,7 +59,12 @@ export async function action({ request }: ActionArgs) {
                 level,
                 qty,
                 measures,
-                instructions
+                instructions  ,
+                image : {
+                    imageKey,
+                    link : imageLink,
+                    width : 400
+                }
             }
 
             try {

@@ -1,11 +1,11 @@
 import CloseIcon from "~/assets/icons/CloseIcon";
 import type { InstructionProps } from "./interface";
-import { useId } from "react";
+
 
 export default function Instruction({ index, remove} : InstructionProps ) {
-  const id = useId()
+const id = Math.floor(Math.random() * 1000);
   return (
-    <div key={index +id}>
+    <div key={index + id}>
       <div className="flex justify-between px-2">
         <p>Step {index + 1}</p>
         <div

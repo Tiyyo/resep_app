@@ -20,7 +20,10 @@ export async function action({ request }: ActionArgs) {
     switch (method) {
         case "post": {
             const rawTags = formData.get("tags");
-            const { imageLink, imageKey } = await uploadImage(request);
+            try {
+            const { imageLink, imageKey } = await uploadImage(request, "image_icon");
+
+            console.log(imageLink, imageKey , 'IMAGE LINKS');
 
             let tags: string[] | undefined = undefined
 
@@ -43,11 +46,12 @@ export async function action({ request }: ActionArgs) {
                 imageKey,
             };
 
-            try {
-                await addIcons(form);
+                const icons = await addIcons(form);
+                if(!icons){
+                    return await deleteImageFromBucket(form.imageKey);
+                }
                 return json({ status: 200 });
             } catch (error: any) {
-                await deleteImageFromBucket(form.imageKey);
                 return json({ error: error.message }, { status: 400 });
             }
         }
@@ -66,11 +70,11 @@ export async function action({ request }: ActionArgs) {
 
             let imageKey: string = ""
             let imageLink: string = ""
-            if (formData.get('image')) {
+            if (formData.get('image_icon')) {
                 if (formData.get('imageKey')) {
                     await deleteImageFromBucket(formData.get('imageKey') as string)
                 }
-                const { imageLink: link, imageKey: key } = await uploadImage(request);
+                const { imageLink: link, imageKey: key } = await uploadImage(request, 'image_icon');
                 imageLink = link
                 imageKey = key
             } else {

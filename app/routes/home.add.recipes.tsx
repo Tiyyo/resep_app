@@ -80,6 +80,7 @@ export default function () {
       <addRecipe.Form
         method="POST"
         action="/api/recipes"
+        encType="multipart/form-data"
         className="flex items-center flex-col gap-y-8"
         ref={addrecipeRef}
       >
@@ -95,9 +96,7 @@ export default function () {
           />
           <Error message={addRecipe?.data?.fieldErrors?.name} />
         </div>
-
-          <Dropzone/>
-          
+          <Dropzone name="image_recipe"/>   
         <div className="flex gap-y-2 items-center flex-col">
           <p>How many people do your recipes feed ?</p>
           <div className="flex gap-x-2 text-secondary-400">
@@ -163,7 +162,6 @@ export default function () {
               buttonProps={buttonPropsStep}
               errors={errorsSteps}
               ElementToGenerate={Instruction}
-              elementProps={measureProps}
             />
           </div>
         </div>

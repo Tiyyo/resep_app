@@ -207,6 +207,12 @@ export async function addRecipes(form) {
             },
           },
         },
+        image: {
+          create: { 
+            link: form.image.link,
+            imageKey: form.imageKey,
+            width: form.image.width,  
+          }},
         tags: form.tags && {
           create: form.tags.map((tag: string) => {
             return {

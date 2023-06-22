@@ -33,7 +33,7 @@ export default function () {
             <Input name="name" placeholder="Icon name" label="Name" />
             <Input name="tags" placeholder="Tags" label="Tags"/>
           </div>
-          <FileInput />
+          <FileInput name="image_icon"/>
           <SubmitButton text="Create icon" />
         </div>
         <Error message={actionData?.error} />
