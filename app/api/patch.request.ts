@@ -19,6 +19,7 @@ export async function patchCategories(object: { name: string, id: number }) {
 
 }
 export async function patchMacros(form) {
+      
     try {
         const updateMacros = await prisma.macros.update({
             where: {
@@ -33,6 +34,7 @@ export async function patchMacros(form) {
                 water: form.water,
             }
         })
+        console.log(updateMacros, 'AFter update');
         await prisma.$disconnect()
         return updateMacros
     } catch (error: any) {

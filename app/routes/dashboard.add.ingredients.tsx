@@ -39,6 +39,8 @@ export default function () {
   const actionData = useActionData();
   const addIngredient = useFetcher()
 
+  console.log(addIngredient);
+
 
   useEffect(() => {
     if (
@@ -46,10 +48,8 @@ export default function () {
       addIngredientFormRef &&
       addIngredientFormRef.current
     ) {
-      console.log('When this is working');
       addIngredientFormRef.current.reset();
       setClear(true)
-      console.log(clear);
     }
     return () => setClear(false)
   }, [addIngredient.state]);

@@ -14,7 +14,7 @@ import {
 } from "~/api/get.all.request";
 import { getRecipeById } from "~/api/get.one.by.id.request";
 import Table from "~/components/table";
-import { UpdateIngredientsForm } from "~/components/update_forms";
+import  UpdateIngredientsForm  from "~/components/update_forms";
 
 export async function loader({ request }: LoaderArgs) {
   return json(

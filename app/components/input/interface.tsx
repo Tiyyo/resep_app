@@ -1,3 +1,5 @@
+import type { Decimal } from "@prisma/client/runtime";
+
 export interface InputProps {
     name : string 
     label?: string;
@@ -7,7 +9,7 @@ export interface InputProps {
     width? : string
     style?: string;
     placeholder? : string
-    defaultValue?: string;
+    defaultValue?: string | null | number | Decimal;
     pattern? : string
 }
 

@@ -21,34 +21,35 @@ export async function action({ request }: ActionArgs) {
         case "post": {
             const rawTags = formData.get("tags");
             try {
-            const { imageLink, imageKey } = await uploadImage(request, "image_icon");
+                const { imageLink, imageKey } = await uploadImage(request, "image_icon");
 
-            console.log(imageLink, imageKey , 'IMAGE LINKS');
+                console.log(imageLink, imageKey, 'IMAGE LINKS');
 
-            let tags: string[] | undefined = undefined
+                let tags: string[] | undefined = undefined
 
-            if (!formData.get("name")) {
-                return json({ error: "A name is mandatory" })
-            }
-            const name = formData.get('name') as string
+                if (!formData.get("name")) {
+                    return json({ error: "A name is mandatory" })
+                }
+                const name = formData.get('name') as string
 
 
-            if (rawTags && typeof rawTags === "string") {
-                tags = wordsToArray(rawTags)
-            }
+                if (rawTags && typeof rawTags === "string") {
+                    tags = wordsToArray(rawTags)
+                }
 
-            // check existence params
+                // check existence params
 
-            const form = {
-                name,
-                tags,
-                imageLink,
-                imageKey,
-            };
+                const form = {
+                    name,
+                    tags,
+                    imageLink,
+                    imageKey,
+                };
 
                 const icons = await addIcons(form);
-                if(!icons){
-                    return await deleteImageFromBucket(form.imageKey);
+                if (!icons) {
+                    await deleteImageFromBucket(form.imageKey)
+                    return json({ error: "Could not add icon" }, { status: 400 });
                 }
                 return json({ status: 200 });
             } catch (error: any) {

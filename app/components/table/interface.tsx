@@ -12,4 +12,5 @@ export interface TableBodyProps {
     endpoint: string;
     isMultiData : boolean
     image: boolean
+    search? : string
 }

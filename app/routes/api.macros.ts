@@ -11,11 +11,11 @@ import { validationError } from "remix-validated-form";
 export const validator = withZod(
     Z.object({
         food: Z.string().toLowerCase(),
-        calories: Z.string(),
-        proteins: Z.string(),
-        carbs: Z.string(),
-        fat: Z.string(),
-        water: Z.string(),
+        calories: Z.string().min(1,{message : "A number is required"}),
+        proteins: Z.string().min(1, {message : "A number is required"}),
+        carbs: Z.string().min(1, {message : "A number is required"})   ,
+        fat: Z.string().min(1, {message : "A number is required"}),
+        water: Z.string().min(1 , {message : "A number is required"}),
         id: Z.string().optional()
     })
 )
@@ -35,19 +35,19 @@ export async function action({ request }: ActionArgs) {
                 proteins,
                 carbs,
                 fat,
-                water,
+                water 
             }
-
-            const formConverted = convertStringToNumber(numberFields)
-            let form = { ...formConverted, food: food?.toLowerCase() }
-
-            try {
-                const newMacro = await addMacros(form)
-                return json({ newMacro }, { status: 200 })
-            }
-            catch (error) {
-                throw new Error("Couldn't add items to database");
-            }
+                try {
+                    const formConverted = await convertStringToNumber(numberFields)  
+                    let form = { ...formConverted, food: food?.toLowerCase() }  
+                    const newMacro = await addMacros(form)     
+                    return json({ newMacro }, { status: 200 })
+                } catch (error : any) {
+                    if(error.message === "Invalid values") {
+                        return json({ error: error.message + "! Numbers must be positive"}, { status: 400 })
+                    }
+                    return json({ error: "Server error ! Couldn't increment database" }, { status: 500 })
+                }
         }
         case "patch": {
             const formData = await validator.validate(await request.formData())
@@ -62,16 +62,19 @@ export async function action({ request }: ActionArgs) {
                 fat,
                 water,
             }
-
-            const formConverted = convertStringToNumber(numberFields)
-            let form = { ...formConverted, food: food?.toLowerCase() }
-
+    
             try {
+                const formConverted = await convertStringToNumber(numberFields)
+    
+                let form = { ...formConverted, food: food?.toLowerCase() }
                 await patchMacros(form)
-                return redirect("/admin_panel/macros")
+                return redirect("/dashboard/macros")
 
-            } catch (error) {
-                throw new Error("Something went wrong !");
+            } catch (error : any) {
+                if(error.message === "Invalid values") {
+                    return json({ error: error.message + "! Numbers must be positive"}, { status: 400 })
+                }
+                return json({ error: "Server error ! Couldn't update database" }, { status: 500 })
             }
         }
         case "delete": {

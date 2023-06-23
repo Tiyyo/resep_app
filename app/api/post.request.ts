@@ -207,10 +207,10 @@ export async function addRecipes(form) {
             },
           },
         },
-        image: {
+        image: form.image && {
           create: { 
             link: form.image.link,
-            imageKey: form.imageKey,
+            imageKey: form.image.imageKey,
             width: form.image.width,  
           }},
         tags: form.tags && {

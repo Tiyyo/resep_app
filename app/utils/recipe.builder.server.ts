@@ -12,7 +12,7 @@ interface MeasureRaw {
 }
 
 interface Images {
-    link: string    
+    link: string
     imageKey: string
     width: number
 }
@@ -82,17 +82,17 @@ export interface Measure {
 export type Measures = Array<Measure>
 
 function convertStringToNumber(rawForm: RecipeRawForm) {
-    
+
 
     const convertRecipe = {
         name: rawForm.name,
         prepTime: parseInt(rawForm.prepTime, 10),
         cookTime: parseInt(rawForm.cookTime, 10),
         author: parseInt(rawForm.author),
-        servings: parseInt(rawForm.author),
+        servings: parseInt(rawForm.servings, 10),
         difficulty: rawForm.level,
         tags: rawForm.tags ?? undefined,
-        image: rawForm.image?? undefined,
+        image: rawForm.image ?? undefined,
         ytLink: rawForm.ytLink ?? undefined,
         instructions: rawForm.instructions,
         measures: rawForm.measures.map((m) => {
@@ -109,14 +109,13 @@ function convertStringToNumber(rawForm: RecipeRawForm) {
 const calcQty = (measure: Measure): number => {
     let qty = 1;
 
-    if (measure.unit_measure.name === "pieces") {
-        return measure.ingredient.unit_weight
-            ? (qty = (measure.qty as number) * (measure.ingredient?.unit_weight as number))
-            : 1;
+    if (measure.unit_measure.name === "pieces" && measure.ingredient.unit_weight) {
+          qty = (measure.qty as number) * (measure.ingredient?.unit_weight as number) 
+          return qty
     }
     if (measure.unit_measure.equivalent) {
-        qty = (measure.qty as number) * (measure.unit_measure.equivalent as number);
-        return qty;
+        qty = (measure.qty as number) * (measure.unit_measure.equivalent as number); 
+        return qty
     }
     return qty
 };
@@ -166,7 +165,7 @@ export async function computeTotalMacro(measures: Measures, servings: number) {
         });
 
     for (const key in result) {
-        result[key as keyof typeof result] = +(result[key as keyof typeof result] / servings).toFixed(1)
+        result[key as keyof typeof result] = +(result[key as keyof typeof result] / servings).toFixed(1);
     }
 
     return result
@@ -180,10 +179,9 @@ export async function buildRecipe(rawForm: RecipeRawForm) {
         throw new Error("Couldn't add raw data to the database");
     }
 
-
     const macro_recipe = await computeTotalMacro(partialRecipe.measures, partialRecipe.servings)
 
-    const updateRecipe = addMacrosToRecipe(macro_recipe, partialRecipe.id)
+    const updateRecipe = await addMacrosToRecipe(macro_recipe, partialRecipe.id)
 
     return updateRecipe
 

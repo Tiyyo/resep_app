@@ -6,6 +6,8 @@ import { capitalize } from "~/utils/capitalize";
 import type { TableBodyProps, TableProps } from "./interface";
 import { useState } from "react";
 
+const numericFields = ["calories", "proteins", "carbs", "fat", "water"];
+
 export default function Table({
   data,
   endpoint,
@@ -26,7 +28,8 @@ export default function Table({
   const keys = Object.keys(data[0]) ?? "";
 
   const filterData = data.filter((f) => {
-    if (searchParams?.fields) {
+
+    if (searchParams?.fields && f[searchParams.fields] ) {
       return f[searchParams.fields].includes(searchParams.value);
     } else {
       return f;
@@ -48,6 +51,7 @@ export default function Table({
             image={image ?? false}
             endpoint={endpoint ? endpoint : ""}
             isMultiData={isMultiData ?? false}
+            search={search ?? undefined}
           />
         ) : (
           <TableBody
@@ -126,7 +130,8 @@ function TableHead({
 }
 
 // display image instead , image props should be set to true and a field should be name "image"
-function displayImageCells(
+// fixed float number to 1 decimal 
+function displayContentToCells(
   key: string,
   d: any,
   image: boolean
@@ -138,8 +143,17 @@ function displayImageCells(
       </div>
     );
   }
+  if(numericFields.includes(key.toLowerCase())){
+      return isNaN(Number(d[key])) ? d[key] : Number(d[key]).toFixed(1)  
+  }
   return d[key];
 }
+
+function displayMultiString(content: Array<string>) {
+  return content.map((el: string) => el).join(" ")
+}
+
+
 
 function TableBody({ data, keys, endpoint, image, search }: TableBodyProps) {
   const deleteItem = useFetcher();
@@ -160,9 +174,9 @@ function TableBody({ data, keys, endpoint, image, search }: TableBodyProps) {
                   return (
                     <td key={d.id + k} className="px-4 py-1">
                       {typeof d[k] === "object" ? (
-                        <>{d[k].map((el: string) => el).join(" ")}</>
+                        <>{displayMultiString(d[k])}</>
                       ) : (
-                        displayImageCells(k, d, image)
+                        displayContentToCells(k, d, image)
                       )}
                     </td>
                   );

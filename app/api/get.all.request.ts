@@ -22,16 +22,15 @@ export async function getCategories() {
     }
 }
 
-export async function getUnitComputes() {
-    try {
-        const unitComputes = await prisma.unit_computes.findMany()
-        await prisma.$disconnect()
-        return unitComputes
-    } catch (error) {
-        console.log(error);
-    }
-
-}
+// export async function getUnitComputes() {
+//     try {
+//         const unitComputes = await prisma.unit_computes.findMany()
+//         await prisma.$disconnect()
+//         return unitComputes
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
 export async function getUnitMeasures() {
     try {
@@ -83,6 +82,20 @@ export async function getIngredients () {
         })
         await prisma.$disconnect()
         return ingredients
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function getRecipes () {
+    try {
+        const recipes = await prisma.recipes.findMany({
+            include : {
+                author : true,
+                macro_recipe : true,  
+            }
+        })
+        return recipes
     } catch (error) {
         console.log(error);
     }

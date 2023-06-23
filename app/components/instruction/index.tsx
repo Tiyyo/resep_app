@@ -3,9 +3,13 @@ import type { InstructionProps } from "./interface";
 
 
 export default function Instruction({ index, remove} : InstructionProps ) {
-const id = Math.floor(Math.random() * 1000);
+
+// non stable cause re-render and reset textarea value
+// const id = Math.floor(Math.random() * 1000);
+
+
   return (
-    <div key={index + id}>
+    <div key={index }>
       <div className="flex justify-between px-2">
         <p>Step {index + 1}</p>
         <div

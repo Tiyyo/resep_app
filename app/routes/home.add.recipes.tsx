@@ -42,7 +42,7 @@ export default function () {
   };
 
   const buttonPropsStep = {
-    condition: "at least 1 intrusction is required",
+    condition: "at least 2 intrusction is required",
     type: "button" as const,
     value: "ADD INSTRUCTION",
     addStyle: "bg-main-300 hover:border-secondary-300",
@@ -69,11 +69,13 @@ export default function () {
 
   useEffect(() => {
     if (addRecipe.state === "idle" && addrecipeRef && addrecipeRef.current) {
-      addrecipeRef.current.reset();
-      setClear(true);
+      // addrecipeRef.current.reset();
+      // setClear(true);
     }
     return () => setClear(false);
   }, [addRecipe.state]);
+
+  console.log(addRecipe?.data?.fieldErrors);
 
   return (
     <div className="p-8">

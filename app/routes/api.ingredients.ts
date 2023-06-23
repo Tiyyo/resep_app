@@ -34,10 +34,12 @@ export async function action({ request }: ActionArgs) {
                 iconId,
                 categoryId,
                 macrosId,
-                unitWeight,
+                unitWeight: unitWeight ?? "0",
             };
 
-            const formConverted = convertStringToNumber(fieldToConvert);
+
+            const formConverted = await convertStringToNumber(fieldToConvert);
+
             let form: IngredientCreateForm | undefined = undefined;
 
             if (formConverted.categoryId) {
@@ -49,14 +51,22 @@ export async function action({ request }: ActionArgs) {
                     unitWeight: formConverted.unitWeight,
                 };
             }
+            console.log(form);
 
             try {
-                if (form)
-                    await addIngredients(form);
-                return json({ status: 200 });
+                if (form) {
+                    const newIngredient = await addIngredients(form);
+                    console.log(newIngredient);
+                    return json({ status: 200 });
+                }
             } catch (error: any) {
-                return json({ error: error.message }, { status: 400 });
+                console.log(error);
+                if (error.message === "Invalid values") {
+                    return json({ error: error.message + "! Numbers must be positive" }, { status: 400 })
+                }
+                return json({ error: "Server error ! Couldn't update database" }, { status: 500 })
             }
+            return null
         }
         case "patch": {
             const formData = await request.formData();

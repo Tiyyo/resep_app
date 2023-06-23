@@ -176,7 +176,7 @@ model Macros {
   proteins    Decimal
   carbs       Decimal
   fat         Decimal
-  water       Decimal
+  water       Decimal       
   ingredients Ingredients[]
   recipe      Recipes?
 }
