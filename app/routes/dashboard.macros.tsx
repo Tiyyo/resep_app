@@ -9,7 +9,7 @@ import {
 } from "@remix-run/react";
 import { getMacros } from "~/api/get.all.request";
 import Table from "~/components/table";
-import UpdateMacroForm from "~/components/update_forms";
+// import UpdateMacroForm from "~/components/update_forms";
 
 export async function loader({ request }: LoaderArgs) {
   const macros = await getMacros();
@@ -21,7 +21,8 @@ export default function MacrosPanel() {
 
   return (
     <>
-      <Outlet context={{ UpdateForm: UpdateMacroForm }} />
+      {/* <Outlet context={{ UpdateForm: UpdateMacroForm }} /> */}
+      <Outlet />
       <div className="">
         <div>
           {macros && (

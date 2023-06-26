@@ -6,6 +6,7 @@ import { json, redirect } from "@remix-run/node";
 import { wordsToArray } from "~/utils/wrodsToArray";
 import { addIcons, type FormIconProps } from "~/api/post.request";
 import { patchIcons } from "~/api/patch.request";
+import { image } from "remix-utils";
 
 export interface FormPropsEditIcon extends FormIconProps {
     id: number
@@ -53,7 +54,7 @@ export async function action({ request }: ActionArgs) {
                 }
                 return json({ status: 200 });
             } catch (error: any) {
-                return json({ error: error.message }, { status: 400 });
+                return json({ error: error.message }, { status: 500 });
             }
         }
         case "patch": {
@@ -71,16 +72,21 @@ export async function action({ request }: ActionArgs) {
 
             let imageKey: string = ""
             let imageLink: string = ""
+
+
             if (formData.get('image_icon')) {
-                if (formData.get('imageKey')) {
-                    await deleteImageFromBucket(formData.get('imageKey') as string)
-                }
+
                 const { imageLink: link, imageKey: key } = await uploadImage(request, 'image_icon');
                 imageLink = link
                 imageKey = key
+
+                if (imageKey && imageLink) {
+                    await deleteImageFromBucket(formData.get('key') as string)
+                }
+
             } else {
-                imageKey = formData.get('imageKey') as string
-                imageLink = formData.get('imageLink') as string
+                imageKey = formData.get('key') as string
+                imageLink = formData.get('link') as string
             }
 
 
@@ -91,12 +97,11 @@ export async function action({ request }: ActionArgs) {
 
             let form: FormPropsEditIcon = { name, id, tags, imageKey, imageLink }
 
-
             try {
                 await patchIcons(form)
-                return redirect('/admin_panel/icons')
+                return redirect('/dashboard/icons')
             } catch (error) {
-                return json({ error: " Could not edit this icon" })
+                return json({ error: " Could not edit this icon" }, { status: 500 })
             }
         }
         case "delete": {
@@ -106,7 +111,7 @@ export async function action({ request }: ActionArgs) {
             let id = formData.get('id') as string
             const idString = { id }
 
-            const idNumber = convertStringToNumber(idString)
+            const idNumber = await convertStringToNumber(idString)
 
             try {
                 if (idNumber.id) {
@@ -122,6 +127,5 @@ export async function action({ request }: ActionArgs) {
         default: {
             throw new Error('Invalid method')
         }
-
     }
 }

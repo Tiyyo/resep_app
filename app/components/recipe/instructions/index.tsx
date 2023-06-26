@@ -7,16 +7,18 @@ export default function InstructionsList({ instructions }: Instructions) {
         </div>
       </div>
       <div className="p-4 bg-secondary-200">
-        {instructions.map((itr: string, index: number) => {
-          return (
-            <div key={index} className="py-4 ">
-              <p className="text-7 text-text-accent_soft p-0.5">
-                Step {index + 1}
-              </p>
-              <li className="text-8">{itr}</li>
-            </div>
-          );
-        })}
+        {instructions
+          .sort((a, b) => b - a)
+          .map((itr: string, index: number) => {
+            return (
+              <div key={index} className="py-4 flex">
+                <p className="text-7 text-text-accent_soft p-0.5 -rotate-90">
+                  {/* Step {index + 1} */}
+                </p>
+                <li className="text-8">{itr}</li>
+              </div>
+            );
+          })}
       </div>
     </div>
   );

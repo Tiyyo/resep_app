@@ -31,7 +31,10 @@ export default function () {
         <div className="flex flex-col center gap-y-4">
           <div className="flex gap-x-4">
             <Input name="name" placeholder="Icon name" label="Name" />
+            <div className="flex items-center">
             <Input name="tags" placeholder="Tags" label="Tags"/>
+            <p  className="text-6 px-2">(optional)</p>
+            </div>
           </div>
           <FileInput name="image_icon"/>
           <SubmitButton text="Create icon" />
@@ -47,7 +50,7 @@ export function ErrorBoundary() {
 
   console.log(error);
 
-  if (!isRouteErrorResponse(error)) {
+  if (!isRouteErrorResponse(error )) {
     return <div className="w-full h-full center flex-col gap-y-8">
       <p>{error.message}</p>
       <p>Please fill all required fields</p>

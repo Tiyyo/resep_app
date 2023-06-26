@@ -19,7 +19,8 @@ export async function patchCategories(object: { name: string, id: number }) {
 
 }
 export async function patchMacros(form) {
-      
+
+    console.log(form, 'DATA IN PATCH QUERY');
     try {
         const updateMacros = await prisma.macros.update({
             where: {
@@ -38,6 +39,7 @@ export async function patchMacros(form) {
         await prisma.$disconnect()
         return updateMacros
     } catch (error: any) {
+        console.log(error);
         return error.message
     }
 }
@@ -106,33 +108,56 @@ export async function patchIngredients(form) {
             data: {
                 name: form.name,
                 unit_weight: form.unitWeight,
-                categoryId : form.categoryId,
-                iconId : form.iconId,
-                macrosId : form.macrosId,
+                category_id: form.categoryId,
+                icon_id: form.iconId,
+                macros_id: form.macrosId,
             },
         })
         return updateIngredient
-    } catch (error : any) {
+    } catch (error: any) {
         console.log(error);
         throw new Error(error.message);
     }
 }
 
-export async function addMacrosToRecipe(macros , id) {
+export async function addMacrosToRecipe(macros, id) {
     try {
         const updateRecipe = await prisma.recipes.update({
-            where : {
-                id : id
+            where: {
+                id: id
             },
-            data : {
-                macro_recipe : {
-                    create : {
-                        calories : macros.calories ,
-                        proteins : macros.proteins,
-                        carbs : macros.carbs,
-                        fat : macros.fat,
-                        water : macros.water
+            data: {
+                macro_recipe: {
+                    create: {
+                        calories: macros.calories,
+                        proteins: macros.proteins,
+                        carbs: macros.carbs,
+                        fat: macros.fat,
+                        water: macros.water
                     }
+                }
+            }
+        })
+        return updateRecipe
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+export async function updateMacroRecipe(macros, id) {
+    try {
+        const updateRecipe = await prisma.recipes.update({
+            where: {
+                id: id
+            },
+            data: {
+                macro_recipe: {
+                    calories: macros.calories,
+                    proteins: macros.proteins,
+                    carbs: macros.carbs,
+                    fat: macros.fat,
+                    water: macros.water
                 }
             }
         })

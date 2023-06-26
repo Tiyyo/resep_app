@@ -50,7 +50,7 @@ export async function action({ request }: ActionArgs) {
 
             try {
                 await patchCategories({ name, id })
-                return redirect("/admin_panel/categories")
+                return redirect("/dashboard/categories")
 
             } catch (error) {
                 throw new Error("Couldn't add items to database");

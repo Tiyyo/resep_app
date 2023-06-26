@@ -5,12 +5,14 @@ export default function Input({
   name,
   type,
   placeholder,
-  width,
+  width = "40",
   unit,
   label,
   step,
   pattern,
-  defaultValue
+  defaultValue,
+  variant,
+  disabled,
 }: InputProps) {
   const [textAlign, setTextAlign] = useState<TextAlign | null>("text-start");
 
@@ -22,8 +24,11 @@ export default function Input({
     }
   }, [type]);
 
+  const variantFlexNoControl =" flex gap-x-1 items-center justify-between"
+  const variantControlGrid = "grid grid-cols-input gap-x-1 place-items-center "
+
   return (
-    <div className="flex gap-x-1 center">
+    <div className={variant === "grid" ? variantControlGrid : variantFlexNoControl}>
       <label htmlFor={name} className="text-8">{label}</label>
       <input
         type={type ?? "text"}
@@ -33,6 +38,7 @@ export default function Input({
         defaultValue={defaultValue}
         step={step ?? "0.1"}
         pattern={pattern}
+        disabled={disabled ? true : false}
         className={`pl-2 pr-1 text-8 h-9 bg-main-300 rounded-md placeholder:pl-1 placeholder:text-7 focus-visible:outline-secondary-300 w-${
           width ?? "40"
         } ${textAlign}`}

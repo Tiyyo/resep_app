@@ -1,22 +1,14 @@
 import { Icons } from "./interface";
 
-export default function LikeIcon({
-  size,
-  outlineColor,
-  fillColor,
-  height,
-  width,
-}: Icons) {
+export default function LikeIcon({size} : {size? : string}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      fill="#7C6666"
-      viewBox={`0 0 ${size ? size : "24"} ${size ? size : "24"}`}
+      fill="transparent"
+      viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke={outlineColor ? outlineColor : "current"}
-      className={`fill-${fillColor ? fillColor : "transparent"} stroke-${
-        outlineColor ? outlineColor : "none"
-      } w-${height ? height : "6"} h-${width ? width : "6"}`}
+      stroke="currentColor"
+      className={`w-${size ?? "6"} h-${size ?? "6"}`}
     >
       <path
         strokeLinecap="round"

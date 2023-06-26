@@ -93,9 +93,36 @@ export async function getRecipes () {
             include : {
                 author : true,
                 macro_recipe : true,  
+                image : {
+                    select : {
+                        imageKey : true,
+                        link : true,
+                    }
+                },
+                measures : {
+                    include : {
+                        ingredient : {
+                            include : {
+                                macros : true
+                            }
+                        } ,
+                        unit_measure : true,
+                    }
+                },
+                favorite : true,
+                reviews : true,
+                instructions : true,
+                tags : {
+                    include : {
+                        tag : true,
+                    }
+                },
             }
         })
-        return recipes
+        const result = recipes.map((recipe) => {
+            return {...recipe, tags : recipe.tags.map((tag) => tag.tag.name)}
+        })
+        return result
     } catch (error) {
         console.log(error);
     }

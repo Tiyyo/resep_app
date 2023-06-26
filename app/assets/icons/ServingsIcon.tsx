@@ -7,7 +7,6 @@ export default function ServingIcon({ size }: { size?: string }) {
       x="0px"
       y="0px"
       viewBox="0 0 122.88 121.87"
-      height={20}
       fill="#7C6666"
       stroke="currentColor"
       className={`w-${size ?? "6"} h-${size ?? "6"}`}

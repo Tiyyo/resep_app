@@ -8,9 +8,9 @@ export default function NutritionFacts({
   calories,
   carbs,
   proteins,
-  lipids,
+  fat,
   water,
-}: Macro) {
+}) {
   return (
     <div className="macros">
       <div className="macros__head">
@@ -32,7 +32,7 @@ export default function NutritionFacts({
             <Carbs />
           </div>
           <p>
-            <span>{carbs ? carbs : ""}</span>g carbs
+            <span>{carbs ? carbs : ""}</span> g carbs
           </p>
         </div>
         <div className="flex items-center justify-center text-7 gap-2.5">
@@ -40,7 +40,7 @@ export default function NutritionFacts({
             <Proteins />
           </div>
           <p>
-            <span>{proteins ? proteins : ""}</span>g proteins
+            <span>{proteins ? proteins : ""}</span> g proteins
           </p>
         </div>
         <div className="flex items-center justify-center text-7 gap-2.5">
@@ -48,7 +48,7 @@ export default function NutritionFacts({
             <Lipids />
           </div>
           <p>
-            <span>{lipids ? lipids : ""}</span>g lipids
+            <span>{fat ? fat : ""}</span> g lipids
           </p>
         </div>
         <div className="flex items-center justify-center text-7 gap-2.5">
@@ -56,7 +56,7 @@ export default function NutritionFacts({
             <Water fillColor="text-200" />
           </div>
           <p>
-            <span>{water ? water : ""}</span>ml water
+            <span>{water ? water : ""}</span> ml water
           </p>
         </div>
       </div>

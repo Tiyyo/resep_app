@@ -68,14 +68,12 @@ export default function () {
   ];
 
   useEffect(() => {
-    if (addRecipe.state === "idle" && addrecipeRef && addrecipeRef.current) {
-      // addrecipeRef.current.reset();
-      // setClear(true);
+    if (addRecipe.state === "idle" && addrecipeRef && addrecipeRef.current && addRecipe.data?.status === 200) {
+        addrecipeRef.current.reset();
+        setClear(true);
     }
     return () => setClear(false);
-  }, [addRecipe.state]);
-
-  console.log(addRecipe?.data?.fieldErrors);
+  }, [addRecipe.state, addRecipe.data?.status]);
 
   return (
     <div className="p-8">
@@ -98,7 +96,7 @@ export default function () {
           />
           <Error message={addRecipe?.data?.fieldErrors?.name} />
         </div>
-          <Dropzone name="image_recipe"/>   
+        <Dropzone name="image_recipe" />
         <div className="flex gap-y-2 items-center flex-col">
           <p>How many people do your recipes feed ?</p>
           <div className="flex gap-x-2 text-secondary-400">

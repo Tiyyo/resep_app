@@ -75,7 +75,8 @@ export async function getRecipeById(recipeId : number) {
                     include : {
                         ingredient : {
                             include : {
-                                macros : true
+                                macros : true,
+                                icon : true,
                             }
                         } ,
                         unit_measure : true,
@@ -84,9 +85,28 @@ export async function getRecipeById(recipeId : number) {
                 difficulty : true,
                 favorite : true,
                 reviews : true,
+                instructions : {
+                    include: {
+                        instructions : true
+                    }
+                },
+                image : {
+                    select : {
+                        link : true
+                    }
+                },
+                tags : {
+                    include : {
+                        tag : true
+                    }
+                }
             }
         })
-        return recipe
+        if(!recipe){
+            throw new Error("Can't find item with associated id");   
+        }
+        const result = {...recipe, tags : recipe.tags.map((tag) => tag.tag.name), instructions : recipe.instructions.map((instruction) => instruction.instructions.description) }
+        return result
     } catch (error) {
         console.log(error);
     }

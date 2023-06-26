@@ -8,9 +8,11 @@ export interface InputProps {
     type? : string
     width? : string
     style?: string;
+    disabled? : boolean
     placeholder? : string
     defaultValue?: string | null | number | Decimal;
     pattern? : string
+    variant? : "grid" | "flex"
 }
 
 export type TextAlign =

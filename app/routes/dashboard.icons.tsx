@@ -9,7 +9,7 @@ import {
 } from "@remix-run/react";
 import { getIcons } from "~/api/get.all.request";
 import Table from "~/components/table";
-import { UpdateIconsForm } from "~/components/update_forms";
+;
 
 export async function loader({ request }: LoaderArgs) {
   const icons = await getIcons();
@@ -27,7 +27,7 @@ export default function EditIcons() {
 
   return (
     <>
-      <Outlet context={{ UpdateForm: UpdateIconsForm }} />
+      <Outlet />
       <div>
         <div>
           {icons && (
@@ -48,7 +48,7 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   if (!isRouteErrorResponse(error)) {
-    return <Link to="/admin_panel/icons">Refresh</Link>;
+    return <Link to="/dashboard/icons">Refresh</Link>;
   }
 
   if (error.status === 404) {

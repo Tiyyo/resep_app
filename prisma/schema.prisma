@@ -92,7 +92,7 @@ model Instructions {
 
 model InstructionOnRecipes {
   instruction_id Int
-  instructions   Instructions @relation(fields: [instruction_id], references: [id], onDelete: Cascade)
+  instructions   Instructions @relation(fields: [instruction_id], references: [id], onDelete: Restrict)
   recipe_id      Int
   recipe         Recipes      @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
 

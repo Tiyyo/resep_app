@@ -19,6 +19,12 @@ module.exports = {
         7 : "1.7rem",
         8 : "2rem"
       },
+      backgroundImage: { 
+          "brush" : "url('/assets/brush/pepper.png')",
+       },
+       scale: {
+        flip: '-1',
+      },
       colors: {
         main : {
           300 : '#fff0d3'
@@ -88,6 +94,7 @@ module.exports = {
       gridTemplateColumns : {
         app : 'minmax(75px, 95px) minmax(200px, 250px) 1fr',
         main :  "300px 1fr",
+        input : '1fr 4fr',
         250 :  'repeat(auto-fit, minmax(280px , 1fr))'
       },
       gridTemplateRows : {

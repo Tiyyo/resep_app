@@ -6,22 +6,28 @@ import AddFileIcon from "~/assets/icons/AddFileIcon";
 import { getTodayDate } from "~/utils/get.today.date";
 import useProfileData from "~/hooks/useProfileData";
 import NotificationIcon from "~/assets/icons/NotificationIcon";
+import BrushOne from "~/assets/brush/UnderlineBrush";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const profile = useProfileData();
-
 
   return (
     <LayoutPage>
       <div className="grid grid-cols-app grid-rows-app h-full min-h-screen">
         <div className="col-start-1 col-end-2 row-start-1 center border-r ">
-          logo
+          
         </div>
-        <div className="col-start-2 col-end-3 row-start-1 place-self-center font-bold text-2xl">
+        <div className="col-start-2 col-end-3 row-start-1 place-self-center font-bold text-2xl relative">
+          <div className="text-secondary-400 opacity-90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <BrushOne />
+          </div>
+          <div className="relative -top-1 z-10 text-15 -rotate-3">
             <span>r</span>
             <span>e</span>
             <span>s</span>
-            <span>ep</span>
+            <span className="scale-x-flip">e</span>
+            <span>p</span>
+          </div>
         </div>
         <header className="col-start-3 col-end-4 flex justify-between items-center px-5">
           <div className="font-bold text-11">Today, {getTodayDate()}</div>
@@ -31,7 +37,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 {profile.profile ? (
                   <>
                     <div>
-                        <NotificationIcon size="5"/>
+                      <NotificationIcon size="5" />
                     </div>
                     <NavLink to="/profile">
                       <div className="h-10 aspect-square rounded-full overflow-hidden">
@@ -53,13 +59,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
         </header>
         <nav className="col-start-1 row-start-2 min-h-full flex flex-col items-center gap-y-6 pt-24 border-r">
-          <NavLink to="/" >
+          <NavLink to="/">
             <HomeIcon size="6" />
           </NavLink>
-          <NavLink to="/dashboard" >
+          <NavLink to="/dashboard">
             <AddFileIcon size="8" />
           </NavLink>
-          <NavLink to="/settings" >
+          <NavLink to="/settings">
             <SettingIcons size="9" />
           </NavLink>
         </nav>

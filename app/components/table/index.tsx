@@ -21,15 +21,17 @@ export default function Table({
   }>();
 
   if (data.length < 1) {
-    return <div className="w-full h-full center"><p>Database is Empty</p></div>;
+    return (
+      <div className="w-full h-full center">
+        <p>Database is Empty</p>
+      </div>
+    );
   }
-
 
   const keys = Object.keys(data[0]) ?? "";
 
   const filterData = data.filter((f) => {
-
-    if (searchParams?.fields && f[searchParams.fields] ) {
+    if (searchParams?.fields && f[searchParams.fields]) {
       return f[searchParams.fields].includes(searchParams.value);
     } else {
       return f;
@@ -130,7 +132,7 @@ function TableHead({
 }
 
 // display image instead , image props should be set to true and a field should be name "image"
-// fixed float number to 1 decimal 
+// fixed float number to 1 decimal
 function displayContentToCells(
   key: string,
   d: any,
@@ -139,21 +141,23 @@ function displayContentToCells(
   if (key.toLowerCase() === "image" && image) {
     return (
       <div className="rounded-full overflow-hidden h-6 aspect-square">
-        <img src={d.image} alt="icon of an ingredient object-center" />
+        {d.image ? (
+          <img src={d.image} alt="icon of an ingredient object-center" />
+        ) : (
+          ""
+        )}
       </div>
     );
   }
-  if(numericFields.includes(key.toLowerCase())){
-      return isNaN(Number(d[key])) ? d[key] : Number(d[key]).toFixed(1)  
+  if (numericFields.includes(key.toLowerCase())) {
+    return isNaN(Number(d[key])) ? d[key] : Number(d[key]).toFixed(1);
   }
   return d[key];
 }
 
 function displayMultiString(content: Array<string>) {
-  return content.map((el: string) => el).join(" ")
+  return content.map((el: string) => el).join(" ");
 }
-
-
 
 function TableBody({ data, keys, endpoint, image, search }: TableBodyProps) {
   const deleteItem = useFetcher();
@@ -164,7 +168,7 @@ function TableBody({ data, keys, endpoint, image, search }: TableBodyProps) {
       {data && data.length ? (
         <>
           {data.map((d) => {
-            if( search && !d[search]) return null
+            if (search && !d[search]) return null;
             return (
               <tr
                 key={d.id}

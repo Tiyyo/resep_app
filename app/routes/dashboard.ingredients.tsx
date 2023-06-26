@@ -10,11 +10,9 @@ import {
   getIcons,
   getIngredients,
   getMacros,
-  getUnitMeasures,
 } from "~/api/get.all.request";
-import { getRecipeById } from "~/api/get.one.by.id.request";
 import Table from "~/components/table";
-import  UpdateIngredientsForm  from "~/components/update_forms";
+
 
 export async function loader({ request }: LoaderArgs) {
   return json(
@@ -30,9 +28,8 @@ export async function loader({ request }: LoaderArgs) {
 export default function () {
   // can't type useLoaderData bugs still not fixed
   // convert type to Serialize object
-  const { ingredients, recipe } = useLoaderData();
+  const { ingredients } = useLoaderData();
 
-  console.log(recipe);
 
   // change location to an execution on server
   // add type
@@ -54,7 +51,7 @@ export default function () {
 
   return (
     <div>
-      <Outlet context={{ UpdateForm : UpdateIngredientsForm}}/>
+      <Outlet/>
       {ingredients ? (
         <Table data={dataIngr} image={true} search="name" endpoint="/api/ingredients"/>
       ) : (

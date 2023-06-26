@@ -4,6 +4,7 @@ import type { UploadHandler} from "@remix-run/node";
 import { PassThrough } from "stream"
 import cuid from "cuid"
 import sharp from "sharp"
+import { image } from "remix-utils";
 
 const region = process.env.BUCKET_REGION;
 const bucketName = process.env.BUCKET_NAME;
@@ -23,9 +24,10 @@ async function convertToBuffer(data: AsyncIterable<Uint8Array>): Promise<Buffer>
     let totalLength = 0 ;
 
     for await (const chunck of data) {
-            chunks.push(chunck);
-            totalLength += chunck.length
+      chunks.push(chunck);
+      totalLength += chunck.length
     }
+
     const buffer = Buffer.concat(chunks, totalLength)
 
     return buffer
@@ -64,19 +66,20 @@ export async function uploadStreamToS3(data: any, filename: string) {
 // second step
 const uploadHandler: UploadHandler = async ({ name, data, filename }) => {
 
-    console.log(name , 'NAME INPUT');
-    if (!name.includes("image")) {
+  if (!name.includes("image")) {
         return undefined
     }
+
+   
 
    const buffer = await convertToBuffer(data)
    if(!buffer) {  
     return undefined
     }
-  //  console.log(buffer , 'RAW BUFFER');
+   console.log(name , 'RAW BUFFER');
    const resizedBuffer = resizeImageByHisNameInput(name , buffer)
   //   console.log(resizedBuffer , 'RESIZED BUFFER');
-  
+  console.log(resizedBuffer , 'RESIZED BUFFER');
 
   //  const resizedBuffer = sharp(buffer).resize({height : 100 , width : 100 })
 
@@ -129,7 +132,7 @@ function resizeImageByHisNameInput (nameInput : string, buffer : Buffer) {
         const resizedBufferIcon = sharp(buffer).resize({height : 100 , width : 100 })
         return resizedBufferIcon
       case 'image_recipe' :
-        const resizedBufferRecipe = sharp(buffer).resize({height : 400 , width : 400 })
+        const resizedBufferRecipe = sharp(buffer).resize({height : 1080 , width : 1080 })
         return resizedBufferRecipe
         default:
           return null

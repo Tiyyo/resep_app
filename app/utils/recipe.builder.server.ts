@@ -1,6 +1,6 @@
 import { Decimal } from "@prisma/client/runtime"
 import { getRecipeById } from "~/api/get.one.by.id.request"
-import { addMacrosToRecipe } from "~/api/patch.request"
+import { addMacrosToRecipe, patchMacros, updateMacroRecipe } from "~/api/patch.request"
 import { addRecipes } from "~/api/post.request"
 
 type difficulty = 'easy' | 'hard' | 'medium'
@@ -56,6 +56,7 @@ export interface Icon {
     name: string
     link: string
     image_key: string
+    tags?: string[] | null
 }
 
 export interface Ingredient {
@@ -184,7 +185,33 @@ export async function buildRecipe(rawForm: RecipeRawForm) {
     const updateRecipe = await addMacrosToRecipe(macro_recipe, partialRecipe.id)
 
     return updateRecipe
+}
 
+export default async function computeNewMacroAfterToUpdateRecipe(recipeId: number) {
+
+    const recipe = await getRecipeById(recipeId)
+
+    if (!recipe) {
+        throw new Error("Couldn't find recipe");
+    }
+
+    console.log(recipe);
+
+    const macro_recipe = await computeTotalMacro(recipe.measures, recipe.servings)
+
+    console.log(macro_recipe, 'UPDATE MACROS');
+
+    const form = {
+        ...macro_recipe, id :  recipe.macro_recipe_id
+    }
+
+    console.log(form, 'FORM');
+
+    const updatedMacroRecipe = await patchMacros(form)
+
+    console.log(updatedMacroRecipe, 'UPDATED MACRO RECIPE');
+
+    return updatedMacroRecipe
 }
 
 

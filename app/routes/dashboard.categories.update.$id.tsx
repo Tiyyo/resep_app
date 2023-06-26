@@ -3,6 +3,7 @@ import { json } from "@remix-run/node";
 import { useLoaderData, useOutletContext } from "@remix-run/react";
 import { getCategoriesById } from "~/api/get.one.by.id.request";
 import Modal from "~/components/modal";
+import UpdateCategoriesForm from "~/components/update_forms/Categories";
 
 export async function loader ({params} : LoaderArgs) {
     const {id : categoryId} = params
@@ -17,12 +18,11 @@ export async function loader ({params} : LoaderArgs) {
 }
 
 export default function EditCategories() {
-    const {UpdateForm} = useOutletContext<any>();
     const {category} = useLoaderData()
     
   return (
     <Modal>
-        <UpdateForm data={category}/>
+        <UpdateCategoriesForm category={category} />
     </Modal>
   );
 }

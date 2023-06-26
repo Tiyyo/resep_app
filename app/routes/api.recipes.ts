@@ -35,10 +35,12 @@ export async function action({ request }: ActionArgs) {
     switch (method) {
         case "post": {
             const formData = await validator.validate(await copyRequest.formData())
+
             let imageLink : string | undefined = undefined
             let imageKey : string | undefined = undefined
-            console.log(formData.data ,'FORM DATA');
+
             if (formData.error) return validationError(formData.error)
+            
             if(formData.data.image_recipe) {
                 let { imageLink : link, imageKey : key  } = await uploadImage(request, "image_recipe");
                 imageLink = link
@@ -79,7 +81,6 @@ export async function action({ request }: ActionArgs) {
 
             try {
                 const newRecipe = await buildRecipe(form)
-                console.log(newRecipe);
                 return json({ status: 200 })
             } catch (error: any) {            
                 await deleteImageFromBucket(imageKey)

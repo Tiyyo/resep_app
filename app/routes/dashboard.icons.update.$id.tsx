@@ -1,8 +1,9 @@
 import type { LoaderArgs } from "@remix-run/node";
 import  { json } from "@remix-run/node";
-import { useLoaderData, useOutletContext } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { getIconsById } from "~/api/get.one.by.id.request";
 import Modal from "~/components/modal";
+import { UpdateIconsForm } from "~/components/update_forms/Icons";
 
 export async function loader({ params }: LoaderArgs) {
     const {id : iconId} = params
@@ -17,12 +18,11 @@ export async function loader({ params }: LoaderArgs) {
   }
   
   export default function ModalUpdate() {
-    const {UpdateForm} = useOutletContext<any>();
-    const {icon} = useLoaderData()
+   const {icon} = useLoaderData()
   
     return (
       <Modal>
-          <UpdateForm data={icon}/>
+        <UpdateIconsForm icon={icon}/>
       </Modal>
     );
   }
