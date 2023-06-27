@@ -147,6 +147,7 @@ export async function computeTotalMacro(measures: Measures, servings: number) {
                 water: 0,
             }
         }
+        console.log(m.ingredient.macros.carbs);
         return {
             calories: (calcQty(m) * (m.ingredient.macros.calories as number)) / 100,
             proteins: (calcQty(m) * (m.ingredient.macros.proteins as number)) / 100,
@@ -195,21 +196,14 @@ export default async function computeNewMacroAfterToUpdateRecipe(recipeId: numbe
         throw new Error("Couldn't find recipe");
     }
 
-    console.log(recipe);
-
     const macro_recipe = await computeTotalMacro(recipe.measures, recipe.servings)
-
-    console.log(macro_recipe, 'UPDATE MACROS');
+    
 
     const form = {
         ...macro_recipe, id :  recipe.macro_recipe_id
     }
 
-    console.log(form, 'FORM');
-
     const updatedMacroRecipe = await patchMacros(form)
-
-    console.log(updatedMacroRecipe, 'UPDATED MACRO RECIPE');
 
     return updatedMacroRecipe
 }

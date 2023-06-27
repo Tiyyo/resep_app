@@ -85,7 +85,9 @@ module.exports = {
         25: "2.5em",
       },
       boxShadow : {
-        morph : 'inset -6px -6px 8px #ece8e1,inset 6px 6px 8px #fffcf3;'
+        morph : 'inset -6px -6px 8px #ece8e1,inset 6px 6px 8px #fffcf3;',
+        sober : 'rgba(0, 0, 0, 0.45) 0px 25px 20px -20px',
+        facebook : 'box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;'
       },
       flex: {
         10: "1 1 10%",

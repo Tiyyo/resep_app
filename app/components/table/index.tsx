@@ -46,25 +46,14 @@ export default function Table({
           search={search ?? undefined}
           getSearchParams={setSearchParams}
         />
-        {data.length === 1 ? (
-          <TableBody
-            data={data[0]}
-            keys={keys}
-            image={image ?? false}
-            endpoint={endpoint ? endpoint : ""}
-            isMultiData={isMultiData ?? false}
-            search={search ?? undefined}
-          />
-        ) : (
-          <TableBody
-            data={filterData}
-            keys={keys}
-            image={image ?? false}
-            endpoint={endpoint ? endpoint : ""}
-            isMultiData={isMultiData ?? false}
-            search={search ?? undefined}
-          />
-        )}
+        <TableBody
+          data={data.length === 1 ? data[0] : filterData }
+          keys={keys}
+          image={image ?? false}
+          endpoint={endpoint ? endpoint : ""}
+          isMultiData={isMultiData ?? false}
+          search={search ?? undefined}
+        />
       </table>
     </div>
   );

@@ -1,6 +1,6 @@
-interface RecipeInfos {
+export interface RecipeInfosProps {
   prepTime: number;
   cookTime: number;
-  servings: number;
-  likes: number;
+  difficulty: 'easy' | 'medium' | 'hard'
+  favorite: number;
 }
