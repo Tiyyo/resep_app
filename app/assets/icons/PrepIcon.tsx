@@ -7,9 +7,9 @@ export default function PrepIcon({ size }: { size?: string }) {
       x="0px"
       y="0px"
       height="18"
-      fill="currentColor"
+      fill="transparent"
       viewBox="0 0 122.79 122.88"
-      strokeWidth={1.5}
+      strokeWidth={3}
       stroke="currentColor"
       className={`w-${size ?? "6"} h-${size ?? "6"}`}
     >

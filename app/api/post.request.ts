@@ -244,6 +244,31 @@ export async function addRecipes(form) {
   }
 }
 
+export async function addReview(form) {
+  try {
+    const newReview = await prisma.reviews.create({
+      data: {
+        rating: form.rating,
+        comment: form.comment,
+        author : {
+          connect : {
+            id : form.authorId
+          }
+        },
+        recipe : {
+          connect : {
+            id : form.recipeId
+          }
+        }
+      }
+    })
+    console.log(newReview);
+    return newReview
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 // form.measures.map((measure) => {
 //   return {
 //     qty: measure.qty,

@@ -74,7 +74,7 @@ model Recipes {
   macro_recipe_id Int?                   @unique
   macro_recipe    Macros?                @relation(fields: [macro_recipe_id], references: [id], onDelete: SetNull)
   tags            RecipesOnTags[]
-  reviews         ReviewsOnRecipes[]
+  reviews         Reviews[]
   measures        IngredientsOnRecipes[]
   instructions    InstructionOnRecipes[]
   favorite_id     Int?
@@ -158,16 +158,16 @@ model TagsOnIcons {
   @@id([icon_id, tag_name])
 }
 
-model Reviews {
-  id         Int                @id @default(autoincrement())
-  author_id   Int
-  author     Profiles           @relation(fields: [author_id], references: [id], onDelete: Cascade)
-  comment    String
-  rating     Int
-  recipes    ReviewsOnRecipes[]
-  created_at DateTime           @default(now())
-  updated_at DateTime?
-}
+// model Reviews {
+//   id         Int                @id @default(autoincrement())
+//   author_id  Int
+//   author     Profiles           @relation(fields: [author_id], references: [id], onDelete: Cascade)
+//   comment    String
+//   rating     Int?
+//   recipes    ReviewsOnRecipes[]
+//   created_at DateTime           @default(now())
+//   updated_at DateTime?
+// }
 
 model Macros {
   id          Int           @id @default(autoincrement())
@@ -200,12 +200,16 @@ model IngredientsOnRecipes {
   @@id([ingredient_id, recipe_id])
 }
 
-model ReviewsOnRecipes {
-  id       Int     @id @default(autoincrement())
-  review_id Int
-  review   Reviews @relation(fields: [review_id], references: [id], onDelete: Cascade)
-  recipe_id Int
-  recipe   Recipes @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+model Reviews {
+  id            Int     @id @default(autoincrement())
+  comment       String
+  rating        Int?
+  created_at    DateTime           @default(now())
+  updated_at    DateTime?
+  author_id     Int
+  author        Profiles @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  recipe_id     Int
+  recipe        Recipes @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
 }
 
 model RecipesOnTags {

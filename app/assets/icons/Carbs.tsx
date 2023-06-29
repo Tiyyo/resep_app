@@ -1,5 +1,5 @@
-import { Icons } from "./interface";
-export default function ({
+import type { Icons } from "./interface";
+export default function CarbsIcon ({
   size,
   outlineColor,
   fillColor,
@@ -14,6 +14,7 @@ export default function ({
       x="0px"
       y="0px"
       height="18"
+      strokeWidth={2.5}
       viewBox="0 0 122.88 122.17"
       fill="currentColor"
     >

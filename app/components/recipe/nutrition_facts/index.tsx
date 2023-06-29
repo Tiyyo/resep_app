@@ -18,43 +18,14 @@ export default function NutritionFacts({
     <div className="macros">
       <div className="macros__head">
         <h2 className="text-8 leading-none">Nutrition Facts</h2>
-        <p className="text-6 pl-4 text-text-accent_soft">|serv</p>
+        <p className="text-7 pl-4 text-text-accent_soft">|serv</p>
       </div>
-      <div className="flex">
+      <div className="flex justify-evenly max-w-[600px]">
         <NutrientIndicator value={calories} addText="Kcal" Icon={<Calories/>}/>
-        {/* <div className="flex items-center justify-center my-2 macro">
-          <div className="rounded-full text-text-200 flex items-center justify-center h-10 w-10 bg-primary-300 p-2">
-            <Calories />
-          </div>
-          <p className="text-6">
-            {calories ? Number(calories).toFixed(1) : ""}
-            Kcal
-          </p>
-        </div>
-        <div className="flex items-center justify-center text-6 gap-2.5">
-          <div className="rounded-full text-text-200 flex items-center justify-center h-10 w-10 bg-primary-300 p-2 text-7 gap-2.5">
-            <Carbs />
-          </div>
-          <p>{carbs ? Number(carbs).toFixed(1) : ""} g carbs</p>
-        </div>
-        <div className="flex items-center justify-center text-6 gap-2.5">
-          <div className="rounded-full text-text-200 flex items-center justify-center h-10 w-10 bg-primary-300 p-2">
-            <Proteins />
-          </div>
-          <p>{proteins ? Number(proteins).toFixed(1) : ""} g proteins</p>
-        </div>
-        <div className="flex items-center justify-center text-6 gap-2.5">
-          <div className="rounded-full text-text-200 flex items-center justify-center h-10 w-10 bg-primary-300 p-2">
-            <Lipids />
-          </div>
-          <p>{fat ? Number(fat).toFixed(1) : ""} g lipids</p>
-        </div>
-        <div className="flex items-center justify-center text-6 gap-2.5">
-          <div className="rounded-full text-text-200 flex items-center justify-center h-10 w-10 bg-primary-300 p-2">
-            <Water fillColor="text-200" />
-          </div>
-          <p>{water ? Number(water).toFixed(1) : ""} ml water</p>
-        </div> */}
+        <NutrientIndicator value={proteins} addText="g Proteins" Icon={<Proteins />}/>
+        <NutrientIndicator value={carbs} addText="g Carbs" Icon={<Carbs />}/>
+        <NutrientIndicator value={fat} addText="g Fat" Icon={<Lipids />}/>
+        <NutrientIndicator value={water} addText="ml Water" Icon={<Water/>}/>
       </div>
     </div>
   );

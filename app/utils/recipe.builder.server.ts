@@ -1,4 +1,4 @@
-import { Decimal } from "@prisma/client/runtime"
+import type { Decimal } from "@prisma/client/runtime"
 import { getRecipeById } from "~/api/get.one.by.id.request"
 import { addMacrosToRecipe, patchMacros, updateMacroRecipe } from "~/api/patch.request"
 import { addRecipes } from "~/api/post.request"
@@ -147,7 +147,6 @@ export async function computeTotalMacro(measures: Measures, servings: number) {
                 water: 0,
             }
         }
-        console.log(m.ingredient.macros.carbs);
         return {
             calories: (calcQty(m) * (m.ingredient.macros.calories as number)) / 100,
             proteins: (calcQty(m) * (m.ingredient.macros.proteins as number)) / 100,

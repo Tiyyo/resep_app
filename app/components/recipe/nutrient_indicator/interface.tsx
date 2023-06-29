@@ -1,12 +1,7 @@
 
 export interface NutrientIndicatorProps {
+    Icon : JSX.Element;
     value: number;
+    addText?: string;
 }
 
-export default function NutrientIndicator({}) {
-  return (
-    <div>
-      
-    </div>
-  );
-}

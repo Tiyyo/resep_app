@@ -1,13 +1,11 @@
 import { json, type LoaderArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { getRecipes } from "~/api/get.all.request";
-import LikeIcon from "~/assets/icons/Like";
 import RecipeCard from "~/components/recipe/card";
 
 export async function loader({ request }: LoaderArgs) {
   const recipes = await getRecipes();
 
-  console.log(recipes);
   return json(recipes);
 }
 

@@ -13,14 +13,13 @@ export async function patchCategories(object: { name: string, id: number }) {
         })
         await prisma.$disconnect()
         return updateCategory
-    } catch (error: any) {
+    } catch (error: unknown) {
         return error.message
     }
 
 }
 export async function patchMacros(form) {
 
-    console.log(form, 'DATA IN PATCH QUERY');
     try {
         const updateMacros = await prisma.macros.update({
             where: {
@@ -35,7 +34,6 @@ export async function patchMacros(form) {
                 water: form.water,
             }
         })
-        console.log(updateMacros, 'AFter update');
         await prisma.$disconnect()
         return updateMacros
     } catch (error: any) {
@@ -48,7 +46,7 @@ export async function patchIcons(form: FormPropsEditIcon) {
     console.log(form);
     try {
         if (form.tags) {
-            let createTags = form.tags.map((tag) => {
+            const createTags = form.tags.map((tag) => {
                 return {
                     tag: {
                         connectOrCreate: {

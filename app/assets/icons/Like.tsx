@@ -6,7 +6,7 @@ export default function LikeIcon({size} : {size? : string}) {
       xmlns="http://www.w3.org/2000/svg"
       fill="transparent"
       viewBox="0 0 24 24"
-      strokeWidth={1.5}
+      strokeWidth={1}
       stroke="currentColor"
       className={`w-${size ?? "6"} h-${size ?? "6"}`}
     >

@@ -110,7 +110,11 @@ export async function getRecipes () {
                     }
                 },
                 favorite : true,
-                reviews : true,
+                reviews : {
+                    include : {
+                        author : true
+                    }
+                },
                 instructions : true,
                 tags : {
                     include : {
@@ -122,7 +126,41 @@ export async function getRecipes () {
         const result = recipes.map((recipe) => {
             return {...recipe, tags : recipe.tags.map((tag) => tag.tag.name)}
         })
+
+        await prisma.$disconnect()
+        console.log(recipes);
         return result
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function getAllReviewByRecipeId (id) {
+    console.log(id);
+    try {
+        const reviews = await prisma.recipes.findUnique({
+            where : {
+                id : id
+            }, 
+        }).reviews(
+            {
+                include : {
+                    author : true
+                },
+                orderBy : [
+                    {
+                        rating : 'desc'
+                    },
+                    {
+                        created_at : 'desc'
+                    },
+          
+                ]
+            }
+        )
+        console.log(reviews, 'REVIEWS');
+        await prisma.$disconnect()
+        return reviews
     } catch (error) {
         console.log(error);
     }

@@ -33,8 +33,13 @@ export default function IngredientsList({
     if (unitAbreviation === "pch") return qty + " " + unitAbreviation;
     if (UNIT_FORMAT_FRACTION.includes(unitAbreviation)) {
       let newQty = (servings * qty) / originalServings;
-      console.log(findNearestFraction(newQty, 2));
-      return <div className="flex gap-x-1 items-center"><>{findNearestFraction(newQty, 2)}</>{unitAbreviation}</div>;
+
+      return (
+        <div className="flex gap-x-1 items-center">
+          <>{findNearestFraction(newQty, 2)}</>
+          {unitAbreviation}
+        </div>
+      );
       // return findNearestFraction(newQty, 2) + " " + unitAbreviation;
     }
     let newQty = (servings * qty) / originalServings;
@@ -114,26 +119,30 @@ export default function IngredientsList({
               key={index}
               className="flex justify-between max-h-8 items-center rounded-2xl py-.5 px-1.5 mx-1"
             >
-              <p className="pl-2 flex items-center gap-x-4 ">
+              <div className="pl-2 flex items-center gap-x-4 ">
                 <img
                   src={measure?.ingredient?.icon?.link}
                   alt=""
                   className="h-8 w-8 rounded-full"
                 />
                 <span className="text-8">{measure.ingredient.name}</span>
-              </p>
-              <p className="pr-6 text-8 text-text-300 opacity-80">
+              </div>
+              <div className="pr-6 text-8 text-text-300 opacity-80">
                 {displayQty(
                   Number(measure.qty),
                   measure.unit_measure.abreviation
                 )}
-              </p>
+              </div>
             </div>
           );
         })}
       </div>
       <div className="h-10 flex items-center justify-between px-10 border-t border-dashed border-slate-900 border-opacity-20">
-        <p className="italic">...full list</p>
+        <p className="italic">
+          {listIsOpen
+            ? "...Hide the complete list"
+            : "...Show the complete list"}
+        </p>
         <div
           className="cursor-pointer"
           onClick={() => setListIsOpen(!listIsOpen)}

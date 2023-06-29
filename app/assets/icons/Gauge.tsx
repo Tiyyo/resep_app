@@ -7,7 +7,7 @@ export default function GaugeIcon({ size }: { size?: string }) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1"
       strokeLinecap="round"
       className={`w-${size ?? "6"} h-${size ?? "6"}`}
     >
