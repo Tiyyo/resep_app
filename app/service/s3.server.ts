@@ -44,6 +44,7 @@ const uploadStream = ({ Key }: Pick<S3.Types.PutObjectRequest, "Key">) => {
     signatureVersion: "v4"
     });
     const pass = new PassThrough();
+    console.log(pass, 'PASS IS CALLED');
     return {
       writeStream: pass,
       promise: s3.upload({ Bucket: bucketName, Key, Body: pass }).promise(),
@@ -58,6 +59,7 @@ export async function uploadStreamToS3(data: any, filename: string) {
     });
     await writeAsyncIterableToWritable(data, stream.writeStream);
     const file = await stream.promise;
+    console.log(file, 'STREAM FILE IS CREATED');
     const location = file.Location 
     const imageKey = file.Key
     return {location , imageKey};
@@ -76,15 +78,12 @@ const uploadHandler: UploadHandler = async ({ name, data, filename }) => {
    if(!buffer) {  
     return undefined
     }
-   console.log(name , 'RAW BUFFER');
-   const resizedBuffer = resizeImageByHisNameInput(name , buffer)
-  //   console.log(resizedBuffer , 'RESIZED BUFFER');
-  console.log(resizedBuffer , 'RESIZED BUFFER');
 
-  //  const resizedBuffer = sharp(buffer).resize({height : 100 , width : 100 })
+   const resizedBuffer = resizeImageByHisNameInput(name , buffer)
 
     try {
        const {location , imageKey} = await uploadStreamToS3(resizedBuffer, filename!);
+       console.log(location , imageKey , 'IS LOCATION IMAGEKEY ARE GOT');
        const locationAndKeyString = location + " " + imageKey
        return locationAndKeyString
     } catch(error) {

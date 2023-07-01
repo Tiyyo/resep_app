@@ -70,8 +70,8 @@ export async function action({ request }: ActionArgs) {
             }
             let id = parseInt((formData.get('id') as string))
 
-            let imageKey: string = ""
-            let imageLink: string = ""
+            let imageKey = ""
+            let imageLink = ""
 
 
             if (formData.get('image_icon')) {
@@ -95,7 +95,7 @@ export async function action({ request }: ActionArgs) {
                 tags = wordsToArray(rawTags)
             }
 
-            let form: FormPropsEditIcon = { name, id, tags, imageKey, imageLink }
+            const form: FormPropsEditIcon = { name, id, tags, imageKey, imageLink }
 
             try {
                 await patchIcons(form)
@@ -108,7 +108,7 @@ export async function action({ request }: ActionArgs) {
             if (!formData.get('id')) {
                 return json({ error: "An id should be provided" })
             }
-            let id = formData.get('id') as string
+            const id = formData.get('id') as string
             const idString = { id }
 
             const idNumber = await convertStringToNumber(idString)

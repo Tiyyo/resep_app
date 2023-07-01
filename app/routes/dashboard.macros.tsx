@@ -13,6 +13,7 @@ import Table from "~/components/table";
 
 export async function loader({ request }: LoaderArgs) {
   const macros = await getMacros();
+  console.log(macros);
   return json({ macros });
 }
 
@@ -21,7 +22,6 @@ export default function MacrosPanel() {
 
   return (
     <>
-      {/* <Outlet context={{ UpdateForm: UpdateMacroForm }} /> */}
       <Outlet />
       <div className="">
         <div>

@@ -18,6 +18,7 @@ export default function () {
       addMacroFormRef &&
       addMacroFormRef.current
     ) {
+      console.log(addMacros);
       if (addMacros?.data?.fields?.name) {
         setErrorText(addMacros?.data?.fields?.name);
       }

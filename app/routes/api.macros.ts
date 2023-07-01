@@ -40,8 +40,11 @@ export async function action({ request }: ActionArgs) {
                 try {
                     const formConverted = await convertStringToNumber(numberFields)  
                     let form = { ...formConverted, food: food?.toLowerCase() }  
-                    const newMacro = await addMacros(form)     
-                    return json({ newMacro }, { status: 200 })
+                    console.log(form ,'VALUES FAFTER CONVERTING');
+                    const newMacro = await addMacros(form)   
+                    if(newMacro) {
+                        return json({ status: 200 })
+                    } 
                 } catch (error : any) {
                     if(error.message === "Invalid values") {
                         return json({ error: error.message + "! Numbers must be positive"}, { status: 400 })
@@ -88,7 +91,9 @@ export async function action({ request }: ActionArgs) {
                 id: id
             }
 
-            const formConverted = convertStringToNumber(values)
+            const formConverted = await convertStringToNumber(values)
+
+            console.log(formConverted, 'IS ID IS PRESENT');
 
             try {
                 if (formConverted.id) {

@@ -13,7 +13,7 @@ export default function () {
   const recipes = useLoaderData();
 
   return (
-    <div className="flex gap-x-4 justify-start p-4">
+    <div className="flex gap-4 justify-start p-4 flex-wrap">
       {recipes.map((recipe) => {
         return (
           <RecipeCard

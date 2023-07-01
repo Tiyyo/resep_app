@@ -50,12 +50,13 @@ export async function addCategory(name: string): Promise<Ingredient_categories |
 
 export async function addMacros(form: any): Promise<Macros | ErrorMessage | undefined> {
   let macro: Prisma.MacrosCreateInput
+  console.log(form , 'DATA FORM BEFORE CREATE MACRO');
   try {
     macro = {
       food: form.food ?? null,
       calories: form.calories,
       proteins: form.proteins,
-      carbs: form.proteins,
+      carbs: form.carbs,
       fat: form.fat,
       water: form.water
     }
