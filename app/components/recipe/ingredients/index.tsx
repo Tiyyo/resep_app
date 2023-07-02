@@ -15,7 +15,7 @@ export default function IngredientsList({
   const [servings, setServings] = useState<number>(originalServings);
   const [listIsOpen, setListIsOpen] = useState<boolean>(false);
 
-  const UNIT_FORMAT_FRACTION = ["tbsp", "tsp", "pods"];
+  const UNIT_FORMAT_FRACTION = ["tbsp", "tsp", "pods", "cup"];
   const styleOpenIngredientList =
     "max-h-fit overflow-hidden flex flex-col gap-y-4 transition-all";
   const styleCloseIngredientList =
@@ -36,7 +36,7 @@ export default function IngredientsList({
 
       return (
         <div className="flex gap-x-1 items-center">
-          <>{findNearestFraction(newQty, 2)}</>
+          <>{findNearestFraction(newQty, 4)}</>
           {unitAbreviation}
         </div>
       );
@@ -71,7 +71,7 @@ export default function IngredientsList({
   };
 
   return (
-    <div className="relative flex flex-col bg-main-300 rounded-lg mt-4 gap-y-3 py-2 shadow-sober min-w-[290px]">
+    <div className="relative flex flex-col bg-main-100 border rounded-lg mt-4 gap-y-3 py-2 shadow-sober min-w-[290px]">
       <div className="flex gap-x-8 items-center self-center text-secondary-300 border-b border-dashed border-slate-900 border-opacity-20 w-full px-6 justify-between">
         <div className="flex items-center gap-x-2">
           <ServingIcon size="4" />

@@ -109,7 +109,6 @@ export async function getRecipes () {
                         unit_measure : true,
                     }
                 },
-                favorite : true,
                 reviews : {
                     include : {
                         author : true
@@ -128,7 +127,6 @@ export async function getRecipes () {
         })
 
         await prisma.$disconnect()
-        console.log(recipes);
         return result
     } catch (error) {
         console.log(error);
@@ -158,7 +156,6 @@ export async function getAllReviewByRecipeId (id) {
                 ]
             }
         )
-        console.log(reviews, 'REVIEWS');
         await prisma.$disconnect()
         return reviews
     } catch (error) {

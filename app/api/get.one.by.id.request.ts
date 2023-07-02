@@ -83,7 +83,6 @@ export async function getRecipeById(recipeId : number) {
                     }
                 },
                 difficulty : true,
-                favorite : true,
                 reviews : true,
                 instructions : {
                     include: {

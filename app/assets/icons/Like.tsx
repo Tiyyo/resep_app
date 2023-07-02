@@ -1,10 +1,10 @@
 import { Icons } from "./interface";
 
-export default function LikeIcon({size} : {size? : string}) {
+export default function LikeIcon({size, fill} : {size? : string, fill? : boolean}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      fill="transparent"
+      fill={fill ? "currentColor" : "none"}
       viewBox="0 0 24 24"
       strokeWidth={1}
       stroke="currentColor"

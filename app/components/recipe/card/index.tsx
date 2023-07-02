@@ -7,7 +7,10 @@ export default function RecipeCard({
   recipeName,
   recipeCalories,
   recipeId,
+  isLiked,
 }: RecipeCardProps) {
+
+  console.log(isLiked);
   return (
     <div className="flex flex-col h-72 w-48 border p-2 bg-main-300 shadow-xl">
       <div className="">
@@ -21,8 +24,12 @@ export default function RecipeCard({
           <div className="text-8 opacity-80">
             {Number(recipeCalories).toFixed(0)}kcal
           </div>
-          <div>
-            <LikeIcon />
+          <div className="">
+            {isLiked ? (
+              <LikeIcon size="8" fill={true} />
+            ) : (
+              <LikeIcon size="8" />
+            )}
           </div>
         </div>
       </div>

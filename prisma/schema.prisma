@@ -35,7 +35,7 @@ model Profiles {
   activity_level    Activity_levels? @relation(fields: [activity_level_id], references: [id])
   reviews           Reviews[]
   recipes           Recipes[]
-  favorites         Favorites[]
+  // favorites         Favorites[]
 }
 
 model Genders {
@@ -77,8 +77,8 @@ model Recipes {
   reviews         Reviews[]
   measures        IngredientsOnRecipes[]
   instructions    InstructionOnRecipes[]
-  favorite_id     Int?
-  favorite        Favorites?             @relation(fields: [favorite_id], references: [id], onDelete: SetNull)
+  // favorite_id     Int?
+  // favorite        Favorites?             @relation(fields: [favorite_id], references: [id], onDelete: SetNull)
   youtube_link    String?
   level           String
   difficulty      Difficulties           @relation(fields: [level], references: [name], onDelete: SetDefault)
@@ -181,12 +181,12 @@ model Macros {
   recipe      Recipes?
 }
 
-model Favorites {
-  id        Int       @id @default(autoincrement())
-  profile_id Int
-  owner     Profiles  @relation(fields: [profile_id], references: [id])
-  recipes   Recipes[]
-}
+// model Favorites {
+//   id        Int       @id @default(autoincrement())
+//   profile_id Int
+//   owner     Profiles  @relation(fields: [profile_id], references: [id])
+//   recipes   Recipes[]
+// }
 
 model IngredientsOnRecipes {
   qty             Decimal
@@ -201,15 +201,16 @@ model IngredientsOnRecipes {
 }
 
 model Reviews {
-  id            Int     @id @default(autoincrement())
   comment       String
+  is_liked      Boolean            @default(false)
   rating        Int?
   created_at    DateTime           @default(now())
   updated_at    DateTime?
   author_id     Int
-  author        Profiles @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author        Profiles           @relation(fields: [author_id], references: [id], onDelete: Cascade)
   recipe_id     Int
-  recipe        Recipes @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+  recipe        Recipes            @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+  @@unique([author_id, recipe_id])
 }
 
 model RecipesOnTags {

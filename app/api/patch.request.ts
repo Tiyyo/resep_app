@@ -164,3 +164,43 @@ export async function updateMacroRecipe(macros, id) {
         console.log(error);
     }
 }
+
+export async function addRecipeToFavorites(authorId, recipeId) {
+
+    try {
+        const updatedInfos = await prisma.reviews.update({
+            where: {
+                author_id_recipe_id: {
+                    author_id: Number(authorId),
+                    recipe_id: Number(recipeId)
+                }
+            }, data: {
+                is_liked: true
+            }
+        })
+
+        return updatedInfos
+    } catch (error) {
+
+    }
+}
+
+export async function removeRecipeFromFavorites(authorId, recipeId) {
+
+    try {
+        const updatedInfos = await prisma.reviews.update({
+            where: {
+                author_id_recipe_id: {
+                    author_id: Number(authorId),
+                    recipe_id: Number(recipeId)
+                }
+            }, data: {
+                is_liked: false
+            }
+        })
+
+        return updatedInfos
+    } catch (error) {
+
+    }
+}

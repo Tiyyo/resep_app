@@ -8,11 +8,11 @@ export default function InstructionsList({ instructions }: Instructions) {
           Instructions
         </div>
       </div>
-      <div className="flex flex-col gap-y-4 max-w-[600px]">
+      <div className="flex flex-col gap-y-4">
         {reversedInstructions
           .map((itr: string, index: number) => {
             return (
-              <div key={index} className="py-4 flex items-center bg-main-300 rounded-lg shadow-facebook">
+              <div key={index} className="py-4 flex items-center bg-main-100 rounded-lg shadow-facebook">
                 <p className="py-2 text-7 font-semibold text-text-accent p-0.5 -rotate-90 min-w-[50px] h-fit ">
                   Step {index + 1}
                 </p>

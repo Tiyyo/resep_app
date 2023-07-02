@@ -263,7 +263,6 @@ export async function addReview(form) {
         }
       }
     })
-    console.log(newReview);
     return newReview
   } catch (error) {
     console.log(error)

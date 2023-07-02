@@ -4,8 +4,8 @@ import ChevronDownIcon from "~/assets/icons/ChevronDownIcon";
 import ControlShow from "~/components/control_show";
 import FormReview from "~/components/form_review";
 
-export default function CommentSection({ reviews }) {
-  console.log(reviews);
+export default function CommentSection({ reviews, close,openReviewSection  }) {
+  
   const [sectionIsOpen, setSectionIsOpen] = useState<boolean>(false);
 
   const conditionalStyle = reviews.length > 1 && sectionIsOpen ? "overflow-y-scroll" : "" ;
@@ -20,6 +20,7 @@ export default function CommentSection({ reviews }) {
 
   return (
     <div className="flex flex-col gap-y-2 items-center overflow-x-hidden">
+      <FormReview authorId={1} recipeId={reviews[0]?.recipeId} openReviewSection={openReviewSection} />
       <div className={`flex flex-col gap-y-2 items-center max-h-[410px] h-fit  overflow-x-hidden py-4 ${conditionalStyle}`}>
         {controlSizeCommentSection(reviews).map((review) => (
           <Review
@@ -39,7 +40,7 @@ export default function CommentSection({ reviews }) {
           )}
         </div>
       )}
-      <FormReview authorId={1} recipeId={reviews[0]?.recipeId} />
+      
     </div>
   );
 }
