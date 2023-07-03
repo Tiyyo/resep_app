@@ -19,7 +19,7 @@ export default function IngredientsList({
   const styleOpenIngredientList =
     "max-h-fit overflow-hidden flex flex-col gap-y-4 transition-all";
   const styleCloseIngredientList =
-    "max-h-[410px] overflow-hidden flex flex-col gap-y-4 transition-all";
+    "max-h-[650px] overflow-hidden flex flex-col gap-y-4 transition-all";
 
   const handleClickSevings = (e: React.MouseEvent) => {
     if ((e.currentTarget as HTMLElement).dataset.count === "plus") {
@@ -71,7 +71,9 @@ export default function IngredientsList({
   };
 
   return (
-    <div className="relative flex flex-col bg-main-100 border rounded-lg mt-4 gap-y-3 py-2 shadow-sober min-w-[290px]">
+    <>
+    <div className="text-11 font-semibold mt-9">Ingredients</div>
+    <div className="relative flex flex-col bg-main-100 border rounded-lg mt-1 gap-y-3 py-2 shadow-sober min-w-[290px]">
       <div className="flex gap-x-8 items-center self-center text-secondary-300 border-b border-dashed border-slate-900 border-opacity-20 w-full px-6 justify-between">
         <div className="flex items-center gap-x-2">
           <ServingIcon size="4" />
@@ -151,5 +153,6 @@ export default function IngredientsList({
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -167,6 +167,7 @@ export async function updateMacroRecipe(macros, id) {
 
 export async function addRecipeToFavorites(authorId, recipeId) {
 
+
     try {
         const updatedInfos = await prisma.reviews.update({
             where: {
@@ -178,10 +179,10 @@ export async function addRecipeToFavorites(authorId, recipeId) {
                 is_liked: true
             }
         })
-
+        console.log(updatedInfos);
         return updatedInfos
     } catch (error) {
-
+        console.log(error);
     }
 }
 

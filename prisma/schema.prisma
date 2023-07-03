@@ -201,7 +201,7 @@ model IngredientsOnRecipes {
 }
 
 model Reviews {
-  comment       String
+  comment       String?
   is_liked      Boolean            @default(false)
   rating        Int?
   created_at    DateTime           @default(now())

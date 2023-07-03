@@ -87,7 +87,7 @@ export async function getIngredients () {
     }
 }
 
-export async function getRecipes () {
+export async function getRecipes (authorId : number = 2 ) {
     try {
         const recipes = await prisma.recipes.findMany({
             include : {
@@ -110,6 +110,9 @@ export async function getRecipes () {
                     }
                 },
                 reviews : {
+                    where : {
+                        author_id : authorId
+                    },
                     include : {
                         author : true
                     }

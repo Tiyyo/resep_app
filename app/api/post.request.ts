@@ -50,7 +50,7 @@ export async function addCategory(name: string): Promise<Ingredient_categories |
 
 export async function addMacros(form: any): Promise<Macros | ErrorMessage | undefined> {
   let macro: Prisma.MacrosCreateInput
-  console.log(form , 'DATA FORM BEFORE CREATE MACRO');
+  console.log(form, 'DATA FORM BEFORE CREATE MACRO');
   try {
     macro = {
       food: form.food ?? null,
@@ -181,8 +181,8 @@ export async function addRecipes(form) {
   })
 
   const createMeasure = form.measures.map((m) => {
-      return { qty: m.qty, unit_measure_id: m.unit_measure, ingredient_id: m.ingredient }
-    })
+    return { qty: m.qty, unit_measure_id: m.unit_measure, ingredient_id: m.ingredient }
+  })
 
 
   try {
@@ -209,11 +209,12 @@ export async function addRecipes(form) {
           },
         },
         image: form.image && {
-          create: { 
+          create: {
             link: form.image.link,
             imageKey: form.image.imageKey,
-            width: form.image.width,  
-          }},
+            width: form.image.width,
+          }
+        },
         tags: form.tags && {
           create: form.tags.map((tag: string) => {
             return {
@@ -251,14 +252,14 @@ export async function addReview(form) {
       data: {
         rating: form.rating,
         comment: form.comment,
-        author : {
-          connect : {
-            id : form.authorId
+        author: {
+          connect: {
+            id: form.authorId
           }
         },
-        recipe : {
-          connect : {
-            id : form.recipeId
+        recipe: {
+          connect: {
+            id: form.recipeId
           }
         }
       }
@@ -266,6 +267,24 @@ export async function addReview(form) {
     return newReview
   } catch (error) {
     console.log(error)
+  }
+}
+
+export async function createRecipeToFavorites(authorId, recipeId) {
+
+
+  try {
+    const newInfos = await prisma.reviews.create({
+     data: {
+        author_id: Number(authorId),
+        recipe_id: Number(recipeId),
+        is_liked: true
+      }
+    })
+    console.log(updatedInfos);
+    return newInfos
+  } catch (error) {
+    console.log(error);
   }
 }
 

@@ -1,12 +1,13 @@
-export default function StarIcon({size} : {size? : string}) {
+export default function StarIcon({ size , pick, fill }: { size?: string, fill? : boolean, pick?: boolean }) {
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      fill="currentColor"
+      fill={fill ? "currentColor" : "none"}
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className={`w-${size ?? "6"} h-${size ?? "6"}`}
+      className={`w-${size ?? "6"} h-${size ?? "6"} `}
     >
       <path
         strokeLinecap="round"

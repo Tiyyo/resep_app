@@ -15,36 +15,39 @@ module.exports = {
       height: {
         body: "calc(100vh - 75px)",
       },
-      minHeight : {
-        6 : "1.5rem",
-        7 : "1.7rem",
-        8 : "2rem"
+      minHeight: {
+        6: "1.5rem",
+        7: "1.7rem",
+        8: "2rem",
       },
-      backgroundImage: { 
-          "brush" : "url('/assets/brush/pepper.png')",
-       },
-       scale: {
-        flip: '-1',
+      backgroundImage: {
+        brush: "url('/assets/brush/pepper.png')",
+      },
+      scale: {
+        flip: "-1",
       },
       colors: {
-        main : {
-          100 : "#fff2e7",
-          300 : '#fff0d3'
+        proteins : "#aacfbe",
+        carbs : "#dea88c",
+        fat : "#e3da9f",
+        main: {
+          100: "#fff2e7",
+          300: "#fff0d3",
         },
         primary: {
           // 100: "#FFFBF7",
-          100 : "#FFF8F2",
+          100: "#FFF8F2",
           200: "rgba(255,246,238,1)",
           300: "#fff0df",
         },
         secondary: {
-          100: '#ffd5d8',
+          100: "#ffd5d8",
           200: "#ffaab1",
           300: "#973439",
           400: "#602125",
         },
         text: {
-          light : "#00000096",
+          light: "#00000096",
           100: "#fffefc",
           200: "rgb(160, 86, 86)",
           300: "rgb(74, 64, 64)",
@@ -55,18 +58,21 @@ module.exports = {
           100: "#FFFFFF",
           300: "rgba(196, 196, 196, 0.91)",
           200: "rgba(255, 253, 253, 0.977)",
-          light : "rgba(255, 255, 255, 1)"
+          light: "rgba(255, 255, 255, 1)",
         },
-        black : {
-          light : "#272727d9", 
+        black: {
+          light: "#272727d9",
         },
-        red : '#e32727'
+        red: "#e32727",
       },
       maxHeight: {
         header: "27vh",
       },
-      maxWidth : {
-        xxs : '225px'
+      maxWidth: {
+        xxs: "225px",
+      },
+      aspectRatio: {
+        "2/1": "2/1",
       },
       borderRadius: {
         custom: "0% 100% 75% 25% / 100% 100% 0% 0% ",
@@ -86,25 +92,26 @@ module.exports = {
         20: "2em",
         25: "2.5em",
       },
-      boxShadow : {
-        morph : 'inset -6px -6px 8px #ece8e1,inset 6px 6px 8px #fffcf3;',
-        sober : 'rgba(0, 0, 0, 0.45) 0px 25px 20px -20px',
-        facebook : 'rgba(0, 0, 0, 0.2) 0px 8px 24px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset'
+      boxShadow: {
+        morph: "inset -6px -6px 8px #ece8e1,inset 6px 6px 8px #fffcf3;",
+        sober: "rgba(0, 0, 0, 0.45) 0px 25px 20px -20px",
+        facebook:
+          "rgba(0, 0, 0, 0.2) 0px 8px 24px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
       },
       flex: {
         10: "1 1 10%",
         80: "1 2 80%",
       },
-      gridTemplateColumns : {
-        app : 'minmax(75px, 95px) minmax(200px, 250px) 1fr',
-        main :  "300px 1fr",
-        input : '1fr 4fr',
-        250 :  'repeat(auto-fit, minmax(280px , 1fr))'
+      gridTemplateColumns: {
+        app: "minmax(75px, 95px) minmax(200px, 250px) 1fr",
+        main: "300px 1fr",
+        input: "1fr 4fr",
+        250: "repeat(auto-fit, minmax(280px , 1fr))",
       },
-      gridTemplateRows : {
-        main : "75px 1fr 3fr",
-        app : "75px 1fr", 
-      }
+      gridTemplateRows: {
+        main: "75px 1fr 3fr",
+        app: "75px 1fr",
+      },
     },
   },
 };

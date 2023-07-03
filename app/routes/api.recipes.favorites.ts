@@ -1,6 +1,7 @@
 import{ json, type ActionArgs } from "@remix-run/node";
 import { recipeOnUsers } from "~/api/get.relation.between";
 import { addRecipeToFavorites, removeRecipeFromFavorites, removeRecipeToFavorites } from "~/api/patch.request";
+import { createRecipeToFavorites } from "~/api/post.request";
 
 export async function action({request}:ActionArgs) {
     const formData = await request.formData();
@@ -10,17 +11,21 @@ export async function action({request}:ActionArgs) {
 
 
     const infos = await recipeOnUsers(authorId, recipeId)
+    console.log(infos);
+
     if (!infos) {
-        await addRecipeToFavorites(authorId, recipeId)
+         await createRecipeToFavorites(authorId, recipeId)
     }
 
-    if(infos.is_liked){
-        await removeRecipeFromFavorites(authorId, recipeId)
+    if(infos?.is_liked){
+         await removeRecipeFromFavorites(authorId, recipeId)
     }
 
-    if(!infos.is_liked){
-        await addRecipeToFavorites(authorId, recipeId)
+    if(!infos?.is_liked){
+         await addRecipeToFavorites(authorId, recipeId)
     }
+
+    return json({message: 'ok'})
    
     switch (method){
         case "post": {

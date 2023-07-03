@@ -33,9 +33,9 @@ export default function RecipeInfos({
         ) : (
           <>
           |{" "}
-          <div className="flex items-center gap-x-1">
+          <div className="flex items-center gap-x-1 opacity-70">
             <LikeIcon size="6" />
-            {favorite}
+            {favorite ? favorite + " likes" : ""}
           </div>
           </>
         )}

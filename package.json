@@ -4,6 +4,7 @@
   "scripts": {
     "build": "remix build",
     "dev": "remix dev",
+    "watch" : "postcss tailwind.css -o tailwind.min.css --watch",
     "start": "remix-serve build",
     "typecheck": "tsc"
   },

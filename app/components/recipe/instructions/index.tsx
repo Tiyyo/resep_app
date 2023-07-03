@@ -2,9 +2,9 @@ export default function InstructionsList({ instructions }: Instructions) {
 
   const reversedInstructions = [...instructions].reverse()
   return (
-    <div className="flex text-text-accent flex-col list-none py-6">
-      <div className="relative my-4">
-        <div className="">
+    <div className="flex text-text-accent flex-col list-none py-4">
+      <div className="relative my-2">
+        <div className="text-11 font-semibold">
           Instructions
         </div>
       </div>

@@ -21,7 +21,11 @@ export async function getRecipesByUser(authorId : number) {
                     }
                 },
                 difficulty : true,
-                reviews : true,
+                reviews : {
+                    where : {
+                        author_id : authorId
+                    },
+                },
                 instructions : {
                     include: {
                         instructions : true
@@ -51,7 +55,7 @@ export async function getRecipesByUser(authorId : number) {
     }
 }
 
-export async function getFavoriteRecipes(recipeId : number) {
+export async function getFavoriteRecipes(authorId : number) {
         try {
             const favoriteRecipes = await prisma.recipes.findMany({
                 where : {
@@ -71,7 +75,6 @@ export async function getFavoriteRecipes(recipeId : number) {
                     },
                 }
             })
-            console.log(favoriteRecipes);
             return favoriteRecipes
         } catch (error) {
             console.log(error);
