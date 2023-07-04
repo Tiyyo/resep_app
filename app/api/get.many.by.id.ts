@@ -61,12 +61,13 @@ export async function getFavoriteRecipes(authorId : number) {
                 where : {
                     reviews : {
                         some : {
-                            is_liked : true
+                            is_liked : true,
+                            author_id : authorId
                         },
                     }
                 },
                 include : {
-                    reviews : true,
+                    reviews : true ,
                     macro_recipe : true,
                     image : {
                         select : {

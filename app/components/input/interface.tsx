@@ -12,7 +12,8 @@ export interface InputProps {
     placeholder? : string
     defaultValue?: string | null | number | Decimal;
     pattern? : string
-    variant? : "grid" | "flex"
+    variant? : "grid" | "flex",
+    align? : "start" | "end" | "center"
 }
 
 export type TextAlign =

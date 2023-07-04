@@ -32,14 +32,14 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function () {
   const [clear, setClear] = useState(false);
+
+  // TODO check why this is not used currently
   const [errorText, setErrorText] = useState("");
 
   const { categories, macros, icons } = useLoaderData();
   const addIngredientFormRef = useRef<HTMLFormElement>(null);
   const actionData = useActionData();
   const addIngredient = useFetcher();
-
-  console.log(addIngredient);
 
   useEffect(() => {
     if (
@@ -64,7 +64,6 @@ export default function () {
   }, [addIngredient.state]);
 
   return (
-    // fixed top-0 left-0 bg-black-light min-h-screen w-full
     <div className="center w-full ">
       <addIngredient.Form
         method="POST"
@@ -72,10 +71,14 @@ export default function () {
         ref={addIngredientFormRef}
       >
         <div className="flex flex-col flex-wrap items-center justify-center gap-y-8 first-letter:mt-3">
-
           <div className="flex items-start gap-x-12 ">
             <div className="flex flex-col items-center">
-              <Input name="name" placeholder="Ingredient name" label="Name" />
+              <Input
+                name="name"
+                placeholder="Ingredient name"
+                label="Name"
+                align="start"
+              />
               <Error message={addIngredient?.data?.fieldErrors?.name} />
             </div>
             <div className="flex w-full">
@@ -89,7 +92,7 @@ export default function () {
               <p className="text-6 self-center">(optional)</p>
             </div>
           </div>
-          
+
           <div className="flex items-start  gap-x-12">
             <div>
               <SelectSearch

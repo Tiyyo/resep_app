@@ -11,11 +11,11 @@ import { validationError } from "remix-validated-form";
 export const validator = withZod(
     Z.object({
         food: Z.string().toLowerCase(),
-        calories: Z.string().min(1,{message : "A number is required"}),
-        proteins: Z.string().min(1, {message : "A number is required"}),
-        carbs: Z.string().min(1, {message : "A number is required"})   ,
-        fat: Z.string().min(1, {message : "A number is required"}),
-        water: Z.string().min(1 , {message : "A number is required"}),
+        calories: Z.string().min(1, { message: "A number is required" }),
+        proteins: Z.string().min(1, { message: "A number is required" }),
+        carbs: Z.string().min(1, { message: "A number is required" }),
+        fat: Z.string().min(1, { message: "A number is required" }),
+        water: Z.string().min(1, { message: "A number is required" }),
         id: Z.string().optional()
     })
 )
@@ -35,22 +35,22 @@ export async function action({ request }: ActionArgs) {
                 proteins,
                 carbs,
                 fat,
-                water 
+                water
             }
-                try {
-                    const formConverted = await convertStringToNumber(numberFields)  
-                    let form = { ...formConverted, food: food?.toLowerCase() }  
-                    console.log(form ,'VALUES FAFTER CONVERTING');
-                    const newMacro = await addMacros(form)   
-                    if(newMacro) {
-                        return json({ status: 200 })
-                    } 
-                } catch (error : any) {
-                    if(error.message === "Invalid values") {
-                        return json({ error: error.message + "! Numbers must be positive"}, { status: 400 })
-                    }
-                    return json({ error: "Server error ! Couldn't increment database" }, { status: 500 })
+            try {
+                const formConverted = await convertStringToNumber(numberFields)
+                let form = { ...formConverted, food: food?.toLowerCase() }
+
+                const newMacro = await addMacros(form)
+                if (newMacro) {
+                    return json({ status: 200 })
                 }
+            } catch (error: any) {
+                if (error.message === "Invalid values") {
+                    return json({ error: error.message + "! Numbers must be positive" }, { status: 400 })
+                }
+                return json({ error: "Server error ! Couldn't increment database" }, { status: 500 })
+            }
         }
         case "patch": {
             const formData = await validator.validate(await request.formData())
@@ -65,17 +65,17 @@ export async function action({ request }: ActionArgs) {
                 fat,
                 water,
             }
-    
+
             try {
                 const formConverted = await convertStringToNumber(numberFields)
-    
+
                 let form = { ...formConverted, food: food?.toLowerCase() }
                 await patchMacros(form)
                 return redirect("/dashboard/macros")
 
-            } catch (error : any) {
-                if(error.message === "Invalid values") {
-                    return json({ error: error.message + "! Numbers must be positive"}, { status: 400 })
+            } catch (error: any) {
+                if (error.message === "Invalid values") {
+                    return json({ error: error.message + "! Numbers must be positive" }, { status: 400 })
                 }
                 return json({ error: "Server error ! Couldn't update database" }, { status: 500 })
             }
@@ -92,8 +92,6 @@ export async function action({ request }: ActionArgs) {
             }
 
             const formConverted = await convertStringToNumber(values)
-
-            console.log(formConverted, 'IS ID IS PRESENT');
 
             try {
                 if (formConverted.id) {

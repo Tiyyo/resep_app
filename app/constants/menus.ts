@@ -37,9 +37,9 @@ export const ADMIN_PANEL_MENU = [
 export const HOME_MENU = [
     {
         id: 1, name: 'Recipes', link: "recipes", open: false, icon: null, children: [
-            { id: 2, name: 'Ideas', link: "recipes", open: false, icon: null },
-            { id :3, name: 'My recipes', link: "my_recipes", open: false, icon: null},
-            { id :4, name: 'Favorites', link: "favorites", open: false, icon: null},
+            { id: 2, name: 'For you', link: "recipes", open: false, icon: null },
+            { id: 3, name: 'My recipes', link: "my_recipes", open: false, icon: null },
+            { id: 4, name: 'Favorites', link: "favorites", open: false, icon: null },
             { id: 5, name: 'add new', link: "add/recipes", open: false, icon: AddPlusIcon },
         ]
     },

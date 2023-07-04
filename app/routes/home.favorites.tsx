@@ -8,28 +8,30 @@ export async function loader({ request }: LoaderArgs) {
   const profile = await getProfile(request);
   if (profile && profile.id) {
     const favoriteRecipes = await getFavoriteRecipes(profile.id);
-    return {favoriteRecipes}
+    return { favoriteRecipes };
   }
 }
 
 export default function FavoriteRecipes() {
-  const {favoriteRecipes} = useLoaderData();
+  const { favoriteRecipes } = useLoaderData();
 
   return (
     <div className="flex gap-4 justify-start p-4 flex-wrap">
-      {favoriteRecipes.map((recipe) => {
-        return (
-          <RecipeCard
-            key={recipe.id}
-            recipeId={recipe.id}
-            imageLink={recipe.image.link}
-            recipeName={recipe.name}
-            recipeCalories={recipe.macro_recipe.calories}
-            isLiked={true}
-          />
-        );
-      })}
+      {favoriteRecipes &&
+        favoriteRecipes.length > 0 &&
+        favoriteRecipes.map((recipe: any) => {
+          //  TODO: fix type
+          return (
+            <RecipeCard
+              key={recipe.id}
+              recipeId={recipe.id}
+              imageLink={recipe.image.link}
+              recipeName={recipe.name}
+              recipeCalories={recipe.macro_recipe.calories}
+              isLiked={true}
+            />
+          );
+        })}
     </div>
   );
 }
-

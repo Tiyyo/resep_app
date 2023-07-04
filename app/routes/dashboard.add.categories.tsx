@@ -8,10 +8,9 @@ export default function () {
   const addCategory = useFetcher();
   const [errorText, setErrorText] = useState<string>("");
   const addFormRef = useRef<HTMLFormElement>(null);
-  
+
   const addFormState = addCategory.state;
 
-  
   useEffect(() => {
     if (addCategory.state === "idle" && addFormRef && addFormRef.current) {
       addFormRef.current.reset();
@@ -23,7 +22,7 @@ export default function () {
     <div>
       <addCategory.Form method="post" action="/api/categories" ref={addFormRef}>
         <div className="flex justify-center gap-x-3">
-          <Input name="category" placeholder="Category name" />
+          <Input name="category" placeholder="Category name" align="start" />
           <SubmitButton text="Add Category" />
         </div>
       </addCategory.Form>

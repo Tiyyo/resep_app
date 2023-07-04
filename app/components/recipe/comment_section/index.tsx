@@ -1,18 +1,19 @@
 import { useState } from "react";
 import Review from "../reviews";
-import ChevronDownIcon from "~/assets/icons/ChevronDownIcon";
 import ControlShow from "~/components/control_show";
 import FormReview from "~/components/form_review";
+import type { CommentSectionProps } from "./interface";
+import type { Reviews } from "~/types/recipe";
 
-export default function CommentSection({ reviews, close, openReviewSection }) {
+export default function CommentSection({
+  reviews,
+  recipeId, authorId
+}: CommentSectionProps) {
   const [sectionIsOpen, setSectionIsOpen] = useState<boolean>(false);
 
-  const conditionalStyle =
-    reviews.length > 1 && sectionIsOpen ? "overflow-y-scroll" : "";
+  const thereIsMoreThanThreeReviews = reviews.length > 3;
 
-  const thereIsOneReviewOrMore = reviews.some((review) => review.comment)
-
-  function controlSizeCommentSection(reviews) {
+  function controlSizeCommentSection(reviews: Reviews) {
     if (sectionIsOpen) {
       return reviews;
     }
@@ -23,27 +24,25 @@ export default function CommentSection({ reviews, close, openReviewSection }) {
   return (
     <div className="flex flex-col gap-y-2 items-center overflow-x-hidden">
       <FormReview
-        authorId={1}
-        recipeId={reviews[0]?.recipeId}
-        openReviewSection={openReviewSection}
+        authorId={authorId}
+        recipeId={recipeId}
       />
       <div
-        className={`flex flex-col gap-y-2 items-center max-h-[410px] h-fit  overflow-x-hidden py-4 ${conditionalStyle}`}
+        className={`flex flex-col gap-y-2 items-center w-full max-h-[410px] h-fit  overflow-x-hidden py-4`}
       >
-        {controlSizeCommentSection(reviews).map((review) =>
-          review.comment ? (
-            <Review
-              key={review.id}
-              text={review.comment}
-              rate={review.rating}
-              author={review.author.username}
-            />
-          ) : (
-            ""
-          )
+        {controlSizeCommentSection(reviews).map(
+          (review, index: number) =>
+            review.comment && review.author && (
+              <Review
+                key={index}
+                comment={review.comment}
+                rating={review.rating}
+                author={review.author?.username}
+              />
+            )
         )}
       </div>
-      {reviews.length > 0 && thereIsOneReviewOrMore ? (
+      {thereIsMoreThanThreeReviews && (
         <div onClick={() => setSectionIsOpen(!sectionIsOpen)}>
           {sectionIsOpen ? (
             <ControlShow variant="less" />
@@ -51,7 +50,7 @@ export default function CommentSection({ reviews, close, openReviewSection }) {
             <ControlShow variant="more" />
           )}
         </div>
-      ) :  ""}
+      )}
     </div>
   );
 }

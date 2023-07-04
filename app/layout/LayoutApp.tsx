@@ -63,7 +63,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <HomeIcon size="6" />
           </NavLink>
           <NavLink to="/dashboard">
-            <AddFileIcon size="8" />
+            <AddFileIcon size="6" />
           </NavLink>
           <NavLink to="/settings">
             <SettingIcons size="9" />

@@ -9,8 +9,6 @@ import {
 } from "@remix-run/react";
 import { getIcons } from "~/api/get.all.request";
 import Table from "~/components/table";
-;
-
 export async function loader({ request }: LoaderArgs) {
   const icons = await getIcons();
   return json({ icons });
@@ -30,7 +28,7 @@ export default function EditIcons() {
       <Outlet />
       <div>
         <div>
-          {icons && (
+          {icons && icons.length > 0 && (
             <Table
               data={dataTable}
               image={true}

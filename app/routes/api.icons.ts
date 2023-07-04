@@ -6,7 +6,7 @@ import { json, redirect } from "@remix-run/node";
 import { wordsToArray } from "~/utils/wrodsToArray";
 import { addIcons, type FormIconProps } from "~/api/post.request";
 import { patchIcons } from "~/api/patch.request";
-import { image } from "remix-utils";
+
 
 export interface FormPropsEditIcon extends FormIconProps {
     id: number
@@ -23,8 +23,6 @@ export async function action({ request }: ActionArgs) {
             const rawTags = formData.get("tags");
             try {
                 const { imageLink, imageKey } = await uploadImage(request, "image_icon");
-
-                console.log(imageLink, imageKey, 'IMAGE LINKS');
 
                 let tags: string[] | undefined = undefined
 

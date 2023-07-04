@@ -68,9 +68,14 @@ export default function () {
   ];
 
   useEffect(() => {
-    if (addRecipe.state === "idle" && addrecipeRef && addrecipeRef.current && addRecipe.data?.status === 200) {
-        addrecipeRef.current.reset();
-        setClear(true);
+    if (
+      addRecipe.state === "idle" &&
+      addrecipeRef &&
+      addrecipeRef.current &&
+      addRecipe.data?.status === 200
+    ) {
+      addrecipeRef.current.reset();
+      setClear(true);
     }
     return () => setClear(false);
   }, [addRecipe.state, addRecipe.data?.status]);
@@ -93,6 +98,7 @@ export default function () {
             type="text"
             width="96"
             placeholder="Name your recipe"
+            align="start"
           />
           <Error message={addRecipe?.data?.fieldErrors?.name} />
         </div>
@@ -171,7 +177,7 @@ export default function () {
             Add a youtube link to help to recreate this recipe at home{" "}
             <span className="text-7">(optional)</span>
           </p>
-          <Input type="url" name="ytLink" />
+          <Input type="url" name="ytLink" align="start" />
           <Error message={addRecipe?.data?.fieldErrors?.ytLink} />
         </div>
 

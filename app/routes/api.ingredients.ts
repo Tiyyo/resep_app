@@ -54,7 +54,7 @@ export async function action({ request }: ActionArgs) {
                 }
 
                 if (form) {
-                    const newIngredient = await addIngredients(form);
+                    await addIngredients(form);
                     return json({ status: 200 });
                 }
             } catch (error: any) {
@@ -98,12 +98,10 @@ export async function action({ request }: ActionArgs) {
                     };
                 }
 
-                const updateIngredient = await patchIngredients(form)
-                console.log(updateIngredient);
+                await patchIngredients(form)
                 return redirect('/dashboard/ingredients')
             } catch (error: any) {
                 if (error.message === "Invalid values") {
-                    console.log(error.message);
                     return json({ error: error.message + "! Numbers must be positive" }, { status: 400 })
                 }
                 return json({ error: "Server error ! Couldn't update database" }, { status: 500 })

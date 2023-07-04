@@ -4,6 +4,7 @@ import Lipids from "~/assets/icons/Lipids";
 import Proteins from "~/assets/icons/Proteins";
 import Water from "~/assets/icons/Water";
 import NutrientIndicator from "../nutrient_indicator";
+import type { NutritionFactsProps } from "./interface";
 
 export default function NutritionFacts({
   calories,
@@ -11,7 +12,7 @@ export default function NutritionFacts({
   proteins,
   fat,
   water,
-}) {
+} : NutritionFactsProps) {
 
   
   return (

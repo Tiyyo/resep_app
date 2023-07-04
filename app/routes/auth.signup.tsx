@@ -39,30 +39,29 @@ export const validator = withZod(
         message: "Must containe one special character",
       }),
     confirmedPassword: Z.string(),
-    termsAndService : Z.string().transform(value => value === 'on')
+    termsAndService: Z.string().transform((value) => value === "on"),
   }).refine((data) => data.password === data.confirmedPassword, {
     message: "Passwords don't match !",
     path: ["confirm"],
   })
 );
 
-export async function action ({request} : ActionArgs) {
+export async function action({ request }: ActionArgs) {
   const data = await validator.validate(await request.formData());
   if (data.error) return validationError(data.error);
 
-  const {username, email , password }= data.data
+  const { username, email, password } = data.data;
 
-  return await register({username, email, password})
-} 
-
+  return await register({ username, email, password });
+}
 
 export default function () {
-const actionData = useActionData()
+  const actionData = useActionData();
 
   const [formData, setFormData] = useState({
-    username : "" , 
+    username: "",
     email: "",
-    password: "",   
+    password: "",
   });
 
   const handleInputChange = (
@@ -126,7 +125,6 @@ const actionData = useActionData()
           name="termsAndService"
           error={actionData?.fieldErrors?.termsAndService}
         />
-
       </div>
       <div className="flex gap-x-6 center my-6 ">
         <Button

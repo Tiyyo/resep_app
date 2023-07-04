@@ -12,7 +12,7 @@ export const validator = withZod(
         quantity: Z.string().array().min(3, { message: "At least 3 ingredients are required" }),
         unit: Z.string().array().min(3, { message: "At least 3 ingredients are required" }),
         name: Z.string().min(12, { message: "Must be a at least 12 characters long" }),
-        image_recipe : Z.any().optional(),
+        image_recipe: Z.any().optional(),
         prepTime: Z.string().min(1, { message: 'Required' }),
         cookTime: Z.string().min(1, { message: 'Required' }),
         author: Z.string(),
@@ -36,18 +36,18 @@ export async function action({ request }: ActionArgs) {
         case "post": {
             const formData = await validator.validate(await copyRequest.formData())
 
-            let imageLink : string | undefined = undefined
-            let imageKey : string | undefined = undefined
+            let imageLink: string | undefined = undefined
+            let imageKey: string | undefined = undefined
 
             if (formData.error) return validationError(formData.error)
-            
-            if(formData.data.image_recipe) {
-                let { imageLink : link, imageKey : key  } = await uploadImage(request, "image_recipe");
+
+            if (formData.data.image_recipe) {
+                let { imageLink: link, imageKey: key } = await uploadImage(request, "image_recipe");
                 imageLink = link
                 imageKey = key
-            } 
-                const { ingredient: ingredients, quantity: qty, unit: units, name, prepTime, cookTime, author, servings, tags, ytLink, level, instructions, image_recipe} = formData.data
-  
+            }
+            const { ingredient: ingredients, quantity: qty, unit: units, name, prepTime, cookTime, author, servings, tags, ytLink, level, instructions, image_recipe } = formData.data
+
 
             let measures = []
             for (let i = 0; i < ingredients.length; i++) {
@@ -70,11 +70,11 @@ export async function action({ request }: ActionArgs) {
                 level,
                 qty,
                 measures,
-                instructions  ,
-                image : imageKey && imageLink &&{
-                    imageKey : imageKey,
-                    link : imageLink,
-                    width : 400
+                instructions,
+                image: imageKey && imageLink && {
+                    imageKey: imageKey,
+                    link: imageLink,
+                    width: 400
                 }
             }
 
@@ -82,7 +82,7 @@ export async function action({ request }: ActionArgs) {
             try {
                 const newRecipe = await buildRecipe(form)
                 return json({ status: 200 })
-            } catch (error: any) {            
+            } catch (error: any) {
                 await deleteImageFromBucket(imageKey)
                 console.log(error);
                 return json({ error: error.message })

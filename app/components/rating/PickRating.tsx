@@ -13,13 +13,13 @@ export default function PickRating({numOfStars} : { numOfStars: number }) {
 
 
   return (
-    <fieldset onChange={handleChange} className="flex text-secondary-300">
+    <fieldset onChange={handleChange} className="flex text-secondary-300 ">
       {stars.map((star, index) => {
         return (
           <label
             key={index}
             htmlFor={`rating-${index + 1}`}
-            className="relative center"
+            className="relative center cursor-pointer"
           >
             <input
               type="radio"

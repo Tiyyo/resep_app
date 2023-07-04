@@ -13,14 +13,17 @@ export default function Input({
   defaultValue,
   variant,
   disabled,
+  align,
 }: InputProps) {
   const [textAlign, setTextAlign] = useState<TextAlign | null>("text-start");
 
   useEffect(() => {
-    if (type === "number") {
+    if (align === "end") {
       setTextAlign("text-end");
-    } else {
+    } else if (align === "start") {
       setTextAlign("text-start");
+    } else {
+      setTextAlign("text-center");
     }
   }, [type]);
 

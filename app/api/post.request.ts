@@ -1,6 +1,7 @@
 import { prisma } from "~/service/db.server"
-import { Prisma } from "@prisma/client"
-import type { Ingredient_categories, Ingredients, Macros, } from "@prisma/client"
+import  { Prisma, type Reviews } from "@prisma/client"
+import type { Ingredient_categories, Macros, } from "@prisma/client"
+import  type{  Measure } from "~/types/recipe"
 
 
 type ErrorMessage = {
@@ -21,6 +22,12 @@ export interface IngredientCreateForm {
   macrosId?: number | undefined | null
   iconId?: number | undefined | null
 }
+
+interface ReviewsCreateInput extends Reviews {
+  authorId: number
+  recipeId: number
+}
+
 
 
 /**
@@ -50,7 +57,7 @@ export async function addCategory(name: string): Promise<Ingredient_categories |
 
 export async function addMacros(form: any): Promise<Macros | ErrorMessage | undefined> {
   let macro: Prisma.MacrosCreateInput
-  console.log(form, 'DATA FORM BEFORE CREATE MACRO');
+
   try {
     macro = {
       food: form.food ?? null,
@@ -146,6 +153,7 @@ export async function addIngredients(form: IngredientCreateForm) {
   }
   //---
 
+  // cant solve typescript error  
   try {
     const newIngredient = await prisma.ingredients.create({
       data: {
@@ -168,7 +176,7 @@ export async function addIngredients(form: IngredientCreateForm) {
   }
 }
 
-export async function addRecipes(form) {
+export async function addRecipes(form: any) {
 
   const createInstruction = form.instructions.map((instruction: string) => {
     return {
@@ -180,7 +188,7 @@ export async function addRecipes(form) {
     }
   })
 
-  const createMeasure = form.measures.map((m) => {
+  const createMeasure = form.measures.map((m : Measure) => {
     return { qty: m.qty, unit_measure_id: m.unit_measure, ingredient_id: m.ingredient }
   })
 
@@ -242,11 +250,20 @@ export async function addRecipes(form) {
     })
     return newRecipe.id
   } catch (error) {
-    console.log(error)
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw new Error("Can't add 2 items with the same name")
+      }
+      throw new Error('Unable to add item to database')
+    }
   }
 }
 
-export async function addReview(form) {
+
+export async function addReview(form: ReviewsCreateInput) {
+  const author_id = form.authorId
+  const recipe_id = form.recipeId
+
   try {
     const newReview = await prisma.reviews.create({
       data: {
@@ -254,45 +271,68 @@ export async function addReview(form) {
         comment: form.comment,
         author: {
           connect: {
-            id: form.authorId
+            id: author_id
           }
         },
         recipe: {
           connect: {
-            id: form.recipeId
+            id: recipe_id
           }
         }
       }
     })
     return newReview
-  } catch (error) {
-    console.log(error)
+  } catch (error: any) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw ({ message: 'You cannot add several reviews , Please edit the one you already posted' })
+      }
+      throw ({ message: 'Unable to add item to database' })
+    }
+    return error.message
   }
 }
 
-export async function createRecipeToFavorites(authorId, recipeId) {
+export async function createRecipeToFavorites(authorId: any, recipeId: any) {
 
+  let author_id: number | undefined
+  let recipe_id: number | undefined
+
+  if (typeof authorId !== "number" ) {
+    const id = Number(authorId)
+    if (!isNaN(id)) {
+      throw new Error("Couldn't convert authorId to number")
+    }
+    author_id = id
+  }
+
+  if (typeof recipeId !== "number") {
+    const id = Number(recipeId)
+    if (!isNaN(id)) {
+      throw new Error("Couldn't convert recipeId to number")
+    }
+    recipe_id = id
+  }
 
   try {
     const newInfos = await prisma.reviews.create({
-     data: {
-        author_id: Number(authorId),
-        recipe_id: Number(recipeId),
+      data: {
+        author_id,
+        recipe_id,
         is_liked: true
       }
     })
-    console.log(updatedInfos);
     return newInfos
-  } catch (error) {
-    console.log(error);
+  } catch (error : any) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw ({ message: 'You cannot add several reviews , Please edit the one you already posted' })
+      }
+      throw ({ message: 'Unable to add item to database' })
+    }
+    return error.message
   }
 }
 
-// form.measures.map((measure) => {
-//   return {
-//     qty: measure.qty,
-//     unit_measure_id: measure.unit_measure,
-//     ingredientId: measure.ingredient
-//   }
-// })
+
 

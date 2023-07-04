@@ -1,86 +1,9 @@
-import type { Decimal } from "@prisma/client/runtime"
+
 import { getRecipeById } from "~/api/get.one.by.id.request"
 import { addMacrosToRecipe, patchMacros, updateMacroRecipe } from "~/api/patch.request"
 import { addRecipes } from "~/api/post.request"
+import type { Measure, Measures, RecipeRawForm } from "~/types/recipe"
 
-type difficulty = 'easy' | 'hard' | 'medium'
-
-interface MeasureRaw {
-    qty: string
-    ingredient: string
-    unit_measure: string
-}
-
-interface Images {
-    link: string
-    imageKey: string
-    width: number
-}
-
-interface RecipeRawForm {
-    name: string
-    prepTime: string
-    cookTime: string
-    author: string
-    servings: string
-    level: difficulty
-    tags?: string[]
-    measures: MeasureRaw[]
-    instructions: string[]
-    ytLink?: string
-    image?: Images
-
-}
-
-
-export interface Macros {
-    id: number
-    food?: string | null
-    calories: number | Decimal
-    proteins: number | Decimal
-    carbs: number | Decimal
-    fat: number | Decimal
-    water: number | Decimal
-}
-
-export interface UnitMeasure {
-    id: number
-    equivalent: number | Decimal | null
-    unit: string //--'grams' | 'mililiters'
-    abreviation: string
-    name: string
-}
-
-export interface Icon {
-    id: number
-    name: string
-    link: string
-    image_key: string
-    tags?: string[] | null
-}
-
-export interface Ingredient {
-    id: number
-    categoryId: number
-    iconId?: number | null
-    icon?: Icon | null
-    macrosId?: number | null
-    macros?: Macros | null
-    name: string
-    unit_weight?: number | null | Decimal
-}
-
-export interface Measure {
-    ingredient: Ingredient
-    ingredientId: number
-    qty: number | Decimal
-    recipeId: number
-    unit_compute?: string | null
-    unit_measure_id: number
-    unit_measure: UnitMeasure
-}
-
-export type Measures = Array<Measure>
 
 function convertStringToNumber(rawForm: RecipeRawForm) {
 

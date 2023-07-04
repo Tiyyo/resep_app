@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import type { LinearMacrosProportionProps, Parts } from "./interface";
 
-
-
 export default function LinearMacrosProportion({macros} : LinearMacrosProportionProps ) {
     const [parts , setParts] = useState<Parts>({proteins: null, carbs: null, fat: null})
 

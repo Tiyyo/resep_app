@@ -10,15 +10,12 @@ export default function () {
 
   const addMacroFormRef = useRef<HTMLFormElement>(null);
 
-  console.log(addMacros);
-
   useEffect(() => {
     if (
       addMacros.state === "idle" &&
       addMacroFormRef &&
       addMacroFormRef.current
     ) {
-      console.log(addMacros);
       if (addMacros?.data?.fields?.name) {
         setErrorText(addMacros?.data?.fields?.name);
       }
@@ -40,8 +37,14 @@ export default function () {
     <div>
       <addMacros.Form method="POST" action="/api/macros" ref={addMacroFormRef}>
         <div className="flex flex-col center gap-y-12">
-
-          <Input label="Food" name="food" type="text" unit="" width="25" />
+          <Input
+            label="Food"
+            name="food"
+            type="text"
+            unit=""
+            width="25"
+            align="start"
+          />
 
           <div className="flex flex-col justify-start">
             <Input
@@ -65,7 +68,7 @@ export default function () {
               />
               <Error message={addMacros?.data?.fieldErrors?.proteins} />
             </div>
-            
+
             <div className="flex flex-col justify-start">
               <Input
                 label="Carbs"

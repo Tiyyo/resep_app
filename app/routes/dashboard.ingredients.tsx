@@ -1,9 +1,6 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import {
-  Outlet,
-  useLoaderData,
-} from "@remix-run/react";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import { promiseHash } from "remix-utils";
 import {
   getCategories,
@@ -13,7 +10,6 @@ import {
 } from "~/api/get.all.request";
 import Table from "~/components/table";
 
-
 export async function loader({ request }: LoaderArgs) {
   return json(
     await promiseHash({
@@ -21,19 +17,18 @@ export async function loader({ request }: LoaderArgs) {
       macros: getMacros(),
       icons: getIcons(),
       ingredients: getIngredients(),
-    })) 
+    })
+  );
 }
-
 
 export default function () {
   // can't type useLoaderData bugs still not fixed
   // convert type to Serialize object
   const { ingredients } = useLoaderData();
 
-
   // change location to an execution on server
   // add type
-  const dataIngr = ingredients.map((ingr : any) => {
+  const dataIngr = ingredients.map((ingr: any) => {
     return {
       id: ingr.id,
       image: ingr.icon?.link,
@@ -48,12 +43,16 @@ export default function () {
     };
   });
 
-
   return (
     <div>
-      <Outlet/>
+      <Outlet />
       {ingredients ? (
-        <Table data={dataIngr} image={true} search="name" endpoint="/api/ingredients"/>
+        <Table
+          data={dataIngr}
+          image={true}
+          search="name"
+          endpoint="/api/ingredients"
+        />
       ) : (
         ""
       )}

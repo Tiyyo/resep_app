@@ -22,13 +22,13 @@ export async function loader({ params }: LoaderArgs) {
     }
     throw new Error("No id provided");
   } catch (error: any) {
-    return json({ macros : null , error :"Couldn't find data"} , {status : 404})
+    return json({ macros: null, error: "Couldn't find data" }, { status: 404 });
   }
 }
 
 export default function ModalUpdate() {
   const { ingredientToEdit, categories, macros, icons } = useLoaderData();
-  console.log(ingredientToEdit , 'INGREDIENT TO EDIT');
+  console.log(ingredientToEdit, "INGREDIENT TO EDIT");
   return (
     <Modal>
       <UpdateIngredientsForm

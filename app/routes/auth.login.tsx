@@ -5,7 +5,6 @@ import {
   Link,
   isRouteErrorResponse,
   useActionData,
-  useNavigation,
   useRouteError,
 } from "@remix-run/react";
 import { useState } from "react";
@@ -95,7 +94,7 @@ export default function () {
           />
         </Button>
       </form>
-      <Form method="post" >
+      <Form method="post">
         <div className="flex flex-col">
           <FormField
             htmlFor="email"
