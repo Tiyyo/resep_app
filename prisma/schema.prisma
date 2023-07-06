@@ -214,10 +214,10 @@ model Reviews {
 }
 
 model RecipesOnTags {
-  tag_id    Int
-  tag      Tags    @relation(fields: [tag_id], references: [id], onDelete: Cascade)
-  recipe_id Int
-  recipe   Recipes @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+  tag_id      Int
+  tag         Tags      @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+  recipe_id   Int
+  recipe      Recipes   @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
 
   @@id([tag_id, recipe_id])
 }

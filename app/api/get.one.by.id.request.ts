@@ -107,6 +107,6 @@ export async function getRecipeById(recipeId : number) {
         const result = {...recipe, tags : recipe.tags.map((tag) => tag.tag.name), instructions : recipe.instructions.map((instruction) => instruction.instructions.description) }
         return result
     } catch (error) {
-        console.log(error);
+        throw new Error("Server error can't acces data");
     }
 }

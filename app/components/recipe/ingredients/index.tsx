@@ -7,15 +7,14 @@ import AddPlusIcon from "~/assets/icons/AddPlusIcon";
 import MinusIcon from "~/assets/icons/MinusIcon";
 import IngredientItem from "./ingredientItem";
 import TitleLevel3 from "~/components/title/TilteLevel3";
-import type { Measure } from "~/types/recipe";
+import { IngredientItemProps, MeasureFetch } from "./interface";
 
 export default function IngredientsList({
   measures,
   servings: originalServings,
-}: any) {
+}: IngredientItemProps) {
   const [servings, setServings] = useState<number>(originalServings);
   const [listIsOpen, setListIsOpen] = useState<boolean>(false);
-
 
   const handleClickSevings = (e: React.MouseEvent) => {
     if ((e.currentTarget as HTMLElement).dataset.count === "plus") {
@@ -71,10 +70,11 @@ export default function IngredientsList({
               {measures.length} Items
             </p>
           </div>
-          {measures.map((measure: Measure) => {
+          {measures.map((measure: MeasureFetch) => {
+            const measureId = measure.ingredient_id + measure.recipe_id;
             return (
               <IngredientItem
-                key={measure.id}
+                key={measureId}
                 measure={measure}
                 servings={servings}
                 originalServings={originalServings}

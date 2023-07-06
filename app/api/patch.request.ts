@@ -1,5 +1,11 @@
 import type { FormPropsEditIcon } from "~/routes/api.icons"
 import { prisma } from "~/service/db.server"
+import { Ingredient, Macros } from "~/types/recipe"
+
+interface IngredientUpdateForm extends Ingredient {
+    ingredientId: number
+    unitWeight?: number
+}
 
 export async function patchCategories(object: { name: string, id: number }) {
     try {
@@ -13,12 +19,12 @@ export async function patchCategories(object: { name: string, id: number }) {
         })
         await prisma.$disconnect()
         return updateCategory
-    } catch (error: unknown) {
-        return error.message
+    } catch (error: any) {
+        throw new Error("Can't update category");
     }
 
 }
-export async function patchMacros(form) {
+export async function patchMacros(form : Macros) {
 
     try {
         const updateMacros = await prisma.macros.update({
@@ -37,8 +43,7 @@ export async function patchMacros(form) {
         await prisma.$disconnect()
         return updateMacros
     } catch (error: any) {
-        console.log(error);
-        return error.message
+        throw new Error("Can't update macros");
     }
 }
 
@@ -92,12 +97,13 @@ export async function patchIcons(form: FormPropsEditIcon) {
             return updateIcon
         }
     } catch (error: any) {
-        console.log(error);
-        throw new Error(error);
+        throw new Error("Couldn't update icon");
     }
 }
 
-export async function patchIngredients(form) {
+
+
+export async function patchIngredients(form : IngredientUpdateForm) {
     try {
         const updateIngredient = await prisma.ingredients.update({
             where: {
@@ -113,12 +119,11 @@ export async function patchIngredients(form) {
         })
         return updateIngredient
     } catch (error: any) {
-        console.log(error);
-        throw new Error(error.message);
+        throw new Error("Couldn't update ingredient");
     }
 }
 
-export async function addMacrosToRecipe(macros, id) {
+export async function addMacrosToRecipe(macros : Macros, id : number) {
     try {
         const updateRecipe = await prisma.recipes.update({
             where: {
@@ -138,12 +143,12 @@ export async function addMacrosToRecipe(macros, id) {
         })
         return updateRecipe
     } catch (error) {
-        console.log(error);
+        throw new Error("Couldn't add macros to recipe");     
     }
 }
 
 
-export async function updateMacroRecipe(macros, id) {
+export async function updateMacroRecipe(macros :  Macros, id : number) {
     try {
         const updateRecipe = await prisma.recipes.update({
             where: {
@@ -151,8 +156,8 @@ export async function updateMacroRecipe(macros, id) {
             },
             data: {
                 macro_recipe: {
-                    calories: macros.calories,
                     proteins: macros.proteins,
+                    calories: macros.calories,
                     carbs: macros.carbs,
                     fat: macros.fat,
                     water: macros.water
@@ -161,12 +166,11 @@ export async function updateMacroRecipe(macros, id) {
         })
         return updateRecipe
     } catch (error) {
-        console.log(error);
+        throw new Error("Couldn't update macros from recipe");
     }
 }
 
-export async function addRecipeToFavorites(authorId, recipeId) {
-
+export async function addRecipeToFavorites(authorId : string, recipeId : string) {
 
     try {
         const updatedInfos = await prisma.reviews.update({
@@ -179,15 +183,13 @@ export async function addRecipeToFavorites(authorId, recipeId) {
                 is_liked: true
             }
         })
-        console.log(updatedInfos);
         return updatedInfos
     } catch (error) {
-        console.log(error);
+        throw new Error("Couldn't add recipe to favorites");
     }
 }
 
-export async function removeRecipeFromFavorites(authorId, recipeId) {
-
+export async function removeRecipeFromFavorites(authorId : string, recipeId : string) {
     try {
         const updatedInfos = await prisma.reviews.update({
             where: {
@@ -202,6 +204,6 @@ export async function removeRecipeFromFavorites(authorId, recipeId) {
 
         return updatedInfos
     } catch (error) {
-
+        throw new Error("Couldn't remove recipe from favorites");
     }
 }

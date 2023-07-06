@@ -4,14 +4,6 @@ import { json } from "@remix-run/node"
 // import { PrismaClientKnownRequestError } from "@prisma/client/runtime"
 
 
-// // Make this work
-
-// // export async function getAll(model ) {
-// //     const results = await prisma[`${model}`].findMany()
-// //     await prisma.$disconnect()
-// //     return results
-// // }
-
 export async function getCategories() {
     try {
         const categories = await prisma.ingredient_categories.findMany()
@@ -22,16 +14,6 @@ export async function getCategories() {
     }
 }
 
-// export async function getUnitComputes() {
-//     try {
-//         const unitComputes = await prisma.unit_computes.findMany()
-//         await prisma.$disconnect()
-//         return unitComputes
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-
 export async function getUnitMeasures() {
     try {
         const unitMeasures = await prisma.unit_measures.findMany()
@@ -39,7 +21,7 @@ export async function getUnitMeasures() {
         return unitMeasures
     }
     catch (error) {
-        console.log(error);
+        throw new Error("Server error can't acces data");
     }
 }
 
@@ -50,7 +32,7 @@ export async function getMacros() {
         return macros
     }
     catch (error) {
-        console.log(error);
+        throw new Error("Server error can't acces data");
     }
 }
 
@@ -67,7 +49,7 @@ export async function getIcons() {
         await prisma.$disconnect()
         return result
     } catch (error) {
-        throw new Error("can't acces data");
+        throw new Error("Server error can't acces data");
     }
 }
 
@@ -83,7 +65,7 @@ export async function getIngredients() {
         await prisma.$disconnect()
         return ingredients
     } catch (error) {
-        console.log(error);
+        throw new Error("Server error can't acces data");
     }
 }
 
@@ -129,12 +111,11 @@ export async function getRecipes() {
         await prisma.$disconnect()
         return result
     } catch (error) {
-        console.log(error);
+        throw new Error("Server error can't acces data");
     }
 }
 
-export async function getAllReviewByRecipeId(id) {
-    console.log(id);
+export async function getAllReviewByRecipeId(id : number) {
     try {
         const reviews = await prisma.recipes.findUnique({
             where: {
@@ -159,6 +140,6 @@ export async function getAllReviewByRecipeId(id) {
         await prisma.$disconnect()
         return reviews
     } catch (error) {
-        console.log(error);
+        throw new Error("Server error can't acces data");
     }
 }

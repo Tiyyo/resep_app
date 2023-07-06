@@ -10,7 +10,7 @@ export default function RecipeCard({
   isLiked,
 }: RecipeCardProps) {
   return (
-    <div className="flex flex-col h-72 w-48 border p-2 bg-main-300 shadow-xl">
+    <div className="flex flex-col h-72 w-48 min-w-[170px] border p-2 bg-main-300 shadow-xl">
       <div className="">
         <Link to={`/home/recipe/${recipeId}`}>
           {imageLink && (

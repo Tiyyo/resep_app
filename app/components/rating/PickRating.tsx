@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Star from "./Star";
 import StarIcon from "~/assets/icons/StarIcon";
 
 export default function PickRating({numOfStars} : { numOfStars: number }) {
@@ -7,13 +6,14 @@ export default function PickRating({numOfStars} : { numOfStars: number }) {
   const stars = new Array(numOfStars).fill(1)
 
 
-  const handleChange = (event) => {
+  const handleChange = (event : any) => {
+      // TODO: find right react event type
     setRatePrePick(Number(event.target.value));
   };
 
 
   return (
-    <fieldset onChange={handleChange} className="flex text-secondary-300 ">
+    <fieldset onChange={handleChange} className="flex text-secondary-300 cursor-pointer">
       {stars.map((star, index) => {
         return (
           <label

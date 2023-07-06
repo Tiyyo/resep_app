@@ -2,6 +2,7 @@ import { json, type LoaderArgs } from "@remix-run/node";
 import { useFetcher, useLoaderData } from "@remix-run/react";
 import { aggregateRecipes } from "~/api/aggregate";
 import { getAllReviewByRecipeId } from "~/api/get.all.request";
+import { getLastRecipes } from "~/api/get.many.by.id";
 import { getRecipeById } from "~/api/get.one.by.id.request";
 import { recipeOnUsers } from "~/api/get.relation.between";
 import Label from "~/components/label";
@@ -31,7 +32,7 @@ export async function loader({ params, request }: LoaderArgs) {
   const profile = await getProfile(request);
   if (profile) {
     const infos = await recipeOnUsers(recipeId, profile.id);
-    return json({ recipe, reviews, profile, infos, aggregate });
+    return json({ recipe, reviews, profile, infos, aggregate});
   }
   return json({ recipe, reviews, profile, aggregate });
 }

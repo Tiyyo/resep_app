@@ -5,10 +5,7 @@ import type { FormReviewProps } from "./interface";
 import { useEffect, useRef, useState } from "react";
 import Error from "../error";
 
-export default function FormReview({
-  authorId,
-  recipeId,
-}: FormReviewProps) {
+export default function FormReview({ authorId, recipeId }: FormReviewProps) {
   const styleTextaeraOpen =
     "resize-none h-20 w-full bg-primary-100 border p-2 text-7 focus-visible:outline-none";
   const styleTextaeraClose =
@@ -16,11 +13,15 @@ export default function FormReview({
 
   const addReview = useFetcher();
   const addReviewFormRef = useRef<HTMLFormElement>(null);
+  const textAera = useRef<HTMLTextAreaElement>(null);
   const [openReviewSection, setOpenLeaveReviewSection] =
-  useState<boolean>(false);
+    useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  console.log(addReview);
+  const handleHover = () => {
+    setOpenLeaveReviewSection(false)
+    textAera.current?.blur();
+  };
 
   useEffect(() => {
     if (
@@ -28,17 +29,20 @@ export default function FormReview({
       addReviewFormRef &&
       addReviewFormRef.current
     ) {
-      if(addReview.data?.message){
+      if (addReview.data?.message) {
         setError(addReview.data?.message);
       }
       if (addReview.data?.status === 200) {
         addReviewFormRef.current.reset();
       }
     }
-  }, [addReview.state, addReview.data?.status,addReview.data?.message ]);
+  }, [addReview.state, addReview.data?.status, addReview.data?.message]);
 
   return (
-    <div className="border shadow-xl w-96 bg-main-100 rounded-xl py-2 px-4 min-w-[750px]">
+    <div
+      className="border shadow-xl w-96 bg-main-100 rounded-xl py-2 px-4 min-w-[750px]"
+      onMouseLeave={handleHover}
+    >
       <addReview.Form
         ref={addReviewFormRef}
         method="POST"
@@ -48,14 +52,14 @@ export default function FormReview({
         <input type="number" hidden defaultValue={authorId} name="authorId" />
         <input type="number" hidden defaultValue={recipeId} name="recipeId" />
         <textarea
+          ref={textAera}
           className={openReviewSection ? styleTextaeraOpen : styleTextaeraClose}
           name="comment"
           id="leaveReviewSection"
           placeholder="Leave a comment"
           onFocusCapture={() => setOpenLeaveReviewSection(true)}
-          onBlur={() => setOpenLeaveReviewSection(false)}
         ></textarea>
-        <div className="flex justify-between" onClick={(e) => console.log(e)}>
+        <div className="flex justify-between">
           {openReviewSection ? (
             <>
               <PickRating numOfStars={5} />
@@ -67,7 +71,7 @@ export default function FormReview({
           ) : null}
         </div>
       </addReview.Form>
-      <Error message={error}/>
+      <Error message={error} />
     </div>
   );
 }

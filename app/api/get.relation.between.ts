@@ -1,12 +1,12 @@
 import { prisma } from "~/service/db.server"
 
-export async function recipeOnUsers (recipeId , authorId ) {
+export async function recipeOnUsers (recipeId : number , authorId : number ) {
  
     const relationalInfos =  await prisma.reviews.findUnique({
         where : {
             author_id_recipe_id :{
-                author_id : Number(authorId),
-                recipe_id : Number(recipeId)
+                author_id : authorId,
+                recipe_id : recipeId
             }
         }
 })
