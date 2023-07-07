@@ -93,7 +93,7 @@ export async function getRecipesByTags(tags: string[]) {
     })
 
     try {
-        const result = await prisma.recipesOnTags.findMany({
+        const rawResult = await prisma.recipesOnTags.findMany({
             where: {
                 OR: tagsQuery
             },
@@ -107,18 +107,22 @@ export async function getRecipesByTags(tags: string[]) {
                             }
                         },
                         reviews: true,
+                        tags: {
+                            include : {
+                                tag: true
+                            }
+                        }
                     }
                 },
-                tag: true
+                
             }
         })
 
-        if (!result) {
+        if (!rawResult) {
             throw new Error("Can't find item with associated id");
         }
-        // console.log(recipes);
-        const recipes = result.map((r) => {
-            return r.recipe
+        const recipes = rawResult.map((r) => {
+            return{ ...r.recipe , tags: r.recipe.tags.map((tag) => tag.tag.name)}
         })
         return recipes
     } catch (error) {
@@ -126,30 +130,7 @@ export async function getRecipesByTags(tags: string[]) {
     }
 }
 
-export async function getLastRecipes() {
-    try {
-        const lastestRecipes = await prisma.recipes.findMany({
-            orderBy: {
-                created_at: 'desc'      
-            },
-            take: 5,
-            include : {
-                macro_recipe: true,
-                tags : true,
-                reviews: true,
-                image : {
-                    select : {
-                        link : true
-                    }
-                }
-            }
-        })
-        return lastestRecipes
-    } catch (error) {
-        console.log(error);
-        throw new Error("Server error , couldn't get lastest recipes");
-    }
-}
+
 
 
 

@@ -143,3 +143,29 @@ export async function getAllReviewByRecipeId(id : number) {
         throw new Error("Server error can't acces data");
     }
 }
+
+export async function getLastRecipes() {
+    try {
+        const lastestRecipes = await prisma.recipes.findMany({
+            orderBy: {
+                created_at: 'desc'      
+            },
+            take: 6,
+            include : {
+                macro_recipe: true,
+                tags : true,
+                reviews: true,
+                image : {
+                    select : {
+                        link : true
+                    }
+                }
+            }
+        })
+        await prisma.$disconnect()
+        return lastestRecipes
+    } catch (error) {
+        console.log(error);
+        throw new Error("Server error , couldn't get lastest recipes");
+    }
+}

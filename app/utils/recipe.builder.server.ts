@@ -1,5 +1,5 @@
 
-import { getRecipeById } from "~/api/get.one.by.id.request"
+import { getRecipeById } from "~/api/get.one.by.request"
 import { addMacrosToRecipe, patchMacros, updateMacroRecipe } from "~/api/patch.request"
 import { addRecipes } from "~/api/post.request"
 import type { Measure, Measures, RecipeRawForm } from "~/types/recipe"

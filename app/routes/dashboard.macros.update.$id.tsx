@@ -1,7 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { getMacrosById } from "~/api/get.one.by.id.request";
+import { getMacrosById } from "~/api/get.one.by.request";
 import Modal from "~/components/modal";
 import UpdateMacrosForm from "~/components/update_forms/Macros";
 

@@ -1,7 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData, useOutletContext } from "@remix-run/react";
-import { getCategoriesById } from "~/api/get.one.by.id.request";
+import { getCategoriesById } from "~/api/get.one.by.request";
 import Modal from "~/components/modal";
 import UpdateCategoriesForm from "~/components/update_forms/Categories";
 

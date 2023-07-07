@@ -1,5 +1,5 @@
 import { json, type ActionArgs } from "@remix-run/node";
-import { recipeOnUsers } from "~/api/get.relation.between";
+import { recipeOnUsers } from "~/api/get.relation.between.request";
 import { addRecipeToFavorites, removeRecipeFromFavorites, removeRecipeToFavorites } from "~/api/patch.request";
 import { createRecipeToFavorites } from "~/api/post.request";
 

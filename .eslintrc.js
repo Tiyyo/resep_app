@@ -5,9 +5,12 @@ module.exports = {
     "@remix-run/eslint-config/node",
     "airbnb-base",
     "prettier",
+    'eslint:recommended', 'plugin:@typescript-eslint/recommended'
   ],
-  plugins: ["pretier"],
+  root: true,
+  plugins: ["pretier", "@typescript-eslint"],
   overrides: [],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: "latest",
   },

@@ -3,20 +3,20 @@ import RecipeCard from "../recipe/card";
 import TitleLevel3 from "../title/TilteLevel3";
 import Chevron from "../chevron";
 import ArrowRightIcon from "~/assets/icons/ArrowRightIcon";
-
-export interface CarouselProps {
-  title: string;
-  recipes: any;
-  profileId: number;
-}
+import { CarouselProps } from "./interface";
 
 export default function Carousel({ title, recipes, profileId }: CarouselProps) {
   return (
-    <div className="py-2 px-4 w-fit">
+    <div className="py-2 px-4 w-fit self-center">
       <div className="flex justify-between items-center">
         <TitleLevel3 title={title} />
         <a>
-            <p className="flex items-center cursor-pointer">See all <span><ArrowRightIcon/></span></p>
+          <p className="flex items-center cursor-pointer">
+            See all{" "}
+            <span>
+              <ArrowRightIcon />
+            </span>
+          </p>
         </a>
       </div>
       <div className="w-full">

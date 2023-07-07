@@ -4,4 +4,6 @@ export interface RecipeCardProps {
   recipeCalories?: string;
   recipeId: number;
   isLiked?: boolean;
+  tags?: string[];
+  variant?: "vertical" | "horizontal";
 }

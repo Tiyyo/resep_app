@@ -1,6 +1,6 @@
 import AddPlusIcon from "~/assets/icons/AddPlusIcon"
 
-export const ADMIN_PANEL_MENU = [
+export const adminPanelMenu = [
     {
         id: 1, name: 'Ingredients', link: "ingredients", open: false, icon: null, children: [
             { id: 2, name: 'overview', link: "ingredients", open: false, icon: null },
@@ -34,7 +34,7 @@ export const ADMIN_PANEL_MENU = [
     },
 ]
 
-export const HOME_MENU = [
+export const homeMenu = [
     {
         id: 1, name: 'Recipes', link: "recipes", open: false, icon: null, children: [
             { id: 2, name: 'For you', link: "recipes", open: false, icon: null },

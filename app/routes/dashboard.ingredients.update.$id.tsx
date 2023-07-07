@@ -3,7 +3,7 @@ import { json } from "@remix-run/node";
 import { useLoaderData, useOutletContext } from "@remix-run/react";
 import { promiseHash } from "remix-utils";
 import { getCategories, getIcons, getMacros } from "~/api/get.all.request";
-import { getIngredientsById } from "~/api/get.one.by.id.request";
+import { getIngredientsById } from "~/api/get.one.by.request";
 import Modal from "~/components/modal";
 import UpdateIngredientsForm from "~/components/update_forms/Ingredients";
 

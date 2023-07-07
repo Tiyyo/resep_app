@@ -14,7 +14,7 @@ export default function PickRating({numOfStars} : { numOfStars: number }) {
 
   return (
     <fieldset onChange={handleChange} className="flex text-secondary-300 cursor-pointer">
-      {stars.map((star, index) => {
+      {stars.map((_star, index) => {
         return (
           <label
             key={index}

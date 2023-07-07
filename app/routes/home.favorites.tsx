@@ -1,7 +1,8 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { getFavoriteRecipes } from "~/api/get.many.by.id";
+import { getFavoriteRecipes } from "~/api/get.many.by.request";
 import RecipeCard from "~/components/recipe/card";
+import LayoutRecipePages from "~/layout/LayoutRecipesPage";
 import { getProfile } from "~/utils/get.user.infos";
 
 export async function loader({ request }: LoaderArgs) {
@@ -16,22 +17,24 @@ export default function FavoriteRecipes() {
   const { favoriteRecipes } = useLoaderData();
 
   return (
-    <div className="flex gap-4 justify-start p-4 flex-wrap">
-      {favoriteRecipes &&
-        favoriteRecipes.length > 0 &&
-        favoriteRecipes.map((recipe: any) => {
-          //  TODO: fix type
-          return (
-            <RecipeCard
-              key={recipe.id}
-              recipeId={recipe.id}
-              imageLink={recipe.image.link}
-              recipeName={recipe.name}
-              recipeCalories={recipe.macro_recipe.calories}
-              isLiked={true}
-            />
-          );
-        })}
-    </div>
+    <LayoutRecipePages title="Recipes you liked">
+      <div className="flex gap-4 justify-start p-4 flex-wrap">
+        {favoriteRecipes &&
+          favoriteRecipes.length > 0 &&
+          favoriteRecipes.map((recipe: any) => {
+            //  TODO: fix type
+            return (
+              <RecipeCard
+                key={recipe.id}
+                recipeId={recipe.id}
+                imageLink={recipe.image.link}
+                recipeName={recipe.name}
+                recipeCalories={recipe.macro_recipe.calories}
+                isLiked={true}
+              />
+            );
+          })}
+      </div>
+    </LayoutRecipePages>
   );
 }

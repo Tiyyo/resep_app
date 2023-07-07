@@ -25,7 +25,6 @@ export async function loader({ request }: LoaderArgs) {
       categories: getCategories(),
       macros: getMacros(),
       icons: getIcons(),
-      ingredients: getIngredients(),
     })
   );
 }
@@ -38,7 +37,6 @@ export default function () {
 
   const { categories, macros, icons } = useLoaderData();
   const addIngredientFormRef = useRef<HTMLFormElement>(null);
-  const actionData = useActionData();
   const addIngredient = useFetcher();
 
   useEffect(() => {

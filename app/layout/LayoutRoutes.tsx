@@ -8,7 +8,7 @@ export default function RoutesLayout({menu} : {menu : Item[]}) {
       <div className="col-start-2 col-end-3 row-start-2 h-body">
         <SideMenu menu={menu}/>
       </div>
-      <div className="border-l border-secondary-400 py-1 overflow-y-scroll h-body no-scrollbar">
+      <div className="border-l border-secondary-400 py-1 overflow-y-scroll h-body no-scrollbar ">
         <Outlet />
       </div>
     </>

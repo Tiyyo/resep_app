@@ -7,6 +7,7 @@ import { addMacros } from "~/api/post.request";
 import { convertStringToNumber } from "~/utils/convert.to.number";
 import * as Z from "zod";
 import { validationError } from "remix-validated-form";
+import { Macros } from "~/types/recipe";
 
 export const validator = withZod(
     Z.object({
@@ -69,7 +70,7 @@ export async function action({ request }: ActionArgs) {
             try {
                 const formConverted = await convertStringToNumber(numberFields)
 
-                let form = { ...formConverted, food: food?.toLowerCase() }
+                let form = { ...formConverted, food: food?.toLowerCase() } as Macros
                 await patchMacros(form)
                 return redirect("/dashboard/macros")
 
