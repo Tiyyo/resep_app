@@ -42,11 +42,15 @@ export default function Slider({
     // translate slider by length of one card
   };
 
-  //   useEffect(() => {
-  //     if (carousel?.current) {
-  //       setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
-  //     }
-  //   }, []);
+  useEffect(() => {
+    if (carousel?.current) {
+      setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
+    }
+  }, []);
+
+  const handleNextClick = (e) => {
+    console.log(e.target.dataset.nav);
+  };
 
   //   const [firstCardIsVisble, setFirstCardIsVisible] = useState<boolean | null>(
   //     null
@@ -163,7 +167,7 @@ export default function Slider({
               type="button"
               className="cursor-pointer"
               data-nav="prev"
-              //   onClick={handleNextClick}
+              onClick={handleNextClick}
             >
               <LongArrowRightIcon />
             </button>
