@@ -27,100 +27,40 @@ export default function Slider({
   link,
   shouldBeCentered,
 }: SliderProps) {
-  const [width, setWidth] = useState(0);
-  const [scrollXValue, setScrollXValue] = useState(0);
+  const [width, setWidth] = useState<number>(0);
+  const [scrollXValue, setScrollXValue] = useState<number>(0);
+  const [widthCard, setWidthCard] = useState<number | null>(null);
 
   const carousel = useRef<HTMLDivElement>(null);
-
   const innerCarousel = useRef<HTMLDivElement>(null);
 
-  const getScrollXPosition = (state: number) => {
-    setScrollXValue(state);
-  };
+  function nextSlide() {
+    if (widthCard === null) return;
+    setScrollXValue(scrollXValue + widthCard * 1.05);
+    scrollXValue + widthCard * 1.05 > 0
+      ? setScrollXValue(0)
+      : setScrollXValue(scrollXValue + widthCard * 1.05);
+  }
 
-  const handleClick = () => {
-    // translate slider by length of one card
-  };
+  function prevSlide() {
+    if (widthCard === null) return;
+    Math.abs(scrollXValue - widthCard * 1.05) > width
+      ? setScrollXValue(-width)
+      : setScrollXValue(scrollXValue - widthCard * 1.05);
+  }
+
+  function handleClick(e: React.MouseEvent<HTMLElement>) {
+    e.currentTarget.dataset.nav === "prev" ? prevSlide() : nextSlide();
+  }
 
   useEffect(() => {
     if (carousel?.current) {
       setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
     }
+    if (innerCarousel?.current) {
+      setWidthCard(innerCarousel.current.children[0].clientWidth);
+    }
   }, []);
-
-  const handleNextClick = (e) => {
-    console.log(e.target.dataset.nav);
-  };
-
-  //   const [firstCardIsVisble, setFirstCardIsVisible] = useState<boolean | null>(
-  //     null
-  //   );
-  //   const [lastCardIsVisble, setLastCardIsVisible] = useState<boolean | null>(
-  //     null
-  //   );
-
-  //   const windowWidth = useRef([window.innerWidth]);
-  //   let prev = "prev";
-  //   let next = "next";
-  //   const carouselNav = useRef();
-
-  //   // @param  navWay = "prev" || "next"
-
-  //   function isVisible(child, navWay) {
-  //     let startingState = window.getComputedStyle(
-  //       carouselNav.current.nextSibling
-  //     ).transform;
-
-  //     if (carouselNav.current.nextSibling.children) {
-  //       const observer = new IntersectionObserver(([entry]) => {
-  //         if (navWay === prev) {
-  //           if (entry && entry.isIntersecting) {
-  //             setFirstCardIsVisible(true);
-  //           } else {
-  //             setFirstCardIsVisible(false);
-  //           }
-  //         } else if (navWay === next) {
-  //           if (entry && entry.isIntersecting) {
-  //             setLastCardIsVisible(true);
-  //           } else {
-  //             setLastCardIsVisible(false);
-  //           }
-  //         } else if (startingState === "none") {
-  //           alert("cant do that");
-  //         }
-  //       });
-  //       observer.observe(child);
-  //       return () => {
-  //         return observer.disconnect(child) && isVisible;
-  //       };
-  //     }
-  //   }
-
-  //   function handleNextClick() {
-  //     var lastChild =
-  //       carouselNav.current.nextSibling.children[
-  //         carouselNav.current.nextSibling.children.length - 1
-  //       ];
-  //     isVisible(lastChild, next);
-  //     if (lastCardIsVisble) {
-  //       setScrollXValue(-width);
-  //     } else {
-  //       setScrollXValue(scrollXValue - windowWidth.current[0]);
-  //     }
-  //   }
-
-  //   function handlePrevClick() {
-  //     var firstChild = carouselNav.current.nextSibling.children[0];
-  //     isVisible(firstChild, prev);
-  //     if (firstCardIsVisble === null) {
-  //       setScrollXValue(0);
-  //     }
-  //     if (firstCardIsVisble) {
-  //       setScrollXValue(0);
-  //     } else if (firstCardIsVisble === false) {
-  //       setScrollXValue(scrollXValue + windowWidth.current[0]);
-  //     }
-  //   }
 
   return (
     <div
@@ -130,7 +70,7 @@ export default function Slider({
       <div className="flex gap-x-8 relative">
         {banner && <BannerSlider title={title ?? ""} />}
         <motion.div
-          className="overflow-x-scroll no-scrollbar"
+          className="overflow-x-scroll no-scrollbar scroll-smooth px-6"
           ref={carousel}
           whileTap={{ cursor: "grabbing" }}
         >
@@ -163,15 +103,18 @@ export default function Slider({
 
           <div className="absolute flex gap-x-10 items-center -bottom-8 right-6 text-secondary-300">
             <button
-              //   ref={carouselNav}
               type="button"
               className="cursor-pointer"
               data-nav="prev"
-              onClick={handleNextClick}
+              onClick={handleClick}
             >
               <LongArrowRightIcon />
             </button>
-            <button className="rotate-180 cursor-pointer" data-nav="next">
+            <button
+              className="rotate-180 cursor-pointer"
+              data-nav="next"
+              onClick={handleClick}
+            >
               <LongArrowRightIcon />
             </button>
           </div>

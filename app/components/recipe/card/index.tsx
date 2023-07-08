@@ -13,7 +13,7 @@ export default function RecipeCard({
 }: RecipeCardProps) {
   return (
     <div
-      className={`flex border p-2 bg-main-100 shadow-xl ${
+      className={`flex border p-2 bg-main-100 shadow-md ${
         variant === "horizontal"
           ? "h-52 aspect-2/1"
           : " flex-col h-72 w-48 min-w-[170px]"
