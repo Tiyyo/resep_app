@@ -1,1 +1,3 @@
-export const UNIT_FORMAT_FRACTION = ["tbsp", "tsp", "pods", "cup"];
+export const unitFormatFraction = ["tbsp", "tsp", "pods", "cup"];
+
+export const numericFields = ["calories", "proteins", "carbs", "fat", "water"];

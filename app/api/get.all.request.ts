@@ -27,7 +27,13 @@ export async function getUnitMeasures() {
 
 export async function getMacros() {
     try {
-        const macros = await prisma.macros.findMany()
+        const macros = await prisma.macros.findMany({
+            where:{
+                NOT : {
+                    food : null
+                }
+            }
+        })
         await prisma.$disconnect()
         return macros
     }

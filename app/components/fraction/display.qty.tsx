@@ -1,11 +1,15 @@
-import { UNIT_FORMAT_FRACTION } from "~/constants/unit.format";
+import { unitFormatFraction } from "~/constants/unit.format";
 import findNearestFraction from "./find.nearest.fraction";
 
-export const displayQty = (qty: number, unitAbreviation: string, servings : number, originalServings : number) => {
-
+export const displayQty = (
+  qty: number,
+  unitAbreviation: string,
+  servings: number,
+  originalServings: number
+) => {
   if (unitAbreviation === "pch") return qty + " " + unitAbreviation;
 
-  if (UNIT_FORMAT_FRACTION.includes(unitAbreviation)) {
+  if (unitFormatFraction.includes(unitAbreviation)) {
     let newQty = (servings * qty) / originalServings;
 
     return (

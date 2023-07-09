@@ -5,17 +5,7 @@ import BannerSlider from "./index.banner";
 import LongArrowRightIcon from "~/assets/icons/LongArrowIcon";
 import { motion } from "framer-motion";
 import React, { useEffect, useState, useRef } from "react";
-
-export interface SliderProps {
-  banner: boolean;
-  profileId: number;
-  content: Array<any>;
-  title?: string;
-  cardAxis?: "horizontal" | "vertical";
-  linkText?: string;
-  link?: string;
-  shouldBeCentered?: boolean;
-}
+import { SliderProps } from "./interface";
 
 export default function Slider({
   banner,
@@ -100,19 +90,18 @@ export default function Slider({
                 );
               })}
           </motion.div>
-
           <div className="absolute flex gap-x-10 items-center -bottom-8 right-6 text-secondary-300">
             <button
               type="button"
               className="cursor-pointer"
-              data-nav="prev"
+              data-nav="next"
               onClick={handleClick}
             >
               <LongArrowRightIcon />
             </button>
             <button
               className="rotate-180 cursor-pointer"
-              data-nav="next"
+              data-nav="prev"
               onClick={handleClick}
             >
               <LongArrowRightIcon />

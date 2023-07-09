@@ -1,4 +1,4 @@
-export default function ChevronIcon({size} : {size? : string}) {
+export default function ChevronRightIcon({ size }: { size?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
