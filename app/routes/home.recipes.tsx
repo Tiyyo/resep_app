@@ -2,14 +2,9 @@ import { json, type LoaderArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { getLastRecipes } from "~/api/get.all.request";
 import { getRecipesByTags } from "~/api/get.many.by.request";
-import ArrowRightIcon from "~/assets/icons/ArrowRightIcon";
-import Carousel from "~/components/carousel";
-import RecipeCard from "~/components/recipe/card";
 import Slider from "~/components/slider";
-import TitleLevel3 from "~/components/title/TilteLevel3";
 import LayoutRecipePages from "~/layout/LayoutRecipesPage";
 import { getProfile } from "~/utils/get.user.infos";
-import { isLikedByUser } from "~/utils/is.liked.by.user";
 
 export async function loader({ request }: LoaderArgs) {
   const profile = await getProfile(request);

@@ -108,13 +108,13 @@ export async function getRecipesByTags(tags: string[]) {
                         },
                         reviews: true,
                         tags: {
-                            include : {
+                            include: {
                                 tag: true
                             }
                         }
                     }
                 },
-                
+
             }
         })
 
@@ -122,13 +122,53 @@ export async function getRecipesByTags(tags: string[]) {
             throw new Error("Can't find item with associated id");
         }
         const recipes = rawResult.map((r) => {
-            return{ ...r.recipe , tags: r.recipe.tags.map((tag) => tag.tag.name)}
+            return { ...r.recipe, tags: r.recipe.tags.map((tag) => tag.tag.name) }
         })
         return recipes
     } catch (error) {
         console.log(error);
     }
 }
+
+export async function getRandomRecipes(numOfDay: number) {
+    try {
+        const recipes = await prisma.$queryRaw`SELECT * FROM recipes ORDER BY RANDOM() LIMIT ${numOfDay}`
+        return recipes
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+export async function getMeasuresByRecipeId(recipeIds: number[]) {
+    try {
+        const measures = await prisma.ingredientsOnRecipes.findMany({
+            where: {
+                recipe_id: {
+                    in: recipeIds
+                }
+            },
+            include: {
+                ingredient: {
+                    include: {
+                        macros: true,
+                        icon: true,
+                    }
+                },
+                unit_measure: true,
+                recipe: true
+            },
+            orderBy: {
+                ingredient_id: 'asc'
+            }
+        })
+        return measures
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 
 
 

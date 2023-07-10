@@ -1,14 +1,11 @@
 import { activateSearch } from "./activate.search";
+import { TableHeadProps } from "./interface";
 
 export default function TableHead({
   keys,
   search,
   getSearchParams,
-}: {
-  keys: Array<string>;
-  search: string | undefined;
-  getSearchParams: any;
-}) {
+}: TableHeadProps) {
   // const [searchParams,setSearchParams] = useState<{fields : string , value : string}>()
 
   return (

@@ -2,10 +2,7 @@ import type { TableProps } from "./interface";
 import { useState } from "react";
 import TableBody from "./index.body";
 import TableHead from "./index.head";
-import ChevronIconLeft from "~/assets/icons/ChevronLeftIcon";
-import ChevronLeftIcon from "~/assets/icons/ChevronLeftIcon";
-import ChevronRightIcon from "~/assets/icons/ChevronRightIcon";
-import { TableFooter } from "./index.footer";
+import TableFooter from "./index.footer";
 
 export default function Table({
   data,

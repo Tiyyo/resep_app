@@ -1,17 +1,13 @@
 import ChevronLeftIcon from "~/assets/icons/ChevronLeftIcon";
 import ChevronRightIcon from "~/assets/icons/ChevronRightIcon";
+import { TableFooterProps } from "./interface";
 
 export default function TableFooter({
   numColums,
   maxPage,
   page,
   getPage,
-}: {
-  numColums: number;
-  maxPage: number;
-  page: number;
-  getPage: (page: number) => void;
-}) {
+}: TableFooterProps) {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget.dataset.pageNav === "next" && page + 1 <= maxPage) {
       getPage(page + 1);

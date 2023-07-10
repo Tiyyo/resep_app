@@ -42,8 +42,12 @@ export const homeMenu = [
             { id: 4, name: 'Favorites', link: "favorites", open: false, icon: null },
             { id: 5, name: 'add new', link: "add/recipes", open: false, icon: AddPlusIcon },
         ]
-    },
+    },{
+        id: 2, name: 'Shopping list', link: "shopping", open: false, icon: null, children: []
+    }
 ]
+
+
 
 
 
