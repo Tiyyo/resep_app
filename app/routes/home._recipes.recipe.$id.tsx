@@ -16,7 +16,7 @@ import InstructionsList from "~/components/recipe/instructions";
 import NutritionFacts from "~/components/recipe/nutrition_facts";
 import TitleLevel2 from "~/components/title/TitleLevel2";
 import { getProfile } from "~/utils/get.user.infos";
-import computeNewMacroAfterToUpdateRecipe from "~/utils/recipe.builder.server";
+import computeNewMacroAfterToUpdateRecipe from "~/service/recipe.builder.server";
 
 export async function loader({ params, request }: LoaderArgs) {
   if (!params.id)

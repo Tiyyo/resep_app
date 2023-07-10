@@ -1,6 +1,6 @@
 import { type ActionArgs, json } from "@remix-run/node"
 import { withZod } from "@remix-validated-form/with-zod"
-import { buildRecipe } from "~/utils/recipe.builder.server"
+import { buildRecipe } from "~/service/recipe.builder.server"
 import * as Z from "zod";
 import { validationError } from "remix-validated-form";
 import { deleteImageFromBucket, uploadImage } from "~/service/s3.server";
