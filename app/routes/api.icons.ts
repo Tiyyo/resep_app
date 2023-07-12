@@ -1,16 +1,13 @@
-import { deleteIcon } from "~/api/delete.request";
 import { convertStringToNumber } from "~/utils/convert.to.number";
 import { deleteImageFromBucket, uploadImage } from "~/service/s3.server";
 import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { wordsToArray } from "~/utils/wrodsToArray";
-import { addIcons, type FormIconProps } from "~/api/post.request";
-import { patchIcons } from "~/api/patch.request";
+import icon from "~/api/icon";
+import { FormPropsEditIcon } from "~/api/interfaces";
 
 
-export interface FormPropsEditIcon extends FormIconProps {
-    id: number
-}
+
 
 export async function action({ request }: ActionArgs) {
     const copyRequest = request.clone();
@@ -45,7 +42,7 @@ export async function action({ request }: ActionArgs) {
                     imageKey,
                 };
 
-                const icons = await addIcons(form);
+                const icons = await icon.add(form);
                 if (!icons) {
                     await deleteImageFromBucket(form.imageKey)
                     return json({ error: "Could not add icon" }, { status: 400 });
@@ -96,7 +93,7 @@ export async function action({ request }: ActionArgs) {
             const form: FormPropsEditIcon = { name, id, tags, imageKey, imageLink }
 
             try {
-                await patchIcons(form)
+                await icon.update(form)
                 return redirect('/dashboard/icons')
             } catch (error) {
                 return json({ error: " Could not edit this icon" }, { status: 500 })
@@ -113,7 +110,7 @@ export async function action({ request }: ActionArgs) {
 
             try {
                 if (idNumber.id) {
-                    const deletedIcon = await deleteIcon(idNumber.id)
+                    const deletedIcon = await icon.destroy(idNumber.id)
                     await deleteImageFromBucket(deletedIcon.image_key)
                     return json({ status: 200 })
                 }

@@ -1,5 +1,5 @@
 import { json, type ActionArgs } from "@remix-run/node";
-import { addReview } from "~/api/post.request";
+import review from "~/api/review";
 import { convertStringToNumber } from "~/utils/convert.to.number";
 
 export async function action({ request }: ActionArgs) {
@@ -11,11 +11,11 @@ export async function action({ request }: ActionArgs) {
 
     switch (method) {
         case "post": {
-            const rating = formData.get("rating") 
-            const authorId = formData.get("authorId");
-            const recipeId = formData.get("recipeId");
-            const comment = formData.get("comment");
- 
+            const rating = formData.get("rating") as string;
+            const authorId = formData.get("authorId") as string;
+            const recipeId = formData.get("recipeId") as string;
+            const comment = formData.get("comment") as string;
+
             if (comment && comment.length < 3) {
                 return json({
                     error: {
@@ -53,11 +53,10 @@ export async function action({ request }: ActionArgs) {
                 recipeId,
             });
 
-            const body = { ...fieldConverted, comment };
-
+            const body = { rating: fieldConverted.rating, authorId: fieldConverted.authorId, recipeId: fieldConverted.recipeId, comment };
 
             try {
-                await addReview(body);
+                await review.add(body);
                 return json({ message: "ok" }, { status: 200 });
             } catch (error: any) {
 

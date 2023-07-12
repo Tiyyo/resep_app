@@ -1,13 +1,11 @@
 import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { withZod } from "@remix-validated-form/with-zod";
-import { deleteMacro } from "~/api/delete.request";
-import { patchMacros } from "~/api/patch.request";
-import { addMacros } from "~/api/post.request";
 import { convertStringToNumber } from "~/utils/convert.to.number";
 import * as Z from "zod";
 import { validationError } from "remix-validated-form";
 import { Macros } from "~/types/recipe";
+import macro from "~/api/macro";
 
 export const validator = withZod(
     Z.object({
@@ -42,7 +40,7 @@ export async function action({ request }: ActionArgs) {
                 const formConverted = await convertStringToNumber(numberFields)
                 let form = { ...formConverted, food: food?.toLowerCase() }
 
-                const newMacro = await addMacros(form)
+                const newMacro = await macro.add(form as Macros)
                 if (newMacro) {
                     return json({ status: 200 })
                 }
@@ -71,7 +69,7 @@ export async function action({ request }: ActionArgs) {
                 const formConverted = await convertStringToNumber(numberFields)
 
                 let form = { ...formConverted, food: food?.toLowerCase() } as Macros
-                await patchMacros(form)
+                await macro.update(form)
                 return redirect("/dashboard/macros")
 
             } catch (error: any) {
@@ -91,12 +89,11 @@ export async function action({ request }: ActionArgs) {
             const values = {
                 id: id
             }
-
             const formConverted = await convertStringToNumber(values)
 
             try {
                 if (formConverted.id) {
-                    await deleteMacro(formConverted.id)
+                    await macro.destroy(formConverted.id)
                     return json({ status: 200 })
                 }
                 throw new Error('No id provided')

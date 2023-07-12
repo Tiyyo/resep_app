@@ -1,6 +1,5 @@
 import { ActionArgs, LoaderArgs, json } from "@remix-run/node";
 import { Form, Link, useFetcher, useLoaderData } from "@remix-run/react";
-import { getRandomRecipes } from "~/api/get.many.by.request";
 import SubmitButton from "~/components/submit_button";
 import TitleLevel1 from "~/components/title/TitleLevel1";
 import { Recipe } from "~/types/recipe";
@@ -15,37 +14,37 @@ import { useEffect } from "react";
 // }
 
 export async function action({ request }: ActionArgs) {
-  const formData = await request.formData();
-  const recipeIds = formData.getAll("recipeId");
-  const shoppingList = await buildShoppingList(recipeIds as string[]);
+    const formData = await request.formData();
+    const recipeIds = formData.getAll("recipeId");
+    const shoppingList = await buildShoppingList(recipeIds as string[]);
 
-  return json({ message: "Shopping list created" }, { status: 201 });
+    return json({ message: "Shopping list created" }, { status: 201 });
 }
 
 export default function () {
-  //   const { recipes } = useLoaderData();
+    //   const { recipes } = useLoaderData();
 
-  const fetcherRandomRecipes = useFetcher();
+    const fetcherRandomRecipes = useFetcher();
 
-  useEffect(() => {
-    if (
-      fetcherRandomRecipes.state === "idle" &&
-      fetcherRandomRecipes.data == null
-    ) {
-      fetcherRandomRecipes.load("/api/recipes/random/7");
-    }
-    // console.log(fetcherRandomRecipes);
-  }, []);
+    useEffect(() => {
+        if (
+            fetcherRandomRecipes.state === "idle" &&
+            fetcherRandomRecipes.data == null
+        ) {
+            fetcherRandomRecipes.load("/api/recipes/random/7");
+        }
+        // console.log(fetcherRandomRecipes);
+    }, []);
 
-  console.log(fetcherRandomRecipes.data);
+    console.log(fetcherRandomRecipes.data);
 
-  return (
-    <ShoppingContextProvider>
-      <div>
-        <TitleLevel1 title="Shopping" />
-        <Form method="POST">
-          <div className="flex justify-center flex-wrap gap-4">
-            {/* {recipes &&
+    return (
+        <ShoppingContextProvider>
+            <div>
+                <TitleLevel1 title="Shopping" />
+                <Form method="POST">
+                    <div className="flex justify-center flex-wrap gap-4">
+                        {/* {recipes &&
               recipes.map((recipe) => {
                 return (
                   <>
@@ -82,13 +81,13 @@ export default function () {
                   </>
                 );
               })} */}
-          </div>
-          <div className="w-full flex justify-center my-10">
-            <SubmitButton text="Generate shopping list" />
-          </div>
-        </Form>
-        {/* <button>Do you want to create a new shopping list?</button> */}
-      </div>
-    </ShoppingContextProvider>
-  );
+                    </div>
+                    <div className="w-full flex justify-center my-10">
+                        <SubmitButton text="Generate shopping list" />
+                    </div>
+                </Form>
+                {/* <button>Do you want to create a new shopping list?</button> */}
+            </div>
+        </ShoppingContextProvider>
+    );
 }

@@ -1,4 +1,5 @@
-import { getMeasuresByRecipeId } from "~/api/get.many.by.request";
+import measure from "~/api/measure";
+
 
 class ShoppingItem {
     qty: number;
@@ -77,7 +78,7 @@ class Item {
 
 export async function buildShoppingList(recipesIds: string[]) {
     const ids = recipesIds.map((id: string) => Number(id));
-    const measures = await getMeasuresByRecipeId(ids);
+    const measures = await measure.findManyByIds(ids);
     const sumList = initializeList(measures);
     const list = reduceList(sumList);
     return list;

@@ -1,8 +1,7 @@
 import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { deleteCategories } from "~/api/delete.request";
-import { patchCategories } from "~/api/patch.request";
-import { addCategory } from "~/api/post.request";
+import category from "~/api/category";
+
 
 
 export async function action({ request }: ActionArgs) {
@@ -17,7 +16,7 @@ export async function action({ request }: ActionArgs) {
             }
 
             try {
-                await addCategory(name);
+                await category.add(name);
                 return json({ status: 200 })
             } catch (error) {
                 return json(
@@ -49,7 +48,7 @@ export async function action({ request }: ActionArgs) {
             }
 
             try {
-                await patchCategories({ name, id })
+                await category.update({ name, id })
                 return redirect("/dashboard/categories")
 
             } catch (error) {
@@ -69,7 +68,7 @@ export async function action({ request }: ActionArgs) {
                 return json({ error: "id argument should be a number" }, { status: 400 });
             }
             try {
-                await deleteCategories(id)
+                await category.destroy(id)
                 return json({ status: 200 })
 
             } catch (error) {

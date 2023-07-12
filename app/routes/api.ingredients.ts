@@ -1,13 +1,11 @@
 import type { ActionArgs } from "@remix-run/node";
-import type { IngredientCreateForm } from "~/api/post.request";
 import { json, redirect } from "@remix-run/node";
 import { withZod } from "@remix-validated-form/with-zod";
-import { deleteIngredient } from "~/api/delete.request";
-import { patchIngredients } from "~/api/patch.request";
 import * as Z from "zod";
-import { addIngredients } from "~/api/post.request";
 import { convertStringToNumber } from "~/utils/convert.to.number";
 import { validationError } from "remix-validated-form";
+import { IngredientCreateForm, IngredientUpdateForm } from "~/api/interfaces";
+import ingredient from "~/api/ingredient";
 
 
 export const validator = withZod(
@@ -54,7 +52,7 @@ export async function action({ request }: ActionArgs) {
                 }
 
                 if (form) {
-                    await addIngredients(form);
+                    await ingredient.add(form);
                     return json({ status: 200 });
                 }
             } catch (error: any) {
@@ -81,13 +79,10 @@ export async function action({ request }: ActionArgs) {
             try {
                 const formConverted = await convertStringToNumber(fieldToConvert);
 
-                interface T extends IngredientCreateForm {
-                    ingredientId: number | null
-                }
 
-                let form: T | undefined = undefined;
+                let form: IngredientUpdateForm;
 
-                if (formConverted.categoryId) {
+                if (formConverted.categoryId && formConverted.ingredientId) {
                     form = {
                         name,
                         categoryId: formConverted.categoryId,
@@ -97,8 +92,8 @@ export async function action({ request }: ActionArgs) {
                         ingredientId: formConverted.ingredientId,
                     };
                 }
-
-                await patchIngredients(form)
+                if (!form) throw new Error('Invalid values')
+                await ingredient.update(form)
                 return redirect('/dashboard/ingredients')
             } catch (error: any) {
                 if (error.message === "Invalid values") {
@@ -106,14 +101,13 @@ export async function action({ request }: ActionArgs) {
                 }
                 return json({ error: "Server error ! Couldn't update database" }, { status: 500 })
             }
-
         }
         case "delete": {
             const formData = await request.formData();
             const ingredientId = formData.get('id')
 
             if (typeof ingredientId === "string" && ingredientId) {
-                const deletedIngr = await deleteIngredient(+ingredientId)
+                const deletedIngr = await ingredient.destroy(+ingredientId)
                 return deletedIngr
             }
             return json({ error: 'An Id is mandatory to delete an item' }, { status: 400 })
