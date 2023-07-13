@@ -36,7 +36,7 @@ export default function () {
                                 recipeId={recipe.id}
                                 imageLink={recipe.image?.link}
                                 recipeName={recipe.name}
-                                recipeCalories={recipe.macro_recipe.calories}
+                                recipeCalories={recipe.macros.calories}
                                 isLiked={isLikedByUser(recipe, profileId)}
                             />
                         );

@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client"
 import { prisma } from "~/service/db.server"
 
 export default {
@@ -45,7 +44,7 @@ export default {
                 },
                 include: {
                     author: true,
-                    macro_recipe: true,
+                    macros: true,
                     measures: {
                         include: {
                             ingredient: {

@@ -99,11 +99,11 @@ model InstructionOnRecipes {
   @@id([recipe_id, instruction_id])
 }
 
-model Difficulties {
-  id      Int       @id @default(autoincrement())
-  name    String    @unique
-  recipes Recipes[]
-}
+// model Difficulties {
+//   id      Int       @id @default(autoincrement())
+//   name    String    @unique
+//   recipes Recipes[]
+// }
 
 model Ingredients {
   id          Int                    @id @default(autoincrement())
@@ -118,7 +118,7 @@ model Ingredients {
   recipes     IngredientsOnRecipes[]
 }
 
-model Ingredient_categories {
+model categories {
   id          Int           @id @default(autoincrement())
   name        String        @unique
   ingredients Ingredients[]

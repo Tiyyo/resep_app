@@ -3,7 +3,7 @@ import { prisma } from "~/service/db.server";
 export default {
     async findManyByIds(ids: number[]) {
         try {
-            const measures = await prisma.ingredientsOnRecipes.findMany({
+            const measures = await prisma.ingredients_on_recipes.findMany({
                 where: {
                     recipe_id: {
                         in: ids,
