@@ -1,6 +1,6 @@
 import { InfosRecipeByUser, Recipe, Reviews } from "~/types/recipe"
 
-type ErrorMessage = {
+export type ErrorMessage = {
     error: string
 }
 

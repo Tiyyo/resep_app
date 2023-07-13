@@ -101,9 +101,9 @@ export async function buildRecipe(rawForm: RecipeRawForm) {
         throw new Error("Couldn't add raw data to the database");
     }
 
-    const macro_recipe = await computeTotalMacro(partialRecipe.measures, partialRecipe.servings)
+    const macroRecipe = await computeTotalMacro(partialRecipe.measures, partialRecipe.servings)
 
-    const updateRecipe = await recipe.addMacro(macro_recipe, partialRecipe.id)
+    const updateRecipe = await recipe.addMacro(macroRecipe, partialRecipe.id)
 
     return updateRecipe
 }
@@ -116,11 +116,11 @@ export default async function computeNewMacroAfterToUpdateRecipe(recipeId: numbe
         throw new Error("Couldn't find recipe");
     }
 
-    const macro_recipe = await computeTotalMacro(foundRecipe.measures, foundRecipe.servings)
+    const macroRecipe = await computeTotalMacro(foundRecipe.measures, foundRecipe.servings)
 
 
     const form = {
-        ...macro_recipe, id: foundRecipe.macro_recipe_id
+        ...macroRecipe, id: foundRecipe.macros_id
     }
 
     const updatedMacroRecipe = await macro.update(form)

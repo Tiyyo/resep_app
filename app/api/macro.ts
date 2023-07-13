@@ -29,8 +29,8 @@ export default {
             throw new Error("Can't find item with associated id");
         }
     },
-    async add(form: Prisma.MacrosCreateInput) {
-        let macro: Prisma.MacrosCreateInput;
+    async add(form: Prisma.macrosCreateInput) {
+        let macro: Prisma.macrosCreateInput;
         try {
             macro = {
                 food: form.food ?? null,
@@ -52,8 +52,8 @@ export default {
             }
         }
     },
-    async update(form: Prisma.MacrosCreateInput) {
-        let macro: Prisma.MacrosCreateInput;
+    async update(form: Prisma.macrosCreateInput) {
+        let macro: Prisma.macrosCreateInput;
 
         try {
             macro = {

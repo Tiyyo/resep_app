@@ -29,7 +29,7 @@ export default function FavoriteRecipes() {
                                 recipeId={recipe.id}
                                 imageLink={recipe.image.link}
                                 recipeName={recipe.name}
-                                recipeCalories={recipe.macro_recipe.calories}
+                                recipeCalories={recipe.macros.calories}
                                 isLiked={true}
                             />
                         );

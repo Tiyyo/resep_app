@@ -21,7 +21,7 @@ export async function loader({ params, request }: LoaderArgs) {
     const recipeId = +params.id;
 
     //remove that part when the recipe builder will be done
-    await computeNewMacroAfterToUpdateRecipe(recipeId);
+    // await computeNewMacroAfterToUpdateRecipe(recipeId);
 
     const foundRecipe = await recipe.findById(recipeId);
     const reviews = await review.findAllByRecipeId(recipeId);
@@ -29,14 +29,14 @@ export async function loader({ params, request }: LoaderArgs) {
     const profile = await getProfile(request);
     if (profile) {
         const infos = await review.findByIds(recipeId, profile.id);
-        return json({ recipe, reviews, profile, infos, aggregate });
+        return json({ foundRecipe, reviews, profile, infos, aggregate });
     }
-    return json({ recipe, reviews, profile, aggregate });
+    return json({ foundRecipe, reviews, profile, aggregate });
 }
 
 export default function RecipePage() {
     const {
-        recipe,
+        foundRecipe: recipe,
         reviews,
         profile,
         infos: infosRecipeByUser,
@@ -102,13 +102,13 @@ export default function RecipePage() {
                         })}
                     </div>
                     <NutritionFacts
-                        calories={recipe.macro_recipe.calories}
-                        carbs={recipe.macro_recipe.carbs}
-                        fat={recipe.macro_recipe.fat}
-                        proteins={recipe.macro_recipe.proteins}
-                        water={recipe.macro_recipe.water}
+                        calories={recipe.macros.calories}
+                        carbs={recipe.macros.carbs}
+                        fat={recipe.macros.fat}
+                        proteins={recipe.macros.proteins}
+                        water={recipe.macros.water}
                     />
-                    <LinearMacrosProportion macros={recipe?.macro_recipe} />
+                    <LinearMacrosProportion macros={recipe?.macros} />
                 </div>
                 <div className="flex flex-col gap-y-6 px-4 flex-grow">
                     <InstructionsList instructions={recipe.instructions} />
@@ -125,7 +125,6 @@ export default function RecipePage() {
                     />
                 </div>
             </div>
-            <div></div>
         </div>
     );
 }

@@ -1,10 +1,11 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "~/service/db.server";
+import { ErrorMessage } from "./interfaces";
 
 export default {
     async findAll() {
         try {
-            const categories = await prisma.ingredient_categories.findMany();
+            const categories = await prisma.categories.findMany();
             await prisma.$disconnect();
             return categories;
         } catch (error) {
@@ -13,7 +14,7 @@ export default {
     },
     async findById(id: number) {
         try {
-            const category = await prisma.ingredient_categories.findUnique({
+            const category = await prisma.categories.findUnique({
                 where: {
                     id,
                 },
@@ -31,7 +32,7 @@ export default {
             name,
         };
         try {
-            const createCategory = await prisma.ingredient_categories.create({
+            const createCategory = await prisma.categories.create({
                 data: category,
             });
             await prisma.$disconnect();
@@ -48,7 +49,7 @@ export default {
     },
     async update(object: { name: string; id: number }) {
         try {
-            const updateCategory = await prisma.ingredient_categories.update({
+            const updateCategory = await prisma.categories.update({
                 where: {
                     id: object.id,
                 },
@@ -64,7 +65,7 @@ export default {
     },
     async destroy(id: number) {
         try {
-            const deleteCategory = await prisma.ingredient_categories.delete({
+            const deleteCategory = await prisma.categories.delete({
                 where: {
                     id
                 },

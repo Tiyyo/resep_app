@@ -1,0 +1,223 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id         String    @id @default(uuid())
+  email      String    @unique
+  password   String
+  admin      Boolean   @default(false)
+  profile    Profiles?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt()
+}
+
+model Profiles {
+  id                Int              @id @default(autoincrement())
+  user_id           String           @unique
+  user              Users            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  username          String?
+  avatar            String?
+  age               DateTime?
+  height            Int?
+  weight            Decimal?
+  gender_id         Int?
+  gender            Genders?         @relation(fields: [gender_id], references: [id], onDelete: SetNull)
+  activity_level_id Int?
+  activity_level    Activity_levels? @relation(fields: [activity_level_id], references: [id])
+  reviews           Reviews[]
+  recipes           Recipes[]
+  // favorites         Favorites[]
+}
+
+model Genders {
+  id       Int        @id @default(autoincrement())
+  gender   String     @unique
+  profiles Profiles[]
+}
+
+model Activity_levels {
+  id             Int        @id @default(autoincrement())
+  activity_level String     @unique
+  description    String
+  factor         Decimal
+  profiles       Profiles[]
+}
+
+model Images {
+  id       Int       @id @default(autoincrement())
+  imageKey String    @unique
+  link     String
+  width    BigInt
+  recipes  Recipes[]
+}
+
+model Recipes {
+  id              Int                    @id @default(autoincrement())
+  name            String                 @unique
+  prep_time       Int
+  cook_time       Int
+  author_id       Int
+  author          Profiles               @relation(fields: [author_id], references: [id], onDelete: SetDefault)
+  created_at      DateTime               @default(now())
+  image_id        Int?
+  image           Images?                @relation(fields: [image_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  servings        Int
+  macro_recipe_id Int?                   @unique
+  macro_recipe    Macros?                @relation(fields: [macro_recipe_id], references: [id], onDelete: SetNull)
+  tags            RecipesOnTags[]
+  reviews         Reviews[]
+  measures        IngredientsOnRecipes[]
+  instructions    InstructionOnRecipes[]
+  // favorite_id     Int?
+  // favorite        Favorites?             @relation(fields: [favorite_id], references: [id], onDelete: SetNull)
+  youtube_link    String?
+  level           String
+  difficulty      Difficulties           @relation(fields: [level], references: [name], onDelete: SetDefault)
+}
+
+model Instructions {
+  id          Int                    @id @default(autoincrement())
+  description String
+  recipes     InstructionOnRecipes[]
+}
+
+model InstructionOnRecipes {
+  instruction_id Int
+  instructions   Instructions @relation(fields: [instruction_id], references: [id], onDelete: Restrict)
+  recipe_id      Int
+  recipe         Recipes      @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+
+  @@id([recipe_id, instruction_id])
+}
+
+// model Difficulties {
+//   id      Int       @id @default(autoincrement())
+//   name    String    @unique
+//   recipes Recipes[]
+// }
+
+model Ingredients {
+  id          Int                    @id @default(autoincrement())
+  name        String                 @unique
+  unit_weight Decimal?
+  category_id  Int
+  category    Ingredient_categories  @relation(fields: [category_id], references: [id], onUpdate: Cascade)
+  macros_id   Int?
+  macros      Macros?                @relation(fields: [macros_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  icon_id      Int?
+  icon        Icons?                 @relation(fields: [icon_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  recipes     IngredientsOnRecipes[]
+}
+
+model categories {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  ingredients Ingredients[]
+}
+
+model Unit_measures {
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique
+  abreviation          String
+  equivalent           Decimal?
+  unit                 String                 @default("grams")
+  IngredientsOnRecipes IngredientsOnRecipes[]
+}
+
+model Icons {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  link        String
+  image_key   String
+  ingredients Ingredients[]
+  tags        TagsOnIcons[]
+}
+
+model Tags {
+  id     Int             @id @default(autoincrement())
+  name   String          @unique
+  recipe RecipesOnTags[]
+  icons  TagsOnIcons[]
+}
+
+model TagsOnIcons {
+  icon     Icons  @relation(fields: [icon_id], references: [id], onDelete: Cascade)
+  icon_id   Int
+  tag      Tags   @relation(fields: [tag_name], references: [name], onDelete: Cascade)
+  tag_name String
+
+  @@id([icon_id, tag_name])
+}
+
+// model Reviews {
+//   id         Int                @id @default(autoincrement())
+//   author_id  Int
+//   author     Profiles           @relation(fields: [author_id], references: [id], onDelete: Cascade)
+//   comment    String
+//   rating     Int?
+//   recipes    ReviewsOnRecipes[]
+//   created_at DateTime           @default(now())
+//   updated_at DateTime?
+// }
+
+model Macros {
+  id          Int           @id @default(autoincrement())
+  food        String?       @unique
+  calories    Decimal
+  proteins    Decimal
+  carbs       Decimal
+  fat         Decimal
+  water       Decimal       
+  ingredients Ingredients[]
+  recipe      Recipes?
+}
+
+// model Favorites {
+//   id        Int       @id @default(autoincrement())
+//   profile_id Int
+//   owner     Profiles  @relation(fields: [profile_id], references: [id])
+//   recipes   Recipes[]
+// }
+
+model IngredientsOnRecipes {
+  qty             Decimal
+  unit_measure_id Int
+  unit_measure    Unit_measures @relation(fields: [unit_measure_id], references: [id])
+  ingredient_id    Int
+  ingredient      Ingredients   @relation(fields: [ingredient_id], references: [id], onDelete: Restrict)
+  recipe_id       Int
+  recipe          Recipes       @relation(fields: [recipe_id], references: [id], onDelete: Restrict)
+
+  @@id([ingredient_id, recipe_id])
+}
+
+model Reviews {
+  comment       String?
+  is_liked      Boolean            @default(false)
+  rating        Int?
+  created_at    DateTime           @default(now())
+  updated_at    DateTime?
+  author_id     Int
+  author        Profiles           @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  recipe_id     Int
+  recipe        Recipes            @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+  @@unique([author_id, recipe_id])
+}
+
+model RecipesOnTags {
+  tag_id      Int
+  tag         Tags      @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+  recipe_id   Int
+  recipe      Recipes   @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+
+  @@id([tag_id, recipe_id])
+}

@@ -9,7 +9,7 @@ export default {
             const recipes = await prisma.recipes.findMany({
                 include: {
                     author: true,
-                    macro_recipe: true,
+                    macros: true,
                     image: {
                         select: {
                             imageKey: true,
@@ -59,7 +59,7 @@ export default {
                 },
                 include: {
                     author: true,
-                    macro_recipe: true,
+                    macros: true,
                     measures: {
                         include: {
                             ingredient: {
@@ -114,7 +114,7 @@ export default {
                 },
                 take: 6,
                 include: {
-                    macro_recipe: true,
+                    macros: true,
                     tags: true,
                     reviews: true,
                     image: {
@@ -148,7 +148,7 @@ export default {
                 },
                 include: {
                     author: true,
-                    macro_recipe: true,
+                    macros: true,
                     measures: {
                         include: {
                             ingredient: {
@@ -211,7 +211,7 @@ export default {
                 },
                 include: {
                     reviews: true,
-                    macro_recipe: true,
+                    macros: true,
                     image: {
                         select: {
                             link: true,
@@ -236,14 +236,14 @@ export default {
         });
 
         try {
-            const rawResult = await prisma.recipesOnTags.findMany({
+            const rawResult = await prisma.recipes_on_tags.findMany({
                 where: {
                     OR: tagsQuery,
                 },
                 include: {
                     recipe: {
                         include: {
-                            macro_recipe: true,
+                            macros: true,
                             image: {
                                 select: {
                                     link: true,
@@ -373,13 +373,13 @@ export default {
                     id
                 },
                 data: {
-                    macro_recipe: {
+                    macros: {
                         create: {
-                            calories: macros.calories,
-                            proteins: macros.proteins,
-                            carbs: macros.carbs,
-                            fat: macros.fat,
-                            water: macros.water,
+                            calories: form.calories,
+                            proteins: form.proteins,
+                            carbs: form.carbs,
+                            fat: form.fat,
+                            water: form.water,
                         },
                     },
                 },
@@ -397,12 +397,12 @@ export default {
                     id: id,
                 },
                 data: {
-                    macro_recipe: {
-                        proteins: macros.proteins,
-                        calories: macros.calories,
-                        carbs: macros.carbs,
-                        fat: macros.fat,
-                        water: macros.water,
+                    macros: {
+                        proteins: form.proteins,
+                        calories: form.calories,
+                        carbs: form.carbs,
+                        fat: form.fat,
+                        water: form.water,
                     },
                 },
             });
