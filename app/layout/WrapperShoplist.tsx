@@ -13,7 +13,7 @@ export default function Wrapper({ children }: { children?: React.ReactNode }) {
   console.log(recipes);
 
   const handleClickGenerate = (
-    e: React.FormEventHandler<HTMLInputElement, FormEvent>
+    e: React.MouseEvent<HTMLFormElement, MouseEvent>
   ) => {
     e.preventDefault();
     console.log(e.currentTarget.numRecipes.value);
