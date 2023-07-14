@@ -47,7 +47,7 @@ export async function action({ request }: ActionArgs) {
                     await deleteImageFromBucket(form.imageKey)
                     return json({ error: "Could not add icon" }, { status: 400 });
                 }
-                return json({ status: 200 });
+                return json({ message: "Successfully added" }, { status: 201 });
             } catch (error: any) {
                 return json({ error: error.message }, { status: 500 });
             }
@@ -112,7 +112,7 @@ export async function action({ request }: ActionArgs) {
                 if (idNumber.id) {
                     const deletedIcon = await icon.destroy(idNumber.id)
                     await deleteImageFromBucket(deletedIcon.image_key)
-                    return json({ status: 200 })
+                    return json({ message: "Successfully deleted" }, { status: 204 });
                 }
                 throw new Error("No icon id provided");
             } catch (error: any) {

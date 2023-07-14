@@ -1,9 +1,19 @@
-import { json, type LoaderArgs } from "@remix-run/node";
+import { json, type LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import recipe from "~/api/recipe";
 import Slider from "~/components/slider";
 import LayoutRecipePages from "~/layout/LayoutRecipesPage";
 import { getProfile } from "~/utils/get.user.infos";
+
+export const meta: V2_MetaFunction = () => {
+    return [
+        {
+            title: "Resep ! Have control over your macros",
+            description:
+                "Home recipes pages with recommended recipes based on your preference",
+        },
+    ];
+};
 
 export async function loader({ request }: LoaderArgs) {
     const profile = await getProfile(request);

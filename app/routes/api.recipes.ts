@@ -80,9 +80,10 @@ export async function action({ request }: ActionArgs) {
 
 
             try {
-                const newRecipe = await buildRecipe(form)
-                return json({ status: 200 })
+                await buildRecipe(form)
+                return json({ message: "Successfully added" }, { status: 201 });
             } catch (error: any) {
+                if (!imageKey) return json({ error: "Couldn't remove the image from the cloud" })
                 await deleteImageFromBucket(imageKey)
                 console.log(error);
                 return json({ error: error.message })

@@ -42,12 +42,19 @@ interface UnwantedKeysRecipeCreateInput {
     prep_time: number
     cook_time: number
     macros_id?: number
+    author_id: number
+    created_at: Date
+    id: number
 }
 
 export interface RecipeCreateInput extends Omit<Recipe, keyof UnwantedKeysRecipeCreateInput> {
     prepTime: number
     cookTime: number
     macrosId?: number
+    id?: number
+    author_id?: number
+    created_at?: Date
+
 }
 
 

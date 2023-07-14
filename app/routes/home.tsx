@@ -1,17 +1,18 @@
 import { type LoaderArgs, redirect } from "@remix-run/node";
-import {homeMenu } from "~/constants/menus";
+import { homeMenu } from "~/constants/menus";
+import { ShoppingContextProvider } from "~/context/shoplist.context";
 import AppLayout from "~/layout/LayoutApp";
 import RoutesLayout from "~/layout/LayoutRoutes";
 import { getUser } from "~/service/auth.server";
 
 export async function loader({ request }: LoaderArgs) {
-  return (await getUser(request)) ? null : redirect("/auth/login");
+    return (await getUser(request)) ? null : redirect("/auth/login");
 }
 
 export default function Home() {
-  return (
-    <AppLayout>
-      <RoutesLayout menu={homeMenu} />
-    </AppLayout>
-  );
+    return (
+        <AppLayout>
+            <RoutesLayout menu={homeMenu} />
+        </AppLayout>
+    );
 }

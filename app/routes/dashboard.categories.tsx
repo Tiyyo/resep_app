@@ -3,6 +3,7 @@ import { json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import category from "~/api/category";
 import Table from "~/components/table";
+import { Toast } from "~/components/toast";
 
 export async function loader({ request }: LoaderArgs) {
     const categories = await category.findAll();
