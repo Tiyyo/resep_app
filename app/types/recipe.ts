@@ -12,17 +12,17 @@ export interface Icon {
 
 export interface Images {
     link: string
-    imageKey: string
+    imageKey?: string
     width: number
 }
 
 export interface InfosRecipeByUser {
     author_id: number;
-    author? : Profile
-    comment? : string;
-    is_liked? : boolean;
+    author?: Profile
+    comment?: string;
+    is_liked?: boolean;
     created_at: Date;
-    rating? : number
+    rating?: number
     recipe_id: number;
     updated_at?: Date;
 }
@@ -38,8 +38,7 @@ export interface Ingredient {
     unit_weight?: number | null | Decimal
 }
 
-export interface Macros {
-    id: number
+export interface MacrosCreatInput {
     food?: string | null
     calories: number | Decimal
     proteins: number | Decimal
@@ -48,18 +47,24 @@ export interface Macros {
     water: number | Decimal
 }
 
-export interface Measure {
+export interface Macros extends MacrosCreatInput {
     id: number
-    ingredient: Ingredient
-    ingredientId: number
-    qty: number | Decimal
-    recipeId: number
-    unit_compute?: string | null
-    unit_measure_id: number
-    unit_measure: UnitMeasure
 }
 
-export type Measures = Array<Measure>
+export interface Measure {
+    id?: number
+    ingredient: Ingredient | number
+    ingredientId?: number
+    ingredient_id?: number
+    recipe_id?: number
+    qty: number | Decimal
+    recipeId?: number
+    unit_compute?: string | null
+    unit_measure_id?: number
+    unit_measure: UnitMeasure | number
+}
+
+export type Measures = Measure[]
 
 export interface MeasureRaw {
     qty: string
@@ -69,19 +74,19 @@ export interface MeasureRaw {
 
 export interface Profile {
     id: number
-    user_id : string
-    user? : any // provisional
-    username? : string
-    avatar? : string
-    recipes? : Array<any> // provisional
-    age? : number
-    height? : number
-    weight? : number
-    gender? : string
-    gender_id? : number
-    activity_level? : string   
-    activity_level_id? : number
-    reviews? : Array<InfosRecipeByUser>
+    user_id: string
+    user?: any // provisional
+    username?: string
+    avatar?: string
+    recipes?: Array<any> // provisional
+    age?: number
+    height?: number
+    weight?: number
+    gender?: string
+    gender_id?: number
+    activity_level?: string
+    activity_level_id?: number
+    reviews?: Array<InfosRecipeByUser>
 }
 
 export interface RecipeRawForm {
@@ -98,6 +103,12 @@ export interface RecipeRawForm {
     image?: Images
 }
 
+export interface RecipeCreateInput {
+    id?: number
+    author_id?: number
+    created_at?: Date
+}
+
 export interface Recipe {
     author_id: number
     author?: Profile
@@ -107,7 +118,7 @@ export interface Recipe {
     id: number
     image?: Images
     images_id?: number
-    instructions : any
+    instructions: any
     level: difficulty
     macro_recipe_id?: number
     macro_recipe?: Macros

@@ -90,7 +90,7 @@ export function initializeList(measures: any) {
     copy.forEach((m, index) => {
         if (m === 1) return;
         if (
-            index < m.length - 1 &&
+            index < copy.length - 1 &&
             m.ingredient_id === copy[index + 1].ingredient_id
         ) {
             const firstItem = new ShoppingItem(
@@ -123,7 +123,7 @@ export function initializeList(measures: any) {
             );
             list.push(item);
             m = 1;
-            m[index + 1] = 1;
+            copy[index + 1] = 1;
         } else {
             const item = new ShoppingItem(
                 m.qty,
@@ -151,15 +151,17 @@ export function reduceList(itemList: Array<Item>) {
             index < copy.length - 1 &&
             element.ingredientId === copy[index + 1].ingredientId
         ) {
+            console.log('reduce is working');
             const item = new Item(
                 element.ingredientId,
                 element.name,
                 element.qty + copy[index + 1].qty,
                 element.unit
             );
+
             reducedList.push(item);
             element = 1;
-            element[index + 1] = 1;
+            copy[index + 1] = 1;
         } else {
             const item = new Item(
                 element.ingredientId,

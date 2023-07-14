@@ -17,6 +17,7 @@ import Instruction from "~/components/instruction";
 import Measure from "~/components/measure";
 import Select from "~/components/select";
 import SubmitButton from "~/components/submit_button";
+import { Toast } from "~/components/toast";
 import { getProfile } from "~/utils/get.user.infos";
 
 export async function loader({ request }: LoaderArgs) {
@@ -83,6 +84,7 @@ export default function () {
 
     return (
         <div className="p-8">
+            <Toast message={addRecipe?.data?.message} />
             <addRecipe.Form
                 method="POST"
                 action="/api/recipes"

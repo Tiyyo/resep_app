@@ -15,6 +15,7 @@ import Error from "~/components/error";
 import category from "~/api/category";
 import macro from "~/api/macro";
 import icon from "~/api/icon";
+import { Toast } from "~/components/toast";
 
 export async function loader({ request }: LoaderArgs) {
     return json(
@@ -60,6 +61,7 @@ export default function () {
 
     return (
         <div className="center w-full ">
+            <Toast message={addIngredient?.data?.message} />
             <addIngredient.Form
                 method="POST"
                 action="/api/ingredients"

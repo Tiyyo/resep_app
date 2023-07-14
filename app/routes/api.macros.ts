@@ -42,7 +42,7 @@ export async function action({ request }: ActionArgs) {
 
                 const newMacro = await macro.add(form as Macros)
                 if (newMacro) {
-                    return json({ status: 200 })
+                    return json({ message: "Successfully added" }, { status: 201 });
                 }
             } catch (error: any) {
                 if (error.message === "Invalid values") {
@@ -94,7 +94,7 @@ export async function action({ request }: ActionArgs) {
             try {
                 if (formConverted.id) {
                     await macro.destroy(formConverted.id)
-                    return json({ status: 200 })
+                    return json({ message: "Successfully deleted" }, { status: 204 });
                 }
                 throw new Error('No id provided')
             } catch (error) {

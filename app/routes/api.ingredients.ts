@@ -53,7 +53,7 @@ export async function action({ request }: ActionArgs) {
 
                 if (form) {
                     await ingredient.add(form);
-                    return json({ status: 200 });
+                    return json({ message: "Successfully added" }, { status: 201 });
                 }
             } catch (error: any) {
                 if (error.message === "Invalid values") {
@@ -79,8 +79,8 @@ export async function action({ request }: ActionArgs) {
             try {
                 const formConverted = await convertStringToNumber(fieldToConvert);
 
-
-                let form: IngredientUpdateForm;
+                // TODO fix this typescript error
+                let form: IngredientUpdateForm = undefined;
 
                 if (formConverted.categoryId && formConverted.ingredientId) {
                     form = {
@@ -107,8 +107,8 @@ export async function action({ request }: ActionArgs) {
             const ingredientId = formData.get('id')
 
             if (typeof ingredientId === "string" && ingredientId) {
-                const deletedIngr = await ingredient.destroy(+ingredientId)
-                return deletedIngr
+                await ingredient.destroy(+ingredientId)
+                return json({ message: "Successfully deleted" }, { status: 204 });
             }
             return json({ error: 'An Id is mandatory to delete an item' }, { status: 400 })
         }

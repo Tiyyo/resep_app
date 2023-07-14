@@ -17,7 +17,7 @@ export async function action({ request }: ActionArgs) {
 
             try {
                 await category.add(name);
-                return json({ message: "Succesfully added" }, { status: 201 })
+                return json({ message: "Successfully added" }, { status: 201 })
             } catch (error) {
                 return json(
                     {
@@ -69,7 +69,7 @@ export async function action({ request }: ActionArgs) {
             }
             try {
                 await category.destroy(id)
-                return json({ status: 200 })
+                return json({ message: "Successfully deleted" }, { status: 204 })
 
             } catch (error) {
                 throw new Error("Items can't be deleted");

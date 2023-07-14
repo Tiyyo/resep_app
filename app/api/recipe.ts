@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "~/service/db.server";
-import { Macros, Measure, Recipe } from "~/types/recipe";
+import { Macros, MacrosCreatInput, Measure, Recipe, RecipeRawForm } from "~/types/recipe";
 import { RecipeCreateInput } from "./interfaces";
 
 export default {
@@ -309,7 +309,7 @@ export default {
                     cook_time: form.cookTime,
                     author: {
                         connect: {
-                            id: form.author,
+                            id: form.author_id,
                         },
                     },
                     servings: form.servings,
@@ -366,7 +366,7 @@ export default {
             }
         }
     },
-    async addMacro(form: Macros, id: number) {
+    async addMacro(form: MacrosCreatInput, id: number) {
         try {
             const updateRecipe = await prisma.recipes.update({
                 where: {

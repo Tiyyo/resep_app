@@ -1,6 +1,6 @@
 import macro from "~/api/macro";
 import recipe from "~/api/recipe";
-import type { Measure, Measures, RecipeRawForm } from "~/types/recipe"
+import type { Macros, Measure, Measures, RecipeRawForm } from "~/types/recipe"
 
 
 function convertStringToNumber(rawForm: RecipeRawForm) {
@@ -10,9 +10,9 @@ function convertStringToNumber(rawForm: RecipeRawForm) {
         name: rawForm.name,
         prepTime: parseInt(rawForm.prepTime, 10),
         cookTime: parseInt(rawForm.cookTime, 10),
-        author: parseInt(rawForm.author),
+        author_id: parseInt(rawForm.author),
         servings: parseInt(rawForm.servings, 10),
-        difficulty: rawForm.level,
+        level: rawForm.level,
         tags: rawForm.tags ?? undefined,
         image: rawForm.image ?? undefined,
         ytLink: rawForm.ytLink ?? undefined,
@@ -30,6 +30,7 @@ function convertStringToNumber(rawForm: RecipeRawForm) {
 
 const calcQty = (measure: Measure): number => {
     let qty = 1;
+    if (typeof measure.unit_measure === "number" || typeof measure.ingredient === "number") return 0
 
     if (measure.unit_measure.name === "pieces" && measure.ingredient.unit_weight) {
         qty = (measure.qty as number) * (measure.ingredient?.unit_weight as number)
@@ -59,6 +60,7 @@ async function addPartialRecipe(rawForm: RecipeRawForm) {
 
 export async function computeTotalMacro(measures: Measures, servings: number) {
     const result = measures.map((m) => {
+        if (typeof m.ingredient === "number") return
         if (!m.ingredient.macros) {
             return {
                 calories: 0,
@@ -77,6 +79,7 @@ export async function computeTotalMacro(measures: Measures, servings: number) {
         }
     })
         .reduce((acc, curr) => {
+            if (!acc || !curr) return
             return {
                 calories: acc.calories + curr.calories,
                 proteins: acc.proteins + curr.proteins,
@@ -103,6 +106,7 @@ export async function buildRecipe(rawForm: RecipeRawForm) {
 
     const macroRecipe = await computeTotalMacro(partialRecipe.measures, partialRecipe.servings)
 
+    if (!macroRecipe) return
     const updateRecipe = await recipe.addMacro(macroRecipe, partialRecipe.id)
 
     return updateRecipe
@@ -115,6 +119,7 @@ export default async function computeNewMacroAfterToUpdateRecipe(recipeId: numbe
     if (!recipe) {
         throw new Error("Couldn't find recipe");
     }
+
 
     const macroRecipe = await computeTotalMacro(foundRecipe.measures, foundRecipe.servings)
 
