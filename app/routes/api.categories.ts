@@ -17,7 +17,7 @@ export async function action({ request }: ActionArgs) {
 
             try {
                 await category.add(name);
-                return json({ status: 200 })
+                return json({ message: "Succesfully added" }, { status: 201 })
             } catch (error) {
                 return json(
                     {
