@@ -89,6 +89,7 @@ model profiles {
   gender            genders?         @relation(fields: [gender_id], references: [id], onDelete: SetNull)
   activity_level_id Int?
   activity_level    activity_levels? @relation(fields: [activity_level_id], references: [id])
+  meals             meal_plans[]
   reviews           reviews[]
   recipes           recipes[]
 }
@@ -190,11 +191,33 @@ model recipes {
   servings     Int
   macros_id    Int?                      @unique
   macros       macros?                   @relation(fields: [macros_id], references: [id], onDelete: SetNull)
+  youtube_link String?
+  level        String
+  difficulty   difficulties              @relation(fields: [level], references: [name], onDelete: SetDefault)
   tags         recipes_on_tags[]
   reviews      reviews[]
   measures     ingredients_on_recipes[]
   instructions instructions_on_recipes[]
-  youtube_link String?
-  level        String
-  difficulty   difficulties              @relation(fields: [level], references: [name], onDelete: SetDefault)
+  meals        meals_on_recipes[]
+}
+
+model meal_plans {
+  id         Int                @id @default(autoincrement())
+  author_id  Int
+  author     profiles           @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  meals      meals_on_recipes[]
+  created_at DateTime           @default(now())
+  updated_at DateTime?          @updatedAt()
+}
+
+model meals_on_recipes {
+  recipe_id     Int
+  recipe        recipes    @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+  meal_plans_id Int
+  meal_plans    meal_plans @relation(fields: [meal_plans_id], references: [id], onDelete: Cascade)
+  servings      Int
+  name          String?
+  image         String?
+
+  @@id([recipe_id, meal_plans_id])
 }
