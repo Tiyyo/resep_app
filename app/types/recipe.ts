@@ -120,8 +120,8 @@ export interface Recipe {
     images_id?: number
     instructions: any
     level: difficulty
-    macro_recipe_id?: number
-    macro_recipe?: Macros
+    macros_id?: number
+    macros?: Macros
     measures: Measures
     name: string
     prep_time: number

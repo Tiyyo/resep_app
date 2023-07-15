@@ -1,10 +1,18 @@
 import { createCookieSessionStorage } from "@remix-run/node";
+import { MealPlanCreateInput } from "./api/interfaces";
 
-export interface Meal {
-    recipe_id: number,
-    recipe_name?: string
-    image?: string
+export interface MealCreateInput {
+    recipe_id: number
     servings: number
+    image?: string
+    name?: string
+}
+
+export interface Meal extends MealCreateInput {
+    // recipe_id: number,
+    // recipe_name?: string
+    // image?: string
+    // servings: number
     meal_plan_id: number
 }
 

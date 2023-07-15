@@ -133,7 +133,7 @@ export default {
     async findRandom(num: number) {
         try {
             const recipes =
-                await prisma.$queryRaw`SELECT recipes.id , recipes.name, recipes.image_id, images.link FROM recipes LEFT JOIN images ON recipes.image_id = images.id ORDER BY RANDOM() LIMIT ${num} `;
+                await prisma.$queryRaw`SELECT recipes.id as recipe_id , recipes.name as recipe_name, images.link as image, recipes.servings FROM recipes LEFT JOIN images ON recipes.image_id = images.id ORDER BY RANDOM() LIMIT ${num} `;
             return recipes;
         } catch (error) {
             console.log(error);
