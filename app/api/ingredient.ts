@@ -18,39 +18,49 @@ export default {
             throw new Error("Server error can't acces data");
         }
     },
-    async findAllRaw() {
-        try {
-            const result =
-                await prisma.$queryRaw`SELECT ingredients.id, ingredients.name, ingredients.unit_weight, icons.link, icons.image_key, macros.food, macros.calories, macros.proteins, macros.carbs, macros.fat, macros.water, categories.name as category_name FROM  ingredients LEFT JOIN categories ON ingredients.category_id = categories.id LEFT JOIN icons ON ingredients.icon_id = icons.id LEFT JOIN macros ON ingredients.macros_id = macros.id`;
-            await prisma.$disconnect()
+    // SELECT ingredients.id, ingredients.name, ingredients.unit_weight, icons.link, icons.image_key, macros.food, macros.calories, macros.proteins, macros.carbs, macros.fat, macros.water, categories.name as category_name FROM  ingredients LEFT JOIN categories ON ingredients.category_id = categories.id LEFT JOIN icons ON ingredients.icon_id = icons.id LEFT JOIN macros ON ingredients.macros_id = macros.id
+    // async findAllRaw() {
+    //     try {
+    //         const result =
+    //             await prisma.$queryRaw`SELECT DISTINCT ingredients.id, ingredients.name, ingredients.unit_weight, icons.link, icons.image_key, macros.calories, macros.proteins, macros.fat, macros.water, macros.carbs, categories.name as category_name  FROM ingredients 
+    //             LEFT JOIN categories 
+    //                 ON ingredients.category_id = categories.id 
+    //             LEFT JOIN icons 
+    //                 ON ingredients.icon_id = icons.id 
+    //             LEFT JOIN macros 
+    //                 ON ingredients.macros_id = macros.id
+    //             ORDER BY ingredients.id ASC;
+    //             `;
+    //         console.log(result)
+    //         await prisma.$disconnect()
 
-            return result.map((ingredient: any) => {
-                return {
-                    id: ingredient.id,
-                    name: ingredient.name,
-                    unit_weight: ingredient.unit_weight,
-                    icon: {
-                        link: ingredient.link,
-                        image_key: ingredient.image_key,
-                    },
-                    macros: {
-                        food: ingredient.food,
-                        calories: ingredient.calories,
-                        proteins: ingredient.proteins,
-                        carbs: ingredient.carbs,
-                        fat: ingredient.fat,
-                        water: ingredient.water,
-                    },
-                    category: {
-                        name: ingredient.category_name,
-                    },
-                };
-            });
-        } catch (error) {
-            console.log(error);
-            throw new Error("Server error can't acces data");
-        }
-    },
+    //         return result.map((ingredient: any) => {
+    //             return {
+    //                 id: ingredient.id,
+    //                 name: ingredient.name,
+    //                 unit_weight: ingredient.unit_weight,
+    //                 icon: {
+    //                     link: ingredient.link,
+    //                     image_key: ingredient.image_key,
+    //                 },
+    //                 macros: {
+    //                     food: ingredient.food,
+    //                     calories: ingredient.calories,
+    //                     proteins: ingredient.proteins,
+    //                     carbs: ingredient.carbs,
+    //                     fat: ingredient.fat,
+    //                     water: ingredient.water,
+    //                 },
+    //                 category: {
+    //                     name: ingredient.category_name,
+    //                 },
+    //             };
+    //         });
+    //     } catch (error) {
+    //         console.log(error);
+    //         throw new Error("Server error can't acces data");
+    //     }
+    // },
     async findById(id: number) {
         try {
             const ingredient = await prisma.ingredients.findUnique({

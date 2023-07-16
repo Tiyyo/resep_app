@@ -125,8 +125,10 @@ export default {
                 },
             });
             await prisma.$disconnect();
+            // const lastestRecipes = await prisma.$queryRaw`SELECT recipes.id as recipe_id , recipes.name as recipe_name, images.link as image, recipes.servings FROM recipes LEFT JOIN images ON recipes.image_id = images.id ORDER BY created_at DESC LIMIT 6 `;
             return lastestRecipes;
         } catch (error) {
+            console.log(error)
             throw new Error("Server error , couldn't get lastest recipes");
         }
     },
@@ -186,6 +188,12 @@ export default {
             if (!recipes) {
                 throw new Error("Can't find item with associated id");
             }
+
+            // const recipes = await prisma.$queryRaw`SELECT recipes.id as recipe_id , recipes.name as recipe_name, images.link as image, recipes.servings FROM recipes LEFT JOIN images ON recipes.image_id = images.id WHERE recipes.author_id = ${authorId} `;
+
+            console.log(recipes);
+
+
             const result = recipes.map((recipe) => {
                 return {
                     ...recipe,
