@@ -16,6 +16,18 @@ export default function TableBody({
   const deleteItem = useFetcher();
   const location = useLocation();
 
+  function extractEntityNameFromUrl(url: string): string {
+    const urlParts = url.split("/");
+    urlParts.shift();
+    const startUpdateUrl = urlParts
+      .map((p, index) => {
+        if (index === urlParts.length - 1) return "update/" + p;
+        return p;
+      })
+      .join("/");
+    return startUpdateUrl;
+  }
+
   return (
     <tbody>
       {data && data.length ? (
@@ -41,7 +53,14 @@ export default function TableBody({
                 <td className="text-right px-4 py-2">
                   <div className="flex gap-x-2">
                     <div className="">
-                      <Link to={location.pathname + "/update/" + d.id}>
+                      <Link
+                        to={
+                          "/" +
+                          extractEntityNameFromUrl(location.pathname) +
+                          "/" +
+                          d.id
+                        }
+                      >
                         <EditIcon size="5" />
                       </Link>
                     </div>
