@@ -6,13 +6,13 @@ import RoutesLayout from "~/layout/LayoutRoutes";
 import { getUser } from "~/service/auth.server";
 
 export async function loader({ request }: LoaderArgs) {
-    return (await getUser(request)) ? null : redirect("/auth/login");
+  return (await getUser(request)) ? null : redirect("/login");
 }
 
 export default function Home() {
-    return (
-        <AppLayout>
-            <RoutesLayout menu={homeMenu} />
-        </AppLayout>
-    );
+  return (
+    <AppLayout>
+      <RoutesLayout menu={homeMenu} />
+    </AppLayout>
+  );
 }

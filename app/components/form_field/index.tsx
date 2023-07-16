@@ -32,18 +32,25 @@ export function FormField({
     <>
       <div className="relative my-1">
         <input
+          style={
+            errorText && errorText.length > 0
+              ? { border: "2px solid #de4343" }
+              : { border: "" }
+          }
           type={type === "password" && !icon ? "text" : type}
           id={htmlFor}
           name={htmlFor}
           onChange={handleChange}
           value={value}
-          className="block px-2.5 pb-2 pt-3 w-full text-sm text-gray-900 rounded-xl border appearance-none dark:text-white dark:border-gray-600 dark:focus:border-secondary-300 focus:outline-none focus:ring-0 focus:border-secondary-300 peer"
+          className={`block px-2.5 pb-2 pt-3 w-full text-sm text-gray-900 rounded-xl border appearance-none dark:text-white dark:border-gray-600 dark:focus:border-secondary-300 focus:outline-none focus:ring-0 focus:border-secondary-300 peer bg-primary-100 xl:bg-white-100 autofill:bg-secondary-400 ${
+            errorText && errorText.length > 0 ? "h-72" : ""
+          }}`}
           placeholder=" "
-          autoComplete={type === "password" ? "off" : "on"} 
+          autoComplete={type === "password" ? "off" : "on"}
         />
         <label
           htmlFor={htmlFor}
-          className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-secondary-300 peer-focus:dark:text-secondary-300 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-80 peer-focus:-translate-y-4 left-1 bg-white-100"
+          className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-secondary-300 peer-focus:dark:text-secondary-300 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-80 peer-focus:-translate-y-4 left-1 bg-primary-100 xl:bg-white-100"
         >
           {label}
         </label>
@@ -56,13 +63,11 @@ export function FormField({
           {!icon && subIcon ? subIcon : children}
         </div>
       </div>
-      {errorText ? (
+      {errorText && (
         <div className="text-xs font-semibold text-center text-red-600 w-full flex items-center gap-x-4 py-1 px-2 text-red">
-          <ErrorIcon/>
+          <ErrorIcon />
           <p>{errorText}</p>
         </div>
-      ) : (
-        ""
       )}
     </>
   );
