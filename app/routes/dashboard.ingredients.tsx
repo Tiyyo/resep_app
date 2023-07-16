@@ -15,8 +15,8 @@ export async function loader({ request }: LoaderArgs) {
       categories: category.findAll(),
       macros: macro.findAll(),
       icons: icon.findAll(),
-      //   heritage: ingredient.findAll(),
-      ingredientsRaw: ingredient.findAllRaw(),
+      ingredients: ingredient.findAll(),
+      // ingredientsRaw: ingredient.findAllRaw(),
     })
   );
 }
@@ -24,7 +24,7 @@ export async function loader({ request }: LoaderArgs) {
 export default function () {
   // can't type useLoaderData bugs still not fixed
   // convert type to Serialize object
-  const { ingredientsRaw: ingredients } = useLoaderData();
+  const { ingredients } = useLoaderData();
 
   // change location to an execution on server
   // add type
