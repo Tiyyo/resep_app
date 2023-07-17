@@ -2,6 +2,7 @@ import { ActionArgs, LoaderArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData, useNavigation } from "@remix-run/react";
 import recipe from "~/api/recipe";
 import RecipeCard from "~/components/recipe/card";
+import { storage } from "~/service/auth.server";
 import { mealPlanStorage } from "~/session";
 import { Recipe } from "~/types/recipe";
 import { getProfile } from "~/utils/get.user.infos";
@@ -86,11 +87,11 @@ export async function loader({ request, params }: LoaderArgs) {
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
-  const positionMealToReplace = +formData.get("pickedMeal");
+  if (!formData.get("pickedMeal"))
+    return json({ error: "No item has been chosen" });
+  const positionMealToReplace = formData.get("pickedMeal") as string;
 
-  const session = await mealPlanStorage.getSession(
-    request.headers.get("Cookie")
-  );
+  const session = await storage.getSession(request.headers.get("Cookie"));
 
   const mealPlan = session.get("meal_plan");
   const newMeal = {
@@ -100,8 +101,8 @@ export async function action({ request }: ActionArgs) {
     servings: Number(formData.get("servings")),
   };
 
-  mealPlan[positionMealToReplace] = {
-    ...mealPlan[positionMealToReplace],
+  mealPlan[+positionMealToReplace] = {
+    ...mealPlan[+positionMealToReplace],
     ...newMeal,
   };
 
@@ -109,7 +110,7 @@ export async function action({ request }: ActionArgs) {
 
   return redirect("/home/shopping", {
     headers: {
-      "Set-Cookie": await mealPlanStorage.commitSession(session),
+      "Set-Cookie": await storage.commitSession(session),
     },
   });
 }
@@ -117,8 +118,6 @@ export async function action({ request }: ActionArgs) {
 export default function () {
   const { positionMealToReplace, searchedTags, recipes, profileId } =
     useLoaderData();
-  const data = useLoaderData();
-  const transition = useNavigation();
 
   if (!recipes || recipes.length === 0)
     return <div className="center italic mt-10">No recipes found</div>;

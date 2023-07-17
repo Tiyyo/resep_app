@@ -1,4 +1,3 @@
-import { redirect } from "@remix-run/node";
 import { adminPanelMenu } from "~/constants/menus";
 import AppLayout from "~/layout/LayoutApp";
 import RoutesLayout from "~/layout/LayoutRoutes";

@@ -1,6 +1,5 @@
 import { type LoaderArgs, redirect } from "@remix-run/node";
 import { homeMenu } from "~/constants/menus";
-import { ShoppingContextProvider } from "~/context/shoplist.context";
 import AppLayout from "~/layout/LayoutApp";
 import RoutesLayout from "~/layout/LayoutRoutes";
 import { getUser } from "~/service/auth.server";

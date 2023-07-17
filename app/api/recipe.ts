@@ -191,9 +191,6 @@ export default {
 
             // const recipes = await prisma.$queryRaw`SELECT recipes.id as recipe_id , recipes.name as recipe_name, images.link as image, recipes.servings FROM recipes LEFT JOIN images ON recipes.image_id = images.id WHERE recipes.author_id = ${authorId} `;
 
-            console.log(recipes);
-
-
             const result = recipes.map((recipe) => {
                 return {
                     ...recipe,

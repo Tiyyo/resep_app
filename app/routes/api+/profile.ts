@@ -6,6 +6,6 @@ import { getProfile } from "~/utils/get.user.infos";
 export async function loader({ request }: LoaderArgs) {
     await requireUserId(request);
     const admin = await isAdmin(request);
-    const profile = await getProfile(request);
+    const profile = await getProfile(request, true);
     return json({ admin, profile });
 }

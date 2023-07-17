@@ -50,9 +50,9 @@ export default function Input({
         value={value ?? undefined}
         disabled={disabled ? true : false}
         // onChange={onChange}
-        className={`pl-2 pr-1 text-8 h-9 bg-main-300 rounded-md placeholder:pl-1 placeholder:text-7 focus-visible:outline-secondary-300 w-${
-          width ?? "40"
-        } ${textAlign}`}
+        className={` 
+        pl-4 text-8 h-9 bg-main-300 rounded-md placeholder:pl-1 placeholder:text-7 focus-visible:outline-secondary-300 
+        w-${width ?? "40"} ${textAlign}`}
       />
       <p>{unit ? "(" + unit + ")" : ""}</p>
     </div>

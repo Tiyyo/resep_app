@@ -5,7 +5,7 @@ export interface MealCreateInput {
     recipe_id: number
     servings: number
     image?: string
-    name?: string
+    recipe_name: string
 }
 
 export interface Meal extends MealCreateInput {
