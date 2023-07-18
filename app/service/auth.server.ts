@@ -128,8 +128,6 @@ export async function getUser(request: Request) {
 
 export async function logout(request: Request) {
     const session = await getUserSession(request);
-    // const mealsSession = await mealPlanStorage.getSession(request.headers.get("Cookie"));
-    // await mealPlanStorage.destroySession(mealsSession);
 
     return redirect("/login", {
         headers: {

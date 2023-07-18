@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "~/service/db.server";
 import { Meal } from "~/session";
+import category from "./category";
 
 export default {
   async findAllByAuthor(author_id: number) {
@@ -36,13 +37,29 @@ export default {
         include: {
           meals: {
             include: {
-              meals: true,
+              meals: true
             },
+          },
+          shopping: {
+            include: {
+              items: {
+                include: {
+                  list_item: {
+                    include: {
+                      ingredient: {
+                        include: {
+                          icon: true,
+                          category: true
+                        },
+                      },
+                      unit_measure: true,
+                    }
+                  }
+                }
+              }
+            }
           }
         },
-        orderBy: {
-          created_at: "desc",
-        }
       });
       await prisma.$disconnect();
 
@@ -52,6 +69,7 @@ export default {
         id: result.id,
         author_id: result.author_id,
         created_at: result.created_at,
+        shopping: result.shopping && result.shopping.items.map(item => item.list_item),
         meals: result.meals.map((meal) => {
           return {
             recipe_id: meal.meals.recipe_id,
@@ -66,7 +84,46 @@ export default {
       console.log(error)
     }
   },
-
+  async findByIdWith2Query(id: number, author_id: number) {
+    try {
+      const result = await prisma.meal_plans.findFirst({
+        where: {
+          author_id,
+          id,
+        },
+        include: {
+          meals: {
+            include: {
+              meals: true
+            },
+          },
+        },
+      });
+      const shopping = await prisma.shopping_lists.findFirst({
+        where: {
+          meal_plan_id: result.id
+        }, include: {
+          items: {
+            include: {
+              list_item: {
+                include: {
+                  ingredient: {
+                    include: {
+                      icon: true
+                    }
+                  },
+                  unit_measure: true,
+                }
+              }
+            }
+          }
+        }
+      });
+      return result;
+    } catch (error) {
+      console.log(error)
+    }
+  },
   async add(author_id: number, form: Array<Meal>) {
     try {
       const mealPlan = await prisma.meal_plans.create({
@@ -111,6 +168,13 @@ export default {
       const mealPlan = await prisma.meal_plans.findFirst({
         where: {
           author_id,
+        },
+        include: {
+          meals: {
+            include: {
+              meals: true,
+            },
+          }
         },
         orderBy: {
           created_at: "desc",

@@ -103,7 +103,8 @@ export async function action({ request }: ActionArgs) {
       // save shopping list in db
 
       // destroy session
-      session.set("meal_plan", "");
+      session.unset("meal_plan");
+      // session.set("meal_plan", "");
 
       // redirect to shopping list
       return redirect("/home/shopping/meal_plans", {
@@ -160,9 +161,13 @@ export async function action({ request }: ActionArgs) {
     case "restore": {
       const session = await storage.getSession(request.headers.get("Cookie"));
       const mealPlan = await meal_plans.findLast(profile.id);
-      session.set("meal_plan", mealPlan);
+
+      const meals = mealPlan.meals.map((meal) => meal.meals);
+
+      console.log("MEAL PLAN RESTORED", mealPlan.meals);
+      session.set("meal_plan", meals);
       return json(
-        { recipes: mealPlan },
+        { recipes: meals },
         { headers: { "Set-Cookie": await storage.commitSession(session) } }
       );
     }
@@ -180,8 +185,6 @@ export default function () {
   const { recipes: cachedRecipes } = useLoaderData<{
     recipes: MealPlanCreateInput;
   }>();
-
-  console.log("RECIPES", recipes);
 
   const modal = useRef(null);
 
@@ -208,6 +211,8 @@ export default function () {
       setRecipes(copyRecipes);
     }
   };
+
+  console.log("RECIPES", recipes);
 
   useEffect(() => {
     if (fetchRandomRecipes.data?.recipes) {

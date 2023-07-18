@@ -217,7 +217,7 @@ model meal_plans {
   id         Int                   @id @default(autoincrement())
   author_id  Int
   author     profiles              @relation(fields: [author_id], references: [id], onDelete: Cascade)
-  // shopping   shopping_lists?
+  shopping   shopping_lists?
   created_at DateTime              @default(now())
   updated_at DateTime?             @updatedAt()
   meals      meals_on_meal_plans[]
@@ -234,32 +234,29 @@ model meals_on_meal_plans {
 }
 
 model list_items {
-  id              Int           @id @default(autoincrement())
-  name            String
-  ingredient_name ingredients   @relation(fields: [name], references: [name])
-  qty             Decimal
-  unit_measure_id Int
-  unit_measure    unit_measures @relation(fields: [unit_measure_id], references: [id])
-  // shopping_list_id            Int
-  // shopping_list               shopping_lists                @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
-  // shoppin_lists_on_list_items shoppin_lists_on_list_items[]
+  id                          Int                           @id @default(autoincrement())
+  ingredient_id               Int
+  ingredient                  ingredients                   @relation(fields: [ingredient_id], references: [id])
+  qty                         Decimal
+  unit_measure_id             Int
+  unit_measure                unit_measures                 @relation(fields: [unit_measure_id], references: [id])
+  shoppin_lists_on_list_items shoppin_lists_on_list_items[]
 }
 
-// model shoppin_lists_on_list_items {
-//   list_item_id     Int
-//   list_item        list_items     @relation(fields: [list_item_id], references: [id], onDelete: Cascade)
-//   shopping_list_id Int
-//   shopping         shopping_lists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
+model shoppin_lists_on_list_items {
+  list_item_id     Int
+  list_item        list_items     @relation(fields: [list_item_id], references: [id], onDelete: Cascade)
+  shopping_list_id Int
+  shopping_list    shopping_lists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
 
-//   @@id([list_item_id, shopping_list_id])
-// }
+  @@id([list_item_id, shopping_list_id])
+}
 
-// model shopping_lists {
-//   id                          Int                           @id @default(autoincrement())
-//   meal_plan_id                Int                           @unique
-//   meal_plan                   meal_plans                    @relation(fields: [meal_plan_id], references: [id], onDelete: Cascade)
-//   created_at                  DateTime                      @default(now())
-//   updated_at                  DateTime?                     @updatedAt()
-//   list_items                  list_items[]
-//   shoppin_lists_on_list_items shoppin_lists_on_list_items[]
-// }
+model shopping_lists {
+  id           Int                           @id @default(autoincrement())
+  meal_plan_id Int                           @unique
+  meal_plan    meal_plans                    @relation(fields: [meal_plan_id], references: [id], onDelete: Cascade)
+  created_at   DateTime                      @default(now())
+  updated_at   DateTime?                     @updatedAt()
+  items        shoppin_lists_on_list_items[]
+}
