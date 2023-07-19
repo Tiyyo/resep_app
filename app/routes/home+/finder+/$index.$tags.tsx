@@ -1,9 +1,12 @@
 import { ActionArgs, LoaderArgs, json, redirect } from "@remix-run/node";
-import { useLoaderData, useNavigation } from "@remix-run/react";
+import { useFetcher, useLoaderData, useNavigation } from "@remix-run/react";
+import { useEffect, useState } from "react";
+import { map } from "zod";
 import recipe from "~/api/recipe";
+import SearchIcon from "~/assets/icons/SearchIcon";
+import Finder from "~/components/finder";
 import RecipeCard from "~/components/recipe/card";
 import { storage } from "~/service/auth.server";
-import { mealPlanStorage } from "~/session";
 import { Recipe } from "~/types/recipe";
 import { getProfile } from "~/utils/get.user.infos";
 import { isLikedByUser } from "~/utils/is.liked.by.user";
@@ -71,7 +74,7 @@ export async function loader({ request, params }: LoaderArgs) {
       };
     }
     case "all": {
-      const recipes = await recipe.findRandom(10);
+      const recipes = await recipe.findAll();
       return {
         positionMealToReplace,
         recipes,
@@ -87,6 +90,7 @@ export async function loader({ request, params }: LoaderArgs) {
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
+
   if (!formData.get("pickedMeal"))
     return json({ error: "No item has been chosen" });
   const positionMealToReplace = formData.get("pickedMeal") as string;
@@ -108,7 +112,7 @@ export async function action({ request }: ActionArgs) {
 
   session.set("meal_plan", mealPlan);
 
-  return redirect("/home/shopping", {
+  return redirect("/home/meal_plans/generate", {
     headers: {
       "Set-Cookie": await storage.commitSession(session),
     },
@@ -116,30 +120,7 @@ export async function action({ request }: ActionArgs) {
 }
 
 export default function () {
-  const { positionMealToReplace, searchedTags, recipes, profileId } =
-    useLoaderData();
+  const { recipes: firstLoadedRecipes, profileId } = useLoaderData();
 
-  if (!recipes || recipes.length === 0)
-    return <div className="center italic mt-10">No recipes found</div>;
-
-  return (
-    <div className="max-w-[1325px] mx-auto">
-      <div className="flex flex-wrap gap-4 justify-start content-start w-full py-8">
-        {recipes.map((recipe: Recipe, index: number) => {
-          return (
-            <RecipeCard
-              key={recipe.id}
-              recipeId={recipe.id}
-              imageLink={recipe.image?.link}
-              recipeName={recipe.name}
-              servings={recipe.servings}
-              recipeCalories={recipe.macros?.calories}
-              isLiked={isLikedByUser(recipe, profileId)}
-              pickedMeal={positionMealToReplace}
-            />
-          );
-        })}
-      </div>
-    </div>
-  );
+  return <Finder recipes={firstLoadedRecipes} profileId={profileId} />;
 }

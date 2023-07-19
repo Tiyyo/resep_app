@@ -110,12 +110,12 @@ export interface RecipeCreateInput {
 }
 
 export interface Recipe {
+    id: number
     author_id: number
     author?: Profile
     cook_time: number
     created_at: Date
     difficulty?: any
-    id: number
     image?: Images
     images_id?: number
     instructions: any

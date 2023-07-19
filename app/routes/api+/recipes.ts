@@ -1,9 +1,10 @@
-import { type ActionArgs, json } from "@remix-run/node"
+import { type ActionArgs, json, LoaderArgs } from "@remix-run/node"
 import { withZod } from "@remix-validated-form/with-zod"
 import { buildRecipe } from "~/service/recipe.builder.server"
 import * as Z from "zod";
 import { validationError } from "remix-validated-form";
 import { deleteImageFromBucket, uploadImage } from "~/service/s3.server";
+import recipe from "~/api/recipe";
 
 export const validator = withZod(
     Z.object({
@@ -26,6 +27,15 @@ export const validator = withZod(
         { message: "Ingredient ,quantity and unit should have the same length", path: ["ingredients"] }
     )
 )
+
+export async function loader({ request }: LoaderArgs) {
+
+    const url = new URL(request.url);
+    const searchParams = url.searchParams.getAll('query')
+    const searchResult = await recipe.searchRaw(searchParams)
+    if (!searchResult) return json({ message: "No result" }, { status: 404 })
+    return json({ searchResult }, { status: 200 });
+}
 
 
 export async function action({ request }: ActionArgs) {

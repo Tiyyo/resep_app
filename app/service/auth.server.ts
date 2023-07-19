@@ -98,7 +98,7 @@ export async function requireUserId(
     return userId;
 }
 
-export function getUserSession(request: Request) {
+export async function getUserSession(request: Request) {
     return storage.getSession(request.headers.get("Cookie"));
 }
 

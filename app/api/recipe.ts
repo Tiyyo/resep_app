@@ -1,6 +1,12 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "~/service/db.server";
-import { Macros, MacrosCreatInput, Measure, Recipe, RecipeRawForm } from "~/types/recipe";
+import {
+    Macros,
+    MacrosCreatInput,
+    Measure,
+    Recipe,
+    RecipeRawForm,
+} from "~/types/recipe";
 import { RecipeCreateInput } from "./interfaces";
 
 export default {
@@ -128,7 +134,7 @@ export default {
             // const lastestRecipes = await prisma.$queryRaw`SELECT recipes.id as recipe_id , recipes.name as recipe_name, images.link as image, recipes.servings FROM recipes LEFT JOIN images ON recipes.image_id = images.id ORDER BY created_at DESC LIMIT 6 `;
             return lastestRecipes;
         } catch (error) {
-            console.log(error)
+            console.log(error);
             throw new Error("Server error , couldn't get lastest recipes");
         }
     },
@@ -286,17 +292,15 @@ export default {
             throw new Error("Form is empty");
         }
 
-        const createInstruction = form.instructions.map(
-            (instruction: string) => {
-                return {
-                    instructions: {
-                        create: {
-                            description: instruction,
-                        },
+        const createInstruction = form.instructions.map((instruction: string) => {
+            return {
+                instructions: {
+                    create: {
+                        description: instruction,
                     },
-                };
-            }
-        );
+                },
+            };
+        });
 
         const createMeasure = form.measures.map((m: Measure) => {
             return {
@@ -375,7 +379,7 @@ export default {
         try {
             const updateRecipe = await prisma.recipes.update({
                 where: {
-                    id
+                    id,
                 },
                 data: {
                     macros: {
@@ -416,9 +420,73 @@ export default {
         } catch (error) {
             throw new Error("Couldn't update macros from recipe");
         }
-    }
-}
-
-
-
-
+    },
+    async search(queries: string[]) {
+        try {
+            const result = await prisma.recipes.findMany({
+                where: {
+                    OR: [
+                        {
+                            name: {
+                                in: queries,
+                            },
+                        },
+                        {
+                            tags: {
+                                some: {
+                                    tag: {
+                                        name: {
+                                            in: queries,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    ],
+                },
+                include: {
+                    author: true,
+                    macros: true,
+                    image: {
+                        select: {
+                            link: true,
+                        },
+                    },
+                    tags: {
+                        include: {
+                            tag: true,
+                        },
+                    },
+                },
+            });
+            return result;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    async searchRaw(queries: string[]) {
+        const likeQueries = queries.map((query) => "%" + query + "%");
+        try {
+            const result = await prisma.$queryRaw`
+            SELECT recipes.id, recipes.name, recipes.author_id , recipes.servings, recipes.image_id, images.link, macros.calories
+            FROM recipes 
+            INNER JOIN images ON images.id = recipes.image_id 
+            INNER JOIN macros ON macros.id = recipes.macros_id
+            WHERE recipes.name LIKE ANY (array[${likeQueries}])
+            OR recipes.id IN (
+            SELECT recipes.id FROM recipes INNER JOIN recipes_on_tags ON recipes_on_tags.recipe_id = recipes.id 
+            WHERE (
+                (recipes_on_tags.tag_id, recipes_on_tags.recipe_id) 
+                IN 
+                ( SELECT recipes_on_tags.tag_id , recipes_on_tags.recipe_id FROM recipes_on_tags 
+                  INNER JOIN tags ON tags.id = recipes_on_tags.tag_id
+                  WHERE tags.name LIKE ANY (array[${likeQueries}]) AND recipes_on_tags IS NOT NULL AND recipes_on_tags.recipe_id IS NOT NULL )
+            ) AND recipes.id IS NOT NULL ) 
+        `;
+            console.log(result);
+            return result;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+};

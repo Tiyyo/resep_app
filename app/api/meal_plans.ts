@@ -146,19 +146,14 @@ export default {
         },
       });
       await prisma.$disconnect();
-      console.log(mealPlan, 'MEAL PLAN IN QUERY')
       return mealPlan;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === "P2002") {
-          return {
-            error: "There is a unique constraint violation , Already exists in database",
-          };
+          throw new Error("There is a unique constraint violation , Already exists in database");
         }
         if (error.code === "P2003") {
-          return {
-            error: "You're trying to add recipe to meal plan that doesn't exists",
-          }
+          throw new Error("You're trying to add recipe to meal plan that doesn't exists");
         }
       }
     }

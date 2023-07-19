@@ -1,6 +1,5 @@
 import { Form } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import CloseIcon from "~/assets/icons/CloseIcon";
 
 export default function ModalNotRoute({
   getActionToPerform,
@@ -9,13 +8,26 @@ export default function ModalNotRoute({
   getActionToPerform: (action: "new" | "old" | null) => void;
   isOpen: boolean;
 }) {
-  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const action = e.currentTarget.dataset.choice as "new" | "old";
     action ? getActionToPerform(action) : getActionToPerform(null);
     (window as any).my_modal_5.close();
   };
+
+  // force dialog to stay close for a certain amout of time on refresh
+  function forceDialogClose() {
+    setTimeout(() => {
+      setIsDialogOpen(true);
+    }, 300);
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+      forceDialogClose();
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     (window as any).my_modal_5.close();
@@ -25,22 +37,21 @@ export default function ModalNotRoute({
       (window as any).my_modal_5.showModal();
     }
   }, [isOpen]);
+
   return (
-    <div className="sticky">
+    <div className={`sticky ${isDialogOpen ? "" : "hidden"}`}>
       <dialog
         id="my_modal_5"
         aria-modal="false"
-        className={`modal modal-bottom sm:modal-middle -z-10 transition-opacity
-        //  ${isOpen ? "opacity-100" : "opacity-0"}`}
+        className={`modal modal-bottom sm:modal-middle -z-10 transition-opacity ${
+          isOpen ? "opacity-100" : "opacity-0"
+        }`}
       >
-        <Form method="POST" className="modal-box" action="/home/shopping">
-          <button
-            className="btn hidden"
-            onClick={() => window.my_modal_5.showModal()}
-            hidden
-          >
-            open modal
-          </button>
+        <Form
+          method="POST"
+          className="modal-box"
+          action="/home/meal_plans/generate"
+        >
           <p className="text-center font-bold my-2">
             Do you want to load the last set of recipes you used ?
           </p>
