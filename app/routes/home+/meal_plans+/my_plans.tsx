@@ -26,7 +26,7 @@ export default function () {
   return (
     <div>
       <TitleLevel1 title="Meal plans" />
-      <div className="flex justify-evenly border-t-2  border-b-2 border-t-gray-950 border-b-gray-950 w-full py-1 font-semibold text-10">
+      <div className="flex justify-evenly border-t-2  border-b-2 border-t-gray-950 border-b-gray-950 w-full py-1 font-semibold text-9 h-8">
         {mealPlans.map((mealPlan) => (
           <NavLink to={`${mealPlan.id}`} key={mealPlan.id + 1}>
             {formatDate(mealPlan.created_at)}

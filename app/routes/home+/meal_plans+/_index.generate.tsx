@@ -62,13 +62,14 @@ export async function action({ request }: ActionArgs) {
   switch (action) {
     case "getRandom": {
       const numRecipes = Number(formData.get("numRecipes"));
-      // Idea send a message to the user instead of formating the value for him
+      // TODO send a message to users instead of formating the value for them
 
-      if (isNaN(numRecipes))
+      if (isNaN(numRecipes)) {
         return json(
           { error: { numRecipes: "Please enter a number" } },
           { status: 400 }
         );
+      }
       if (numRecipes < 1) {
         return json(
           {
@@ -94,7 +95,6 @@ export async function action({ request }: ActionArgs) {
     }
     case "getShoppingList": {
       const mealPlanSaved = await meal_plans.add(profile.id, mealPlan);
-
       const shoppingList = await buildShoppingList(mealPlan);
 
       if (!mealPlanSaved)
@@ -102,23 +102,21 @@ export async function action({ request }: ActionArgs) {
           { message: "Error while saving meal plan" },
           { status: 500 }
         );
-
       const shoppingListSaved = await shopping_lists.add(
         Number(mealPlanSaved.id),
         shoppingList
       );
-
       if (!shoppingListSaved)
         return json(
           { message: "Error while saving shopping list" },
           { status: 500 }
         );
       session.unset("meal_plan");
-
       return redirect(`/home/meal_plans/my_plans/${mealPlanSaved.id}`, {
         headers: { "Set-Cookie": await storage.commitSession(session) },
         status: 301,
       });
+      // return "hello world";
     }
     case "remove": {
       const position = Number(formData.get("position"));
@@ -248,7 +246,7 @@ export default function () {
         isOpen={hasToOpenModal}
       />
       <TitleLevel1 title="Meal plans creator" />
-      {recipes && recipes.length > 0 && (
+      {recipes && (
         <>
           <div className="flex justify-center flex-wrap gap-4">
             {recipes.map((recipe, index: number) => {

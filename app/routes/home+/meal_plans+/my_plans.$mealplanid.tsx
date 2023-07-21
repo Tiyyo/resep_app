@@ -6,6 +6,10 @@ import shopping_lists from "~/api/shopping_lists";
 import Input from "~/components/input";
 import SubmitButton from "~/components/submit_button";
 import { buildShoppingList } from "~/service/algo.builder.safer.server";
+import {
+  convertGramsToPieces,
+  harmonzeUnit,
+} from "~/utils/convert.grams.to.pieces";
 
 import { getProfile } from "~/utils/get.user.infos";
 
@@ -15,21 +19,25 @@ export async function loader({ request, params }: LoaderArgs) {
   if (!profile) return json({ error: "no profile found" }, { status: 401 });
   if (typeof mealplanid === "string" && mealplanid) {
     const mealPlans = await meal_plans.findById(Number(mealplanid), profile.id);
+
+    const mealsHarmonize = harmonzeUnit(mealPlans);
+
     // if (!mealPlans)
     //   return json({ error: "no meal plan found" }, { status: 404 });
 
     // Move to genration meal plan
     // const mealIds = mealPlans.meals.map((meal) => { recipe_id : meal.recipe_id , servings : meal.servings});
-    const shoppingList = await buildShoppingList(mealPlans.meals);
-    console.log(shoppingList, "SHOPING LIST");
+    // const shoppingList = await buildShoppingList(mealPlans.meals);
+    // console.log(shoppingList, "SHOPING LIST");
 
-    const shoppingListSaved = await shopping_lists.add(
-      Number(mealplanid),
-      shoppingList
-    );
+    // const shoppingListSaved = await shopping_lists.add(
+    //   Number(mealplanid),
+    //   shoppingList
+    // );
 
     return json({
       mealPlans,
+      mealsHarmonize,
       profileId: profile.id,
       // shoppingListSaved,
     });
@@ -50,7 +58,8 @@ export async function action({ request }: ActionArgs) {
 }
 
 export default function () {
-  const { mealPlans, profileId, shoppingListSaved } = useLoaderData();
+  const { mealPlans, profileId, shoppingListSaved, mealsHarmonize } =
+    useLoaderData();
 
   // console.log(mealPlans);
 
@@ -106,24 +115,21 @@ export default function () {
           <SubmitButton text="generate shopping list" />
         </Form> */}
         <div className="flex center flex-wrap gap-4 p-4">
-          {mealPlans.shopping &&
-            mealPlans.shopping.map((item) => {
-              console.log(item);
+          {mealsHarmonize &&
+            mealsHarmonize.map((item) => {
               return (
                 <div
                   key={item.id}
                   className="flex rounded-2xl items-center gap-x-2 w-52 bg-main-100 px-4 py-1"
                 >
                   <img
-                    src={item.ingredient.icon?.link}
+                    src={item.image}
                     className="rounded-full h-8 aspect-square"
                   />
-                  <p className="text-8 opacity-80 flex-grow">
-                    {item.ingredient.name}
-                  </p>
+                  <p className="text-8 opacity-80 flex-grow">{item.name}</p>
                   <p className="text-7 opacity-80 w-[20%]">
                     {item.qty}
-                    <span>{item.unit_measure.abreviation}</span>
+                    <span>{item.unit}</span>
                   </p>
                 </div>
               );

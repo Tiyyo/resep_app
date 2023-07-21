@@ -33,6 +33,7 @@ export async function buildShoppingList(meals) {
 
     const sumList = initializeList(measuresWithCorrectServigns);
     const list = recursionOverList(sumList);
+    console.log(list)
     return list;
 }
 
@@ -152,7 +153,7 @@ function associateServingsToMeasure(measures, meals) {
         if (matchMeal) {
             return {
                 ...m, recipe: {
-                    ...m.recipe, servings: matchMeal.servings
+                    ...m.recipe, servings: m.recipe.servings / matchMeal.servings
                 }
             }
         }

@@ -70,7 +70,7 @@ INSERT INTO macros VALUES(79,NULL,447.6,45.7,43.79,6.9,390.6);
 INSERT INTO macros VALUES(80,NULL,397.8,47.3,38.70,4.5,297.1);
 INSERT INTO macros VALUES(81,NULL,466.6,37.7,68.20,3.3,299.3);
 
-SELECT setval('icons_id_seq',(SELECT MAX(id) FROM icons), true);
+
 SELECT setval('macros_id_seq',(SELECT MAX(id) FROM macros), true);
 
 COMMIT;

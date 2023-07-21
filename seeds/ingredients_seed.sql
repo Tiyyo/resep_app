@@ -69,5 +69,5 @@ INSERT INTO Ingredients VALUES(67,'olive oil',NULL,5,30,18);
 INSERT INTO Ingredients VALUES(68,'lemon juice',45,4,60,67);
 INSERT INTO Ingredients VALUES(69,'corn',NULL,1,75,71);
 
-SELECT setval('ingredients_id_seq',(SELECT MAX(id) FROM ingredients), true)
+SELECT setval('ingredients_id_seq',(SELECT MAX(id) FROM ingredients), true);
 COMMIT;
