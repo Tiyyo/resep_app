@@ -89,6 +89,7 @@ model profiles {
   gender            genders?         @relation(fields: [gender_id], references: [id], onDelete: SetNull)
   activity_level_id Int?
   activity_level    activity_levels? @relation(fields: [activity_level_id], references: [id])
+  meals             meal_plans[]
   reviews           reviews[]
   recipes           recipes[]
 }
@@ -100,6 +101,7 @@ model unit_measures {
   equivalent             Decimal?
   unit                   String                   @default("grams")
   ingredients_on_recipes ingredients_on_recipes[]
+  list_items             list_items[]
 }
 
 model categories {
@@ -131,6 +133,7 @@ model ingredients {
   icon_id     Int?
   icon        icons?                   @relation(fields: [icon_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
   recipes     ingredients_on_recipes[]
+  list_items  list_items[]
 }
 
 model ingredients_on_recipes {
@@ -190,11 +193,70 @@ model recipes {
   servings     Int
   macros_id    Int?                      @unique
   macros       macros?                   @relation(fields: [macros_id], references: [id], onDelete: SetNull)
+  youtube_link String?
+  level        String
+  difficulty   difficulties              @relation(fields: [level], references: [name], onDelete: SetDefault)
   tags         recipes_on_tags[]
   reviews      reviews[]
   measures     ingredients_on_recipes[]
   instructions instructions_on_recipes[]
-  youtube_link String?
-  level        String
-  difficulty   difficulties              @relation(fields: [level], references: [name], onDelete: SetDefault)
+  meals        meals[]
+}
+
+model meals {
+  id          Int                   @id @default(autoincrement())
+  recipe_name String
+  servings    Int
+  recipe_id   Int
+  recipe      recipes               @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+  image       String?
+  meal_plans  meals_on_meal_plans[]
+}
+
+model meal_plans {
+  id         Int                   @id @default(autoincrement())
+  author_id  Int
+  author     profiles              @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  shopping   shopping_lists?
+  created_at DateTime              @default(now())
+  updated_at DateTime?             @updatedAt()
+  meals      meals_on_meal_plans[]
+  // meals      meals_on_recipes[]
+}
+
+model meals_on_meal_plans {
+  meals_id      Int
+  meals         meals      @relation(fields: [meals_id], references: [id], onDelete: Cascade)
+  meal_plans_id Int
+  meal_plans    meal_plans @relation(fields: [meal_plans_id], references: [id], onDelete: Cascade)
+
+  @@id([meals_id, meal_plans_id])
+}
+
+model list_items {
+  id                          Int                           @id @default(autoincrement())
+  ingredient_id               Int
+  ingredient                  ingredients                   @relation(fields: [ingredient_id], references: [id])
+  qty                         Decimal
+  unit_measure_id             Int
+  unit_measure                unit_measures                 @relation(fields: [unit_measure_id], references: [id])
+  shoppin_lists_on_list_items shoppin_lists_on_list_items[]
+}
+
+model shoppin_lists_on_list_items {
+  list_item_id     Int
+  list_item        list_items     @relation(fields: [list_item_id], references: [id], onDelete: Cascade)
+  shopping_list_id Int
+  shopping_list    shopping_lists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
+
+  @@id([list_item_id, shopping_list_id])
+}
+
+model shopping_lists {
+  id           Int                           @id @default(autoincrement())
+  meal_plan_id Int                           @unique
+  meal_plan    meal_plans                    @relation(fields: [meal_plan_id], references: [id], onDelete: Cascade)
+  created_at   DateTime                      @default(now())
+  updated_at   DateTime?                     @updatedAt()
+  items        shoppin_lists_on_list_items[]
 }

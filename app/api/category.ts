@@ -12,6 +12,15 @@ export default {
             throw new Error("Can't find categories");
         }
     },
+    async findAllRaw() {
+        try {
+            const categories = await prisma.$queryRaw`SELECT * FROM categories`;
+            await prisma.$disconnect();
+            return categories;
+        } catch (error) {
+            throw new Error("Can't find categories");
+        }
+    },
     async findById(id: number) {
         try {
             const category = await prisma.categories.findUnique({

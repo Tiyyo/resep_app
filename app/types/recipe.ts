@@ -110,18 +110,18 @@ export interface RecipeCreateInput {
 }
 
 export interface Recipe {
+    id: number
     author_id: number
     author?: Profile
     cook_time: number
     created_at: Date
     difficulty?: any
-    id: number
     image?: Images
     images_id?: number
     instructions: any
     level: difficulty
-    macro_recipe_id?: number
-    macro_recipe?: Macros
+    macros_id?: number
+    macros?: Macros
     measures: Measures
     name: string
     prep_time: number

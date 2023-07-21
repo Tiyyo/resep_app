@@ -27,6 +27,15 @@ export interface IngredientUpdateForm extends IngredientCreateForm {
     ingredientId: number
 }
 
+export interface MealCreateInput {
+    recipe_id: number
+    recipe_name: string
+    image: string
+    servings: number
+}
+
+export type MealPlanCreateInput = MealCreateInput[]
+
 interface UnwantedKeysReviewCreateInput {
     author_id: number
     recipe_id: number
@@ -54,7 +63,6 @@ export interface RecipeCreateInput extends Omit<Recipe, keyof UnwantedKeysRecipe
     id?: number
     author_id?: number
     created_at?: Date
-
 }
 
 
