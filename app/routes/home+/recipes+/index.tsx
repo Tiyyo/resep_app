@@ -51,7 +51,7 @@ export default function () {
     <LayoutRecipePages title="Recommended for you">
       <>
         <Outlet />
-        <Slider
+        {/* <Slider
           banner={false}
           title="Just added"
           profileId={profileId}
@@ -77,7 +77,7 @@ export default function () {
           profileId={profileId}
           linkText="See all"
           link="/"
-        />
+        /> */}
       </>
     </LayoutRecipePages>
   );
