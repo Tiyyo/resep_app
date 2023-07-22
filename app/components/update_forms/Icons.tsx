@@ -18,12 +18,7 @@ export function UpdateIconsForm({ icon }: UpdateIconsFormProps) {
       <div className="flex flex-col justify-start items-start gap-y-4">
         <input type="text" hidden name="id" defaultValue={icon.id} />
         <input type="text" hidden name="link" defaultValue={icon.link} />
-        <input
-          type="text"
-          hidden
-          name="key"
-          defaultValue={icon.image_key}
-        />
+        <input type="text" hidden name="key" defaultValue={icon.image_key} />
 
         <Input
           name="name"
@@ -31,6 +26,7 @@ export function UpdateIconsForm({ icon }: UpdateIconsFormProps) {
           label="Name"
           defaultValue={icon.name}
           variant="grid"
+          error={updateIcon?.data?.error?.fieldErrors?.name}
         />
 
         <Input
@@ -42,13 +38,16 @@ export function UpdateIconsForm({ icon }: UpdateIconsFormProps) {
           variant="grid"
         />
 
-        <FileInput name="image_icon" />
+        <FileInput
+          name="image_icon"
+          error={updateIcon?.data?.error?.fieldErrors?.image_icon}
+        />
 
         <div className="self-center">
           <SubmitButton text="Edit icon" />
         </div>
       </div>
-      <Error message={updateIcon?.data?.error} />
+      <Error message={updateIcon?.data?.error?.userMessage} />
     </updateIcon.Form>
   );
 }

@@ -2,8 +2,8 @@ import type {
   Ingredient,
   Macros,
   Icon,
-} from "../../service/recipe.builder.server";
-import type { Category } from "../categories/interface";
+} from '../../service/recipe_builder/index.server';
+import type { Category } from '../categories/interface';
 
 export interface UpdateMacrosFormProps {
   data: Macros;

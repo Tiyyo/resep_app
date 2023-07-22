@@ -1,7 +1,11 @@
 import type { ActionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import category from "~/api/category";
-
+import MethodError from "~/helpers/errors/method.error";
+import ServerError from "~/helpers/errors/server.error";
+import UserInputError from "~/helpers/errors/user.inputs.error";
+import ResponseError from "~/helpers/response/response.error";
+import ResponseValid from "~/helpers/response/response.ok";
 
 
 export async function action({ request }: ActionArgs) {
@@ -12,31 +16,24 @@ export async function action({ request }: ActionArgs) {
         case "post": {
             const name = formData.get("category");
             if (typeof name !== "string") {
-                return json({ error: "name argument should be a string" }, { status: 400 });
+                return new ResponseError(new UserInputError("name argument should be a string")).send();
             }
-
             try {
                 await category.add(name);
-                return json({ message: "Successfully added" }, { status: 201 })
+                return new ResponseValid(201, "Successfully added", null).send();
             } catch (error) {
-                return json(
-                    {
-                        error: "Failed to insert into database",
-                        fields: { name: "This category already exist in database" },
-                    },
-                    { status: 400 }
-                );
+                return new ResponseError(error).send();
             }
-
         }
         case "patch": {
+
             const name = formData.get('category')
             const categoryId = formData.get('id')
 
             let id: number | undefined = undefined;
 
             if (typeof name !== "string") {
-                return json({ error: "name argument should be a string" }, { status: 400 });
+                return new ResponseError(new UserInputError("name argument should be a string")).send();
             }
 
             if (typeof categoryId === 'string') {
@@ -44,7 +41,7 @@ export async function action({ request }: ActionArgs) {
             }
 
             if (typeof id !== "number") {
-                return json({ error: "id argument should be a number" }, { status: 400 });
+                return new ResponseError(new UserInputError("id argument should be a number")).send();
             }
 
             try {
@@ -52,7 +49,7 @@ export async function action({ request }: ActionArgs) {
                 return redirect("/dashboard/categories")
 
             } catch (error) {
-                throw new Error("Couldn't add items to database");
+                return new ResponseError(error).send();
             }
 
         }
@@ -65,19 +62,18 @@ export async function action({ request }: ActionArgs) {
             }
 
             if (typeof id !== "number") {
-                return json({ error: "id argument should be a number" }, { status: 400 });
+                return new ResponseError(new UserInputError("id argument should be a number")).send();
             }
             try {
                 await category.destroy(id)
-                return json({ message: "Successfully deleted" }, { status: 204 })
+                return new ResponseValid(204, "Successfully deleted", null).send();
 
             } catch (error) {
-                throw new Error("Items can't be deleted");
+                return new ResponseError(error).send();
             }
         }
         default: {
-            throw new Error('Invalid method')
+            return new ResponseError(new MethodError("Invalid method")).send()
         }
-
     }
 }

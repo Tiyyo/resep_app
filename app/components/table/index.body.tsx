@@ -5,6 +5,7 @@ import DeleteIcon from "~/assets/icons/DeleteIcon";
 import { displayMultiString } from "./display.multi.string";
 import { displayContentToCells } from "./display.content.cells";
 import { Toast } from "../toast";
+import { extractEntityNameFromUrl } from "./extract.name.from.url";
 
 export default function TableBody({
   data,
@@ -15,18 +16,6 @@ export default function TableBody({
 }: TableBodyProps) {
   const deleteItem = useFetcher();
   const location = useLocation();
-
-  function extractEntityNameFromUrl(url: string): string {
-    const urlParts = url.split("/");
-    urlParts.shift();
-    const startUpdateUrl = urlParts
-      .map((p, index) => {
-        if (index === urlParts.length - 1) return "update/" + p;
-        return p;
-      })
-      .join("/");
-    return startUpdateUrl;
-  }
 
   return (
     <tbody>
@@ -79,7 +68,7 @@ export default function TableBody({
           })}
         </>
       ) : (
-        <tr className="">
+        <tr>
           <td colSpan={keys.length + 1} className="py-4 text-center">
             Database doesn't contain any items
           </td>

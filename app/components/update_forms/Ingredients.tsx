@@ -14,7 +14,6 @@ export default function UpdateIngredientsForm({
 }: UpdateIngredientsFormProps) {
   const updateIngredient = useFetcher();
 
-
   const defaultOptionIcon = {
     value: ingredient?.icon?.id,
     label: ingredient?.icon?.name,
@@ -33,7 +32,12 @@ export default function UpdateIngredientsForm({
   return (
     <updateIngredient.Form method="PATCH" action="/api/ingredients">
       <div className="flex flex-col flex-wrap items-center justify-center gap-y-8 first-letter:mt-3">
-        <input type="text" hidden name="ingredientId" defaultValue={ingredient.id} />
+        <input
+          type="text"
+          hidden
+          name="ingredientId"
+          defaultValue={ingredient.id}
+        />
 
         <div className="flex items-start gap-x-12 ">
           <div className="flex flex-col items-center">
@@ -42,8 +46,8 @@ export default function UpdateIngredientsForm({
               placeholder="Ingredient name"
               label="Name"
               defaultValue={ingredient.name}
+              error={updateIngredient?.data?.fieldErrors?.name}
             />
-            <Error message={updateIngredient?.data?.fieldErrors?.name} />
           </div>
           <div className="flex">
             <Input
@@ -85,7 +89,7 @@ export default function UpdateIngredientsForm({
                 }}
               />
             ) : (
-                <SelectSearch
+              <SelectSearch
                 name="macrosId"
                 data={macros}
                 index="id"
@@ -119,7 +123,7 @@ export default function UpdateIngredientsForm({
         </div>
       </div>
       <div className="my-2">
-        <Error message={updateIngredient?.data?.error} />
+        <Error message={updateIngredient?.data?.error?.userMessage} />
       </div>
     </updateIngredient.Form>
   );

@@ -1,6 +1,8 @@
 import { prisma } from "~/service/db.server";
 import { IngredientCreateForm, IngredientUpdateForm } from "./interfaces";
 import { Prisma } from "@prisma/client";
+import DatabaseError from "~/helpers/errors/database.error";
+import NotFoundError from "~/helpers/errors/not.found.error";
 
 export default {
     async findAll() {
@@ -15,7 +17,7 @@ export default {
             await prisma.$disconnect();
             return ingredients;
         } catch (error) {
-            throw new Error("Server error can't acces data");
+            throw new DatabaseError("Server error can't acces data", "ingredients", error);
         }
     },
     // SELECT ingredients.id, ingredients.name, ingredients.unit_weight, icons.link, icons.image_key, macros.food, macros.calories, macros.proteins, macros.carbs, macros.fat, macros.water, categories.name as category_name FROM  ingredients LEFT JOIN categories ON ingredients.category_id = categories.id LEFT JOIN icons ON ingredients.icon_id = icons.id LEFT JOIN macros ON ingredients.macros_id = macros.id
@@ -74,9 +76,10 @@ export default {
                 },
             });
             await prisma.$disconnect();
+            if (!ingredient) throw new NotFoundError("Can't find item with associated id");
             return ingredient;
         } catch (error) {
-            throw new Error("Can't find item with associated id");
+            throw new DatabaseError("Server error can't acces data", "ingredients", error);
         }
     },
     async add(form: IngredientCreateForm) {
@@ -103,17 +106,12 @@ export default {
             await prisma.$disconnect();
             return newIngredient;
         } catch (error: any) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    throw new Error("Can't add 2 items with the same name");
-                }
-                throw new Error("Unable to add item to database");
-            }
+            throw new DatabaseError(error.message, "ingredients", error)
         }
     },
     async update(form: IngredientUpdateForm) {
         try {
-            const updateIngredient = await prisma.ingredients.update({
+            await prisma.ingredients.update({
                 where: {
                     id: form.ingredientId,
                 },
@@ -126,22 +124,20 @@ export default {
                 },
             });
             await prisma.$disconnect();
-            return updateIngredient;
         } catch (error: any) {
-            throw new Error("Couldn't update ingredient");
+            throw new DatabaseError(error.message, "ingredients", error)
         }
     },
     async destroy(id: number) {
         try {
-            const deleteIngredient = await prisma.ingredients.delete({
+            await prisma.ingredients.delete({
                 where: {
                     id,
                 },
             });
             await prisma.$disconnect();
-            return deleteIngredient;
         } catch (error: any) {
-            throw new Error("Error deleting ingredient");
+            throw new DatabaseError(error.message, "ingredients", error)
         }
     },
 };

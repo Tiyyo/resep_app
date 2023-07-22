@@ -1,10 +1,9 @@
 import { Prisma } from "@prisma/client";
+import DatabaseError from "~/helpers/errors/database.error";
 import { prisma } from "~/service/db.server";
 
 export default {
     async add(meal_plan_id: number, form) {
-
-        console.log(form, 'ADD SHOPPING LIST IS CALLED')
 
         try {
             const shoppingList = await prisma.shopping_lists.create({
@@ -34,10 +33,9 @@ export default {
                     }
                 }
             })
-            console.log(shoppingList)
             return shoppingList
-        } catch (error) {
-            console.log(error)
+        } catch (error: any) {
+            throw new DatabaseError(error.message, 'shopping_lists', error)
         }
     }
 }

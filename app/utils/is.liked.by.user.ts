@@ -1,6 +1,6 @@
 import { Recipe } from "~/types/recipe";
 
-export const isLikedByUser = (recipe: Recipe, userId: number) => {
+const isLikedByUser = (recipe: Recipe, userId: number) => {
 
     const reviews = recipe.reviews;
     if (reviews && reviews.length > 0) {
@@ -8,3 +8,5 @@ export const isLikedByUser = (recipe: Recipe, userId: number) => {
     }
     return false;
 };
+
+export default isLikedByUser;

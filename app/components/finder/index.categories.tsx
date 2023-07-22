@@ -1,7 +1,7 @@
-import { useParams } from "@remix-run/react";
-import RecipeCard from "../recipe/card";
-import { Recipe } from "~/types/recipe";
-import { isLikedByUser } from "~/utils/is.liked.by.user";
+import { useParams } from '@remix-run/react';
+import RecipeCard from '../recipe/card';
+import { Recipe } from '~/types/recipe';
+import isLikedByUser from '~/utils/is.liked.by.user';
 
 export default function FinderCategories({
   recipes,

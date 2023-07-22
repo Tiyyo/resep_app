@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { InputProps, TextAlign } from "./interface";
+import Error from "../error";
 
 export default function Input({
   name,
@@ -15,6 +16,7 @@ export default function Input({
   disabled,
   value,
   align,
+  error,
   onChange,
 }: InputProps) {
   const [textAlign, setTextAlign] = useState<TextAlign | null>("text-start");
@@ -39,21 +41,24 @@ export default function Input({
       <label htmlFor={name} className="text-8">
         {label}
       </label>
-      <input
-        type={type ?? "text"}
-        placeholder={placeholder}
-        name={name}
-        id={name}
-        defaultValue={defaultValue}
-        step={step ?? "0.1"}
-        pattern={pattern}
-        value={value ?? undefined}
-        disabled={disabled ? true : false}
-        // onChange={onChange}
-        className={` 
+      <div className="flex flex-col">
+        <input
+          type={type ?? "text"}
+          placeholder={placeholder}
+          name={name}
+          id={name}
+          defaultValue={defaultValue}
+          step={step ?? "0.1"}
+          pattern={pattern}
+          value={value ?? undefined}
+          disabled={disabled ? true : false}
+          // onChange={onChange}
+          className={` 
         pl-4 text-8 h-9 bg-main-300 rounded-md placeholder:pl-1 placeholder:text-7 focus-visible:outline-secondary-300 
         w-${width ?? "40"} ${textAlign}`}
-      />
+        />
+        {error && <Error message={error} />}
+      </div>
       <p>{unit ? "(" + unit + ")" : ""}</p>
     </div>
   );

@@ -1,7 +1,15 @@
-import { prisma } from "~/service/db.server";
-import { Prisma } from "@prisma/client";
+import { prisma } from '~/service/db.server';
+import type { Prisma } from '@prisma/client';
+import DatabaseError from '~/helpers/errors/database.error';
+import UserInputError from '~/helpers/errors/user.inputs.error';
 
 export default {
+    /**
+           *
+           * @returns Array of macros
+           * @throws DatabaseError
+           * @description Returns all macros from database except those with null food field
+           */
     async findAll() {
         try {
             const macros = await prisma.macros.findMany({
@@ -13,8 +21,8 @@ export default {
             });
             await prisma.$disconnect();
             return macros;
-        } catch (error) {
-            throw new Error("Server error can't acces data");
+        } catch (error: any) {
+            throw new DatabaseError(error.message, 'macros', error);
         }
     },
     async findById(id: number) {
@@ -24,9 +32,10 @@ export default {
                     id,
                 },
             });
+            if (!macros) throw new UserInputError("Can't find item with associated id");
             return macros;
-        } catch (error) {
-            throw new Error("Can't find item with associated id");
+        } catch (error: any) {
+            throw new DatabaseError(error.message, 'macros', error);
         }
     },
     async add(form: Prisma.macrosCreateInput) {
@@ -43,13 +52,8 @@ export default {
             const createMacro = await prisma.macros.create({ data: macro });
             await prisma.$disconnect();
             return createMacro;
-        } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    throw { error: "Already exists in database" };
-                }
-                throw { error: "Unable to add item to database" };
-            }
+        } catch (error: any) {
+            throw new DatabaseError(error.message, 'macros', error);
         }
     },
     async update(form: Prisma.macrosCreateInput) {
@@ -67,26 +71,20 @@ export default {
             const createMacro = await prisma.macros.create({ data: macro });
             await prisma.$disconnect();
             return createMacro;
-        } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    throw { error: "Already exists in database" };
-                }
-                throw { error: "Unable to add item to database" };
-            }
+        } catch (error: any) {
+            throw new DatabaseError(error.message, 'macros', error);
         }
     },
     async destroy(id: number) {
         try {
-            const deletedMacro = await prisma.macros.delete({
+            await prisma.macros.delete({
                 where: {
                     id,
                 },
             });
             await prisma.$disconnect();
-            return deletedMacro;
         } catch (error: any) {
-            throw new Error(error.message);
+            throw new DatabaseError(error.message, 'macros', error);
         }
     },
 };

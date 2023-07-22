@@ -1,4 +1,6 @@
-import { prisma } from "~/service/db.server"
+import DatabaseError from '~/helpers/errors/database.error';
+import NotFoundError from '~/helpers/errors/not.found.error';
+import { prisma } from '~/service/db.server';
 
 export default {
     async like(authorId: string, recipeId: string) {
@@ -7,15 +9,16 @@ export default {
                 where: {
                     author_id_recipe_id: {
                         author_id: Number(authorId),
-                        recipe_id: Number(recipeId)
-                    }
-                }, data: {
-                    is_liked: true
-                }
-            })
-            return updatedInfos
-        } catch (error) {
-            throw new Error("Couldn't add recipe to favorites");
+                        recipe_id: Number(recipeId),
+                    },
+                },
+                data: {
+                    is_liked: true,
+                },
+            });
+            return updatedInfos;
+        } catch (error: any) {
+            throw new DatabaseError(error.message, 'reviews', error);
         }
     },
     async destroy(authorId: string, recipeId: string) {
@@ -24,16 +27,17 @@ export default {
                 where: {
                     author_id_recipe_id: {
                         author_id: Number(authorId),
-                        recipe_id: Number(recipeId)
-                    }
-                }, data: {
-                    is_liked: false
-                }
-            })
-            await prisma.$disconnect()
-            return updatedInfos
+                        recipe_id: Number(recipeId),
+                    },
+                },
+                data: {
+                    is_liked: false,
+                },
+            });
+            await prisma.$disconnect();
+            return updatedInfos;
         } catch (error) {
-            throw new Error("Couldn't remove recipe from favorites");
+            throw new DatabaseError(error.message, 'reviews', error);
         }
     },
     async findAllByAuthor(id: number) {
@@ -80,15 +84,15 @@ export default {
                 },
             });
             if (!recipes) {
-                throw new Error("Can't find item with associated id");
+                throw new NotFoundError("Can't find item with associated id");
             }
             const result = recipes.map((recipe) => {
                 return { ...recipe, tags: recipe.tags.map((tag) => tag.tag.name) };
             });
             await prisma.$disconnect();
             return result;
-        } catch (error) {
-            throw new Error("Server error can't acces data");
+        } catch (error: any) {
+            throw new DatabaseError(error.message, 'recipe', error);
         }
-    }
-}
+    },
+};

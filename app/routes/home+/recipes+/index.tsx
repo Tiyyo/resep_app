@@ -1,34 +1,36 @@
-import { json, type LoaderArgs, V2_MetaFunction } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
-import recipe from "~/api/recipe";
-import Slider from "~/components/slider";
-import LayoutRecipePages from "~/layout/LayoutRecipesPage";
-import { getProfile } from "~/utils/get.user.infos";
+import { json, type LoaderArgs, V2_MetaFunction } from '@remix-run/node';
+import { Outlet, useLoaderData } from '@remix-run/react';
+import recipe from '~/api/recipe';
+import Slider from '~/components/slider';
+import LayoutRecipePages from '~/layout/LayoutRecipesPage';
+import { getProfile } from '~/utils/get.user.infos';
+// const chalk = require('chalk');
 
 export const meta: V2_MetaFunction = () => {
   return [
     {
-      title: "Resep ! Have control over your macros",
+      title: 'Resep ! Have control over your macros',
       description:
-        "Home recipes pages with recommended recipes based on your preference",
+        'Home recipes pages with recommended recipes based on your preference',
     },
   ];
 };
 
 export async function loader({ request }: LoaderArgs) {
+  // TODO promise all with Promise hash and build a cache for profileId
   const profile = await getProfile(request);
   const lastestRecipes = await recipe.findLast();
-  const asianRecipes = await recipe.findByTags(["Asia", "Japan", "China"]);
-  const italianRecipes = await recipe.findByTags(["Italy"]);
+  const asianRecipes = await recipe.findByTags(['Asia', 'Japan', 'China']);
+  const italianRecipes = await recipe.findByTags(['Italy']);
   if (!profile) {
     return json(
       {
-        message: "no user found",
+        message: 'no user found',
         asianRecipes,
         lastestRecipes,
         italianRecipes,
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
   const profileId = profile.id;
@@ -38,6 +40,12 @@ export async function loader({ request }: LoaderArgs) {
 export default function () {
   const { profileId, asianRecipes, lastestRecipes, italianRecipes } =
     useLoaderData();
+
+  // const log = console.log;
+
+  // chalk.level = 1;
+
+  // log(chalk.blue('Hello') + ' World' + chalk.red('!'));
 
   return (
     <LayoutRecipePages title="Recommended for you">

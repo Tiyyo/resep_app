@@ -1,6 +1,9 @@
 import { Prisma } from "@prisma/client"
 import { prisma } from "~/service/db.server"
 import { FormIconProps, FormPropsEditIcon } from "./interfaces"
+import DatabaseError from "~/helpers/errors/database.error"
+import { Icon } from "~/types/recipe"
+import NotFoundError from "~/helpers/errors/not.found.error"
 
 
 export default {
@@ -11,16 +14,19 @@ export default {
                     tags: true
                 }
             })
+
+            if (!icons) throw new NotFoundError("Can't find any icons")
+
             const result = icons.map((icon) => {
                 return { ...icon, tags: icon.tags.map((tag) => tag.tag_name) }
             })
             await prisma.$disconnect()
             return result
-        } catch (error) {
-            throw new Error("Server error can't acces data");
+        } catch (error: any) {
+            throw new DatabaseError(error.message, "icons", error)
         }
     },
-    async findById(id: number) {
+    async findById(id: number): Promise<Icon[]> {
         try {
             const icon = await prisma.icons.findUnique({
                 where: {
@@ -30,11 +36,12 @@ export default {
                     tags: true
                 }
             })
-            if (icon) {
-                return { ...icon, tags: icon.tags.map((tag) => tag.tag_name) }
-            }
-        } catch (error) {
-            throw new Error("Can't find item with associated id");
+            if (!icon) throw new DatabaseError("Can't find item with associated id", "icons")
+
+            return { ...icon, tags: icon.tags.map((tag) => tag.tag_name) }
+
+        } catch (error: any) {
+            throw new DatabaseError(error.message, "icons", error)
         }
     },
     async add(form: FormIconProps) {
@@ -79,14 +86,8 @@ export default {
                 })
                 return createIcon
             }
-        } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    throw new Error("Can't add 2 items with the same name")
-                }
-                throw new Error('Unable to add item to database')
-
-            }
+        } catch (error: any) {
+            throw new DatabaseError(error.message, "icons", error)
         }
     },
     async update(form: FormPropsEditIcon) {
@@ -106,7 +107,7 @@ export default {
                         }
                     }
                 })
-                const updateIcon = await prisma.icons.update({
+                await prisma.icons.update({
                     where: {
                         id: form.id
                     },
@@ -123,7 +124,6 @@ export default {
                         tags: true
                     },
                 })
-                return updateIcon
             } else {
                 const updateIcon = await prisma.icons.update({
                     where: {
@@ -138,20 +138,20 @@ export default {
                 return updateIcon
             }
         } catch (error: any) {
-            throw new Error("Couldn't update icon");
+            throw new DatabaseError(error.message, "icons", error)
         }
     },
-    async destroy(id: number) {
+    async destroy(id: number): Promise<Icon> {
         try {
-            const deleteIcon = await prisma.icons.delete({
+            const deletedIcon = await prisma.icons.delete({
                 where: {
                     id
                 }
             })
             await prisma.$disconnect()
-            return deleteIcon
+            return deletedIcon
         } catch (error: any) {
-            throw new Error('Error deleting icon')
+            throw new DatabaseError(error.message, "icons", error)
         }
     },
 }

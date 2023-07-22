@@ -1,10 +1,15 @@
 import { type ActionArgs, json, LoaderArgs } from "@remix-run/node"
 import { withZod } from "@remix-validated-form/with-zod"
-import { buildRecipe } from "~/service/recipe.builder.server"
+import { buildRecipe } from "~/service/recipe_builder/index.server"
 import * as Z from "zod";
 import { validationError } from "remix-validated-form";
 import { deleteImageFromBucket, uploadImage } from "~/service/s3.server";
 import recipe from "~/api/recipe";
+import ResponseError from "~/helpers/response/response.error";
+import MethodError from "~/helpers/errors/method.error";
+import ingredient from "~/api/ingredient";
+import ResponseValid from "~/helpers/response/response.ok";
+import ServerError from "~/helpers/errors/server.error";
 
 export const validator = withZod(
     Z.object({
@@ -59,15 +64,15 @@ export async function action({ request }: ActionArgs) {
             const { ingredient: ingredients, quantity: qty, unit: units, name, prepTime, cookTime, author, servings, tags, ytLink, level, instructions, image_recipe } = formData.data
 
 
-            let measures = []
-            for (let i = 0; i < ingredients.length; i++) {
-                let measure = {
-                    ingredient: ingredients[i],
-                    unit_measure: units[i],
-                    qty: qty[i]
-                }
-                measures.push(measure)
-            }
+            let measures: Array<{ ingredient: string, unit_measure: string, qty: string }> = []
+
+            ingredients.forEach((_ingredient, index) => {
+                measures.push({
+                    ingredient: ingredients[index],
+                    unit_measure: units[index],
+                    qty: qty[index]
+                })
+            })
 
             const form = {
                 name,
@@ -90,13 +95,14 @@ export async function action({ request }: ActionArgs) {
 
 
             try {
-                await buildRecipe(form)
-                return json({ message: "Successfully added" }, { status: 201 });
+                const recipe = await buildRecipe(form)
+                if (!recipe) {
+                    if (!imageKey) throw new ServerError('Could not find image key to delete pending image')
+                    await deleteImageFromBucket(imageKey)
+                }
+                return new ResponseValid(201, "Successfully added", null)
             } catch (error: any) {
-                if (!imageKey) return json({ error: "Couldn't remove the image from the cloud" })
-                await deleteImageFromBucket(imageKey)
-                console.log(error);
-                return json({ error: error.message })
+                return new ResponseError(error)
             }
         }
         case "patch": {
@@ -106,7 +112,7 @@ export async function action({ request }: ActionArgs) {
             // bloc de code
         }
         default: {
-            throw new Error('Invalid method')
+            return new ResponseError(new MethodError('Invalid method'))
         }
 
     }
