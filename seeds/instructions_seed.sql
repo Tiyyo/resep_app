@@ -11,6 +11,8 @@ INSERT INTO instructions VALUES(12,'Add the chicken , 1 tablespoon of curry powd
 INSERT INTO instructions VALUES(13,'Heat some sesame oil or other oil and onions, saute for 2 or 3 min then add peppers and garlic, stir for 5 or 7 min');
 INSERT INTO instructions VALUES(14,'Prepare all ingredients, cut peppers into medium strips, mince the garlic, chop onions into strip, cut chicken into medium pieces');
 INSERT INTO instructions VALUES(15,'Serve with rice, you can add coriander');
+
+
 INSERT INTO instructions VALUES(16,'Once chicken is fried , lower the heat and pour coconut milk , add another tablespoon of curry powder, adjust seasoning and simmer 10 min on low heat');
 INSERT INTO instructions VALUES(17,'Add the chicken , 1 tablespoon of curry powder and season with salt and black pepper');
 INSERT INTO instructions VALUES(18,'Heat some sesame oil or other oil and onions, saute for 2 or 3 min then add peppers and garlic, stir for 5 or 7 min');

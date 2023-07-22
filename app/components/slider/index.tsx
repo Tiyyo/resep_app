@@ -44,10 +44,10 @@ export default function Slider({
   }
 
   useEffect(() => {
-    if (carousel?.current) {
+    if (carousel?.current && content.length > 0) {
       setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
     }
-    if (innerCarousel?.current) {
+    if (innerCarousel?.current && content.length > 0) {
       setWidthCard(innerCarousel.current.children[0].clientWidth);
     }
   }, []);
