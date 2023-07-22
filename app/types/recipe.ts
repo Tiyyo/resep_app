@@ -7,7 +7,7 @@ export interface Icon {
     name: string
     link: string
     image_key: string
-    tags?: string[] | null
+    tags?: any  // TODO fix this type any
 }
 
 export interface Images {

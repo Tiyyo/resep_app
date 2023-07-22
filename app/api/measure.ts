@@ -1,3 +1,4 @@
+import DatabaseError from "~/helpers/errors/database.error";
 import { prisma } from "~/service/db.server";
 
 export default {
@@ -25,8 +26,8 @@ export default {
             });
             await prisma.$disconnect();
             return measures;
-        } catch (error) {
-            throw new Error("Server error can't acces data");
+        } catch (error: any) {
+            throw new DatabaseError(error.message, "ingredients_on_recipes", error);
         }
     },
 };

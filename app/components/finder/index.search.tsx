@@ -1,9 +1,9 @@
-import { useFetcher, useParams } from "@remix-run/react";
-import { useEffect, useState } from "react";
-import { Recipe } from "~/types/recipe";
-import RecipeCard from "../recipe/card";
-import { isLikedByUser } from "~/utils/is.liked.by.user";
-import SearchIcon from "~/assets/icons/SearchIcon";
+import { useFetcher, useParams } from '@remix-run/react';
+import { useEffect, useState } from 'react';
+import { Recipe } from '~/types/recipe';
+import RecipeCard from '../recipe/card';
+import isLikedByUser from '~/utils/is.liked.by.user';
+import SearchIcon from '~/assets/icons/SearchIcon';
 
 export default function FinderSearch({
   recipes: firstLoadedRecipes,
@@ -19,11 +19,11 @@ export default function FinderSearch({
   const handleChange = async (e: React.ChangeEvent<HTMLFormElement>) => {
     const searchValues = e.currentTarget.searchRecipe.value;
     if (searchValues.length < 3) return setRecipes(firstLoadedRecipes);
-    const arrayOfSearchValues = searchValues.split(" ");
+    const arrayOfSearchValues = searchValues.split(' ');
 
     const mapQueries = new Map();
     arrayOfSearchValues.forEach((value: string) =>
-      mapQueries.set("query", value)
+      mapQueries.set('query', value),
     );
     const queryObject = Object.fromEntries(mapQueries);
     const queryParamsString = new URLSearchParams(queryObject);

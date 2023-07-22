@@ -1,14 +1,14 @@
-import { Link, NavLink } from "@remix-run/react";
-import LayoutPage from "./LayoutPage";
-import HomeIcon from "~/assets/icons/HomeIcon";
-import SettingIcons from "~/assets/icons/SettingIcon";
-import AddFileIcon from "~/assets/icons/AddFileIcon";
-import { getTodayDate } from "~/utils/get.today.date";
-import useProfileData from "~/hooks/useProfileData";
-import NotificationIcon from "~/assets/icons/NotificationIcon";
-import BrushOne from "~/assets/brush/UnderlineBrush";
-import LogoutIcon from "~/assets/icons/LogoutIcon";
-import ProfileIcon from "~/assets/icons/ProfileIcon";
+import { Link, NavLink } from '@remix-run/react';
+import LayoutPage from './LayoutPage';
+import HomeIcon from '~/assets/icons/HomeIcon';
+import SettingIcons from '~/assets/icons/SettingIcon';
+import AddFileIcon from '~/assets/icons/AddFileIcon';
+import getTodayDate from '~/utils/get.today.date';
+import useProfileData from '~/hooks/useProfileData';
+import NotificationIcon from '~/assets/icons/NotificationIcon';
+import BrushOne from '~/assets/brush/UnderlineBrush';
+import LogoutIcon from '~/assets/icons/LogoutIcon';
+import ProfileIcon from '~/assets/icons/ProfileIcon';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const profile = useProfileData();
@@ -35,7 +35,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <header className="col-start-3 col-end-4 flex justify-between items-center px-5">
           <div className="font-bold text-11">Today, {getTodayDate()}</div>
           <div className="flex gap-x-4 items-center">
-            {profile.state === "loaded" && profile.profile ? (
+            {profile.state === 'loaded' && profile.profile ? (
               <>
                 <div>
                   <NotificationIcon size="5" />
@@ -82,7 +82,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </div>
               </>
             ) : (
-              "signin/signup"
+              'signin/signup'
             )}
           </div>
         </header>

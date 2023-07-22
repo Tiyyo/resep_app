@@ -1,4 +1,4 @@
-import type { Macros } from "~/service/recipe.builder.server";
+import type { Macros } from '~/service/recipe_builder/index.server';
 
 export interface Parts {
   proteins: number | null;

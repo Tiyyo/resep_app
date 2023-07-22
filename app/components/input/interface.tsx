@@ -2,6 +2,7 @@ import type { Decimal } from "@prisma/client/runtime";
 
 export interface InputProps {
   name: string;
+  error?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string | undefined | number;
   label?: string;

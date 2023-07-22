@@ -1,11 +1,15 @@
 import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { withZod } from "@remix-validated-form/with-zod";
-import { convertStringToNumber } from "~/utils/convert.to.number";
+import convertStringToNumber from "~/utils/convert.to.number";
 import * as Z from "zod";
 import { validationError } from "remix-validated-form";
 import { Macros } from "~/types/recipe";
 import macro from "~/api/macro";
+import ResponseError from "~/helpers/response/response.error";
+import ResponseValid from "~/helpers/response/response.ok";
+import MethodError from "~/helpers/errors/method.error";
+import ServerError from "~/helpers/errors/server.error";
 
 export const validator = withZod(
     Z.object({
@@ -42,13 +46,10 @@ export async function action({ request }: ActionArgs) {
 
                 const newMacro = await macro.add(form as Macros)
                 if (newMacro) {
-                    return json({ message: "Successfully added" }, { status: 201 });
+                    return new ResponseValid(201, "Successfully added", null)
                 }
             } catch (error: any) {
-                if (error.message === "Invalid values") {
-                    return json({ error: error.message + "! Numbers must be positive" }, { status: 400 })
-                }
-                return json({ error: "Server error ! Couldn't increment database" }, { status: 500 })
+                return new ResponseError(error)
             }
         }
         case "patch": {
@@ -70,13 +71,10 @@ export async function action({ request }: ActionArgs) {
 
                 let form = { ...formConverted, food: food?.toLowerCase() } as Macros
                 await macro.update(form)
-                return redirect("/dashboard/macros")
+                return redirect("/dashboard/macros", { status: 303 })
 
             } catch (error: any) {
-                if (error.message === "Invalid values") {
-                    return json({ error: error.message + "! Numbers must be positive" }, { status: 400 })
-                }
-                return json({ error: "Server error ! Couldn't update database" }, { status: 500 })
+                return new ResponseError(error)
             }
         }
         case "delete": {
@@ -89,22 +87,22 @@ export async function action({ request }: ActionArgs) {
             const values = {
                 id: id
             }
-            const formConverted = await convertStringToNumber(values)
 
             try {
-                if (formConverted.id) {
-                    await macro.destroy(formConverted.id)
-                    return json({ message: "Successfully deleted" }, { status: 204 });
-                }
-                throw new Error('No id provided')
+                const formConverted = await convertStringToNumber(values)
+
+                if (!formConverted.id) throw new ServerError("No id provided")
+
+                await macro.destroy(formConverted.id)
+                return json({ message: "Successfully deleted" }, { status: 204 });
+
             } catch (error) {
-                console.log(error);
+                return new ResponseError(error)
             }
         }
         default: {
-            throw new Error('Invalid method')
+            return new ResponseError(new MethodError('Invalid Method'))
         }
-
     }
 }
 

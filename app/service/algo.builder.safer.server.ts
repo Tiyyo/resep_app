@@ -18,7 +18,7 @@ export type Item = {
     name: string
     qty: number
     unit_measure_id: number
-}
+} | 1
 
 export async function buildShoppingList(meals) {
     // const ids = recipesIds.map((id: string) => Number(id));

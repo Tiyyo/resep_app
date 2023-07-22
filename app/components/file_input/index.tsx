@@ -1,6 +1,13 @@
+import Error from "../error";
 import type { FileInputProps } from "./interface";
 
-export default function FileInput({label, width , height, name} : FileInputProps) {
+export default function FileInput({
+  label,
+  width,
+  height,
+  name,
+  error,
+}: FileInputProps) {
   return (
     <>
       <label
@@ -17,6 +24,8 @@ export default function FileInput({label, width , height, name} : FileInputProps
           type="file"
         />
       </div>
+      {error && <Error message="error" />}
+
       {/* <p
         className="mt-1 text-sm text-gray-500 dark:text-gray-300"
         id="file_input_help"
