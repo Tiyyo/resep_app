@@ -1,11 +1,16 @@
 import type { ActionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { withZod } from "@remix-validated-form/with-zod";
 import * as Z from "zod";
-import { convertStringToNumber } from "~/utils/convert.to.number";
+import convertStringToNumber from "~/utils/convert.to.number";
 import { validationError } from "remix-validated-form";
 import { IngredientCreateForm, IngredientUpdateForm } from "~/api/interfaces";
 import ingredient from "~/api/ingredient";
+import ResponseValid from "~/helpers/response/response.ok";
+import ResponseError from "~/helpers/response/response.error";
+import ServerError from "~/helpers/errors/server.error";
+import MethodError from "~/helpers/errors/method.error";
+import UserInputError from "~/helpers/errors/user.inputs.error";
 
 
 export const validator = withZod(
@@ -53,14 +58,11 @@ export async function action({ request }: ActionArgs) {
 
                 if (form) {
                     await ingredient.add(form);
-                    return json({ message: "Successfully added" }, { status: 201 });
+                    return new ResponseValid(201, 'Successfully added', null)
                 }
+
             } catch (error: any) {
-                if (error.message === "Invalid values") {
-                    console.log(error.message);
-                    return json({ error: error.message + "! Numbers must be positive" }, { status: 400 })
-                }
-                return json({ error: "Server error ! Couldn't add to database" }, { status: 500 })
+                return new ResponseError(error)
             }
         }
         case "patch": {
@@ -76,7 +78,10 @@ export async function action({ request }: ActionArgs) {
                 ingredientId,
                 unitWeight: unitWeight ?? "0",
             };
+
+
             try {
+                // An exception is thrown if values are invalid and/or not positive
                 const formConverted = await convertStringToNumber(fieldToConvert);
 
                 // TODO fix this typescript error
@@ -92,14 +97,11 @@ export async function action({ request }: ActionArgs) {
                         ingredientId: formConverted.ingredientId,
                     };
                 }
-                if (!form) throw new Error('Invalid values')
+                if (!form) throw new UserInputError('Invalid values', 'Invalid values')
                 await ingredient.update(form)
                 return redirect('/dashboard/ingredients')
             } catch (error: any) {
-                if (error.message === "Invalid values") {
-                    return json({ error: error.message + "! Numbers must be positive" }, { status: 400 })
-                }
-                return json({ error: "Server error ! Couldn't update database" }, { status: 500 })
+                return new ResponseError(error)
             }
         }
         case "delete": {
@@ -108,13 +110,12 @@ export async function action({ request }: ActionArgs) {
 
             if (typeof ingredientId === "string" && ingredientId) {
                 await ingredient.destroy(+ingredientId)
-                return json({ message: "Successfully deleted" }, { status: 204 });
+                return new ResponseValid(204, 'Successfully deleted', null)
             }
-            return json({ error: 'An Id is mandatory to delete an item' }, { status: 400 })
+            return new ResponseError(new ServerError('a valid is mandatory to delete this item'))
         }
         default: {
-            throw new Error('Invalid method')
+            return new ResponseError(new MethodError('Invalid method'))
         }
-
     }
 }

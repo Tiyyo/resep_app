@@ -4,11 +4,11 @@ export default class UserInputError extends Error {
     status: number;
     userMessage: string;
 
-    constructor(message: string) {
+    constructor(message: string, userMessage?: string) {
         super(message);
         this.name = "UserInputError";
         this.status = 400;
-        this.userMessage = "Invalid input";
+        this.userMessage = userMessage ?? "Invalid input";
         this.message = message;
     }
 }

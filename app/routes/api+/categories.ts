@@ -1,6 +1,7 @@
 import type { ActionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import category from "~/api/category";
+import MethodError from "~/helpers/errors/method.error";
 import ServerError from "~/helpers/errors/server.error";
 import UserInputError from "~/helpers/errors/user.inputs.error";
 import ResponseError from "~/helpers/response/response.error";
@@ -72,7 +73,7 @@ export async function action({ request }: ActionArgs) {
             }
         }
         default: {
-            return new ResponseError(new ServerError("Invalid method")).send()
+            return new ResponseError(new MethodError("Invalid method")).send()
         }
     }
 }

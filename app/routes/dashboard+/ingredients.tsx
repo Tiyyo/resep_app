@@ -1,13 +1,13 @@
-import type { LoaderArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
-import { useEffect, useState } from "react";
-import { promiseHash } from "remix-utils";
-import category from "~/api/category";
-import icon from "~/api/icon";
-import ingredient from "~/api/ingredient";
-import macro from "~/api/macro";
-import Table from "~/components/table";
+import type { LoaderArgs } from '@remix-run/node';
+import { json } from '@remix-run/node';
+import { Outlet, useLoaderData } from '@remix-run/react';
+import { useEffect, useState } from 'react';
+import { promiseHash } from 'remix-utils';
+import category from '~/api/category';
+import icon from '~/api/icon';
+import ingredient from '~/api/ingredient';
+import macro from '~/api/macro';
+import Table from '~/components/table';
 
 export async function loader({ request }: LoaderArgs) {
   return json(
@@ -16,8 +16,7 @@ export async function loader({ request }: LoaderArgs) {
       macros: macro.findAll(),
       icons: icon.findAll(),
       ingredients: ingredient.findAll(),
-      // ingredientsRaw: ingredient.findAllRaw(),
-    })
+    }),
   );
 }
 
@@ -33,7 +32,7 @@ export default function () {
       id: ingr.id,
       image: ingr.icon?.link,
       name: ingr.name,
-      unit_weight: ingr.unit_weight ?? "",
+      unit_weight: ingr.unit_weight ?? '',
       category: ingr.category.name,
       calories: ingr.macros?.calories,
       proteins: ingr.macros?.proteins,
@@ -44,18 +43,16 @@ export default function () {
   });
 
   return (
-    <div>
+    <>
       <Outlet />
-      {ingredients ? (
+      {ingredients && (
         <Table
           data={dataIngr}
           image={true}
           search="name"
           endpoint="/api/ingredients"
         />
-      ) : (
-        ""
       )}
-    </div>
+    </>
   );
 }

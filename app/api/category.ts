@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import { prisma } from "~/service/db.server";
 import DatabaseError from "~/helpers/errors/database.error";
 import UserInputError from "~/helpers/errors/user.inputs.error";
@@ -75,7 +74,7 @@ export default {
             });
             await prisma.$disconnect();
         } catch (error: any) {
-            throw new Error("Error deleting category");
+            throw new DatabaseError("Can't delete category", "category", error);
         }
     },
 };

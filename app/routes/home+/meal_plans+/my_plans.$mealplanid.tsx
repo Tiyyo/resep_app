@@ -1,67 +1,50 @@
-import { ActionArgs, LoaderArgs, json } from "@remix-run/node";
-import { Form, Link, useLoaderData } from "@remix-run/react";
-import { Fragment } from "react";
-import meal_plans from "~/api/meal_plans";
-import shopping_lists from "~/api/shopping_lists";
-import Input from "~/components/input";
-import SubmitButton from "~/components/submit_button";
-import { buildShoppingList } from "~/service/algo.builder.safer.server";
+import { ActionArgs, LoaderArgs, json } from '@remix-run/node';
+import { Form, Link, useLoaderData } from '@remix-run/react';
+import { Fragment } from 'react';
+import meal_plans from '~/api/meal_plans';
+import shopping_lists from '~/api/shopping_lists';
+import Input from '~/components/input';
+import SubmitButton from '~/components/submit_button';
+import NotFoundError from '~/helpers/errors/not.found.error';
+import ServerError from '~/helpers/errors/server.error';
+import ResponseError from '~/helpers/response/response.error';
+import { buildShoppingList } from '~/service/algo.builder.safer.server';
 import {
   convertGramsToPieces,
   harmonzeUnit,
-} from "~/utils/convert.grams.to.pieces";
+} from '~/utils/convert.grams.to.pieces';
 
-import { getProfile } from "~/utils/get.user.infos";
+import { getProfile } from '~/utils/get.user.infos';
 
 export async function loader({ request, params }: LoaderArgs) {
-  const { mealplanid } = params;
-  const profile = await getProfile(request);
-  if (!profile) return json({ error: "no profile found" }, { status: 401 });
-  if (typeof mealplanid === "string" && mealplanid) {
+  try {
+    const { mealplanid } = params;
+    if (!mealplanid && typeof mealplanid !== 'string')
+      throw new ServerError('no meal plan id found');
+    const profile = await getProfile(request);
+    if (!profile) throw new Error('no profile found');
+
     const mealPlans = await meal_plans.findById(Number(mealplanid), profile.id);
 
+    if (!mealPlans) throw new NotFoundError('no meal plan found');
+
     const mealsHarmonize = harmonzeUnit(mealPlans);
-
-    // if (!mealPlans)
-    //   return json({ error: "no meal plan found" }, { status: 404 });
-
-    // Move to genration meal plan
-    // const mealIds = mealPlans.meals.map((meal) => { recipe_id : meal.recipe_id , servings : meal.servings});
-    // const shoppingList = await buildShoppingList(mealPlans.meals);
-    // console.log(shoppingList, "SHOPING LIST");
-
-    // const shoppingListSaved = await shopping_lists.add(
-    //   Number(mealplanid),
-    //   shoppingList
-    // );
 
     return json({
       mealPlans,
       mealsHarmonize,
       profileId: profile.id,
-      // shoppingListSaved,
     });
+  } catch (error) {
+    if (error instanceof Error) {
+      return json({ error: 'no profile found' }, { status: 401 });
+    }
+    return new ResponseError(error);
   }
-
-  return json({ error: "no meal plan found" }, { status: 404 });
-}
-
-export async function action({ request }: ActionArgs) {
-  const formData = await request.formData();
-  const mealPlanId = formData.get("mealPlanId");
-  const profileId = formData.get("profileId");
-  // if (typeof mealPlanId === "string"  && typeof profileId === "string") {
-  //   const mealIds = await
-  // }
-
-  return "hehe";
 }
 
 export default function () {
-  const { mealPlans, profileId, shoppingListSaved, mealsHarmonize } =
-    useLoaderData();
-
-  // console.log(mealPlans);
+  const { mealPlans, mealsHarmonize } = useLoaderData();
 
   return (
     <>

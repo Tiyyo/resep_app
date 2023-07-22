@@ -1,14 +1,19 @@
-import type { LoaderArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
-import category from "~/api/category";
-import Table from "~/components/table";
-import { Toast } from "~/components/toast";
+import type { LoaderArgs } from '@remix-run/node';
+import { json } from '@remix-run/node';
+import { Outlet, useLoaderData } from '@remix-run/react';
+import category from '~/api/category';
+import Table from '~/components/table';
+import NotFoundError from '~/helpers/errors/not.found.error';
+import ResponseError from '~/helpers/response/response.error';
 
 export async function loader({ request }: LoaderArgs) {
-  const categories = await category.findAll();
-  //   const categories = await category.findAllRaw();
-  return json({ categories });
+  try {
+    const categories = await category.findAll();
+    if (!categories) throw new NotFoundError('No categories found');
+    return json({ categories });
+  } catch (error) {
+    return new ResponseError(error);
+  }
 }
 
 export default function CategoryPanel() {

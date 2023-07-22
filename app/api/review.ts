@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client"
 import { prisma } from "~/service/db.server"
 import { ReviewsCreateInput } from "./interfaces"
+import DatabaseError from "~/helpers/errors/database.error"
 
 export default {
     async findByIds(authorId: number, recipeId: number) {
@@ -15,8 +16,8 @@ export default {
             })
             await prisma.$disconnect()
             return relationalInfos
-        } catch (error) {
-            throw new Error("Couldn't find relational infos between author and recipe");
+        } catch (error: any) {
+            throw new DatabaseError(error.message, 'reviews', error)
         }
     },
     async findAllByRecipeId(id: number) {
@@ -42,14 +43,17 @@ export default {
             )
             await prisma.$disconnect()
             return reviews
-        } catch (error) {
-            throw new Error("Server error can't acces data");
+        } catch (error: any) {
+            throw new DatabaseError(error.message, 'reviews', error)
         }
     },
-    async add(form: ReviewsCreateInput) {
+    async add(form: {
+        rating: number | undefined,
+        comment: string | undefined,
+        author_id: number,
+        recipe_id: number
+    }) {
 
-        const author_id = form.authorId
-        const recipe_id = form.recipeId
 
         try {
             const newReview = await prisma.reviews.create({
@@ -58,12 +62,12 @@ export default {
                     comment: form.comment,
                     author: {
                         connect: {
-                            id: author_id
+                            id: form.author_id
                         }
                     },
                     recipe: {
                         connect: {
-                            id: recipe_id
+                            id: form.recipe_id
                         }
                     }
                 }
@@ -71,13 +75,7 @@ export default {
             await prisma.$disconnect()
             return newReview
         } catch (error: any) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    throw ({ message: 'You cannot add several reviews , Please edit the one you already posted' })
-                }
-                throw ({ message: 'Unable to add item to database' })
-            }
-            return error.message
+            throw new DatabaseError(error.message, 'reviews', error)
         }
     },
     async aggretate(id: number) {
@@ -96,8 +94,8 @@ export default {
             })
             await prisma.$disconnect()
             return countAndAvg
-        } catch (error) {
-            throw new Error("Couldn't aggregate recipes");
+        } catch (error: any) {
+            throw new DatabaseError(error.message, 'reviews', error)
         }
     }
 }
