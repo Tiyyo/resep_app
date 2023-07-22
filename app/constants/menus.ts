@@ -37,13 +37,23 @@ export const adminPanelMenu = [
 export const homeMenu = [
     {
         id: 1, name: 'Recipes', link: "recipes", open: false, icon: null, children: [
-            { id: 2, name: 'For you', link: "recipes", open: false, icon: null },
-            { id: 3, name: 'My recipes', link: "my_recipes", open: false, icon: null },
-            { id: 4, name: 'Favorites', link: "favorites", open: false, icon: null },
-            { id: 5, name: 'add new', link: "add/recipes", open: false, icon: AddPlusIcon },
+            { id: 3, name: 'For you', link: "recipes", open: false, icon: null },
+            { id: 4, name: 'My recipes', link: "my_recipes", open: false, icon: null },
+            { id: 5, name: 'Favorites', link: "favorites", open: false, icon: null },
+            {
+                id: 6, name: 'Categories', link: "categories", open: false, icon: null, children: [
+                    { id: 8, name: 'New', link: "categories/new", open: false, icon: null },
+                    { id: 9, name: 'Asia', link: "categories/asia", open: false, icon: null },
+                    { id: 10, name: 'Italy', link: "categories/italy", open: false, icon: null },
+                ]
+            },
+            { id: 7, name: 'add new', link: "recipes/add", open: false, icon: AddPlusIcon },
         ]
-    },{
-        id: 2, name: 'Shopping list', link: "shopping", open: false, icon: null, children: []
+    }, {
+        id: 2, name: 'Meals plan', link: "meal_plans", open: false, icon: null, children: [
+            { id: 11, name: 'My plans', link: "meal_plans/my_plans", open: false, icon: null },
+            { id: 12, name: 'generate', link: "meal_plans/generate", open: false, icon: AddPlusIcon },
+        ]
     }
 ]
 

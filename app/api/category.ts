@@ -1,79 +1,80 @@
-import { Prisma } from "@prisma/client";
 import { prisma } from "~/service/db.server";
-import { ErrorMessage } from "./interfaces";
+import DatabaseError from "~/helpers/errors/database.error";
+import UserInputError from "~/helpers/errors/user.inputs.error";
+
+export type Category = {
+    id: number;
+    name: string;
+};
 
 export default {
-    async findAll() {
+    async findAll(): Promise<Category[]> {
         try {
             const categories = await prisma.categories.findMany();
             await prisma.$disconnect();
+            if (!categories)
+                throw new DatabaseError("Can't find categories", "category");
             return categories;
         } catch (error) {
-            throw new Error("Can't find categories");
+            throw new DatabaseError("Can't find categories", "category", error);
         }
     },
-    async findById(id: number) {
+    async findById(id: number): Promise<Category> {
         try {
             const category = await prisma.categories.findUnique({
                 where: {
                     id,
                 },
             });
+            if (!category)
+                throw new UserInputError("Can't find item with associated id");
             return category;
         } catch (error) {
-            throw new Error("Can't find item with associated id");
+            throw new DatabaseError(
+                "Can't find item with associated id",
+                "category",
+                error
+            );
         }
     },
-    async add(
-        name: string
-    ): Promise<Ingredient_categories | ErrorMessage | undefined> {
-        let category;
-        category = {
+    async add(name: string) {
+        let category = {
             name,
         };
         try {
-            const createCategory = await prisma.categories.create({
+            await prisma.categories.create({
                 data: category,
             });
             await prisma.$disconnect();
-            return createCategory;
-        } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    return {
-                        error: "There is a unique constraint violation , Already exists in database",
-                    };
-                }
-            }
+        } catch (error: any) {
+            throw new DatabaseError(error.message, "category", error);
         }
     },
-    async update(object: { name: string; id: number }) {
+    async update(form: Category) {
         try {
-            const updateCategory = await prisma.categories.update({
+            await prisma.categories.update({
                 where: {
-                    id: object.id,
+                    id: form.id,
                 },
                 data: {
-                    name: object.name,
+                    name: form.name,
                 },
             });
             await prisma.$disconnect();
-            return updateCategory;
         } catch (error: any) {
-            throw new Error("Can't update category");
+            throw new DatabaseError("Can't update category", "category", error);
         }
     },
     async destroy(id: number) {
         try {
-            const deleteCategory = await prisma.categories.delete({
+            await prisma.categories.delete({
                 where: {
-                    id
+                    id,
                 },
             });
             await prisma.$disconnect();
-            return deleteCategory;
         } catch (error: any) {
-            throw new Error("Error deleting category");
+            throw new DatabaseError("Can't delete category", "category", error);
         }
     },
 };

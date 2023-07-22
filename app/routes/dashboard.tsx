@@ -5,7 +5,7 @@ import RoutesLayout from "~/layout/LayoutRoutes";
 export default function Dashboard() {
   return (
     <AppLayout>
-      <RoutesLayout menu={adminPanelMenu}/>
+      <RoutesLayout menu={adminPanelMenu} />
     </AppLayout>
   );
 }

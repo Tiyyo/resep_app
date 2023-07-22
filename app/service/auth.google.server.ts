@@ -3,6 +3,7 @@ import { GoogleStrategy } from "remix-auth-google";
 import { createUserSession, storage } from "./auth.server"
 import { prisma } from "./db.server";
 import { redirect } from "@remix-run/node";
+import { calcLength } from "framer-motion";
 const randomize = require('randomatic')
 
 
@@ -20,6 +21,7 @@ let googleStrategy = new GoogleStrategy(
         callbackURL: '/auth/google/callback'
     }, async ({ accessToken, refreshToken, extraParams, profile }) => {
         try {
+
             const randomPassword: string = randomize('*', 12)
             const user = await prisma.users.upsert(
                 {
@@ -49,7 +51,6 @@ let googleStrategy = new GoogleStrategy(
                     }
                 })
             }
-
             return user.id
         } catch (err) {
             console.log(err)

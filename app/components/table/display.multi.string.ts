@@ -1,3 +1,3 @@
 export function displayMultiString(content: Array<string>) {
-    return content.map((el: string) => el).join(" ");
-  }
+  if (content) return content.map((el: string) => el).join(" ");
+}
