@@ -6,13 +6,13 @@ import type { RegisterForm } from "./types.server";
 import createUser from "~/utils/users.server";
 import { prisma } from "./db.server";
 
-invariant(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
+invariant(process.env.USER_SESSION_SECRET, "SESSION_SECRET must be set");
 
 export const storage = createCookieSessionStorage({
   cookie: {
     name: "__session",
     secure: process.env.NODE_ENV === "production",
-    secrets: [process.env.SESSION_SECRET],
+    secrets: [process.env.USER_SESSION_SECRET],
     sameSite: "lax",
     path: "/",
     httpOnly: true,

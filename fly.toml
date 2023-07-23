@@ -1,4 +1,4 @@
-app = "resep_fly-6663"
+app = "resep"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = [ ]
