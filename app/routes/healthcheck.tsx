@@ -6,6 +6,7 @@
 import { json } from "@remix-run/node";
 
 export function loader() {
+  console.log("healthcheck ✅");
   return json(process.env.NODE_ENV, 200);
 }
 
