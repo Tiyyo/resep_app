@@ -1,0 +1,262 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model genders {
+  id       Int        @id @default(autoincrement())
+  gender   String     @unique
+  profiles profiles[]
+}
+
+model images {
+  id       Int       @id @default(autoincrement())
+  imageKey String    @unique
+  link     String
+  width    Int
+  recipes  recipes[]
+}
+
+model instructions {
+  id          Int                       @id @default(autoincrement())
+  description String
+  recipes     instructions_on_recipes[]
+}
+
+model difficulties {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  recipes recipes[]
+}
+
+model icons {
+  id          Int             @id @default(autoincrement())
+  name        String          @unique
+  link        String
+  image_key   String
+  ingredients ingredients[]
+  tags        tags_on_icons[]
+}
+
+model tags {
+  id      Int               @id @default(autoincrement())
+  name    String            @unique
+  icons   tags_on_icons[]
+  recipes recipes_on_tags[]
+}
+
+model tags_on_icons {
+  icon     icons  @relation(fields: [icon_id], references: [id], onDelete: Cascade)
+  icon_id  Int
+  tag      tags   @relation(fields: [tag_name], references: [name], onDelete: Cascade)
+  tag_name String
+
+  @@id([icon_id, tag_name])
+}
+
+model users {
+  id         String    @id @default(uuid())
+  email      String    @unique
+  password   String
+  admin      Boolean   @default(false)
+  profile    profiles?
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt()
+}
+
+model activity_levels {
+  id             Int        @id @default(autoincrement())
+  activity_level String     @unique
+  description    String
+  factor         Decimal
+  profiles       profiles[]
+}
+
+model profiles {
+  id                Int              @id @default(autoincrement())
+  user_id           String           @unique
+  user              users            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  username          String?
+  avatar            String?
+  age               DateTime?
+  height            Int?
+  weight            Decimal?
+  gender_id         Int?
+  gender            genders?         @relation(fields: [gender_id], references: [id], onDelete: SetNull)
+  activity_level_id Int?
+  activity_level    activity_levels? @relation(fields: [activity_level_id], references: [id])
+  meals             meal_plans[]
+  reviews           reviews[]
+  recipes           recipes[]
+}
+
+model unit_measures {
+  id                     Int                      @id @default(autoincrement())
+  name                   String                   @unique
+  abreviation            String
+  equivalent             Decimal?
+  unit                   String                   @default("grams")
+  ingredients_on_recipes ingredients_on_recipes[]
+  list_items             list_items[]
+}
+
+model categories {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  ingredients ingredients[]
+}
+
+model macros {
+  id          Int           @id @default(autoincrement())
+  food        String?       @unique
+  calories    Decimal
+  proteins    Decimal
+  carbs       Decimal
+  fat         Decimal
+  water       Decimal
+  ingredients ingredients[]
+  recipe      recipes?
+}
+
+model ingredients {
+  id          Int                      @id @default(autoincrement())
+  name        String                   @unique
+  unit_weight Decimal?
+  category_id Int
+  category    categories               @relation(fields: [category_id], references: [id], onUpdate: Cascade)
+  macros_id   Int?
+  macros      macros?                  @relation(fields: [macros_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  icon_id     Int?
+  icon        icons?                   @relation(fields: [icon_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  recipes     ingredients_on_recipes[]
+  list_items  list_items[]
+}
+
+model ingredients_on_recipes {
+  qty             Decimal
+  unit_measure_id Int
+  unit_measure    unit_measures @relation(fields: [unit_measure_id], references: [id])
+  ingredient_id   Int
+  ingredient      ingredients   @relation(fields: [ingredient_id], references: [id], onDelete: Restrict)
+  recipe_id       Int
+  recipe          recipes       @relation(fields: [recipe_id], references: [id], onDelete: Restrict)
+
+  @@id([ingredient_id, recipe_id])
+}
+
+model instructions_on_recipes {
+  instruction_id Int
+  instructions   instructions @relation(fields: [instruction_id], references: [id], onDelete: Restrict)
+  recipe_id      Int
+  recipe         recipes      @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+
+  @@id([recipe_id, instruction_id])
+}
+
+model reviews {
+  comment    String?
+  is_liked   Boolean   @default(false)
+  rating     Int?
+  created_at DateTime  @default(now())
+  updated_at DateTime?
+  author_id  Int
+  author     profiles  @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  recipe_id  Int
+  recipe     recipes   @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+
+  @@unique([author_id, recipe_id])
+}
+
+model recipes_on_tags {
+  tag_id    Int
+  tag       tags    @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+  recipe_id Int
+  recipe    recipes @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+
+  @@id([tag_id, recipe_id])
+}
+
+model recipes {
+  id           Int                       @id @default(autoincrement())
+  name         String                    @unique
+  prep_time    Int
+  cook_time    Int
+  author_id    Int
+  author       profiles                  @relation(fields: [author_id], references: [id], onDelete: SetDefault)
+  created_at   DateTime                  @default(now())
+  image_id     Int?
+  image        images?                   @relation(fields: [image_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  servings     Int
+  macros_id    Int?                      @unique
+  macros       macros?                   @relation(fields: [macros_id], references: [id], onDelete: SetNull)
+  youtube_link String?
+  level        String
+  difficulty   difficulties              @relation(fields: [level], references: [name], onDelete: SetDefault)
+  tags         recipes_on_tags[]
+  reviews      reviews[]
+  measures     ingredients_on_recipes[]
+  instructions instructions_on_recipes[]
+  meals        meals[]
+}
+
+model meals {
+  id          Int                   @id @default(autoincrement())
+  recipe_name String
+  servings    Int
+  recipe_id   Int
+  recipe      recipes               @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+  image       String?
+  meal_plans  meals_on_meal_plans[]
+}
+
+model meal_plans {
+  id         Int                   @id @default(autoincrement())
+  author_id  Int
+  author     profiles              @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  shopping   shopping_lists?
+  created_at DateTime              @default(now())
+  updated_at DateTime?             @updatedAt()
+  meals      meals_on_meal_plans[]
+  // meals      meals_on_recipes[]
+}
+
+model meals_on_meal_plans {
+  meals_id      Int
+  meals         meals      @relation(fields: [meals_id], references: [id], onDelete: Cascade)
+  meal_plans_id Int
+  meal_plans    meal_plans @relation(fields: [meal_plans_id], references: [id], onDelete: Cascade)
+
+  @@id([meals_id, meal_plans_id])
+}
+
+model list_items {
+  id                          Int                           @id @default(autoincrement())
+  ingredient_id               Int
+  ingredient                  ingredients                   @relation(fields: [ingredient_id], references: [id])
+  qty                         Decimal
+  unit_measure_id             Int
+  unit_measure                unit_measures                 @relation(fields: [unit_measure_id], references: [id])
+  shoppin_lists_on_list_items shoppin_lists_on_list_items[]
+}
+
+model shoppin_lists_on_list_items {
+  list_item_id     Int
+  list_item        list_items     @relation(fields: [list_item_id], references: [id], onDelete: Cascade)
+  shopping_list_id Int
+  shopping_list    shopping_lists @relation(fields: [shopping_list_id], references: [id], onDelete: Cascade)
+
+  @@id([list_item_id, shopping_list_id])
+}
+
+model shopping_lists {
+  id           Int                           @id @default(autoincrement())
+  meal_plan_id Int                           @unique
+  meal_plan    meal_plans                    @relation(fields: [meal_plan_id], references: [id], onDelete: Cascade)
+  created_at   DateTime                      @default(now())
+  updated_at   DateTime?                     @updatedAt()
+  items        shoppin_lists_on_list_items[]
+}
