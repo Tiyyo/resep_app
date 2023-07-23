@@ -1,4 +1,4 @@
-import { LoaderArgs } from "@remix-run/node";
+import type { LoaderArgs } from "@remix-run/node";
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import meal_plans from "~/api/meal_plans";
 import TitleLevel1 from "~/components/title/TitleLevel1";

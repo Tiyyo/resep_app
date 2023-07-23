@@ -2,7 +2,6 @@ import type { ActionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import category from "~/api/category";
 import MethodError from "~/helpers/errors/method.error";
-import ServerError from "~/helpers/errors/server.error";
 import UserInputError from "~/helpers/errors/user.inputs.error";
 import ResponseError from "~/helpers/response/response.error";
 import ResponseValid from "~/helpers/response/response.ok";

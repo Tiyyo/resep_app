@@ -57,16 +57,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     className="menu  dropdown-content rounded-box z-[1] h-32 w-40 bg-primary-200 p-1 shadow"
                   >
                     <li>
-                      <a className="dark:hover:text-white flex w-full items-center justify-between px-4 py-2 font-semibold hover:bg-main-100 dark:hover:bg-gray-600">
+                      <div className="dark:hover:text-white flex w-full items-center justify-between px-4 py-2 font-semibold hover:bg-main-100 dark:hover:bg-gray-600">
                         Profile
                         <ProfileIcon />
-                      </a>
+                      </div>
                     </li>
                     <li>
-                      <a className="dark:hover:text-white flex w-full items-center justify-between px-4 py-2 font-semibold hover:bg-main-100 dark:hover:bg-gray-600">
+                      <div className="dark:hover:text-white flex w-full items-center justify-between px-4 py-2 font-semibold hover:bg-main-100 dark:hover:bg-gray-600">
                         Settings
                         <SettingIcons size="4" />
-                      </a>
+                      </div>
                     </li>
                     <li className="flex h-6 items-center justify-between">
                       <Link

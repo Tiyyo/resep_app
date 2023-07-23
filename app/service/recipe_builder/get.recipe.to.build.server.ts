@@ -1,4 +1,4 @@
-import { RecipeRawForm } from "~/types/recipe";
+import type { RecipeRawForm } from "~/types/recipe";
 import convertRecipeFormToNumber from "./convert.recipe.form.number.server";
 import ServerError from "~/helpers/errors/server.error";
 import recipe from "~/api/recipe";

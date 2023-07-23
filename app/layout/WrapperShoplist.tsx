@@ -3,10 +3,7 @@ import { useContext } from "react";
 import Input from "~/components/input";
 import SubmitButton from "~/components/submit_button";
 import TitleLevel1 from "~/components/title/TitleLevel1";
-import {
-  ShoppingContext,
-  ShoppingContextProvider,
-} from "~/context/shoplist.context";
+import { ShoppingContext } from "~/context/shoplist.context";
 
 export default function Wrapper({ children }: { children?: React.ReactNode }) {
   const { recipes, setNumRecipes } = useContext(ShoppingContext);

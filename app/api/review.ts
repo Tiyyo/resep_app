@@ -1,6 +1,4 @@
-import { Prisma } from "@prisma/client";
 import { prisma } from "~/service/db.server";
-import { ReviewsCreateInput } from "./interfaces";
 import DatabaseError from "~/helpers/errors/database.error";
 
 export default {

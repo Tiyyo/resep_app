@@ -1,4 +1,4 @@
-import { Category } from "~/api/category";
+import type { Category } from "~/api/category";
 
 export interface ItemListCard {
   id: number;

@@ -4,12 +4,7 @@ import { promiseHash } from "remix-utils";
 import SubmitButton from "~/components/submit_button";
 import SelectSearch from "~/components/select_search";
 import Input from "~/components/input";
-import {
-  useActionData,
-  useFetcher,
-  useLoaderData,
-  useNavigation,
-} from "@remix-run/react";
+import { useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import Error from "~/components/error";
 import category from "~/api/category";
@@ -57,7 +52,12 @@ export default function () {
       addIngredientFormRef.current.reset();
     }
     return () => setClear(false);
-  }, [addIngredient.state]);
+  }, [
+    addIngredient.state,
+    addIngredient.data?.error,
+    addIngredient.data?.fields?.name,
+    addIngredient.data?.status,
+  ]);
 
   return (
     <div className="center w-full ">

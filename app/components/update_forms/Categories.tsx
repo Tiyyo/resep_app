@@ -1,7 +1,6 @@
 import { useFetcher } from "@remix-run/react";
 import Input from "../input";
 import SubmitButton from "../submit_button";
-import type { Update } from "aws-sdk/clients/dynamodb";
 import type { UpdateCategoriesFormProps } from "./interface";
 import Error from "../error";
 

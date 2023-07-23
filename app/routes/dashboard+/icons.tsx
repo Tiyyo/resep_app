@@ -10,7 +10,7 @@ import {
 import icon from "~/api/icon";
 import Table from "~/components/table";
 import ResponseError from "~/helpers/response/response.error";
-import { Icon } from "~/types/recipe";
+import type { Icon } from "~/types/recipe";
 
 export async function loader({ request }: LoaderArgs) {
   try {

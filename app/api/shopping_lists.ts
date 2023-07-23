@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import DatabaseError from "~/helpers/errors/database.error";
 import { prisma } from "~/service/db.server";
 

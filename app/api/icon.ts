@@ -1,8 +1,7 @@
-import { Prisma } from "@prisma/client";
 import { prisma } from "~/service/db.server";
-import { FormIconProps, FormPropsEditIcon } from "./interfaces";
+import type { FormIconProps, FormPropsEditIcon } from "./interfaces";
 import DatabaseError from "~/helpers/errors/database.error";
-import { Icon } from "~/types/recipe";
+import type { Icon } from "~/types/recipe";
 import NotFoundError from "~/helpers/errors/not.found.error";
 
 export default {

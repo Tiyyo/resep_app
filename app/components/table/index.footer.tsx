@@ -1,4 +1,4 @@
-import { TableFooterProps } from "./interface";
+import type { TableFooterProps } from "./interface";
 
 export default function TableFooter({
   numColums,

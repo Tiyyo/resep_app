@@ -1,12 +1,6 @@
 import type { ActionArgs } from "@remix-run/node";
-import { Form } from "@remix-run/react";
-import FileInput from "~/components/file_input";
-import SubmitButton from "~/components/submit_button";
-import { uploadImage } from "~/service/s3.server";
 
 export async function action({ request }: ActionArgs) {
-  const { imageLink, imageKey } = await uploadImage(request, "image_icon");
-
   return null;
 }
 

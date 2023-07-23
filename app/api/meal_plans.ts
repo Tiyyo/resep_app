@@ -1,5 +1,5 @@
 import { prisma } from "~/service/db.server";
-import { Meal } from "~/session";
+import type { Meal } from "~/session";
 import NotFoundError from "~/helpers/errors/not.found.error";
 import DatabaseError from "~/helpers/errors/database.error";
 

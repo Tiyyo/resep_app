@@ -1,5 +1,5 @@
 import { Link, useFetcher, useLocation } from "@remix-run/react";
-import { TableBodyProps } from "./interface";
+import type { TableBodyProps } from "./interface";
 import EditIcon from "~/assets/icons/EditIcon";
 import DeleteIcon from "~/assets/icons/DeleteIcon";
 import { displayMultiString } from "./display.multi.string";

@@ -1,4 +1,3 @@
-import { Form } from "@remix-run/react";
 import { useFetcher } from "react-router-dom";
 import SubmitButton from "../submit_button";
 import FileInput from "../file_input";

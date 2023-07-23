@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
-import { DashedButtonProps } from "./interface";
+import type { DashedButtonProps } from "./interface";
 
-export default function ({ value, link = "" }: DashedButtonProps) {
+export default function DashedButton({ value, link = "" }: DashedButtonProps) {
   return (
     <Link to={link}>
       <button

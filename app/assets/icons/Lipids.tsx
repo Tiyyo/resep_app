@@ -1,5 +1,5 @@
-import { Icons } from "./interface";
-export default function ({
+import type { Icons } from "./interface";
+export default function Fat({
   size,
   outlineColor,
   fillColor,

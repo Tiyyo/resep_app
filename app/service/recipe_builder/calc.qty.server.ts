@@ -1,4 +1,4 @@
-import { Measure } from "~/types/recipe";
+import type { Measure } from "~/types/recipe";
 
 const calcQty = (measure: Measure): number => {
   let qty = 1;

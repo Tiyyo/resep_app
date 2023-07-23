@@ -1,6 +1,6 @@
 import { useFetcher, useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { Recipe } from "~/types/recipe";
+import type { Recipe } from "~/types/recipe";
 import RecipeCard from "../recipe/card";
 import isLikedByUser from "~/utils/is.liked.by.user";
 import SearchIcon from "~/assets/icons/SearchIcon";

@@ -3,7 +3,6 @@ import { homeMenu } from "~/constants/menus";
 import AppLayout from "~/layout/LayoutApp";
 import RoutesLayout from "~/layout/LayoutRoutes";
 import { getUser } from "~/service/auth.server";
-import chalk from "chalk";
 
 export async function loader({ request }: LoaderArgs) {
   return (await getUser(request)) ? null : redirect("/login");

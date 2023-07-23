@@ -4,7 +4,7 @@ import { withZod } from "@remix-validated-form/with-zod";
 import * as Z from "zod";
 import convertStringToNumber from "~/utils/convert.to.number";
 import { validationError } from "remix-validated-form";
-import { IngredientCreateForm, IngredientUpdateForm } from "~/api/interfaces";
+import type { IngredientCreateForm, IngredientUpdateForm } from "~/api/interfaces";
 import ingredient from "~/api/ingredient";
 import ResponseValid from "~/helpers/response/response.ok";
 import ResponseError from "~/helpers/response/response.error";

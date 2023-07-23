@@ -1,4 +1,4 @@
-import { Item } from "../tree_menu/interface";
+import type { Item } from "../tree_menu/interface";
 
 export interface MenuLinkProps {
   active: Boolean;

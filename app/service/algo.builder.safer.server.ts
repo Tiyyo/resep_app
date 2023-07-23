@@ -13,11 +13,11 @@ export interface GetItemProps {
 
 export type Item =
   | {
-      ingredientId: number;
-      name: string;
-      qty: number;
-      unit_measure_id: number;
-    }
+    ingredientId: number;
+    name: string;
+    qty: number;
+    unit_measure_id: number;
+  }
   | 1;
 
 export async function buildShoppingList(meals) {
@@ -158,6 +158,7 @@ function associateServingsToMeasure(measures, meals) {
         },
       };
     }
+    return null
   });
   return measuresWithCorrectServigns;
 }

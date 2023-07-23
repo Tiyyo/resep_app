@@ -1,18 +1,13 @@
-import { ActionArgs, LoaderArgs, json } from "@remix-run/node";
-import { Form, Link, useLoaderData } from "@remix-run/react";
+import type { LoaderArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
 import { Fragment } from "react";
 import meal_plans from "~/api/meal_plans";
-import shopping_lists from "~/api/shopping_lists";
 import Input from "~/components/input";
-import SubmitButton from "~/components/submit_button";
 import NotFoundError from "~/helpers/errors/not.found.error";
 import ServerError from "~/helpers/errors/server.error";
 import ResponseError from "~/helpers/response/response.error";
-import { buildShoppingList } from "~/service/algo.builder.safer.server";
-import {
-  convertGramsToPieces,
-  harmonzeUnit,
-} from "~/utils/convert.grams.to.pieces";
+import { harmonzeUnit } from "~/utils/convert.grams.to.pieces";
 
 import { getProfile } from "~/utils/get.user.infos";
 
@@ -107,6 +102,7 @@ export default function () {
                 >
                   <img
                     src={item.image}
+                    alt={item.name}
                     className="aspect-square h-8 rounded-full"
                   />
                   <p className="flex-grow text-8 opacity-80">{item.name}</p>

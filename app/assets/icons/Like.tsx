@@ -1,5 +1,3 @@
-import { Icons } from "./interface";
-
 export default function LikeIcon({
   size,
   fill,

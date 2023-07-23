@@ -1,4 +1,4 @@
-import { RecipeRawForm } from "~/types/recipe";
+import type { RecipeRawForm } from "~/types/recipe";
 
 const convertRecipeFormToNumber = (rawForm: RecipeRawForm) => {
   const convertRecipe = {

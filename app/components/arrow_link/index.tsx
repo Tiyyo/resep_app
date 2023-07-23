@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 import ArrowRightIcon from "~/assets/icons/ArrowRightIcon";
-import { ArrowLinkProps } from "./interface";
+import type { ArrowLinkProps } from "./interface";
 
 export default function ArrowLink({ text, link }: ArrowLinkProps) {
   return (

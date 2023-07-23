@@ -5,7 +5,6 @@ import macro from "~/api/macro";
 import Modal from "~/components/modal";
 import UpdateMacrosForm from "~/components/update_forms/Macros";
 import NotFoundError from "~/helpers/errors/not.found.error";
-import ServerError from "~/helpers/errors/server.error";
 import ResponseError from "~/helpers/response/response.error";
 
 export async function loader({ params }: LoaderArgs) {

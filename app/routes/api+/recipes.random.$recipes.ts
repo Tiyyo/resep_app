@@ -1,4 +1,4 @@
-import { LoaderArgs, json } from "@remix-run/node";
+import type { LoaderArgs } from "@remix-run/node";
 import recipe from "~/api/recipe";
 import ServerError from "~/helpers/errors/server.error";
 import ResponseError from "~/helpers/response/response.error";

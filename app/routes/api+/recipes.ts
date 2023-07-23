@@ -1,4 +1,5 @@
-import { type ActionArgs, json, LoaderArgs } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { withZod } from "@remix-validated-form/with-zod";
 import { buildRecipe } from "~/service/recipe_builder/index.server";
 import * as Z from "zod";
@@ -7,7 +8,6 @@ import { deleteImageFromBucket, uploadImage } from "~/service/s3.server";
 import recipe from "~/api/recipe";
 import ResponseError from "~/helpers/response/response.error";
 import MethodError from "~/helpers/errors/method.error";
-import ingredient from "~/api/ingredient";
 import ResponseValid from "~/helpers/response/response.ok";
 import ServerError from "~/helpers/errors/server.error";
 
@@ -126,10 +126,10 @@ export async function action({ request }: ActionArgs) {
         instructions,
         image: imageKey &&
           imageLink && {
-            imageKey: imageKey,
-            link: imageLink,
-            width: 400,
-          },
+          imageKey: imageKey,
+          link: imageLink,
+          width: 400,
+        },
       };
 
       try {

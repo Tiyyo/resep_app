@@ -15,7 +15,7 @@ export default async function createUser(user: RegisterForm) {
     if (!newUser) {
       throw new Error("Couldn't create new user");
     }
-    const newProfile = await prisma.profiles.create({
+    await prisma.profiles.create({
       data: {
         user_id: newUser.id,
         username: user.username,

@@ -1,4 +1,4 @@
-import { InfosRecipeByUser, Recipe, Reviews } from "~/types/recipe";
+import type { InfosRecipeByUser, Recipe } from "~/types/recipe";
 
 export type ErrorMessage = {
   error: string;

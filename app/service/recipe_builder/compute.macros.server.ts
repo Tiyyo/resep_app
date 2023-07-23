@@ -1,10 +1,11 @@
-import { Measures } from "~/types/recipe";
+import type { Measures } from "~/types/recipe";
 import calcQty from "./calc.qty.server";
+
 
 const computeTotalMacro = async (measures: Measures, servings: number) => {
   const result = measures
     .map((m) => {
-      if (typeof m.ingredient === "number") return;
+      if (typeof m.ingredient === "number") return null;
       if (!m.ingredient.macros) {
         return {
           calories: 0,
@@ -23,7 +24,13 @@ const computeTotalMacro = async (measures: Measures, servings: number) => {
       };
     })
     .reduce((acc, curr) => {
-      if (!acc || !curr) return;
+      if (!acc || !curr) return {
+        calories: 0,
+        proteins: 0,
+        carbs: 0,
+        fat: 0,
+        water: 0,
+      };
       return {
         calories: acc.calories + curr.calories,
         proteins: acc.proteins + curr.proteins,

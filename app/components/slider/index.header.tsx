@@ -1,6 +1,6 @@
 import ArrowLink from "../arrow_link";
 import TitleLevel3 from "../title/TilteLevel3";
-import { HeaderSliderProps } from "./interface";
+import type { HeaderSliderProps } from "./interface";
 
 export default function HeaderSlider({
   title,

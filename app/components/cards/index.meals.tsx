@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
 import Input from "../input";
 import DeleteIcon from "~/assets/icons/DeleteIcon";
-import { MealCreateInput } from "~/session";
+import type { MealCreateInput } from "~/session";
 
 export interface CardMealsProps {
   handleServings: (e: React.MouseEvent<HTMLButtonElement>) => void;

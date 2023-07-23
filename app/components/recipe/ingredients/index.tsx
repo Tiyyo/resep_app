@@ -7,7 +7,7 @@ import AddPlusIcon from "~/assets/icons/AddPlusIcon";
 import MinusIcon from "~/assets/icons/MinusIcon";
 import IngredientItem from "./ingredientItem";
 import TitleLevel3 from "~/components/title/TilteLevel3";
-import { IngredientItemProps, MeasureFetch } from "./interface";
+import type { IngredientItemProps, MeasureFetch } from "./interface";
 
 export default function IngredientsList({
   measures,

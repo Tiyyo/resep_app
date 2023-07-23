@@ -1,10 +1,10 @@
 import convertStringToNumber from "~/utils/convert.to.number";
 import { deleteImageFromBucket, uploadImage } from "~/service/s3.server";
 import type { ActionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import wordsToArray from "~/utils/wrodsToArray";
 import icon from "~/api/icon";
-import { FormPropsEditIcon } from "~/api/interfaces";
+import type { FormPropsEditIcon } from "~/api/interfaces";
 import ResponseError from "~/helpers/response/response.error";
 import ServerError from "~/helpers/errors/server.error";
 import ResponseValid from "~/helpers/response/response.ok";

@@ -1,4 +1,5 @@
-import { ActionArgs, LoaderArgs, json, redirect } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import recipe from "~/api/recipe";
 import Finder from "~/components/finder";

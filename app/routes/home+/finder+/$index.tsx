@@ -15,8 +15,8 @@ export default function () {
   return (
     <>
       <nav className="center tabs text-secondary-300">
-        {navFinder.map((nav) => (
-          <NavLink to={nav}>
+        {navFinder.map((nav, index) => (
+          <NavLink to={nav} key={index}>
             {({ isActive }) => (
               <button
                 className={`tab tab-bordered px-7 ${

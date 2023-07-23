@@ -1,28 +1,17 @@
-import { ActionArgs, LoaderArgs, json, redirect } from "@remix-run/node";
-import {
-  Form,
-  Link,
-  useActionData,
-  useFetcher,
-  useLoaderData,
-  useSubmit,
-} from "@remix-run/react";
-import { useRef, useState } from "react";
+import type { ActionArgs, LoaderArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { Form, useFetcher, useLoaderData, useSubmit } from "@remix-run/react";
+import { useState, useEffect } from "react";
 
 import SubmitButton from "~/components/submit_button";
 import TitleLevel1 from "~/components/title/TitleLevel1";
-import { Recipe } from "~/types/recipe";
 // import { buildShoppingList } from "~/service/shopping.builder.server";
 import { buildShoppingList } from "~/service/algo.builder.safer.server";
-import Input from "~/components/input";
 // import type { RecipeCardShop } from "~/context/shoplist.context";
-import { useEffect } from "react";
 import recipe from "~/api/recipe";
-import { mealPlanStorage } from "~/session";
 import meal_plans from "~/api/meal_plans";
 import { getProfile } from "~/utils/get.user.infos";
-import { MealPlanCreateInput } from "~/api/interfaces";
-import DeleteIcon from "~/assets/icons/DeleteIcon";
+import type { MealPlanCreateInput } from "~/api/interfaces";
 import { getUserSession, storage } from "~/service/auth.server";
 import Intro from "~/components/meal_plans/index.intro";
 import ModalNotRoute from "~/components/modal/index.not.route";

@@ -4,9 +4,7 @@ export default function Error404() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    {
-      navigate(-1);
-    }
+    navigate(-1);
   };
 
   return (

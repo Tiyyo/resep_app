@@ -1,7 +1,7 @@
 import { useParams } from "@remix-run/react";
 import FinderCategories from "./index.categories";
 import FinderSearch from "./index.search";
-import { Recipe } from "~/types/recipe";
+import type { Recipe } from "~/types/recipe";
 
 export default function Finder({
   recipes,

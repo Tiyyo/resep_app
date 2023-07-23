@@ -1,4 +1,4 @@
-import Select, { SelectOptionActionMeta } from "react-select";
+import Select from "react-select";
 import type { SelectSearchProps } from "./interface";
 import { useHydrated } from "remix-utils";
 import { useEffect, useRef } from "react";

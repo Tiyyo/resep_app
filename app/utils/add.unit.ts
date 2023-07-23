@@ -17,7 +17,7 @@ const addUnit = (arg: string) => {
       return (unit = "(ml)");
     }
     default: {
-      return (unit = "");
+      return unit = "";
     }
   }
 };

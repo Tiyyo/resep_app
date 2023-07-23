@@ -1,7 +1,6 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import { useEffect, useState } from "react";
 import { promiseHash } from "remix-utils";
 import category from "~/api/category";
 import icon from "~/api/icon";

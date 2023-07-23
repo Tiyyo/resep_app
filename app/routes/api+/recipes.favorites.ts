@@ -14,7 +14,7 @@ export async function action({ request }: ActionArgs) {
     if (typeof authorId === "string" && typeof recipeId === "string") {
       const infos = await review.findByIds(+authorId, +recipeId);
 
-      infos ? null : await favorite.like(authorId, recipeId);
+      infos && await favorite.like(authorId, recipeId);
       infos?.is_liked
         ? await favorite.destroy(authorId, recipeId)
         : await favorite.like(authorId, recipeId);

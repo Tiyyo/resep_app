@@ -1,6 +1,5 @@
 import { prisma } from "~/service/db.server";
-import { IngredientCreateForm, IngredientUpdateForm } from "./interfaces";
-import { Prisma } from "@prisma/client";
+import type { IngredientCreateForm, IngredientUpdateForm } from "./interfaces";
 import DatabaseError from "~/helpers/errors/database.error";
 import NotFoundError from "~/helpers/errors/not.found.error";
 

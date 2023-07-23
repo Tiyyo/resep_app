@@ -4,7 +4,6 @@ import SelectSearch from "../select_search";
 import SubmitButton from "../submit_button";
 import type { UpdateIngredientsFormProps } from "./interface";
 import Error from "../error";
-import { Category } from "../categories/interface";
 
 export default function UpdateIngredientsForm({
   data: ingredient,
@@ -19,10 +18,10 @@ export default function UpdateIngredientsForm({
     label: ingredient?.icon?.name,
   };
 
-  const defaultOptionMacroId = {
-    value: ingredient?.macros?.id,
-    label: ingredient?.macros?.food,
-  };
+  // const defaultOptionMacroId = {
+  //   value: ingredient?.macros?.id,
+  //   label: ingredient?.macros?.food,
+  // };
 
   const defaultOptionCategory = {
     value: ingredient.category.id,
