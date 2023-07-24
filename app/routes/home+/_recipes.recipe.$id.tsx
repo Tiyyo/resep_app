@@ -36,8 +36,11 @@ export async function loader({ params, request }: LoaderArgs) {
       const infos = await review.findByIds(recipeId, profile.id);
       response = { ...response, profile, infos };
     }
+
+    console.log(response);
     return json(response);
   } catch (error) {
+    console.log(error);
     return new ResponseError(error);
   }
 }
@@ -50,6 +53,8 @@ export default function RecipePage() {
     infos: infosRecipeByUser,
     aggregate,
   } = useLoaderData();
+
+  console.log(recipe);
 
   const toggleFavorite = useFetcher<any>();
 

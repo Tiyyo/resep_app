@@ -5,6 +5,7 @@ import { getUserById } from "~/models/user.server";
 import type { RegisterForm } from "./types.server";
 import createUser from "~/utils/users.server";
 import { prisma } from "./db.server";
+import bcrypt from "bcryptjs";
 
 invariant(process.env.USER_SESSION_SECRET, "USER_SESSION_SECRET must be set");
 
@@ -61,8 +62,8 @@ export async function login(form: LoginForm) {
     return json({ error: "Wrong credentials" }, { status: 400 });
   }
   return user.profile === null
-    ? createUserSession(user.id, "/", undefined)
-    : createUserSession(user.id, "/", user.profile.id);
+    ? createUserSession(user.id, "/", form.rememberMe, undefined)
+    : createUserSession(user.id, "/", form.rememberMe, user.profile.id);
 }
 
 export async function createUserSession(
