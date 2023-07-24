@@ -19,7 +19,7 @@ async function seed() {
 
 
   for (const sql of sqls) {
-    await prisma.$executeRaw(sql)
+    await prisma.$executeRaw`${sql}`
   }
 
   console.log(`Database has been seeded. 🌱`);
