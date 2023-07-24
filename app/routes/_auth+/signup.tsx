@@ -1,4 +1,10 @@
-import { Form, Link, useActionData } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  isRouteErrorResponse,
+  useActionData,
+  useRouteError,
+} from "@remix-run/react";
 import { useState } from "react";
 import AtIcon from "~/assets/icons/AtIcon";
 import EyeIcon from "~/assets/icons/Eye";
@@ -14,6 +20,8 @@ import * as Z from "zod";
 import type { ActionArgs } from "@remix-run/node";
 import { register } from "~/service/auth.server";
 import LayoutAuth from "~/layout/LayoutAuth";
+import LayoutPage from "~/layout/LayoutPage";
+import Error404 from "~/layout/Error404Page";
 
 export const validator = withZod(
   Z.object({
@@ -49,15 +57,20 @@ export const validator = withZod(
 
 export async function action({ request }: ActionArgs) {
   const data = await validator.validate(await request.formData());
+
   if (data.error) return validationError(data.error);
+  console.log(data.error);
+  return null;
 
-  const { username, email, password } = data.data;
+  // const { username, email, password } = data.data;
 
-  return await register({ username, email, password });
+  // return await register({ username, email, password });
 }
 
 export default function () {
   const actionData = useActionData();
+
+  console.log(actionData);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -142,11 +155,30 @@ export default function () {
         </div>
         <p className="mt-4 self-center xl:absolute xl:bottom-2 xl:left-1/2 xl:-translate-x-1/2 ">
           Already have an account ?
-          <span className="font-bold text-secondary-300">
+          <span className="px-1 font-bold text-secondary-300">
             <Link to="/login">Log in</Link>
           </span>
         </p>
       </Form>
     </LayoutAuth>
   );
+}
+
+// Make a component for the error page handling
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (!isRouteErrorResponse(error)) {
+    if (error.status === 500) {
+      return (
+        <LayoutPage>
+          <h2>Something went wrong ... try again later</h2>
+        </LayoutPage>
+      );
+    }
+  }
+
+  if (error.status === 404) {
+    return <Error404 />;
+  }
 }

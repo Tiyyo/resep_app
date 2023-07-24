@@ -7,7 +7,6 @@ import { ShoppingContext } from "~/context/shoplist.context";
 
 export default function Wrapper({ children }: { children?: React.ReactNode }) {
   const { recipes, setNumRecipes } = useContext(ShoppingContext);
-  console.log(recipes);
 
   const handleClickGenerate = (
     e: React.MouseEvent<HTMLFormElement, MouseEvent>

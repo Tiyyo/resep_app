@@ -19,7 +19,7 @@ export default function RecipeCard({
       className={`flex border bg-main-100 p-2 shadow-md ${
         variant === "horizontal"
           ? "aspect-2/1 h-52"
-          : " h-72 w-48 min-w-[170px] flex-col"
+          : " h-32 w-48 min-w-[170px] flex-col xl:h-72 xl:w-48"
       }`}
     >
       <div
