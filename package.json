@@ -39,6 +39,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "fraction.js": "^4.2.0",
     "framer-motion": "^10.12.18",
+    "fs": "^0.0.1-security",
     "isbot": "^3.6.12",
     "randomatic": "^3.1.1",
     "react": "^18.2.0",

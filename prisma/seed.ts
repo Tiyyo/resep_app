@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { fs } from "../app/utils/fs.promises.server";
-// const fs = require('fs');
+// import { fs } from "../app/utils/fs.promises.server";
+const fs = require('fs');
 
 const prisma = new PrismaClient();
 
@@ -8,7 +8,7 @@ async function seed() {
   console.log(`Start seeding ... 🌱`);
 
   const sqls = fs
-    .readFile("./prisma/seed.sql")
+    .readFileSync("./prisma/seed.sql")
     .toString()
     .split("\n")
     .filter((line: string) => line.indexOf("--") !== 0)
