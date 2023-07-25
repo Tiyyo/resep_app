@@ -12,7 +12,7 @@ export default function RecipeContainer({
   likeByDefault?: boolean;
 }) {
   return (
-    <div className="grid h-full grid-cols-card gap-4 p-4 xl:flex  xl:flex-wrap xl:justify-start">
+    <div className="grid h-full grid-cols-card gap-4 p-4 xl:flex  xl:flex-wrap xl:content-start xl:justify-start ">
       {data &&
         data.length > 0 &&
         data.map((item: any, index: number) => {

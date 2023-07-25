@@ -40,7 +40,7 @@ export default function FormReview({ authorId, recipeId }: FormReviewProps) {
 
   return (
     <div
-      className="w-96 min-w-[750px] rounded-xl border bg-main-100 px-4 py-2 shadow-xl"
+      className="w-full rounded-xl border bg-main-100 px-4 py-2 shadow-xl "
       onMouseLeave={handleHover}
     >
       <addReview.Form

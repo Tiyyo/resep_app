@@ -12,7 +12,6 @@ export default function Wrapper({ children }: { children?: React.ReactNode }) {
     e: React.MouseEvent<HTMLFormElement, MouseEvent>
   ) => {
     e.preventDefault();
-    console.log(e.currentTarget.numRecipes.value);
     const value: number = Number(e.currentTarget.numRecipes.value);
     setNumRecipes(Math.abs(value));
   };

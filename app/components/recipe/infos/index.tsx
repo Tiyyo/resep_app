@@ -12,7 +12,7 @@ export default function RecipeInfos({
 }: RecipeInfosProps) {
   return (
     <div className="my-6 flex items-center justify-around gap-2.5 self-start  px-2.5 py-1.5 text-8 font-normal ">
-      <div className="flex items-center gap-x-4">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <div className="flex items-center gap-x-1">
           <Prep size="6" />
           <p className="font-light">{prepTime} min</p>

@@ -3,8 +3,6 @@ import { Outlet, useLoaderData } from "@remix-run/react";
 import recipe from "~/api/recipe";
 import Slider from "~/components/slider";
 import TitleLevel1 from "~/components/title/TitleLevel1";
-import useWindowSize from "~/hooks/useWindowsSize";
-import LayoutRecipePages from "~/layout/LayoutRecipesPage";
 import { getProfile } from "~/utils/get.user.infos";
 
 export const meta: V2_MetaFunction = () => {
@@ -64,11 +62,7 @@ export default function () {
         linkText="See all"
         link="/"
       />
-    </>
-  );
-
-  {
-    /* <Slider
+      <Slider
         banner={true}
         title="Italy"
         cardAxis="horizontal"
@@ -76,6 +70,7 @@ export default function () {
         profileId={profileId}
         linkText="See all"
         link="/"
-      /> */
-  }
+      />
+    </>
+  );
 }

@@ -22,17 +22,33 @@ export default function NutritionFacts({
       <div className="flex max-w-[600px] justify-evenly">
         <NutrientIndicator
           value={calories}
-          addText="Kcal"
+          addText="kcal"
           Icon={<Calories />}
         />
         <NutrientIndicator
           value={proteins}
-          addText="g Proteins"
+          unit="g"
+          addText="Proteins"
           Icon={<Proteins />}
         />
-        <NutrientIndicator value={carbs} addText="g Carbs" Icon={<Carbs />} />
-        <NutrientIndicator value={fat} addText="g Fat" Icon={<Lipids />} />
-        <NutrientIndicator value={water} addText="ml Water" Icon={<Water />} />
+        <NutrientIndicator
+          value={carbs}
+          unit="g"
+          addText="Carbs"
+          Icon={<Carbs />}
+        />
+        <NutrientIndicator
+          value={fat}
+          unit="g"
+          addText="Fat"
+          Icon={<Lipids />}
+        />
+        <NutrientIndicator
+          value={water}
+          unit="ml"
+          addText="Water"
+          Icon={<Water />}
+        />
       </div>
     </div>
   );

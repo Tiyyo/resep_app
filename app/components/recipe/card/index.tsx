@@ -19,7 +19,7 @@ export default function RecipeCard({
   return (
     <div
       key={recipeId}
-      className={`flex aspect-2/3 flex-col border bg-main-100 px-2 py-4 shadow-md ${
+      className={`flex aspect-2/3 max-h-[305px] flex-col border bg-main-100 px-2 py-4 shadow-md  ${
         variant === "horizontal" ? "aspect-2/1 " : "min-w-[170px]  xl:w-48 "
       } `}
     >
