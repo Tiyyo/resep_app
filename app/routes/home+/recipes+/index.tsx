@@ -2,9 +2,10 @@ import { type V2_MetaFunction, type LoaderArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import recipe from "~/api/recipe";
 import Slider from "~/components/slider";
+import TitleLevel1 from "~/components/title/TitleLevel1";
+import useWindowSize from "~/hooks/useWindowsSize";
 import LayoutRecipePages from "~/layout/LayoutRecipesPage";
 import { getProfile } from "~/utils/get.user.infos";
-// const chalk = require('chalk');
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -35,51 +36,46 @@ export async function loader({ request }: LoaderArgs) {
   }
   const profileId = profile.id;
   return json({ profileId, asianRecipes, lastestRecipes, italianRecipes });
-  // return "hehe";
 }
 
 export default function () {
   const { profileId, asianRecipes, lastestRecipes, italianRecipes } =
     useLoaderData();
 
-  // const log = console.log;
-
-  // chalk.level = 1;
-
-  // log(chalk.blue('Hello') + ' World' + chalk.red('!'));
-
   return (
-    <LayoutRecipePages title="Recommended for you">
-      <>
-        <Outlet />
-        <Slider
-          banner={false}
-          title="Just added"
-          profileId={profileId}
-          content={lastestRecipes}
-          linkText="See all"
-          link="/"
-          shouldBeCentered={true}
-        />
-        <Slider
-          banner={true}
-          title="Asia"
-          cardAxis="horizontal"
-          content={asianRecipes}
-          profileId={profileId}
-          linkText="See all"
-          link="/"
-        />
-        <Slider
-          banner={true}
-          title="Italy"
-          cardAxis="horizontal"
-          content={italianRecipes}
-          profileId={profileId}
-          linkText="See all"
-          link="/"
-        />
-      </>
-    </LayoutRecipePages>
+    <>
+      <TitleLevel1 title={"Recommended for you"} />
+      <Outlet />
+      <Slider
+        banner={false}
+        title="Just added"
+        profileId={profileId}
+        content={lastestRecipes}
+        linkText="See all"
+        link="/"
+        shouldBeCentered={true}
+      />
+      <Slider
+        banner={true}
+        title="Asia"
+        cardAxis="horizontal"
+        content={asianRecipes}
+        profileId={profileId}
+        linkText="See all"
+        link="/"
+      />
+    </>
   );
+
+  {
+    /* <Slider
+        banner={true}
+        title="Italy"
+        cardAxis="horizontal"
+        content={italianRecipes}
+        profileId={profileId}
+        linkText="See all"
+        link="/"
+      /> */
+  }
 }

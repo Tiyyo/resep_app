@@ -2,10 +2,11 @@ import RecipeCard from "../recipe/card";
 import isLikedByUser from "~/utils/is.liked.by.user";
 import HeaderSlider from "./index.header";
 import BannerSlider from "./index.banner";
-import LongArrowRightIcon from "~/assets/icons/LongArrowIcon";
 import { motion } from "framer-motion";
 import React, { useEffect, useState, useRef } from "react";
 import type { SliderProps } from "./interface";
+import SliderNav from "./index.nav";
+import useWindowSize from "~/hooks/useWindowsSize";
 
 export default function Slider({
   banner,
@@ -16,6 +17,7 @@ export default function Slider({
   linkText,
   link,
   shouldBeCentered,
+  windowWidth,
 }: SliderProps) {
   const [width, setWidth] = useState<number>(0);
   const [scrollXValue, setScrollXValue] = useState<number>(0);
@@ -52,13 +54,15 @@ export default function Slider({
     }
   }, []);
 
+  if (!content || content.length === 0) return null;
+
   return (
     <div
       className={`my-4 flex flex-col ${shouldBeCentered ? "self-center" : ""}`}
     >
       <HeaderSlider title={title} linkText={linkText} link={link} />
-      <div className="relative flex gap-x-8">
-        {banner && <BannerSlider title={title ?? ""} />}
+      <div className="x relative flex flex-col gap-x-8 xl:flex-row ">
+        {/* {banner && <BannerSlider title={title ?? ""} />} */}
         <motion.div
           className="no-scrollbar overflow-x-scroll scroll-smooth px-6"
           ref={carousel}
@@ -71,14 +75,14 @@ export default function Slider({
             className="flex w-full gap-x-6"
             ref={innerCarousel}
             animate={{ x: scrollXValue }}
-            transition={{ ease: "easeInOut", duration: 1.2 }}
+            transition={{ ease: "easeInOut", duration: 1 }}
           >
             {content &&
               content.length > 0 &&
               content.map((recipe: any): JSX.Element => {
                 return (
                   <RecipeCard
-                    variant={cardAxis ?? "vertical"}
+                    variant={"vertical"}
                     tags={recipe.tags}
                     key={recipe.id}
                     recipeId={recipe.id}
@@ -90,23 +94,7 @@ export default function Slider({
                 );
               })}
           </motion.div>
-          <div className="absolute -bottom-8 right-6 flex items-center gap-x-10 text-secondary-300">
-            <button
-              type="button"
-              className="cursor-pointer"
-              data-nav="next"
-              onClick={handleClick}
-            >
-              <LongArrowRightIcon />
-            </button>
-            <button
-              className="rotate-180 cursor-pointer"
-              data-nav="prev"
-              onClick={handleClick}
-            >
-              <LongArrowRightIcon />
-            </button>
-          </div>
+          <SliderNav handleClick={handleClick} />
         </motion.div>
       </div>
     </div>

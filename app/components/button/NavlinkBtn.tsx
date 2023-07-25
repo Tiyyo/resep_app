@@ -8,7 +8,7 @@ export default function NavlinkBtn({
   Icon?: React.ReactNode;
 }) {
   return (
-    <NavLink to={endpoint}>
+    <NavLink to={endpoint} className="w-12 ">
       {({ isActive }) => (
         <button
           className={`px-7 ${

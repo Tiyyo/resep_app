@@ -8,8 +8,10 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import icon from "~/api/icon";
+import OrientationScreen from "~/components/orientation";
 import Table from "~/components/table";
 import ResponseError from "~/helpers/response/response.error";
+import Error404 from "~/layout/Error404Page";
 import type { Icon } from "~/types/recipe";
 
 export async function loader({ request }: LoaderArgs) {
@@ -24,13 +26,13 @@ export async function loader({ request }: LoaderArgs) {
 export default function EditIcons() {
   // ts errors remix bugs open issue here
   //https://github.com/remix-run/remix/issues/3931
-  const icons = useLoaderData<Array<Icon> | ResponseError>();
+  const data = useLoaderData();
 
-  if (icons instanceof ResponseError) {
+  if (data instanceof ResponseError) {
     return <p>Couldn't find icons to display</p>;
   }
 
-  const dataTable = icons.map((icon) => {
+  const dataTable = data.icons.map((icon: Icon) => {
     return {
       id: icon.id,
       image: icon.link,
@@ -41,15 +43,18 @@ export default function EditIcons() {
 
   return (
     <>
-      <Outlet />
-      {icons && icons.length > 0 && (
-        <Table
-          data={dataTable}
-          image={true}
-          endpoint="/api/icons"
-          search="name"
-        />
-      )}
+      <OrientationScreen />
+      <div className="hidden xl:block">
+        <Outlet />
+        {data.icons && data.icons.length > 0 && (
+          <Table
+            data={dataTable}
+            image={true}
+            endpoint="/api/icons"
+            search="name"
+          />
+        )}
+      </div>
     </>
   );
 }
@@ -58,15 +63,21 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   if (!isRouteErrorResponse(error)) {
-    return <Link to="/dashboard/icons">Refresh</Link>;
+    return (
+      <div className="center h-full w-full flex-col">
+        <p className="text-10 font-semibold">
+          We are sorry ... something went wrong with thoses icons
+        </p>
+        <p>
+          &#8608; &#8608; <Link to="/dashboard">Click here to refresh</Link>{" "}
+          &#8606; &#8606;
+        </p>
+        ;
+      </div>
+    );
   }
 
   if (error.status === 404) {
-    return (
-      <>
-        <h2>Error 404</h2>
-        <button> Rafraichir </button>
-      </>
-    );
+    return <Error404 />;
   }
 }

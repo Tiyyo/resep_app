@@ -20,7 +20,7 @@ export default function LayoutAppMobile({
   const profile = useProfileData();
   const sideMenuRef = useRef<HTMLDivElement | null>(null);
   const [sideMenuIsOpen, setSideMenuIsOpen] = useState<boolean>(false);
-  const [widthMenu, setWidthMenu] = useState<number>(-450);
+  const [widthMenu, setWidthMenu] = useState<number>(-3500);
   const linkToSettings = "/settings";
   const linkToHome = "/";
   const linkToDashboard = "/dashboard";
@@ -136,22 +136,22 @@ export default function LayoutAppMobile({
         animate={{ x: sideMenuIsOpen ? 0 : widthMenu }}
         transition={{ ease: "easeInOut", duration: 0.5, type: "Spring" }}
         ref={sideMenuRef}
-        className="absolute z-10 h-body w-[50%] bg-primary-100"
+        className="absolute z-10 h-body w-[50%] max-w-[250px] bg-primary-100"
       >
         {children}
       </motion.div>
-      <div onClick={() => setSideMenuIsOpen(false)}>
+      <div onClick={() => setSideMenuIsOpen(false)} className="pb-14">
         <Outlet />
       </div>
-      <div className="btm-nav fixed bottom-0 h-14 bg-main-100">
-        <NavlinkBtn endpoint={linkToHome} Icon={<HomeIcon size="6" />} />
+      <div className="btm-nav fixed bottom-0 flex h-14 justify-center bg-primary-100">
+        <NavlinkBtn endpoint={linkToHome} Icon={<HomeIcon size="4" />} />
         <NavlinkBtn
           endpoint={linkToDashboard}
-          Icon={<AddFileIcon size="6" />}
+          Icon={<AddFileIcon size="4" />}
         />
         <NavlinkBtn
           endpoint={linkToSettings}
-          Icon={<SettingIcons size="9" />}
+          Icon={<SettingIcons size="4" />}
         />
       </div>
     </LayoutPage>

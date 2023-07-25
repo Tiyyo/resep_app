@@ -1,6 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import recipe from "~/api/recipe";
+import RecipeContainer from "~/components/container";
 import RecipeCard from "~/components/recipe/card";
 import LayoutRecipePages from "~/layout/LayoutRecipesPage";
 import { getProfile } from "~/utils/get.user.infos";
@@ -17,23 +18,11 @@ export default function FavoriteRecipes() {
 
   return (
     <LayoutRecipePages title="Recipes you liked">
-      <div className="flex flex-wrap justify-start gap-4 p-4">
-        {favoriteRecipes &&
-          favoriteRecipes.length > 0 &&
-          favoriteRecipes.map((recipe: any) => {
-            //  TODO: fix type
-            return (
-              <RecipeCard
-                key={recipe.id}
-                recipeId={recipe.id}
-                imageLink={recipe.image.link}
-                recipeName={recipe.name}
-                recipeCalories={recipe.macros.calories}
-                isLiked={true}
-              />
-            );
-          })}
-      </div>
+      <RecipeContainer
+        Card={RecipeCard}
+        data={favoriteRecipes}
+        likeByDefault={true}
+      />
     </LayoutRecipePages>
   );
 }

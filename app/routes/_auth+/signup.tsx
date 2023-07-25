@@ -59,12 +59,10 @@ export async function action({ request }: ActionArgs) {
   const data = await validator.validate(await request.formData());
 
   if (data.error) return validationError(data.error);
-  console.log(data.error);
-  return null;
 
-  // const { username, email, password } = data.data;
+  const { username, email, password } = data.data;
 
-  // return await register({ username, email, password });
+  return await register({ username, email, password });
 }
 
 export default function () {
@@ -91,7 +89,7 @@ export default function () {
     <LayoutAuth>
       <Form
         method="post"
-        className="flex w-4/5 max-w-[450px] flex-col xl:max-w-[600px] xl:rounded-2xl xl:bg-white-100 xl:px-8 xl:py-6"
+        className="flex w-4/5 max-w-[450px] flex-col xl:max-w-[600px] xl:rounded-2xl xl:bg-white-100 xl:px-8 xl:py-6 xl:shadow-xl"
       >
         <h2 className="my-5 text-center text-3xl font-bold text-secondary-300">
           Sign up for free !
