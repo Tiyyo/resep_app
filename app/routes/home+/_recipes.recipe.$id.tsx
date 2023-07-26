@@ -66,11 +66,11 @@ export default function RecipePage() {
   };
 
   return (
-    <div className="mx-auto flex max-w-[1600px] flex-col pb-4">
-      <div className="flex w-full  basis-11/12">
-        <div className="flex min-w-[450px] max-w-[600px] flex-col gap-y-3 px-2">
+    <div className="mx-auto flex max-w-[1600px] flex-col pb-4 ">
+      <div className="flex w-full basis-11/12 flex-col items-center xl:flex-row  xl:items-start">
+        <div className="rounded-mdp-2 order-1 flex w-full max-w-[600px] flex-col gap-y-3 xl:min-w-[450px]">
           {/* title */}
-          <div className="flex items-center justify-start gap-x-6">
+          <div className="flex items-center justify-between gap-x-6 xl:justify-start">
             <TitleLevel2 title={recipe.name} />
             <AddFavoriteIcon
               onClick={handleClickFavorite}
@@ -115,7 +115,7 @@ export default function RecipePage() {
           />
           <LinearMacrosProportion macros={recipe?.macros} />
         </div>
-        <div className="flex flex-grow flex-col gap-y-6 px-4">
+        <div className="order-3 flex w-full flex-grow flex-col gap-y-6 px-4 md:max-w-[700px]">
           <InstructionsList instructions={recipe.instructions} />
           <CommentSection
             reviews={reviews}
@@ -123,7 +123,7 @@ export default function RecipePage() {
             authorId={profile?.id}
           />
         </div>
-        <div className="mx-6 w-1/3 min-w-[290px] max-w-[300px]">
+        <div className="order-2 mx-auto w-4/5 min-w-[290px] max-w-[720px] xl:order-3  xl:mx-6 xl:w-1/3 xl:max-w-[300px]">
           <IngredientsList
             measures={recipe.measures}
             servings={recipe.servings}

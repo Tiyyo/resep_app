@@ -8,11 +8,11 @@ export default function LayoutRecipePages({
   title: string;
 }) {
   return (
-    <div className="mx-auto flex max-w-[1325px] flex-col">
+    <div className="mx-auto flex h-full max-w-[1325px] flex-col">
       <img
         src="/images/banner_recipe_page.webp"
         alt=""
-        className="rounded-md"
+        className="hidden rounded-md xl:block"
       />
       <TitleLevel1 title={title} />
       {children}

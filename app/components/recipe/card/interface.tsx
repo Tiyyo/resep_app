@@ -9,3 +9,18 @@ export interface RecipeCardProps {
   variant?: "vertical" | "horizontal";
   pickedMeal?: number;
 }
+
+export interface CardRecipeImageProps {
+  variant: string;
+  imageLink?: string;
+  recipeId: number;
+  recipeName: string;
+}
+
+export interface CardRecipePickProps {
+  pickedMeal?: number;
+  recipeId: number;
+  recipeName: string;
+  imageLink?: string;
+  servings: number;
+}

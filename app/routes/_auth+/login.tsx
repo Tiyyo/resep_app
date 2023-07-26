@@ -20,6 +20,8 @@ import { redirect, type ActionArgs } from "@remix-run/node";
 import { getUser, login } from "~/service/auth.server";
 import ErrorIcon from "~/assets/icons/ErrorIcon";
 import LayoutAuth from "~/layout/LayoutAuth";
+import LayoutPage from "~/layout/LayoutPage";
+import Error404 from "~/layout/Error404Page";
 
 export async function loader({ request }: LoaderArgs) {
   return (await getUser(request)) ? redirect("/home") : null;
@@ -69,7 +71,7 @@ export default function () {
 
   return (
     <LayoutAuth>
-      <div className="w-4/5 max-w-[450px] xl:max-w-[600px] xl:rounded-2xl xl:bg-white-100 xl:px-8 xl:py-6 xl:shadow-xl ">
+      <div className="flex w-4/5 max-w-[450px] flex-col xl:max-w-[600px] xl:rounded-2xl xl:bg-white-100 xl:px-8 xl:py-6 xl:shadow-xl ">
         <h2 className="my-5 text-center text-3xl font-bold text-secondary-300">
           Hello Again !
         </h2>
@@ -133,17 +135,15 @@ export default function () {
             </Button>
           </div>
         </Form>
-        {actionData?.error ? (
-          <div className="text-red-600 center w-full gap-x-4 px-2 py-1 text-center text-11 font-semibold text-red">
+        {actionData?.error && (
+          <div className="text-red-600 center w-full gap-x-4 px-2 py-1 text-center text-8 font-semibold text-red">
             <ErrorIcon />
             <p>{actionData?.error}</p>
           </div>
-        ) : (
-          ""
         )}
-        <p className="absolute bottom-2 left-1/2 -translate-x-1/2">
+        <p className="mt-4 self-center xl:absolute xl:bottom-2 xl:left-1/2 xl:-translate-x-1/2 ">
           Don't have account ?
-          <span className="font-bold text-secondary-300">
+          <span className="px-1 text-center font-bold text-secondary-300">
             <Link to="/signup"> Sign up</Link>
           </span>
         </p>
@@ -156,15 +156,16 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   if (!isRouteErrorResponse(error)) {
-    return <p> An Error occured</p>;
+    if (error.status === 500) {
+      return (
+        <LayoutPage>
+          <h2>Something went wrong ... try again later</h2>
+        </LayoutPage>
+      );
+    }
   }
 
   if (error.status === 404) {
-    return (
-      <>
-        <h2>Error 404</h2>
-        <button> Rafraichir </button>
-      </>
-    );
+    return <Error404 />;
   }
 }

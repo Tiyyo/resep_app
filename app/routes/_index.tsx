@@ -17,8 +17,12 @@ export default function Index() {
   return (
     <>
       {/* Need these class to be read by tailwind at least once for string concatanation */}
-      <div className=" hidden h-4 w-14 w-16 w-24 w-32 w-7 pl-6"></div>
+      <div className=" hidden h-4 w-32 pl-6"></div>
+      <input type="text" className="w-7" hidden />
       <input type="text" className="w-10" hidden />
+      <input type="text" className="w-14" hidden />
+      <input type="text" className="w-16" hidden />
+      <input type="text" className="w-24" hidden />
     </>
   );
 }

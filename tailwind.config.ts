@@ -73,6 +73,8 @@ export default {
       },
       aspectRatio: {
         "2/1": "2/1",
+        "3/2": "3/2",
+        "2/3": "2/3",
       },
       borderRadius: {
         custom: "0% 100% 75% 25% / 100% 100% 0% 0% ",
@@ -104,6 +106,7 @@ export default {
       },
       gridTemplateColumns: {
         app: "minmax(75px, 95px) minmax(200px, 250px) 1fr",
+        card: "repeat(auto-fit, minmax(170px , 3fr))",
         main: "300px 1fr",
         input: "1fr 4fr",
         250: "repeat(auto-fit, minmax(280px , 1fr))",

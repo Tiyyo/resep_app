@@ -42,7 +42,7 @@ export function FormField({
           name={htmlFor}
           onChange={handleChange}
           value={value}
-          className={`dark:text-white peer block w-full appearance-none rounded-xl border bg-primary-100 px-2.5 pb-2 pt-3 text-sm text-gray-900 autofill:bg-secondary-400 focus:border-secondary-300 focus:outline-none focus:ring-0 dark:border-gray-600 dark:focus:border-secondary-300 xl:bg-white-100 ${
+          className={`autofill:shadow-[inset_0_0_0px_1000px_rgb(255 248 242)] block w-full appearance-none rounded-xl border bg-primary-100 px-2.5 pb-2 pt-3 text-sm text-gray-900 autofill:shadow-[inset_0_0_0px_1000px_rgb(255,248,242)]  focus:border-secondary-300 focus:outline-none focus:ring-0 dark:border-gray-600 dark:focus:border-secondary-300 xl:bg-white-100 ${
             errorText && errorText.length > 0 ? "h-72" : ""
           }}`}
           placeholder=" "

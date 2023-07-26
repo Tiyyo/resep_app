@@ -47,7 +47,7 @@ export default function IngredientsList({
               width="10"
               align="center"
               disabled={true}
-              defaultValue={servings}
+              value={servings}
             />
             <div
               id="plus"
@@ -61,7 +61,7 @@ export default function IngredientsList({
         </div>
         <div
           className={`flex flex-col gap-y-4 overflow-hidden transition-all ${
-            listIsOpen ? " max-h-fit" : "max-h-[650px]"
+            listIsOpen ? " max-h-fit" : "max-h-[75px] xl:max-h-[650px]"
           }`}
         >
           <div className="py-4.5  flex pl-4 pr-8 text-8 text-text-200">

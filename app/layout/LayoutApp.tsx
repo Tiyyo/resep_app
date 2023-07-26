@@ -9,6 +9,7 @@ import NotificationIcon from "~/assets/icons/NotificationIcon";
 import BrushOne from "~/assets/brush/UnderlineBrush";
 import LogoutIcon from "~/assets/icons/LogoutIcon";
 import ProfileIcon from "~/assets/icons/ProfileIcon";
+import TitleLogo from "~/components/title/TitleLogo";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const profile = useProfileData();
@@ -17,20 +18,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <LayoutPage>
-      <div></div>
       <div className="grid h-full min-h-screen grid-cols-app grid-rows-app">
         <div className="center col-start-1 col-end-2 row-start-1 border-r "></div>
         <div className="relative col-start-2 col-end-3 row-start-1 place-self-center text-2xl font-bold">
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-secondary-400 opacity-90">
             <BrushOne />
           </div>
-          <div className="relative -top-1 z-10 -rotate-3 text-15">
-            <span>r</span>
-            <span>e</span>
-            <span>s</span>
-            <span className="scale-x-flip">e</span>
-            <span>p</span>
-          </div>
+          <TitleLogo />
         </div>
         <header className="col-start-3 col-end-4 flex items-center justify-between px-5">
           <div className="text-11 font-bold">Today, {getTodayDate()}</div>
@@ -57,13 +51,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     className="menu  dropdown-content rounded-box z-[1] h-32 w-40 bg-primary-200 p-1 shadow"
                   >
                     <li>
-                      <div className="dark:hover:text-white flex w-full items-center justify-between px-4 py-2 font-semibold hover:bg-main-100 dark:hover:bg-gray-600">
+                      <div className=" flex w-full items-center justify-between px-4 py-2 font-semibold hover:bg-main-100 ">
                         Profile
                         <ProfileIcon />
                       </div>
                     </li>
                     <li>
-                      <div className="dark:hover:text-white flex w-full items-center justify-between px-4 py-2 font-semibold hover:bg-main-100 dark:hover:bg-gray-600">
+                      <div className="flex w-full items-center justify-between px-4 py-2 font-semibold hover:bg-main-100">
                         Settings
                         <SettingIcons size="4" />
                       </div>
@@ -71,7 +65,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     <li className="flex h-6 items-center justify-between">
                       <Link
                         to="/logout"
-                        className="dark:hover:text-white flex h-6 w-full items-center justify-between px-4 py-4 font-semibold hover:bg-main-100 dark:hover:bg-gray-600"
+                        className="flex h-6 w-full items-center justify-between px-4 py-4 font-semibold hover:bg-main-100 "
                         onClick={handleClick}
                       >
                         Logout
