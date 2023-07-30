@@ -102,8 +102,9 @@ export default function () {
             width="96"
             placeholder="Name your recipe"
             align="start"
+            sx="max-w-[65%]"
+            error={addRecipe?.data?.fieldErrors?.name}
           />
-          <Error message={addRecipe?.data?.fieldErrors?.name} />
         </div>
         <Dropzone name="image_recipe" />
         <div className="flex flex-col items-center gap-y-2">
@@ -111,8 +112,13 @@ export default function () {
           <div className="flex gap-x-2 text-secondary-400">
             <ServingIcon size="8" />
             <div className="flex flex-col items-center">
-              <Input type="number" step={1} name="servings" width="10" />
-              <Error message={addRecipe?.data?.fieldErrors?.servings} />
+              <Input
+                type="number"
+                step={1}
+                name="servings"
+                width="10"
+                error={addRecipe?.data?.fieldErrors?.serving}
+              />
             </div>
           </div>
         </div>
@@ -159,7 +165,7 @@ export default function () {
         </div>
         <TagsGenerator />
 
-        <div className="flex w-full justify-evenly">
+        <div className="flex w-full flex-col justify-evenly xl:flex-row">
           <GenerateJSX
             buttonProps={buttonPropsMeasure}
             errors={errorsMeasures}
@@ -176,12 +182,16 @@ export default function () {
         </div>
 
         <div className="flex flex-col items-center gap-y-2">
-          <p>
+          <p className="text-center">
             Add a youtube link to help to recreate this recipe at home{" "}
             <span className="text-7">(optional)</span>
           </p>
-          <Input type="url" name="ytLink" align="start" />
-          <Error message={addRecipe?.data?.fieldErrors?.ytLink} />
+          <Input
+            type="url"
+            name="ytLink"
+            align="start"
+            error={addRecipe?.data?.fieldErrors?.ytLink}
+          />
         </div>
 
         <SubmitButton text="Create recipe" />

@@ -10,7 +10,9 @@ export default function AddButton({
 }: AddButtonProps) {
   return (
     <>
-      <p className="my-2 text-7">{condition ? "(" + condition + ")" : ""}</p>
+      <p className="my-2 text-center text-7">
+        {condition ? "(" + condition + ")" : ""}
+      </p>
       <button
         type={type}
         onClick={onClick}

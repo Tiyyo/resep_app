@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-// write the compenent to previsualize the image
-
 export default function Dropzone({ name }: { name: string }) {
   const [draggingOver, setDraggingOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -124,8 +122,8 @@ export default function Dropzone({ name }: { name: string }) {
               ></path>
             </svg>
             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-              <span className="font-semibold">Click to upload</span> or drag and
-              drop
+              <span className="font-semibold">Click to upload an image</span> or
+              drag and drop
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               (optional)

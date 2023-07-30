@@ -224,7 +224,6 @@ export default {
           },
         },
       });
-      console.log(favoriteRecipes);
       await prisma.$disconnect();
       return favoriteRecipes;
     } catch (error: any) {
@@ -462,7 +461,9 @@ export default {
             INNER JOIN macros ON macros.id = recipes.macros_id
             WHERE recipes.name LIKE ANY (array[${likeQueries}])
             OR recipes.id IN (
-            SELECT recipes.id FROM recipes INNER JOIN recipes_on_tags ON recipes_on_tags.recipe_id = recipes.id 
+            SELECT recipes.id 
+            FROM recipes 
+            INNER JOIN recipes_on_tags ON recipes_on_tags.recipe_id = recipes.id 
             WHERE (
                 (recipes_on_tags.tag_id, recipes_on_tags.recipe_id) 
                 IN 
@@ -471,7 +472,6 @@ export default {
                   WHERE tags.name LIKE ANY (array[${likeQueries}]) AND recipes_on_tags IS NOT NULL AND recipes_on_tags.recipe_id IS NOT NULL )
             ) AND recipes.id IS NOT NULL ) 
         `;
-      console.log(result);
       return result;
     } catch (error: any) {
       throw new DatabaseError(error.message, "recipes", error);

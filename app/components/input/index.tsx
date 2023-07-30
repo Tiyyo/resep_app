@@ -17,6 +17,7 @@ export default function Input({
   value,
   align,
   error,
+  sx,
   onChange,
 }: InputProps) {
   const [textAlign, setTextAlign] = useState<TextAlign | null>("text-start");
@@ -41,7 +42,7 @@ export default function Input({
       <label htmlFor={name} className="text-8">
         {label}
       </label>
-      <div className="flex flex-col">
+      <div className="flex flex-col items-center">
         <input
           type={type ?? "text"}
           placeholder={placeholder}
@@ -55,7 +56,8 @@ export default function Input({
           // onChange={onChange}
           className={` 
         h-9 rounded-md bg-main-300 pl-4 text-8 placeholder:pl-1 placeholder:text-7 focus-visible:outline-secondary-300 
-        w-${width ?? "40"} ${textAlign}`}
+        w-${width ?? "40"} ${textAlign}
+        ${sx ?? ""}`}
         />
         {error && <Error message={error} />}
       </div>
