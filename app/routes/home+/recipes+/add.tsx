@@ -94,7 +94,7 @@ export default function () {
       >
         <input type="text" name="author" defaultValue={profile.id} hidden />
 
-        <div className="flex w-96 flex-col items-center gap-y-2">
+        <div className="flex w-full max-w-fit flex-col items-center gap-y-2">
           <p>Name</p>
           <Input
             name="name"
@@ -108,7 +108,7 @@ export default function () {
         </div>
         <Dropzone name="image_recipe" />
         <div className="flex flex-col items-center gap-y-2">
-          <p>How many people do your recipes feed ?</p>
+          <p className="text-center">How many people do your recipes feed ?</p>
           <div className="flex gap-x-2 text-secondary-400">
             <ServingIcon size="8" />
             <div className="flex flex-col items-center">
@@ -128,7 +128,7 @@ export default function () {
             <Gauge size="8" />
           </Select>
         </div>
-        <div className="flex w-full justify-center gap-x-10">
+        <div className="flex w-full flex-wrap justify-center gap-x-10 gap-y-2">
           <div className="flex gap-x-4 text-secondary-400">
             <Prep size="8" />
 

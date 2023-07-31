@@ -32,8 +32,10 @@ export default function Input({
     }
   }, [type]);
 
-  const variantFlexNoControl = " flex gap-x-1 items-center justify-between";
-  const variantControlGrid = "grid grid-cols-input gap-x-1 place-items-center ";
+  const variantFlexNoControl =
+    " flex gap-x-1 items-center justify-between w-full ";
+  const variantControlGrid =
+    "grid grid-cols-input gap-x-1 place-items-center w-full ";
 
   return (
     <div
@@ -42,7 +44,7 @@ export default function Input({
       <label htmlFor={name} className="text-8">
         {label}
       </label>
-      <div className="flex flex-col items-center">
+      <div className="flex w-full flex-col items-center">
         <input
           type={type ?? "text"}
           placeholder={placeholder}
