@@ -11,9 +11,12 @@ export default function ModalNotRoute({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const action = e.currentTarget.dataset.choice as "new" | "old";
-    action ? getActionToPerform(action) : getActionToPerform(null);
-    (window as any).my_modal_5.close();
+    console.log(e);
+    alert("clicked")(
+      // const action = e.currentTarget.dataset.choice as "new" | "old";
+      // action ? getActionToPerform(action) : getActionToPerform(null);
+      window as any
+    ).my_modal_5.close();
   };
 
   // force dialog to stay close for a certain amout of time on refresh
@@ -30,11 +33,12 @@ export default function ModalNotRoute({
   }, [isOpen]);
 
   useEffect(() => {
-    (window as any).my_modal_5.close();
+    console.log(window.my_modal_5);
+    // (window as any).my_modal_5.close();
     if (!isOpen) {
-      (window as any).my_modal_5.close();
+      // (window as any).my_modal_5.close();
     } else if (isOpen) {
-      (window as any).my_modal_5.showModal();
+      // (window as any).my_modal_5.showModal();
     }
   }, [isOpen]);
 

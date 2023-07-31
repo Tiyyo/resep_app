@@ -18,24 +18,16 @@ export default function () {
     }
   }, [addFormState, addCategory.state, addCategory?.data?.error?.userMessage]);
 
-  console.log(addCategory, "MESSAGE");
-
   return (
     <>
       <Toast message={addCategory?.data?.message} />
-      <div>
-        <addCategory.Form
-          method="post"
-          action="/api/categories"
-          ref={addFormRef}
-        >
-          <div className="flex justify-center gap-x-3">
-            <Input name="category" placeholder="Category name" align="start" />
-            <SubmitButton text="Add Category" />
-          </div>
-        </addCategory.Form>
-        <Error message={errorText} />
-      </div>
+      <addCategory.Form method="post" action="/api/categories" ref={addFormRef}>
+        <div className="mx-auto flex max-w-[80%] flex-col items-center justify-center gap-3 md:flex-row">
+          <Input name="category" placeholder="Category name" align="start" />
+          <SubmitButton text="Add Category" />
+        </div>
+      </addCategory.Form>
+      <Error message={errorText} />
     </>
   );
 }

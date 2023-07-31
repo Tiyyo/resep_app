@@ -13,16 +13,16 @@ export async function loader({ request }: LoaderArgs) {
 export default function Home() {
   return (
     <>
-      <div className="hidden xl:flex">
+      <div className="">
         <AppLayout>
           <RoutesLayout menu={homeMenu} />
         </AppLayout>
       </div>
-      <div className="flex xl:hidden">
+      {/* <div className="flex xl:hidden">
         <AppMobileLayout>
           <SideMenu menu={homeMenu} />
         </AppMobileLayout>
-      </div>
+      </div> */}
     </>
   );
 }

@@ -18,7 +18,9 @@ export default function Input({
   align,
   error,
   sx,
+  unitStyle,
   onChange,
+  fixedUnit,
 }: InputProps) {
   const [textAlign, setTextAlign] = useState<TextAlign | null>("text-start");
 
@@ -33,18 +35,27 @@ export default function Input({
   }, [type]);
 
   const variantFlexNoControl =
-    " flex gap-x-1 items-center justify-between w-full ";
+    " flex gap-x-1 items-center justify-between w-fit ";
   const variantControlGrid =
-    "grid grid-cols-input gap-x-1 place-items-center w-full ";
+    "grid grid-cols-input gap-x-1 place-items-center w-fit ";
 
   return (
     <div
-      className={variant === "grid" ? variantControlGrid : variantFlexNoControl}
+      className={`${fixedUnit ? "w-44" : ""} ${
+        variant === "grid" ? variantControlGrid : variantFlexNoControl
+      }`}
     >
-      <label htmlFor={name} className="text-8">
+      <label
+        htmlFor={name}
+        className={`text-8 ${fixedUnit ? "basis-[50%]" : ""}`}
+      >
         {label}
       </label>
-      <div className="flex w-full flex-col items-center">
+      <div
+        className={`flex w-full flex-col ${
+          fixedUnit ? "items-end" : "items-center"
+        }`}
+      >
         <input
           type={type ?? "text"}
           placeholder={placeholder}
@@ -59,11 +70,14 @@ export default function Input({
           className={` 
         h-9 rounded-md bg-main-300 pl-4 text-8 placeholder:pl-1 placeholder:text-7 focus-visible:outline-secondary-300 
         w-${width ?? "40"} ${textAlign}
-        ${sx ?? ""}`}
+        ${sx ?? ""}
+        `}
         />
         {error && <Error message={error} />}
       </div>
-      <p>{unit ? "(" + unit + ")" : ""}</p>
+      <p className={`${fixedUnit ? "w-[60px]" : ""}`}>
+        {unit ? "(" + unit + ")" : ""}
+      </p>
     </div>
   );
 }

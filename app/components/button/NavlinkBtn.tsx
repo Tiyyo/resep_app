@@ -8,13 +8,12 @@ export default function NavlinkBtn({
   Icon?: React.ReactNode;
 }) {
   return (
-    <NavLink to={endpoint} className="w-12 ">
+    <NavLink
+      to={endpoint}
+      className="center h-10 w-10 rounded-full border bg-white-100 bg-opacity-10 p-4 shadow-facebook"
+    >
       {({ isActive }) => (
-        <button
-          className={`px-7 ${
-            isActive ? "border-t-4 border-secondary-400" : ""
-          }  `}
-        >
+        <button className={`px-7 ${isActive ? "border-secondary-400" : ""}  `}>
           {Icon}
         </button>
       )}

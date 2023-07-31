@@ -226,8 +226,12 @@ export default function () {
     }
   }, [action]);
 
+  const handletest = () => {
+    console.log("test");
+  };
+
   return (
-    <>
+    <div onClick={handletest}>
       <ModalNotRoute
         getActionToPerform={getActionToPerform}
         isOpen={hasToOpenModal}
@@ -269,6 +273,6 @@ export default function () {
         </>
       )}
       {!recipes && <Intro action={action} />}
-    </>
+    </div>
   );
 }

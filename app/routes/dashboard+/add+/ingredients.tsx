@@ -68,7 +68,7 @@ export default function () {
         ref={addIngredientFormRef}
       >
         <div className="flex flex-col flex-wrap items-center justify-center gap-y-8 first-letter:mt-3">
-          <div className="flex items-start gap-x-12 ">
+          <div className="flex flex-col items-start gap-x-12 gap-y-8 md:flex-row ">
             <div className="flex flex-col items-center">
               <Input
                 name="name"
@@ -90,7 +90,7 @@ export default function () {
             </div>
           </div>
 
-          <div className="flex items-start  gap-x-12">
+          <div className="flex flex-col items-start gap-x-12 gap-y-6 md:flex-row">
             <div>
               <SelectSearch
                 name="categoryId"

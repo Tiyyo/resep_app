@@ -55,11 +55,12 @@ export default function () {
               type="number"
               name="calories"
               width="14"
+              fixedUnit
             />
             <Error message={addMacros?.data?.fieldErrors?.calories} />
           </div>
 
-          <div className="flex items-start gap-x-4">
+          <div className="flex flex-col items-end gap-x-4 gap-y-2 md:flex-row md:items-start">
             <div className="flex flex-col justify-start">
               <Input
                 label="Proteins"
@@ -67,6 +68,7 @@ export default function () {
                 type="number"
                 name="proteins"
                 width="14"
+                fixedUnit
               />
               <Error message={addMacros?.data?.fieldErrors?.proteins} />
             </div>
@@ -78,12 +80,20 @@ export default function () {
                 type="number"
                 name="carbs"
                 width="14"
+                fixedUnit
               />
               <Error message={addMacros?.data?.fieldErrors?.carbs} />
             </div>
 
             <div className="flex flex-col justify-start">
-              <Input label="Fat" unit="g" type="number" name="fat" width="14" />
+              <Input
+                label="Fat"
+                unit="g"
+                type="number"
+                name="fat"
+                width="14"
+                fixedUnit
+              />
               <Error message={addMacros?.data?.fieldErrors?.fat} />
             </div>
 
@@ -94,6 +104,7 @@ export default function () {
                 type="number"
                 name="water"
                 width="14"
+                fixedUnit
               />
               <Error message={addMacros?.data?.fieldErrors?.water} />
             </div>

@@ -16,6 +16,8 @@ export interface InputProps {
   variant?: "grid" | "flex";
   align?: "start" | "end" | "center";
   sx?: string;
+  unitStyle?: string;
+  fixedUnit?: boolean;
 }
 
 export type TextAlign =

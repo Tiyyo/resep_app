@@ -93,6 +93,7 @@ export default {
         15: "1.5em",
         20: "2em",
         25: "2.5em",
+        "4w": "clamp(0.5rem, 3vw, 1rem)",
       },
       boxShadow: {
         morph: "inset -6px -6px 8px #ece8e1,inset 6px 6px 8px #fffcf3;",
