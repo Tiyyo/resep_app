@@ -61,7 +61,7 @@ export default function () {
         {mealPlans.map((mealPlan) => (
           <NavLink to={`${mealPlan.id}`} key={mealPlan.id + 1}>
             <p className="w-screen sm:w-fit">
-              {formatDate(mealPlan.created_at)}
+              {mealPlan?.created_at && formatDate(mealPlan?.created_at)}
             </p>
           </NavLink>
         ))}
@@ -77,7 +77,8 @@ export default function () {
           </div>
         </button>
         <p className="tab w-screen  px-7 font-semibold text-text-accent sm:w-full">
-          {formatDate(mealPlans[navMealPlansIndex].created_at)}
+          {mealPlans[navMealPlansIndex]?.created_at &&
+            formatDate(mealPlans[navMealPlansIndex].created_at)}
         </p>
         <button
           type="button"
