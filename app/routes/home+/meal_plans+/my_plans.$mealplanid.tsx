@@ -43,7 +43,7 @@ export default function () {
 
   return (
     <>
-      <div className="no-scrollbar flex gap-x-4 overflow-scroll py-4">
+      <div className="flex w-screen gap-x-4 overflow-x-scroll py-4">
         {mealPlans &&
           mealPlans.meals &&
           mealPlans.meals.length > 0 &&

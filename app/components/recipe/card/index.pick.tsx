@@ -1,4 +1,5 @@
 import { Form } from "@remix-run/react";
+import { undefined } from "zod";
 import AddPlusIcon from "~/assets/icons/AddPlusIcon";
 
 export interface CardRecipePickProps {
@@ -16,7 +17,12 @@ export default function CardRecipePick({
   imageLink,
   servings,
 }: CardRecipePickProps) {
-  if (!pickedMeal || pickedMeal <= 0 || typeof pickedMeal !== "number")
+  if (
+    pickedMeal === null ||
+    pickedMeal === undefined ||
+    pickedMeal < 0 ||
+    typeof pickedMeal !== "number"
+  )
     return null;
 
   return (

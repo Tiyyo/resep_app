@@ -9,7 +9,7 @@ export default function RoutesLayout({ menu }: { menu: Item[] }) {
         <SideMenu menu={menu} />
       </div>
       <div className="no-scrollbar h-body overflow-y-scroll border-l border-secondary-400 py-1 ">
-        <Outlet />
+        {/* <Outlet /> */}
       </div>
     </>
   );

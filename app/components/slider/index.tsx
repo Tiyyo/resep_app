@@ -17,7 +17,6 @@ export default function Slider({
   linkText,
   link,
   shouldBeCentered,
-  windowWidth,
 }: SliderProps) {
   const [width, setWidth] = useState<number>(0);
   const [scrollXValue, setScrollXValue] = useState<number>(0);
@@ -28,7 +27,6 @@ export default function Slider({
 
   function nextSlide() {
     if (widthCard === null) return;
-    setScrollXValue(scrollXValue + widthCard * 1.05);
     scrollXValue + widthCard * 1.05 > 0
       ? setScrollXValue(0)
       : setScrollXValue(scrollXValue + widthCard * 1.05);
@@ -36,6 +34,8 @@ export default function Slider({
 
   function prevSlide() {
     if (widthCard === null) return;
+    console.log(scrollXValue, "scrollXValue", widthCard, "widthCard");
+
     Math.abs(scrollXValue - widthCard * 1.05) > width
       ? setScrollXValue(-width)
       : setScrollXValue(scrollXValue - widthCard * 1.05);
@@ -52,17 +52,23 @@ export default function Slider({
     if (innerCarousel?.current && content.length > 0) {
       setWidthCard(innerCarousel.current.children[0].clientWidth);
     }
-  }, []);
+  }, [content.length]);
+
+  console.log(scrollXValue);
 
   if (!content || content.length === 0) return null;
 
   return (
     <div
-      className={`my-4 flex flex-col ${shouldBeCentered ? "self-center" : ""}`}
+      className={`border- my-4 flex flex-col ${
+        shouldBeCentered ? "self-center" : ""
+      }`}
     >
       <HeaderSlider title={title} linkText={linkText} link={link} />
       <div className="x relative flex flex-col gap-x-8 xl:flex-row ">
-        {/* {banner && <BannerSlider title={title ?? ""} />} */}
+        <div className="hidden xl:block">
+          {banner && <BannerSlider title={title ?? ""} />}
+        </div>
         <motion.div
           className="no-scrollbar overflow-x-scroll scroll-smooth px-6"
           ref={carousel}
@@ -82,7 +88,7 @@ export default function Slider({
               content.map((recipe: any): JSX.Element => {
                 return (
                   <RecipeCard
-                    variant={"vertical"}
+                    variant={cardAxis ?? "vertical"}
                     tags={recipe.tags}
                     key={recipe.id}
                     recipeId={recipe.id}

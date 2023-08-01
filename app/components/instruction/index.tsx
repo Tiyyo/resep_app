@@ -6,7 +6,7 @@ export default function Instruction({ index, remove }: InstructionProps) {
   // const id = Math.floor(Math.random() * 1000);
 
   return (
-    <div key={index}>
+    <div key={index} className="mx-auto w-96 max-w-[80%]">
       <div className="flex justify-between px-2">
         <p>Step {index + 1}</p>
         <div
@@ -18,7 +18,7 @@ export default function Instruction({ index, remove }: InstructionProps) {
         </div>
       </div>
       <textarea
-        className="`pl-2 w-96 resize-none rounded-md bg-main-300 pr-1 text-8 placeholder:pl-1 placeholder:text-7 focus-visible:outline-secondary-300"
+        className="`pl-2 w-full resize-none rounded-md bg-main-300 pr-1 text-8 placeholder:pl-1 placeholder:text-7 focus-visible:outline-secondary-300"
         key={index}
         name="instructions"
         rows={4}

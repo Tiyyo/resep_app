@@ -35,7 +35,7 @@ export default function () {
         ref={addIconFormRef}
       >
         <div className="center flex flex-col gap-y-4">
-          <div className="flex gap-x-4">
+          <div className="flex flex-col items-start gap-4 md:flex-row">
             <Input
               name="name"
               placeholder="Icon name"

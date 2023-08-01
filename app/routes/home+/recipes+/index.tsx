@@ -3,7 +3,10 @@ import { Outlet, useLoaderData } from "@remix-run/react";
 import recipe from "~/api/recipe";
 import Slider from "~/components/slider";
 import TitleLevel1 from "~/components/title/TitleLevel1";
+import useWindowSize from "~/hooks/useWindowsSize";
+import LayoutRecipePages from "~/layout/LayoutRecipesPage";
 import { getProfile } from "~/utils/get.user.infos";
+import { useState, useEffect } from "react";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -39,38 +42,50 @@ export async function loader({ request }: LoaderArgs) {
 export default function () {
   const { profileId, asianRecipes, lastestRecipes, italianRecipes } =
     useLoaderData();
+  const [axisCard, setAxisCard] = useState<"horizontal" | "vertical">(
+    "vertical"
+  );
+
+  const windowSize = useWindowSize();
+
+  useEffect(() => {
+    if (windowSize && windowSize.width > 1280) {
+      setAxisCard("horizontal");
+    }
+  }, [windowSize.width]);
 
   return (
     <>
-      <TitleLevel1 title={"Recommended for you"} />
       <Outlet />
-      <Slider
-        banner={false}
-        title="Just added"
-        profileId={profileId}
-        content={lastestRecipes}
-        linkText="See all"
-        link="/"
-        shouldBeCentered={true}
-      />
-      <Slider
-        banner={true}
-        title="Asia"
-        cardAxis="horizontal"
-        content={asianRecipes}
-        profileId={profileId}
-        linkText="See all"
-        link="/"
-      />
-      <Slider
-        banner={true}
-        title="Italy"
-        cardAxis="horizontal"
-        content={italianRecipes}
-        profileId={profileId}
-        linkText="See all"
-        link="/"
-      />
+      <LayoutRecipePages title={"Recommended for you"}>
+        <Slider
+          banner={false}
+          title="Just added"
+          profileId={profileId}
+          content={lastestRecipes}
+          linkText="See all"
+          link="/"
+          shouldBeCentered={true}
+        />
+        <Slider
+          banner={true}
+          title="Asia"
+          cardAxis={axisCard}
+          content={asianRecipes}
+          profileId={profileId}
+          linkText="See all"
+          link="/"
+        />
+        <Slider
+          banner={true}
+          title="Italy"
+          cardAxis={axisCard}
+          content={italianRecipes}
+          profileId={profileId}
+          linkText="See all"
+          link="/"
+        />
+      </LayoutRecipePages>
     </>
   );
 }

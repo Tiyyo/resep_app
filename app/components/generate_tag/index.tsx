@@ -41,7 +41,7 @@ export default function TagsGenerator() {
         onKeyDown={handleKeyPress}
         className="h-9 rounded-md bg-main-300 pl-2 pr-1 text-8 placeholder:pl-1 placeholder:text-7 focus-visible:outline-secondary-300"
       />
-      <p className="text-7 opacity-80">
+      <p className="text-center text-7 opacity-80">
         You can include tags such as the recipe's country of origin and its main
         ingredients. eg: for pasta carbonara Tags: Italy, Pasta, Pork.
       </p>

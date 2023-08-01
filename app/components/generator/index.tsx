@@ -28,16 +28,18 @@ export default function GenerateJSX({
 
   return (
     <div className="flex flex-col items-center">
-      <AddButton
-        condition={buttonProps.condition}
-        type={buttonProps.type}
-        value={buttonProps.value}
-        addStyle={buttonProps.addStyle}
-        onClick={addOneElement}
-      >
-        <AddPlusIcon size="8" />
-      </AddButton>
-      <div className="flex w-full flex-col gap-y-4">
+      <div className="order-2 xl:order-1">
+        <AddButton
+          condition={buttonProps.condition}
+          type={buttonProps.type}
+          value={buttonProps.value}
+          addStyle={buttonProps.addStyle}
+          onClick={addOneElement}
+        >
+          <AddPlusIcon size="8" />
+        </AddButton>
+      </div>
+      <div className="xl:order-2flex order-1 w-full flex-col gap-y-4">
         {length.map((el, index) => {
           return ElementToGenerate({ index, remove, ...elementProps });
         })}

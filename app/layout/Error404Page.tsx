@@ -12,7 +12,7 @@ export default function Error404() {
       <div>
         <img src="/images/404_error_illustration.svg" alt="404 illustration" />
         <div className="flex flex-col items-center gap-y-4">
-          <p className="text-4xl font-semibold text-text-accent">
+          <p className="text-center text-4xl font-semibold text-text-accent">
             Ooops ... Something went wrong
           </p>
           <button

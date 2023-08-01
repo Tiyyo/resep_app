@@ -1,97 +1,50 @@
-import { Link, NavLink } from "@remix-run/react";
+import { Link, NavLink, Outlet } from "@remix-run/react";
 import LayoutPage from "./LayoutPage";
-import HomeIcon from "~/assets/icons/HomeIcon";
-import SettingIcons from "~/assets/icons/SettingIcon";
-import AddFileIcon from "~/assets/icons/AddFileIcon";
-import getTodayDate from "~/utils/get.today.date";
-import useProfileData from "~/hooks/useProfileData";
-import NotificationIcon from "~/assets/icons/NotificationIcon";
-import BrushOne from "~/assets/brush/UnderlineBrush";
-import LogoutIcon from "~/assets/icons/LogoutIcon";
-import ProfileIcon from "~/assets/icons/ProfileIcon";
-import TitleLogo from "~/components/title/TitleLogo";
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import SideMenu from "~/components/side_menu";
+import BottomNav from "~/components/layout/bottom.nav";
+import SideNav from "~/components/layout/sidenav";
+import HeaderDesktop from "~/components/layout/header.desktop";
+import HeaderMobile from "~/components/layout/header.mobile";
+import type { Item } from "~/components/tree_menu/interface";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const profile = useProfileData();
+export default function AppLayout({ menu }: { menu: Item[] }) {
+  const sideMenuRef = useRef<HTMLDivElement | null>(null);
+  const [sideMenuIsOpen, setSideMenuIsOpen] = useState<boolean>(false);
+  const [widthMenu, setWidthMenu] = useState<number>(-3500);
 
-  const handleClick = () => {};
+  const handleSideMenu = () => {
+    setSideMenuIsOpen(!sideMenuIsOpen);
+  };
 
   return (
     <LayoutPage>
-      <div className="grid h-full min-h-screen grid-cols-app grid-rows-app">
-        <div className="center col-start-1 col-end-2 row-start-1 border-r "></div>
-        <div className="relative col-start-2 col-end-3 row-start-1 place-self-center text-2xl font-bold">
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-secondary-400 opacity-90">
-            <BrushOne />
-          </div>
-          <TitleLogo />
+      <div className="grid-rows-app xl:grid xl:h-full xl:min-h-screen xl:grid-cols-app">
+        <HeaderMobile handleSideMenu={handleSideMenu} />
+        <HeaderDesktop />
+        <SideNav />
+        <motion.div
+          drag="x"
+          whileTap={{ cursor: "grabbing" }}
+          initial={{ x: widthMenu }}
+          animate={{ x: sideMenuIsOpen ? 0 : widthMenu }}
+          transition={{ ease: "easeInOut", duration: 0.5, type: "Spring" }}
+          ref={sideMenuRef}
+          className="absolute z-20 h-body w-[50%] max-w-[250px] bg-primary-100 xl:hidden"
+        >
+          <SideMenu menu={menu} />
+        </motion.div>
+        <div className="col-start-2 col-end-3 row-start-2 hidden h-body xl:block">
+          <SideMenu menu={menu} />
         </div>
-        <header className="col-start-3 col-end-4 flex items-center justify-between px-5">
-          <div className="text-11 font-bold">Today, {getTodayDate()}</div>
-          <div className="flex items-center gap-x-4">
-            {profile.state === "loaded" && profile.profile ? (
-              <>
-                <div>
-                  <NotificationIcon size="5" />
-                </div>
-                <div className="dropdown dropdown-end dropdown-bottom">
-                  <label
-                    tabIndex={0}
-                    className="btn m-1 h-10 border-0 bg-transparent hover:bg-transparent"
-                  >
-                    <img
-                      tabIndex={0}
-                      src={profile.profile.avatar}
-                      alt=""
-                      className="h-10 w-full rounded-full object-cover"
-                    />
-                  </label>
-                  <ul
-                    tabIndex={0}
-                    className="menu  dropdown-content rounded-box z-[1] h-32 w-40 bg-primary-200 p-1 shadow"
-                  >
-                    <li>
-                      <div className=" flex w-full items-center justify-between px-4 py-2 font-semibold hover:bg-main-100 ">
-                        Profile
-                        <ProfileIcon />
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex w-full items-center justify-between px-4 py-2 font-semibold hover:bg-main-100">
-                        Settings
-                        <SettingIcons size="4" />
-                      </div>
-                    </li>
-                    <li className="flex h-6 items-center justify-between">
-                      <Link
-                        to="/logout"
-                        className="flex h-6 w-full items-center justify-between px-4 py-4 font-semibold hover:bg-main-100 "
-                        onClick={handleClick}
-                      >
-                        Logout
-                        <LogoutIcon />
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              </>
-            ) : (
-              "signin/signup"
-            )}
-          </div>
-        </header>
-        <nav className="col-start-1 row-start-2 flex min-h-full flex-col items-center gap-y-6 border-r pt-24">
-          <NavLink to="/">
-            <HomeIcon size="6" />
-          </NavLink>
-          <NavLink to="/dashboard">
-            <AddFileIcon size="6" />
-          </NavLink>
-          <NavLink to="/settings">
-            <SettingIcons size="9" />
-          </NavLink>
-        </nav>
-        <>{children}</>
+        <div
+          className="xl:no-scrollbar overflow-y-scroll bg-primary-100 px-4 pb-14 pt-4 xl:h-body xl:border-l xl:border-secondary-400 xl:py-1 "
+          onClick={() => setSideMenuIsOpen(false)}
+        >
+          <Outlet />
+        </div>
+        <BottomNav />
       </div>
     </LayoutPage>
   );
