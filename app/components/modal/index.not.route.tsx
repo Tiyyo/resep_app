@@ -12,11 +12,9 @@ export default function ModalNotRoute({
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     console.log(e);
-    alert("clicked")(
-      // const action = e.currentTarget.dataset.choice as "new" | "old";
-      // action ? getActionToPerform(action) : getActionToPerform(null);
-      window as any
-    ).my_modal_5.close();
+    const action = e.currentTarget.dataset.choice as "new" | "old";
+    action ? getActionToPerform(action) : getActionToPerform(null);
+    (window as any).my_modal_5.close();
   };
 
   // force dialog to stay close for a certain amout of time on refresh
@@ -34,11 +32,11 @@ export default function ModalNotRoute({
 
   useEffect(() => {
     console.log(window.my_modal_5);
-    // (window as any).my_modal_5.close();
+    (window as any).my_modal_5.close();
     if (!isOpen) {
-      // (window as any).my_modal_5.close();
+      (window as any).my_modal_5.close();
     } else if (isOpen) {
-      // (window as any).my_modal_5.showModal();
+      (window as any).my_modal_5.showModal();
     }
   }, [isOpen]);
 
@@ -47,16 +45,16 @@ export default function ModalNotRoute({
       <dialog
         id="my_modal_5"
         aria-modal="false"
-        className={`modal modal-bottom -z-10 transition-opacity sm:modal-middle ${
+        className={`smodal-middle modal -z-10 transition-opacity ${
           isOpen ? "opacity-100" : "opacity-0"
         }`}
       >
         <Form
           method="POST"
-          className="modal-box"
+          className="modal-box bg-primary-300"
           action="/home/meal_plans/generate"
         >
-          <p className="my-2 text-center font-bold">
+          <p className="my-2 text-center  font-bold">
             Do you want to load the last set of recipes you used ?
           </p>
           <p className="text-center text-8 opacity-70">

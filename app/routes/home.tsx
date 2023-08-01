@@ -1,9 +1,6 @@
 import { type LoaderArgs, redirect } from "@remix-run/node";
-import SideMenu from "~/components/side_menu";
 import { homeMenu } from "~/constants/menus";
 import AppLayout from "~/layout/LayoutApp";
-import AppMobileLayout from "~/layout/LayoutAppMobile";
-import RoutesLayout from "~/layout/LayoutRoutes";
 import { getUser } from "~/service/auth.server";
 
 export async function loader({ request }: LoaderArgs) {
@@ -11,18 +8,5 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export default function Home() {
-  return (
-    <>
-      <div className="">
-        <AppLayout>
-          <RoutesLayout menu={homeMenu} />
-        </AppLayout>
-      </div>
-      {/* <div className="flex xl:hidden">
-        <AppMobileLayout>
-          <SideMenu menu={homeMenu} />
-        </AppMobileLayout>
-      </div> */}
-    </>
-  );
+  return <AppLayout menu={homeMenu} />;
 }
