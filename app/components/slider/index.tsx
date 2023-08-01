@@ -17,7 +17,6 @@ export default function Slider({
   linkText,
   link,
   shouldBeCentered,
-  windowWidth,
 }: SliderProps) {
   const [width, setWidth] = useState<number>(0);
   const [scrollXValue, setScrollXValue] = useState<number>(0);
@@ -28,7 +27,6 @@ export default function Slider({
 
   function nextSlide() {
     if (widthCard === null) return;
-    setScrollXValue(scrollXValue + widthCard * 1.05);
     scrollXValue + widthCard * 1.05 > 0
       ? setScrollXValue(0)
       : setScrollXValue(scrollXValue + widthCard * 1.05);
@@ -36,6 +34,8 @@ export default function Slider({
 
   function prevSlide() {
     if (widthCard === null) return;
+    console.log(scrollXValue, "scrollXValue", widthCard, "widthCard");
+
     Math.abs(scrollXValue - widthCard * 1.05) > width
       ? setScrollXValue(-width)
       : setScrollXValue(scrollXValue - widthCard * 1.05);
@@ -52,7 +52,9 @@ export default function Slider({
     if (innerCarousel?.current && content.length > 0) {
       setWidthCard(innerCarousel.current.children[0].clientWidth);
     }
-  }, []);
+  }, [content.length]);
+
+  console.log(scrollXValue);
 
   if (!content || content.length === 0) return null;
 
