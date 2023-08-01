@@ -31,7 +31,6 @@ export default function ModalNotRoute({
   }, [isOpen]);
 
   useEffect(() => {
-    console.log(window.my_modal_5);
     (window as any).my_modal_5.close();
     if (!isOpen) {
       (window as any).my_modal_5.close();

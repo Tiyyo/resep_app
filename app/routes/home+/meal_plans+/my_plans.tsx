@@ -1,11 +1,13 @@
 import type { LoaderArgs } from "@remix-run/node";
-import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import { NavLink, Outlet, useLoaderData, useNavigate } from "@remix-run/react";
 import meal_plans from "~/api/meal_plans";
+import ArrowRightIcon from "~/assets/icons/ArrowRightIcon";
 import TitleLevel1 from "~/components/title/TitleLevel1";
 import NotFoundError from "~/helpers/errors/not.found.error";
 import ResponseError from "~/helpers/response/response.error";
 import formatDate from "~/utils/format.data";
 import { getProfile } from "~/utils/get.user.infos";
+import { useState, useEffect } from "react";
 
 export async function loader({ request }: LoaderArgs) {
   try {
@@ -23,16 +25,68 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function () {
   const mealPlans = useLoaderData();
+  const navigate = useNavigate();
+  const [navMealPlansIndex, setNavMealPlansIndex] = useState<number>(0);
+
+  const goNext = (index: number) => {
+    index === mealPlans.length - 1
+      ? setNavMealPlansIndex(0)
+      : setNavMealPlansIndex(index + 1);
+  };
+
+  const goPrev = (index: number) => {
+    if (index === 0) {
+      setNavMealPlansIndex(mealPlans.length - 1);
+    } else {
+      setNavMealPlansIndex(navMealPlansIndex - 1);
+    }
+  };
+
+  const handleClickNext = () => {
+    goNext(navMealPlansIndex);
+  };
+
+  const handleClickPrev = () => {
+    goPrev(navMealPlansIndex);
+  };
+
+  useEffect(() => {
+    navigate(`/home/meal_plans/my_plans/${mealPlans[navMealPlansIndex].id}`);
+  }, [navMealPlansIndex]);
 
   return (
     <div>
       <TitleLevel1 title="Meal plans" />
-      <div className="text-9 flex h-8  w-full justify-evenly border-b-2 border-t-2 border-b-gray-950 border-t-gray-950 py-1 font-semibold">
+      <div className="text-9 no-scrollbar hidden h-8 w-full flex-nowrap  justify-evenly overflow-x-scroll border-b-2 border-t-2 border-b-gray-950 border-t-gray-950 py-1 font-semibold sm:flex">
         {mealPlans.map((mealPlan) => (
           <NavLink to={`${mealPlan.id}`} key={mealPlan.id + 1}>
-            <p>{formatDate(mealPlan.created_at)}</p>
+            <p className="w-screen sm:w-fit">
+              {formatDate(mealPlan.created_at)}
+            </p>
           </NavLink>
         ))}
+      </div>
+      <div className="center text-9 no-scrollbar relative flex h-8 flex-nowrap overflow-x-scroll border-b-2 border-t-2 border-b-gray-950 border-t-gray-950 py-1 font-semibold sm:hidden">
+        <button
+          type="button"
+          className="absolute left-1 z-10"
+          onClick={handleClickPrev}
+        >
+          <div className="rotate-180">
+            <ArrowRightIcon />
+          </div>
+        </button>
+        <p className="tab w-screen  px-7 font-semibold text-text-accent sm:w-full">
+          {formatDate(mealPlans[navMealPlansIndex].created_at)}
+        </p>
+        <button
+          type="button"
+          className="absolute right-1 top-1/2 h-5 w-5 -translate-y-1/2"
+          onClick={handleClickNext}
+          data-nav="next"
+        >
+          <ArrowRightIcon />
+        </button>
       </div>
       <Outlet />
     </div>

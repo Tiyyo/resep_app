@@ -19,8 +19,10 @@ export default function RecipeCard({
   return (
     <div
       key={recipeId}
-      className={`flex aspect-2/3 max-h-[305px] flex-col border bg-main-100 px-2 py-4 shadow-md  ${
-        variant === "horizontal" ? "aspect-2/1 " : "min-w-[170px]  xl:w-48 "
+      className={`flex   border bg-main-100 px-2 py-4 shadow-md  ${
+        variant === "horizontal"
+          ? " aspect-3/2 max-h-[200px]"
+          : "aspect-2/3  max-h-[305px] min-w-[170px] flex-col xl:w-48"
       } `}
     >
       <CardRecipeImage
@@ -33,7 +35,7 @@ export default function RecipeCard({
         className={` flex h-full flex-col ${
           variant === "horizontal"
             ? "basis-2/3 p-2"
-            : "min-h-[100px] flex-shrink-0 basis-1/3 justify-between"
+            : "min-h-[85px] flex-shrink-0 basis-1/3 justify-between"
         }`}
       >
         <CardRecipeName recipeName={recipeName} variant={variant} />

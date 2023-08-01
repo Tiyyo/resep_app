@@ -2,8 +2,8 @@ import { useFetcher, useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import type { Recipe } from "~/types/recipe";
 import RecipeCard from "../recipe/card";
-import isLikedByUser from "~/utils/is.liked.by.user";
 import SearchIcon from "~/assets/icons/SearchIcon";
+import RecipeContainer from "../container";
 
 export default function FinderSearch({
   recipes: firstLoadedRecipes,
@@ -55,23 +55,14 @@ export default function FinderSearch({
           placeholder="Search for a recipe ..."
         />
       </customFetch.Form>
+
       {recipes.length !== 0 || recipes ? (
-        <div className="flex w-full flex-wrap content-start justify-start gap-4 py-8">
-          {recipes.map((recipe: Recipe) => {
-            return (
-              <RecipeCard
-                key={recipe.id}
-                recipeId={recipe.id}
-                imageLink={recipe.link || recipe.image?.link}
-                recipeName={recipe.name}
-                servings={recipe.servings}
-                recipeCalories={recipe.calories || recipe.macros?.calories}
-                isLiked={isLikedByUser(recipe, profileId)}
-                pickedMeal={Number(params.index)}
-              />
-            );
-          })}
-        </div>
+        <RecipeContainer
+          Card={RecipeCard}
+          data={recipes}
+          profileId={profileId}
+          pickedMeal={Number(params.index)}
+        />
       ) : (
         <div className="center mt-10 italic">No recipes found</div>
       )}

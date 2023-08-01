@@ -58,11 +58,15 @@ export default function Slider({
 
   return (
     <div
-      className={`my-4 flex flex-col ${shouldBeCentered ? "self-center" : ""}`}
+      className={`border- my-4 flex flex-col ${
+        shouldBeCentered ? "self-center" : ""
+      }`}
     >
       <HeaderSlider title={title} linkText={linkText} link={link} />
       <div className="x relative flex flex-col gap-x-8 xl:flex-row ">
-        {/* {banner && <BannerSlider title={title ?? ""} />} */}
+        <div className="hidden xl:block">
+          {banner && <BannerSlider title={title ?? ""} />}
+        </div>
         <motion.div
           className="no-scrollbar overflow-x-scroll scroll-smooth px-6"
           ref={carousel}
@@ -82,7 +86,7 @@ export default function Slider({
               content.map((recipe: any): JSX.Element => {
                 return (
                   <RecipeCard
-                    variant={"vertical"}
+                    variant={cardAxis ?? "vertical"}
                     tags={recipe.tags}
                     key={recipe.id}
                     recipeId={recipe.id}

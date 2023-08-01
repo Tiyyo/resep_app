@@ -12,7 +12,7 @@ export default function CardRecipeImage({
       className={`${
         variant === "horizontal"
           ? "aspect-square basis-1/3"
-          : "min-h-[150px] basis-2/3 border-2"
+          : "mx-auto min-h-[120px] basis-2/3"
       }`}
     >
       <Link to={`/home/recipe/${recipeId}`}>

@@ -31,7 +31,7 @@ export default function AppLayout({ menu }: { menu: Item[] }) {
           animate={{ x: sideMenuIsOpen ? 0 : widthMenu }}
           transition={{ ease: "easeInOut", duration: 0.5, type: "Spring" }}
           ref={sideMenuRef}
-          className="absolute z-10 h-body w-[50%] max-w-[250px] bg-primary-100 xl:hidden"
+          className="absolute z-20 h-body w-[50%] max-w-[250px] bg-primary-100 xl:hidden"
         >
           <SideMenu menu={menu} />
         </motion.div>
