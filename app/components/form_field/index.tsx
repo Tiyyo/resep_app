@@ -42,7 +42,7 @@ export function FormField({
           name={htmlFor}
           onChange={handleChange}
           value={value}
-          className={`autofill:shadow-[inset_0_0_0px_1000px_rgb(255 248 242)] block w-full appearance-none rounded-xl border bg-primary-100 px-2.5 pb-2 pt-3 text-sm text-gray-900 autofill:shadow-[inset_0_0_0px_1000px_rgb(255,248,242)]  focus:border-secondary-300 focus:outline-none focus:ring-0 dark:border-gray-600 dark:focus:border-secondary-300 xl:bg-white-100 ${
+          className={`autofill:shadow-[inset_0_0_0px_1000px_rgb(255 248 242)] block w-full appearance-none rounded-xl border bg-primary-100 px-2.5 pb-2 pt-3 text-sm text-gray-900 autofill:shadow-[inset_0_0_0px_1000px_rgb(255,248,242)]  focus:border-secondary-300 focus:outline-none focus:ring-0 xl:bg-white-100 ${
             errorText && errorText.length > 0 ? "h-72" : ""
           }}`}
           placeholder=" "
@@ -50,7 +50,7 @@ export function FormField({
         />
         <label
           htmlFor={htmlFor}
-          className="bg-white peer-focus:scale-80 absolute left-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform bg-primary-100 px-2 text-sm text-gray-500 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:px-2 peer-focus:text-secondary-300 dark:bg-gray-900 dark:text-gray-400 peer-focus:dark:text-secondary-300 xl:bg-white-100"
+          className="bg-white peer-focus:scale-80 absolute left-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform bg-primary-100 px-2 text-sm text-gray-500 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:px-2 peer-focus:text-secondary-300 xl:bg-white-100"
         >
           {label}
         </label>
