@@ -4,10 +4,8 @@ import {
   type V2_MetaFunction,
 } from "@remix-run/node";
 import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
-import { upgradeToHttps } from "~/utils/upgrade.to.https";
 
 export async function loader({ request }: LoaderArgs) {
-  upgradeToHttps(request);
   return redirect("/home");
 }
 
