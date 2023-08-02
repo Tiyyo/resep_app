@@ -11,7 +11,7 @@ export default function RecipeCard({
   recipeCalories,
   recipeId,
   isLiked,
-  variant,
+  variant = "vertical",
   tags,
   pickedMeal,
   servings,
