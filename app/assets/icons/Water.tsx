@@ -1,5 +1,5 @@
-import { Icons } from "./interface";
-export default function ({
+import type { Icons } from "./interface";
+export default function Water({
   size,
   outlineColor,
   fillColor,

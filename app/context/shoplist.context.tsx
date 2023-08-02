@@ -27,7 +27,7 @@ export const ShoppingContextProvider = ({
     if (numRecipes) {
       fetcherRandomRecipes.load(`/api/recipes/random/${numRecipes}`);
     }
-  }, [numRecipes]);
+  }, [numRecipes, fetcherRandomRecipes]);
 
   useEffect(() => {
     setRecipes(fetcherRandomRecipes.data);

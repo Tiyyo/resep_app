@@ -1,6 +1,6 @@
-import { Icons } from "./interface";
+import type { Icons } from "./interface";
 
-export default function ({
+export default function BookmarkIcon({
   size,
   outlineColor,
   fillColor,

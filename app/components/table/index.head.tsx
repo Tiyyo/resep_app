@@ -1,5 +1,5 @@
 import { activateSearch } from "./activate.search";
-import { TableHeadProps } from "./interface";
+import type { TableHeadProps } from "./interface";
 
 export default function TableHead({
   keys,

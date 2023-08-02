@@ -1,5 +1,5 @@
 import { prisma } from "~/service/db.server";
-import { Meal } from "~/session";
+import type { Meal } from "~/session";
 import NotFoundError from "~/helpers/errors/not.found.error";
 import DatabaseError from "~/helpers/errors/database.error";
 
@@ -63,7 +63,8 @@ export default {
       });
       await prisma.$disconnect();
 
-      if (!result) throw new NotFoundError("Can't find item with associated id");
+      if (!result)
+        throw new NotFoundError("Can't find item with associated id");
 
       const mealPlans = {
         id: result.id,
@@ -110,7 +111,7 @@ export default {
       await prisma.$disconnect();
       return mealPlan;
     } catch (error: any) {
-      throw new DatabaseError(error.message, "meal_plans", error)
+      throw new DatabaseError(error.message, "meal_plans", error);
     }
   },
   async findLast(author_id: number) {

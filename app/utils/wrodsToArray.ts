@@ -1,5 +1,5 @@
 export default function wordsToArray(str: string) {
-  let arr: string[]
+  let arr: string[];
 
   arr = str.split(" ");
   arr.forEach((el, index) => {
@@ -7,5 +7,5 @@ export default function wordsToArray(str: string) {
       arr.splice(index, 1);
     }
   });
-  return arr
+  return arr;
 }

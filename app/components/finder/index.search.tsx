@@ -1,9 +1,9 @@
-import { useFetcher, useParams } from '@remix-run/react';
-import { useEffect, useState } from 'react';
-import { Recipe } from '~/types/recipe';
-import RecipeCard from '../recipe/card';
-import isLikedByUser from '~/utils/is.liked.by.user';
-import SearchIcon from '~/assets/icons/SearchIcon';
+import { useFetcher, useParams } from "@remix-run/react";
+import { useEffect, useState } from "react";
+import type { Recipe } from "~/types/recipe";
+import RecipeCard from "../recipe/card";
+import SearchIcon from "~/assets/icons/SearchIcon";
+import RecipeContainer from "../container";
 
 export default function FinderSearch({
   recipes: firstLoadedRecipes,
@@ -19,11 +19,11 @@ export default function FinderSearch({
   const handleChange = async (e: React.ChangeEvent<HTMLFormElement>) => {
     const searchValues = e.currentTarget.searchRecipe.value;
     if (searchValues.length < 3) return setRecipes(firstLoadedRecipes);
-    const arrayOfSearchValues = searchValues.split(' ');
+    const arrayOfSearchValues = searchValues.split(" ");
 
     const mapQueries = new Map();
     arrayOfSearchValues.forEach((value: string) =>
-      mapQueries.set('query', value),
+      mapQueries.set("query", value)
     );
     const queryObject = Object.fromEntries(mapQueries);
     const queryParamsString = new URLSearchParams(queryObject);
@@ -39,9 +39,9 @@ export default function FinderSearch({
     setRecipes(firstLoadedRecipes);
   }, []);
   return (
-    <div className="max-w-[1325px] mx-auto">
+    <div className="mx-auto max-w-[1325px]">
       <customFetch.Form
-        className="flex gap-x-2 my-1 items-end"
+        className="my-1 flex items-end gap-x-2"
         onChange={handleChange}
         method="GET"
       >
@@ -50,30 +50,21 @@ export default function FinderSearch({
         </div>
         <input
           type="text"
-          className="bg-primary-200 border-b-gray-950 border-b placeholder:text-7 focus:border-0 focus-visible:ring-0  focus-visible:outline-none focus-visible:border-b-secondary-300"
+          className="border-b border-b-gray-950 bg-primary-200 placeholder:text-7 focus:border-0 focus-visible:border-b-secondary-300  focus-visible:outline-none focus-visible:ring-0"
           name="searchRecipe"
           placeholder="Search for a recipe ..."
         />
       </customFetch.Form>
+
       {recipes.length !== 0 || recipes ? (
-        <div className="flex flex-wrap gap-4 justify-start content-start w-full py-8">
-          {recipes.map((recipe: Recipe) => {
-            return (
-              <RecipeCard
-                key={recipe.id}
-                recipeId={recipe.id}
-                imageLink={recipe.link || recipe.image?.link}
-                recipeName={recipe.name}
-                servings={recipe.servings}
-                recipeCalories={recipe.calories || recipe.macros?.calories}
-                isLiked={isLikedByUser(recipe, profileId)}
-                pickedMeal={Number(params.index)}
-              />
-            );
-          })}
-        </div>
+        <RecipeContainer
+          Card={RecipeCard}
+          data={recipes}
+          profileId={profileId}
+          pickedMeal={Number(params.index)}
+        />
       ) : (
-        <div className="center italic mt-10">No recipes found</div>
+        <div className="center mt-10 italic">No recipes found</div>
       )}
     </div>
   );

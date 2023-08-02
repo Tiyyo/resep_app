@@ -5,8 +5,8 @@ export default function Chevron({ state }: { state?: boolean }) {
     <div
       className={
         state
-          ? "rotate-90 transition-transform cursor-pointer"
-          : "rotate-0 transition-transform cursor-pointer"
+          ? "rotate-90 cursor-pointer transition-transform"
+          : "rotate-0 cursor-pointer transition-transform"
       }
     >
       <ChevronIcon />

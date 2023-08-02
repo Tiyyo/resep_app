@@ -12,21 +12,43 @@ export default function NutritionFacts({
   proteins,
   fat,
   water,
-} : NutritionFactsProps) {
-
-  
+}: NutritionFactsProps) {
   return (
     <div className="macros">
       <div className="macros__head">
         <h2 className="text-8 leading-none">Nutrition Facts</h2>
-        <p className="text-7 pl-4 text-text-accent_soft">|serv</p>
+        <p className="pl-4 text-7 text-text-accent_soft">|serv</p>
       </div>
-      <div className="flex justify-evenly max-w-[600px]">
-        <NutrientIndicator value={calories} addText="Kcal" Icon={<Calories/>}/>
-        <NutrientIndicator value={proteins} addText="g Proteins" Icon={<Proteins />}/>
-        <NutrientIndicator value={carbs} addText="g Carbs" Icon={<Carbs />}/>
-        <NutrientIndicator value={fat} addText="g Fat" Icon={<Lipids />}/>
-        <NutrientIndicator value={water} addText="ml Water" Icon={<Water/>}/>
+      <div className="flex max-w-[600px] justify-evenly">
+        <NutrientIndicator
+          value={calories}
+          addText="kcal"
+          Icon={<Calories />}
+        />
+        <NutrientIndicator
+          value={proteins}
+          unit="g"
+          addText="Proteins"
+          Icon={<Proteins />}
+        />
+        <NutrientIndicator
+          value={carbs}
+          unit="g"
+          addText="Carbs"
+          Icon={<Carbs />}
+        />
+        <NutrientIndicator
+          value={fat}
+          unit="g"
+          addText="Fat"
+          Icon={<Lipids />}
+        />
+        <NutrientIndicator
+          value={water}
+          unit="ml"
+          addText="Water"
+          Icon={<Water />}
+        />
       </div>
     </div>
   );

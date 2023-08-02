@@ -4,7 +4,6 @@ import SelectSearch from "../select_search";
 import SubmitButton from "../submit_button";
 import type { UpdateIngredientsFormProps } from "./interface";
 import Error from "../error";
-import { Category } from "../categories/interface";
 
 export default function UpdateIngredientsForm({
   data: ingredient,
@@ -19,10 +18,10 @@ export default function UpdateIngredientsForm({
     label: ingredient?.icon?.name,
   };
 
-  const defaultOptionMacroId = {
-    value: ingredient?.macros?.id,
-    label: ingredient?.macros?.food,
-  };
+  // const defaultOptionMacroId = {
+  //   value: ingredient?.macros?.id,
+  //   label: ingredient?.macros?.food,
+  // };
 
   const defaultOptionCategory = {
     value: ingredient.category.id,
@@ -58,7 +57,7 @@ export default function UpdateIngredientsForm({
               placeholder="g/ml"
               defaultValue={ingredient.unit_weight}
             />
-            <p className="text-6 self-center">(optional)</p>
+            <p className="self-center text-6">(optional)</p>
           </div>
         </div>
 
@@ -103,7 +102,7 @@ export default function UpdateIngredientsForm({
               />
             )}
 
-            <p className="text-6 px-2 self-center">(optional)</p>
+            <p className="self-center px-2 text-6">(optional)</p>
           </div>
           <div className="flex">
             <SelectSearch
@@ -115,7 +114,7 @@ export default function UpdateIngredientsForm({
               placeholder="Search for an Icon"
               defaultValue={defaultOptionIcon}
             />
-            <p className="text-6 px-2 self-center">(optional)</p>
+            <p className="self-center px-2 text-6">(optional)</p>
           </div>
         </div>
         <div className="center ">

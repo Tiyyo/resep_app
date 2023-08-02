@@ -1,9 +1,9 @@
-import { Form, useFetcher } from "@remix-run/react";
-import Input from "../input";
-import SubmitButton from "../submit_button";
-import FileInput from "../file_input";
-import SelectSearch from "../select_search";
-import Error from "../error";
+// import { Form, useFetcher } from "@remix-run/react";
+// import Input from "../input";
+// import SubmitButton from "../submit_button";
+// import FileInput from "../file_input";
+// import SelectSearch from "../select_search";
+// import Error from "../error";
 
 // export default function UpdateMacrosForm({ data: macros }) {
 //   const updateMacros = useFetcher();
@@ -103,6 +103,3 @@ import Error from "../error";
 //     </updateCategory.Form>
 //   );
 // }
-
-
-

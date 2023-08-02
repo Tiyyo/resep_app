@@ -1,14 +1,16 @@
-import type { LoaderArgs } from '@remix-run/node';
-import { json } from '@remix-run/node';
+import type { LoaderArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import {
   Link,
   Outlet,
   isRouteErrorResponse,
   useLoaderData,
   useRouteError,
-} from '@remix-run/react';
-import macro from '~/api/macro';
-import Table from '~/components/table';
+} from "@remix-run/react";
+import macro from "~/api/macro";
+import OrientationScreen from "~/components/orientation";
+import Table from "~/components/table";
+import Error404 from "~/layout/Error404Page";
 
 export async function loader({ request }: LoaderArgs) {
   const macros = await macro.findAll();
@@ -20,8 +22,11 @@ export default function MacrosPanel() {
 
   return (
     <>
-      <Outlet />
-      {macros && <Table data={macros} endpoint="/api/macros" search="food" />}
+      <OrientationScreen />
+      <div className="hidden xl:block">
+        <Outlet />
+        {macros && <Table data={macros} endpoint="/api/macros" search="food" />}
+      </div>
     </>
   );
 }
@@ -30,15 +35,21 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   if (!isRouteErrorResponse(error)) {
-    return <Link to="/dashboard/macros">Refresh</Link>;
+    return (
+      <div className="center h-full w-full flex-col">
+        <p className="text-10 font-semibold">
+          We are sorry ... something went wrong with thoses macros
+        </p>
+        <p>
+          &#8608; &#8608; <Link to="/dashboard">Click here to refresh</Link>{" "}
+          &#8606; &#8606;
+        </p>
+        ;
+      </div>
+    );
   }
 
   if (error.status === 404) {
-    return (
-      <>
-        <h2>Error 404</h2>
-        <button> Rafraichir </button>
-      </>
-    );
+    return <Error404 />;
   }
 }

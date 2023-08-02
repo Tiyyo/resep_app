@@ -1,4 +1,4 @@
 export interface FormReviewProps {
-    authorId: number;
-    recipeId: number;
-  }
+  authorId: number;
+  recipeId: number;
+}

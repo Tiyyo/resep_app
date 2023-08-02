@@ -42,7 +42,7 @@ export function FormField({
           name={htmlFor}
           onChange={handleChange}
           value={value}
-          className={`block px-2.5 pb-2 pt-3 w-full text-sm text-gray-900 rounded-xl border appearance-none dark:text-white dark:border-gray-600 dark:focus:border-secondary-300 focus:outline-none focus:ring-0 focus:border-secondary-300 peer bg-primary-100 xl:bg-white-100 autofill:bg-secondary-400 ${
+          className={`autofill:shadow-[inset_0_0_0px_1000px_rgb(255 248 242)] block w-full appearance-none rounded-xl border bg-primary-100 px-2.5 pb-2 pt-3 text-sm text-gray-900 autofill:shadow-[inset_0_0_0px_1000px_rgb(255,248,242)]  focus:border-secondary-300 focus:outline-none focus:ring-0 dark:border-gray-600 dark:focus:border-secondary-300 xl:bg-white-100 ${
             errorText && errorText.length > 0 ? "h-72" : ""
           }}`}
           placeholder=" "
@@ -50,12 +50,12 @@ export function FormField({
         />
         <label
           htmlFor={htmlFor}
-          className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-secondary-300 peer-focus:dark:text-secondary-300 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-80 peer-focus:-translate-y-4 left-1 bg-primary-100 xl:bg-white-100"
+          className="bg-white peer-focus:scale-80 absolute left-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform bg-primary-100 px-2 text-sm text-gray-500 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:px-2 peer-focus:text-secondary-300 dark:bg-gray-900 dark:text-gray-400 peer-focus:dark:text-secondary-300 xl:bg-white-100"
         >
           {label}
         </label>
         <div
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 text-black-light peer-focus:text-secondary-300"
+          className="absolute right-2 top-1/2 -translate-y-1/2 transform text-black-light peer-focus:text-secondary-300"
           onClick={() => {
             toggleIcon();
           }}
@@ -64,7 +64,7 @@ export function FormField({
         </div>
       </div>
       {errorText && (
-        <div className="text-xs font-semibold text-center text-red-600 w-full flex items-center gap-x-4 py-1 px-2 text-red">
+        <div className="text-red-600 flex w-full items-center gap-x-4 px-2 py-1 text-center text-xs font-semibold text-red">
           <ErrorIcon />
           <p>{errorText}</p>
         </div>

@@ -7,7 +7,8 @@ import type { Reviews } from "~/types/recipe";
 
 export default function CommentSection({
   reviews,
-  recipeId, authorId
+  recipeId,
+  authorId,
 }: CommentSectionProps) {
   const [sectionIsOpen, setSectionIsOpen] = useState<boolean>(false);
 
@@ -22,17 +23,15 @@ export default function CommentSection({
   }
 
   return (
-    <div className="flex flex-col gap-y-2 items-center overflow-x-hidden">
-      <FormReview
-        authorId={authorId}
-        recipeId={recipeId}
-      />
+    <div className="flex flex-col items-center gap-y-2 overflow-x-hidden">
+      <FormReview authorId={authorId} recipeId={recipeId} />
       <div
-        className={`flex flex-col gap-y-2 items-center w-full max-h-[410px] h-fit  overflow-x-hidden py-4`}
+        className={`flex h-fit max-h-[410px] w-full flex-col items-center gap-y-2  overflow-x-hidden py-4`}
       >
         {controlSizeCommentSection(reviews).map(
           (review, index: number) =>
-            review.comment && review.author && (
+            review.comment &&
+            review.author && (
               <Review
                 key={index}
                 comment={review.comment}

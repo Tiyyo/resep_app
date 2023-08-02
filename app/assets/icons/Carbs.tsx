@@ -1,5 +1,5 @@
 import type { Icons } from "./interface";
-export default function CarbsIcon ({
+export default function CarbsIcon({
   size,
   outlineColor,
   fillColor,

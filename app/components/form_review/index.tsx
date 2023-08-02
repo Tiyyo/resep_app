@@ -19,7 +19,7 @@ export default function FormReview({ authorId, recipeId }: FormReviewProps) {
   const [error, setError] = useState<string>("");
 
   const handleHover = () => {
-    setOpenLeaveReviewSection(false)
+    setOpenLeaveReviewSection(false);
     textAera.current?.blur();
   };
 
@@ -40,7 +40,7 @@ export default function FormReview({ authorId, recipeId }: FormReviewProps) {
 
   return (
     <div
-      className="border shadow-xl w-96 bg-main-100 rounded-xl py-2 px-4 min-w-[750px]"
+      className="w-full rounded-xl border bg-main-100 px-4 py-2 shadow-xl "
       onMouseLeave={handleHover}
     >
       <addReview.Form

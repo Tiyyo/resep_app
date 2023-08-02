@@ -1,10 +1,10 @@
 export interface RatingIndicatorProps {
-    avgRating: number
-    countRating: number
-    numStars: number
+  avgRating: number;
+  countRating: number;
+  numStars: number;
 }
 
 export interface StarProps {
-    position: number;
-    rating: number;
+  position: number;
+  rating: number;
 }

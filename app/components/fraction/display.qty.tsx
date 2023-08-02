@@ -13,7 +13,7 @@ export const displayQty = (
     let newQty = (servings * qty) / originalServings;
 
     return (
-      <div className="flex gap-x-1 items-center">
+      <div className="flex items-center gap-x-1">
         <>{findNearestFraction(newQty, 4)}</>
         {unitAbreviation}
       </div>

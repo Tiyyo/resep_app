@@ -34,8 +34,8 @@ export default function () {
         encType="multipart/form-data"
         ref={addIconFormRef}
       >
-        <div className="flex flex-col center gap-y-4">
-          <div className="flex gap-x-4">
+        <div className="center flex flex-col gap-y-4">
+          <div className="flex flex-col items-start gap-4 md:flex-row">
             <Input
               name="name"
               placeholder="Icon name"
@@ -50,7 +50,7 @@ export default function () {
                 label="Tags"
                 align="start"
               />
-              <p className="text-6 px-2">(optional)</p>
+              <p className="px-2 text-6">(optional)</p>
             </div>
           </div>
           <FileInput
@@ -72,7 +72,7 @@ export function ErrorBoundary() {
 
   if (!isRouteErrorResponse(error)) {
     return (
-      <div className="w-full h-full center flex-col gap-y-8">
+      <div className="center h-full w-full flex-col gap-y-8">
         <p>{error.message}</p>
         <p>Please fill all required fields</p>
         <Link to="/dashboard/add/icons">Refresh</Link>

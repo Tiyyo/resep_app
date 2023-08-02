@@ -1,9 +1,9 @@
-import { NavLink } from '@remix-run/react';
-import type { Item, TreeMenuProps } from './interface';
-import { useEffect, useState } from 'react';
-import Chevron from '../chevron';
-import mapRecursive from '~/utils/recursive.menu';
-import MenuLink from '../menu_link';
+import { NavLink } from "@remix-run/react";
+import type { Item, TreeMenuProps } from "./interface";
+import { useEffect, useState } from "react";
+import Chevron from "../chevron";
+import mapRecursive from "~/utils/recursive.menu";
+import MenuLink from "../menu_link";
 
 export default function TreeMenu({
   level = 1,
@@ -20,7 +20,7 @@ export default function TreeMenu({
           return { ...item, open: !item.open };
         }
         return item;
-      }),
+      })
     );
   };
 
@@ -36,7 +36,7 @@ export default function TreeMenu({
         <div key={index + item.id}>
           <div
             onClick={openChildren(item.id)}
-            className="flex justify-between px-3 py-1  shadow-inner mt-2 rounded-md hover:bg-main-300 transition-colors items-center"
+            className="mt-2 flex items-center justify-between  rounded-md px-3 py-1 shadow-inner transition-colors hover:bg-main-300"
           >
             <NavLink to={item.link} className={`pl-${paddingLeft} `}>
               {({ isActive }) => (
@@ -50,8 +50,8 @@ export default function TreeMenu({
               className="transition-all"
               style={
                 item.open
-                  ? { maxHeight: 'fit-content' }
-                  : { maxHeight: '0', display: 'none' }
+                  ? { maxHeight: "fit-content" }
+                  : { maxHeight: "0", display: "none" }
               }
             >
               <TreeMenu menu={item.children} level={level + 2} />

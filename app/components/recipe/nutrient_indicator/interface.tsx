@@ -1,7 +1,6 @@
-
 export interface NutrientIndicatorProps {
-    Icon : JSX.Element;
-    value: number;
-    addText?: string;
+  Icon: JSX.Element;
+  unit?: string;
+  value: number;
+  addText?: string;
 }
-

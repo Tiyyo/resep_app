@@ -1,7 +1,10 @@
 import LikeIcon from "~/assets/icons/Like";
-import type{ AddFavoriteIconProps } from "./interface";
+import type { AddFavoriteIconProps } from "./interface";
 
-export default function AddFavoriteIcon({infosRecipeByUser : infos, onClick} : AddFavoriteIconProps) {
+export default function AddFavoriteIcon({
+  infosRecipeByUser: infos,
+  onClick,
+}: AddFavoriteIconProps) {
   return (
     <div onClick={onClick} className="text-secondary-400">
       {infos && infos.is_liked ? (
@@ -10,6 +13,5 @@ export default function AddFavoriteIcon({infosRecipeByUser : infos, onClick} : A
         <LikeIcon size="8" />
       )}
     </div>
-
   );
 }

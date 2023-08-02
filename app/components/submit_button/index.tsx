@@ -11,9 +11,9 @@ export default function SubmitButton({
       type="submit"
       name={name}
       value={value}
-      className={` ${
+      className={`max-w-[150px] ${
         height ? "h-" + height : "h-9"
-      } text-7 px-4 text-text-100 font-semibold bg-secondary-300 rounded-lg`}
+      } rounded-lg bg-secondary-300 px-4 text-7 font-semibold text-text-100`}
     >
       {text}
     </button>

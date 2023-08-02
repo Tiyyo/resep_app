@@ -1,11 +1,12 @@
-import RecipeCard from '../recipe/card';
-import isLikedByUser from '~/utils/is.liked.by.user';
-import HeaderSlider from './index.header';
-import BannerSlider from './index.banner';
-import LongArrowRightIcon from '~/assets/icons/LongArrowIcon';
-import { motion } from 'framer-motion';
-import React, { useEffect, useState, useRef } from 'react';
-import { SliderProps } from './interface';
+import RecipeCard from "../recipe/card";
+import isLikedByUser from "~/utils/is.liked.by.user";
+import HeaderSlider from "./index.header";
+import BannerSlider from "./index.banner";
+import { motion } from "framer-motion";
+import React, { useEffect, useState, useRef } from "react";
+import type { SliderProps } from "./interface";
+import SliderNav from "./index.nav";
+import useWindowSize from "~/hooks/useWindowsSize";
 
 export default function Slider({
   banner,
@@ -26,7 +27,6 @@ export default function Slider({
 
   function nextSlide() {
     if (widthCard === null) return;
-    setScrollXValue(scrollXValue + widthCard * 1.05);
     scrollXValue + widthCard * 1.05 > 0
       ? setScrollXValue(0)
       : setScrollXValue(scrollXValue + widthCard * 1.05);
@@ -34,13 +34,15 @@ export default function Slider({
 
   function prevSlide() {
     if (widthCard === null) return;
+    console.log(scrollXValue, "scrollXValue", widthCard, "widthCard");
+
     Math.abs(scrollXValue - widthCard * 1.05) > width
       ? setScrollXValue(-width)
       : setScrollXValue(scrollXValue - widthCard * 1.05);
   }
 
   function handleClick(e: React.MouseEvent<HTMLElement>) {
-    e.currentTarget.dataset.nav === 'prev' ? prevSlide() : nextSlide();
+    e.currentTarget.dataset.nav === "prev" ? prevSlide() : nextSlide();
   }
 
   useEffect(() => {
@@ -50,35 +52,43 @@ export default function Slider({
     if (innerCarousel?.current && content.length > 0) {
       setWidthCard(innerCarousel.current.children[0].clientWidth);
     }
-  }, []);
+  }, [content.length]);
+
+  console.log(scrollXValue);
+
+  if (!content || content.length === 0) return null;
 
   return (
     <div
-      className={`flex flex-col my-4 ${shouldBeCentered ? 'self-center' : ''}`}
+      className={`border- my-4 flex flex-col ${
+        shouldBeCentered ? "self-center" : ""
+      }`}
     >
       <HeaderSlider title={title} linkText={linkText} link={link} />
-      <div className="flex gap-x-8 relative">
-        {banner && <BannerSlider title={title ?? ''} />}
+      <div className="x relative flex flex-col gap-x-8 xl:flex-row ">
+        <div className="hidden xl:block">
+          {banner && <BannerSlider title={title ?? ""} />}
+        </div>
         <motion.div
-          className="overflow-x-scroll no-scrollbar scroll-smooth px-6"
+          className="no-scrollbar overflow-x-scroll scroll-smooth px-6"
           ref={carousel}
-          whileTap={{ cursor: 'grabbing' }}
+          whileTap={{ cursor: "grabbing" }}
         >
           <motion.div
             drag="x"
-            whileTap={{ cursor: 'grabbing' }}
+            whileTap={{ cursor: "grabbing" }}
             dragConstraints={{ right: 0, left: -width }}
-            className="flex gap-x-6 w-full"
+            className="flex w-full gap-x-6"
             ref={innerCarousel}
             animate={{ x: scrollXValue }}
-            transition={{ ease: 'easeInOut', duration: 1.2 }}
+            transition={{ ease: "easeInOut", duration: 1 }}
           >
             {content &&
               content.length > 0 &&
               content.map((recipe: any): JSX.Element => {
                 return (
                   <RecipeCard
-                    variant={cardAxis ?? 'vertical'}
+                    variant={cardAxis ?? "vertical"}
                     tags={recipe.tags}
                     key={recipe.id}
                     recipeId={recipe.id}
@@ -90,23 +100,7 @@ export default function Slider({
                 );
               })}
           </motion.div>
-          <div className="absolute flex gap-x-10 items-center -bottom-8 right-6 text-secondary-300">
-            <button
-              type="button"
-              className="cursor-pointer"
-              data-nav="next"
-              onClick={handleClick}
-            >
-              <LongArrowRightIcon />
-            </button>
-            <button
-              className="rotate-180 cursor-pointer"
-              data-nav="prev"
-              onClick={handleClick}
-            >
-              <LongArrowRightIcon />
-            </button>
-          </div>
+          <SliderNav handleClick={handleClick} />
         </motion.div>
       </div>
     </div>

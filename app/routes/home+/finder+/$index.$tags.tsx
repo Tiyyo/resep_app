@@ -1,22 +1,23 @@
-import { ActionArgs, LoaderArgs, json, redirect } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
-import recipe from '~/api/recipe';
-import Finder from '~/components/finder';
-import ServerError from '~/helpers/errors/server.error';
-import UserInputError from '~/helpers/errors/user.inputs.error';
-import ResponseError from '~/helpers/response/response.error';
-import { storage } from '~/service/auth.server';
-import { getProfile } from '~/utils/get.user.infos';
+import { json, redirect } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import recipe from "~/api/recipe";
+import Finder from "~/components/finder";
+import ServerError from "~/helpers/errors/server.error";
+import UserInputError from "~/helpers/errors/user.inputs.error";
+import ResponseError from "~/helpers/response/response.error";
+import { storage } from "~/service/auth.server";
+import { getProfile } from "~/utils/get.user.infos";
 
 export async function loader({ request, params }: LoaderArgs) {
   try {
-    if (!params.index) throw new ServerError('Invalid params');
+    if (!params.index) throw new ServerError("Invalid params");
     const positionMealToReplace = +params.index;
     const searchedTags = params.tags;
     const profile = await getProfile(request);
-    if (!profile) throw new ServerError('Invalid profile : Unauthorized');
+    if (!profile) throw new ServerError("Invalid profile : Unauthorized");
     switch (searchedTags?.toLowerCase()) {
-      case 'favorites': {
+      case "favorites": {
         const recipes = await recipe.findLikedByUser(profile.id);
         return {
           positionMealToReplace,
@@ -25,7 +26,7 @@ export async function loader({ request, params }: LoaderArgs) {
           profileId: profile.id,
         };
       }
-      case 'myrecipes': {
+      case "myrecipes": {
         const recipes = await recipe.findByAuthor(profile.id);
         return {
           positionMealToReplace,
@@ -34,8 +35,8 @@ export async function loader({ request, params }: LoaderArgs) {
           profileId: profile.id,
         };
       }
-      case 'chicken': {
-        const recipes = await recipe.findByTags(['chicken']);
+      case "chicken": {
+        const recipes = await recipe.findByTags(["chicken"]);
         return {
           positionMealToReplace,
           recipes,
@@ -43,8 +44,8 @@ export async function loader({ request, params }: LoaderArgs) {
           profileId: profile.id,
         };
       }
-      case 'beef': {
-        const recipes = await recipe.findByTags(['beef']);
+      case "beef": {
+        const recipes = await recipe.findByTags(["beef"]);
         return {
           positionMealToReplace,
           recipes,
@@ -52,8 +53,8 @@ export async function loader({ request, params }: LoaderArgs) {
           profileId: profile.id,
         };
       }
-      case 'fish': {
-        const recipes = await recipe.findByTags(['fish']);
+      case "fish": {
+        const recipes = await recipe.findByTags(["fish"]);
         return {
           positionMealToReplace,
           recipes,
@@ -61,8 +62,8 @@ export async function loader({ request, params }: LoaderArgs) {
           profileId: profile.id,
         };
       }
-      case 'veggie': {
-        const recipes = await recipe.findByTags(['vegetarian']);
+      case "veggie": {
+        const recipes = await recipe.findByTags(["vegetarian"]);
         return {
           positionMealToReplace,
           recipes,
@@ -70,7 +71,7 @@ export async function loader({ request, params }: LoaderArgs) {
           profileId: profile.id,
         };
       }
-      case 'all': {
+      case "all": {
         const recipes = await recipe.findAll();
         return {
           positionMealToReplace,
@@ -80,7 +81,7 @@ export async function loader({ request, params }: LoaderArgs) {
         };
       }
       default: {
-        return json({ error: 'Invalid search params' });
+        return json({ error: "Invalid search params" });
       }
     }
   } catch (error) {
@@ -92,20 +93,20 @@ export async function action({ request }: ActionArgs) {
   // Not very clear
   try {
     const formData = await request.formData();
-    if (!formData.get('pickedMeal'))
-      throw new UserInputError('No item has been chosen');
+    if (!formData.get("pickedMeal"))
+      throw new UserInputError("No item has been chosen");
 
-    const positionMealToReplace = formData.get('pickedMeal') as string;
+    const positionMealToReplace = formData.get("pickedMeal") as string;
 
-    const session = await storage.getSession(request.headers.get('Cookie'));
+    const session = await storage.getSession(request.headers.get("Cookie"));
 
-    const mealPlan = session.get('meal_plan');
+    const mealPlan = session.get("meal_plan");
 
     const newMeal = {
-      recipe_id: Number(formData.get('recipe_id')),
-      recipe_name: formData.get('recipe_name'),
-      image: formData.get('image'),
-      servings: Number(formData.get('servings')),
+      recipe_id: Number(formData.get("recipe_id")),
+      recipe_name: formData.get("recipe_name"),
+      image: formData.get("image"),
+      servings: Number(formData.get("servings")),
     };
 
     mealPlan[+positionMealToReplace] = {
@@ -113,11 +114,11 @@ export async function action({ request }: ActionArgs) {
       ...newMeal,
     };
 
-    session.set('meal_plan', mealPlan);
+    session.set("meal_plan", mealPlan);
 
-    return redirect('/home/meal_plans/generate', {
+    return redirect("/home/meal_plans/generate", {
       headers: {
-        'Set-Cookie': await storage.commitSession(session),
+        "Set-Cookie": await storage.commitSession(session),
       },
     });
   } catch (error) {

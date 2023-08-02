@@ -11,8 +11,8 @@ export default function RecipeInfos({
   favorite,
 }: RecipeInfosProps) {
   return (
-    <div className="font-normal gap-2.5 flex items-center justify-around text-8  py-1.5 px-2.5 my-6 self-start ">
-      <div className="flex items-center gap-x-4">
+    <div className="my-6 flex items-center justify-around gap-2.5 self-start  px-2.5 py-1.5 text-8 font-normal ">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <div className="flex items-center gap-x-1">
           <Prep size="6" />
           <p className="font-light">{prepTime} min</p>
@@ -32,11 +32,11 @@ export default function RecipeInfos({
           ""
         ) : (
           <>
-          |{" "}
-          <div className="flex items-center gap-x-1 opacity-70">
-            <LikeIcon size="6" />
-            {favorite ? favorite + " likes" : ""}
-          </div>
+            |{" "}
+            <div className="flex items-center gap-x-1 opacity-70">
+              <LikeIcon size="6" />
+              {favorite ? favorite + " likes" : ""}
+            </div>
           </>
         )}
       </div>

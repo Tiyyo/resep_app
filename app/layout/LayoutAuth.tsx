@@ -7,16 +7,16 @@ export default function LayoutAuth({
 }) {
   return (
     <LayoutPage>
-      <div className="flex flex-col min-h-screen w-full bg-primary-100 xl:flex-row xl:max-w-[1200px] xl:center xl:mx-auto">
-        <div className="h-[30vw] max-h-[450px] min-h-[200px] center xl:max-h-[850px] xl:h-[50vw]">
+      <div className="xl:center flex min-h-screen w-full flex-col bg-primary-100 xl:mx-auto xl:max-w-[1200px] xl:flex-row">
+        <div className="center h-[30vw] max-h-[450px] min-h-[200px] xl:h-[50vw] xl:max-h-[850px]">
           <img
             src="/images/hero.png"
             alt=""
-            className="object-cover h-full xl:object-contain"
+            className="h-full object-cover xl:object-contain"
           />
         </div>
-        <div className="basis-10/12 flex flex-col items-center">
-          <div className="text-center w-24 rounded-full overflow-hidden hidden">
+        <div className="flex basis-10/12 flex-col items-center">
+          <div className="hidden w-24 overflow-hidden rounded-full text-center">
             <img
               className="w-full"
               src="/images/29372253_coking_23.jpg"

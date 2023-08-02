@@ -1,8 +1,8 @@
-import type{ ErrorProps } from "./interface";
+import type { ErrorProps } from "./interface";
 
 export default function Error({ message }: ErrorProps) {
   return (
-    <div className="text-secondary-300 text-8 font-semibold text-center">
+    <div className="text-center text-8 font-semibold text-secondary-300">
       {message ? (
         <>
           <div>{message}</div>

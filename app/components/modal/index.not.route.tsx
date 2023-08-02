@@ -11,6 +11,7 @@ export default function ModalNotRoute({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    console.log(e);
     const action = e.currentTarget.dataset.choice as "new" | "old";
     action ? getActionToPerform(action) : getActionToPerform(null);
     (window as any).my_modal_5.close();
@@ -43,24 +44,24 @@ export default function ModalNotRoute({
       <dialog
         id="my_modal_5"
         aria-modal="false"
-        className={`modal modal-bottom sm:modal-middle -z-10 transition-opacity ${
+        className={`smodal-middle modal -z-10 transition-opacity ${
           isOpen ? "opacity-100" : "opacity-0"
         }`}
       >
         <Form
           method="POST"
-          className="modal-box"
+          className="modal-box bg-primary-300"
           action="/home/meal_plans/generate"
         >
-          <p className="text-center font-bold my-2">
+          <p className="my-2 text-center  font-bold">
             Do you want to load the last set of recipes you used ?
           </p>
-          <p className="text-8 opacity-70 text-center">
+          <p className="text-center text-8 opacity-70">
             {" "}
             (if no a new random set will be generated)
           </p>
 
-          <div className="modal-action center">
+          <div className="center modal-action">
             <button
               className="btn w-24"
               data-choice="new"

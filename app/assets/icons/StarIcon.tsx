@@ -1,5 +1,12 @@
-export default function StarIcon({ size , pick, fill }: { size?: string, fill? : boolean, pick?: boolean }) {
-
+export default function StarIcon({
+  size,
+  pick,
+  fill,
+}: {
+  size?: string;
+  fill?: boolean;
+  pick?: boolean;
+}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

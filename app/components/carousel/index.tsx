@@ -1,26 +1,23 @@
-import { isLikedByUser } from "~/utils/is.liked.by.user";
 import RecipeCard from "../recipe/card";
 import TitleLevel3 from "../title/TilteLevel3";
-import Chevron from "../chevron";
 import ArrowRightIcon from "~/assets/icons/ArrowRightIcon";
-import { CarouselProps } from "./interface";
+import type { CarouselProps } from "./interface";
+import isLikedByUser from "~/utils/is.liked.by.user";
 
 export default function Carousel({ title, recipes, profileId }: CarouselProps) {
   return (
-    <div className="py-2 px-4 w-fit self-center">
-      <div className="flex justify-between items-center">
+    <div className="w-fit self-center px-4 py-2">
+      <div className="flex items-center justify-between">
         <TitleLevel3 title={title} />
-        <a>
-          <p className="flex items-center cursor-pointer">
-            See all{" "}
-            <span>
-              <ArrowRightIcon />
-            </span>
-          </p>
-        </a>
+        <p className="flex cursor-pointer items-center">
+          See all{" "}
+          <span>
+            <ArrowRightIcon />
+          </span>
+        </p>
       </div>
       <div className="w-full">
-        <div className="flex gap-x-4 overflow-x-scroll no-scrollbar">
+        <div className="no-scrollbar flex gap-x-4 overflow-x-scroll">
           {recipes &&
             recipes.length > 0 &&
             recipes.map((recipe: any): JSX.Element => {

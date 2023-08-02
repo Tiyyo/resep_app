@@ -3,20 +3,15 @@ import { useContext } from "react";
 import Input from "~/components/input";
 import SubmitButton from "~/components/submit_button";
 import TitleLevel1 from "~/components/title/TitleLevel1";
-import {
-  ShoppingContext,
-  ShoppingContextProvider,
-} from "~/context/shoplist.context";
+import { ShoppingContext } from "~/context/shoplist.context";
 
 export default function Wrapper({ children }: { children?: React.ReactNode }) {
   const { recipes, setNumRecipes } = useContext(ShoppingContext);
-  console.log(recipes);
 
   const handleClickGenerate = (
     e: React.MouseEvent<HTMLFormElement, MouseEvent>
   ) => {
     e.preventDefault();
-    console.log(e.currentTarget.numRecipes.value);
     const value: number = Number(e.currentTarget.numRecipes.value);
     setNumRecipes(Math.abs(value));
   };
@@ -26,12 +21,12 @@ export default function Wrapper({ children }: { children?: React.ReactNode }) {
         <TitleLevel1 title="Shopping" />
         {recipes && (
           <Form method="POST">
-            <div className="flex justify-center flex-wrap gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               {recipes.map((recipe) => {
                 return (
                   <div key={recipe.id}>
                     <input name="recipeId" hidden defaultValue={recipe.id} />
-                    <div className="flex border p-2 bg-main-100 shadow-md h-44 aspect-2/1">
+                    <div className="flex aspect-2/1 h-44 border bg-main-100 p-2 shadow-md">
                       <div className="aspect-square basis-1/3">
                         <img
                           src={recipe.link}
@@ -43,7 +38,7 @@ export default function Wrapper({ children }: { children?: React.ReactNode }) {
                         <p className="min-h-8 text-8 font-semibold text-text-accent">
                           {recipe.name}
                         </p>
-                        <div className="flex items-center text-8 opacity-90 flex-grow ">
+                        <div className="flex flex-grow items-center text-8 opacity-90 ">
                           <p className="text-7">
                             Number of people for that recipes ?{" "}
                           </p>
@@ -55,7 +50,7 @@ export default function Wrapper({ children }: { children?: React.ReactNode }) {
                             defaultValue={4}
                           />
                         </div>
-                        <p className="opacity-70 text-7 underline self-end cursor-pointer">
+                        <p className="cursor-pointer self-end text-7 underline opacity-70">
                           Change recipe
                         </p>
                       </div>
@@ -64,7 +59,7 @@ export default function Wrapper({ children }: { children?: React.ReactNode }) {
                 );
               })}
             </div>
-            <div className="w-full flex justify-center my-10">
+            <div className="my-10 flex w-full justify-center">
               <SubmitButton text="Generate shopping list" />
             </div>
           </Form>

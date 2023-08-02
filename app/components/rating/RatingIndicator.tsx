@@ -13,13 +13,13 @@ export default function RatingIndicator({
     <>
       {avgRating && (
         <div className="flex">
-          <div className="flex text-blue-700 justify-end gap-x-6">
+          <div className="flex justify-end gap-x-6 text-blue-700">
             {stars.map((star, index) => {
               return <Star key={index} position={index} rating={avgRating} />;
             })}
           </div>
           {numStars ? (
-            <span className="pl-8 text-8 text-slate-400 font-medium">
+            <span className="pl-8 text-8 font-medium text-slate-400">
               ({countRating}){"  "}
               {avgRating.toFixed(2)} out of {numStars}
             </span>

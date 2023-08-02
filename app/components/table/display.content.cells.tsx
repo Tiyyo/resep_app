@@ -7,7 +7,7 @@ export function displayContentToCells(
 ): string | JSX.Element {
   if (key.toLowerCase() === "image" && image) {
     return (
-      <div className="rounded-full overflow-hidden h-6 aspect-square">
+      <div className="aspect-square h-6 overflow-hidden rounded-full">
         {d.image ? (
           <img src={d.image} alt="icon of an ingredient object-center" />
         ) : (

@@ -1,11 +1,11 @@
 import { Link } from "@remix-run/react";
 import ArrowRightIcon from "~/assets/icons/ArrowRightIcon";
-import { ArrowLinkProps } from "./interface";
+import type { ArrowLinkProps } from "./interface";
 
 export default function ArrowLink({ text, link }: ArrowLinkProps) {
   return (
     <Link to={link}>
-      <p className="flex items-center cursor-pointer">
+      <p className="flex cursor-pointer items-center">
         {text}{" "}
         <span>
           <ArrowRightIcon />

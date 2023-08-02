@@ -1,4 +1,10 @@
-import { Form, Link, useActionData } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  isRouteErrorResponse,
+  useActionData,
+  useRouteError,
+} from "@remix-run/react";
 import { useState } from "react";
 import AtIcon from "~/assets/icons/AtIcon";
 import EyeIcon from "~/assets/icons/Eye";
@@ -14,6 +20,8 @@ import * as Z from "zod";
 import type { ActionArgs } from "@remix-run/node";
 import { register } from "~/service/auth.server";
 import LayoutAuth from "~/layout/LayoutAuth";
+import LayoutPage from "~/layout/LayoutPage";
+import Error404 from "~/layout/Error404Page";
 
 export const validator = withZod(
   Z.object({
@@ -59,6 +67,8 @@ export async function action({ request }: ActionArgs) {
 export default function () {
   const actionData = useActionData();
 
+  console.log(actionData);
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -78,12 +88,12 @@ export default function () {
     <LayoutAuth>
       <Form
         method="post"
-        className="w-4/5 max-w-[450px] flex flex-col xl:rounded-2xl xl:bg-white-100 xl:px-8 xl:py-6 xl:max-w-[600px]"
+        className="flex w-4/5 max-w-[450px] flex-col xl:max-w-[600px] xl:rounded-2xl xl:bg-white-100 xl:px-8 xl:py-6 xl:shadow-xl"
       >
-        <h2 className="text-3xl font-bold text-secondary-300 my-5 text-center">
+        <h2 className="my-5 text-center text-3xl font-bold text-secondary-300">
           Sign up for free !
         </h2>
-        <p className="text-center text-black-light text-8 my-5">
+        <p className="my-5 text-center text-8 text-black-light">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id repellat
           commodi quos accusantium assumenda mollitia.
         </p>
@@ -124,14 +134,14 @@ export default function () {
             error={actionData?.fieldErrors?.confirm}
           ></FormField>
         </div>
-        <div className="text-7 flex justify-between px-2">
+        <div className="flex justify-between px-2 text-7">
           <Checkbox
             label="I confirm that I have read and agree to FreshBooks Terms of Service and Privacy Policy."
             name="termsAndService"
             error={actionData?.fieldErrors?.termsAndService}
           />
         </div>
-        <div className="flex gap-x-6 center my-6 ">
+        <div className="center my-6 flex gap-x-6 ">
           <Button
             type="submit"
             value="Sign up"
@@ -140,13 +150,32 @@ export default function () {
             <LoginIcon />
           </Button>
         </div>
-        <p className="self-center xl:absolute xl:bottom-2 xl:left-1/2 xl:-translate-x-1/2 mt-4 ">
+        <p className="mt-4 self-center xl:absolute xl:bottom-2 xl:left-1/2 xl:-translate-x-1/2 ">
           Already have an account ?
-          <span className="text-secondary-300 font-bold">
+          <span className="px-1 font-bold text-secondary-300">
             <Link to="/login">Log in</Link>
           </span>
         </p>
       </Form>
     </LayoutAuth>
   );
+}
+
+// Make a component for the error page handling
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (!isRouteErrorResponse(error)) {
+    if (error.status === 500) {
+      return (
+        <LayoutPage>
+          <h2>Something went wrong ... try again later</h2>
+        </LayoutPage>
+      );
+    }
+  }
+
+  if (error.status === 404) {
+    return <Error404 />;
+  }
 }

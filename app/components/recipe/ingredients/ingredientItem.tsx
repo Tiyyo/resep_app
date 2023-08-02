@@ -7,8 +7,8 @@ export default function IngredientItem({
   originalServings,
 }: IngredientItemProps) {
   return (
-    <div className="flex justify-between max-h-8 items-center rounded-2xl py-.5 px-1.5 mx-1">
-      <div className="pl-2 flex items-center gap-x-4 ">
+    <div className="py-.5 mx-1 flex max-h-8 items-center justify-between rounded-2xl px-1.5">
+      <div className="flex items-center gap-x-4 pl-2 ">
         <img
           src={measure?.ingredient?.icon?.link}
           alt=""

@@ -1,13 +1,12 @@
 import type { MenuLinkProps } from "./interface";
 
 export default function MenuLink({ active, item, level }: MenuLinkProps) {
-
   return (
     <div
       className={
         active
-          ? "text-secondary-300 flex items-center justify-start gap-x-1 font"
-          : "flex items-center justify-start gap-x-1 font"
+          ? "font flex items-center justify-start gap-x-1 text-secondary-300"
+          : "font flex items-center justify-start gap-x-1"
       }
     >
       {item.icon ? <div>{item.icon({ size: "5" })}</div> : ""}

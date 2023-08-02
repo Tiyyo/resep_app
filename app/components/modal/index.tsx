@@ -9,11 +9,11 @@ export default function Modal({ children }: { children: React.ReactNode }) {
 
   return (
     // Reminder Check if the z-index raise to 10 have no side effect
-    <div className="absolute top-0 left-0 min-h-screen w-full backdrop-blur-sm z-10">
-      <div className="absolute bg-primary-100 rounded-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border border-black-light w-fit">
+    <div className="absolute left-0 top-0 z-10 min-h-screen w-full backdrop-blur-sm">
+      <div className="absolute left-1/2 top-1/2 w-fit -translate-x-1/2 -translate-y-1/2 rounded-xl border border-black-light bg-primary-100">
         <div className="sticky">
           <div
-            className="flex justify-end pr-4 py-2 cursor-pointer"
+            className="flex cursor-pointer justify-end py-2 pr-4"
             onClick={goBack}
           >
             <CloseIcon size="8" />

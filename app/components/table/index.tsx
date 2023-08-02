@@ -25,7 +25,7 @@ export default function Table({
 
   if (data.length < 1) {
     return (
-      <div className="w-full h-full center">
+      <div className="center h-full w-full">
         <p>Database is Empty</p>
       </div>
     );
@@ -47,8 +47,8 @@ export default function Table({
   );
 
   return (
-    <div className="w-full mx-auto ">
-      <table className="bg-main-300 table-auto mx-auto">
+    <div className="mx-auto w-full ">
+      <table className="mx-auto table-auto bg-main-300">
         <TableHead
           keys={keys}
           search={search ?? undefined}

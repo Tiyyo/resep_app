@@ -4,12 +4,7 @@ import { promiseHash } from "remix-utils";
 import SubmitButton from "~/components/submit_button";
 import SelectSearch from "~/components/select_search";
 import Input from "~/components/input";
-import {
-  useActionData,
-  useFetcher,
-  useLoaderData,
-  useNavigation,
-} from "@remix-run/react";
+import { useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import Error from "~/components/error";
 import category from "~/api/category";
@@ -57,7 +52,12 @@ export default function () {
       addIngredientFormRef.current.reset();
     }
     return () => setClear(false);
-  }, [addIngredient.state]);
+  }, [
+    addIngredient.state,
+    addIngredient.data?.error,
+    addIngredient.data?.fields?.name,
+    addIngredient.data?.status,
+  ]);
 
   return (
     <div className="center w-full ">
@@ -68,7 +68,7 @@ export default function () {
         ref={addIngredientFormRef}
       >
         <div className="flex flex-col flex-wrap items-center justify-center gap-y-8 first-letter:mt-3">
-          <div className="flex items-start gap-x-12 ">
+          <div className="flex flex-col items-start gap-x-12 gap-y-8 md:flex-row ">
             <div className="flex flex-col items-center">
               <Input
                 name="name"
@@ -86,11 +86,11 @@ export default function () {
                 label="Average weight for 1 unit"
                 placeholder="g/ml"
               />
-              <p className="text-6 self-center">(optional)</p>
+              <p className="self-center text-6">(optional)</p>
             </div>
           </div>
 
-          <div className="flex items-start  gap-x-12">
+          <div className="flex flex-col items-start gap-x-12 gap-y-6 md:flex-row">
             <div>
               <SelectSearch
                 name="categoryId"
@@ -112,7 +112,7 @@ export default function () {
                 placeholder="Food reference"
                 clear={clear}
               />
-              <p className="text-6 px-2 self-center">(optional)</p>
+              <p className="self-center px-2 text-6">(optional)</p>
             </div>
             <div className="flex">
               <SelectSearch
@@ -124,7 +124,7 @@ export default function () {
                 placeholder="Search for an Icon"
                 clear={clear}
               />
-              <p className="text-6 px-2 self-center">(optional)</p>
+              <p className="self-center px-2 text-6">(optional)</p>
             </div>
           </div>
           <div className="center ">

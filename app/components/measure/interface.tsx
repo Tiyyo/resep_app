@@ -1,7 +1,7 @@
 import type {
   Ingredient,
   UnitMeasure,
-} from '~/service/recipe_builder/index.server';
+} from "~/service/recipe_builder/index.server";
 
 export interface MeasureProps {
   ingredients: Array<Ingredient>;

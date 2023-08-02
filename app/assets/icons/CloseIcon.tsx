@@ -1,4 +1,4 @@
-export default function CloseIcon ({size} : {size? : string | number})  {
+export default function CloseIcon({ size }: { size?: string | number }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -1,7 +1,7 @@
-import chalk from 'chalk';
+import chalk from "chalk";
 
-const log = console.log
+const log = console.log;
 
-chalk.level = 1
+chalk.level = 1;
 
-log(chalk.blue('Hello') + ' World' + chalk.red('!'))
+log(chalk.blue("Hello") + " World" + chalk.red("!"));

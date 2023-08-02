@@ -1,9 +1,9 @@
 interface Option {
-    value : string
-    label : string
+  value: string;
+  label: string;
 }
 
 export interface SelectProps {
-    children? : React.ReactNode
-    options : Option[]
+  children?: React.ReactNode;
+  options: Option[];
 }

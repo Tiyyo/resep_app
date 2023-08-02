@@ -1,39 +1,22 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
-  extends: [
-    '@remix-run/eslint-config',
-    '@remix-run/eslint-config/node',
-    'airbnb-base',
-    'eslint-config-prettier',
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-  ],
   root: true,
-  plugins: ['@typescript-eslint', 'eslint-plugin-prettier', 'no-loops'],
-  overrides: [],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 'latest',
-  },
-  rules: {
-    'prettier/prettier': 'error',
-    'linebreak-style': ['error', 'windows'],
-    'no-loops/no-loops': 2,
-    'no-console': 'off',
-    'import/extensions': [
-      'error',
-      'ignorePackages',
-      {
-        js: 'never',
-        jsx: 'never',
-        ts: 'never',
-        tsx: 'never',
-      },
-    ],
-  },
+  extends: [
+    "@remix-run/eslint-config",
+    "@remix-run/eslint-config/node",
+    "@remix-run/eslint-config/jest-testing-library",
+    "prettier",
+  ],
   env: {
-    browser: true,
-    commonjs: true,
-    es2021: true,
+    "cypress/globals": true,
+  },
+  plugins: ["cypress"],
+  // we're using vitest which has a very similar API to jest
+  // (so the linting plugins work nicely), but it means we have to explicitly
+  // set the jest version.
+  settings: {
+    jest: {
+      version: 28,
+    },
   },
 };

@@ -1,17 +1,19 @@
-import { json, type LoaderArgs, V2_MetaFunction } from '@remix-run/node';
-import { Outlet, useLoaderData } from '@remix-run/react';
-import recipe from '~/api/recipe';
-import Slider from '~/components/slider';
-import LayoutRecipePages from '~/layout/LayoutRecipesPage';
-import { getProfile } from '~/utils/get.user.infos';
-// const chalk = require('chalk');
+import { type V2_MetaFunction, type LoaderArgs, json } from "@remix-run/node";
+import { Outlet, useLoaderData } from "@remix-run/react";
+import recipe from "~/api/recipe";
+import Slider from "~/components/slider";
+import TitleLevel1 from "~/components/title/TitleLevel1";
+import useWindowSize from "~/hooks/useWindowsSize";
+import LayoutRecipePages from "~/layout/LayoutRecipesPage";
+import { getProfile } from "~/utils/get.user.infos";
+import { useState, useEffect } from "react";
 
 export const meta: V2_MetaFunction = () => {
   return [
     {
-      title: 'Resep ! Have control over your macros',
+      title: "Resep ! Have control over your macros",
       description:
-        'Home recipes pages with recommended recipes based on your preference',
+        "Home recipes pages with recommended recipes based on your preference",
     },
   ];
 };
@@ -20,17 +22,17 @@ export async function loader({ request }: LoaderArgs) {
   // TODO promise all with Promise hash and build a cache for profileId
   const profile = await getProfile(request);
   const lastestRecipes = await recipe.findLast();
-  const asianRecipes = await recipe.findByTags(['Asia', 'Japan', 'China']);
-  const italianRecipes = await recipe.findByTags(['Italy']);
+  const asianRecipes = await recipe.findByTags(["Asia", "Japan", "China"]);
+  const italianRecipes = await recipe.findByTags(["Italy"]);
   if (!profile) {
     return json(
       {
-        message: 'no user found',
+        message: "no user found",
         asianRecipes,
         lastestRecipes,
         italianRecipes,
       },
-      { status: 400 },
+      { status: 400 }
     );
   }
   const profileId = profile.id;
@@ -40,17 +42,22 @@ export async function loader({ request }: LoaderArgs) {
 export default function () {
   const { profileId, asianRecipes, lastestRecipes, italianRecipes } =
     useLoaderData();
+  const [axisCard, setAxisCard] = useState<"horizontal" | "vertical">(
+    "vertical"
+  );
 
-  // const log = console.log;
+  const windowSize = useWindowSize();
 
-  // chalk.level = 1;
-
-  // log(chalk.blue('Hello') + ' World' + chalk.red('!'));
+  useEffect(() => {
+    if (windowSize && windowSize.width > 1280) {
+      setAxisCard("horizontal");
+    }
+  }, [windowSize.width]);
 
   return (
-    <LayoutRecipePages title="Recommended for you">
-      <>
-        <Outlet />
+    <>
+      <Outlet />
+      <LayoutRecipePages title={"Recommended for you"}>
         <Slider
           banner={false}
           title="Just added"
@@ -63,7 +70,7 @@ export default function () {
         <Slider
           banner={true}
           title="Asia"
-          cardAxis="horizontal"
+          cardAxis={axisCard}
           content={asianRecipes}
           profileId={profileId}
           linkText="See all"
@@ -72,13 +79,13 @@ export default function () {
         <Slider
           banner={true}
           title="Italy"
-          cardAxis="horizontal"
+          cardAxis={axisCard}
           content={italianRecipes}
           profileId={profileId}
           linkText="See all"
           link="/"
         />
-      </>
-    </LayoutRecipePages>
+      </LayoutRecipePages>
+    </>
   );
 }

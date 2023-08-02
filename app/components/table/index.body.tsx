@@ -1,5 +1,5 @@
 import { Link, useFetcher, useLocation } from "@remix-run/react";
-import { TableBodyProps } from "./interface";
+import type { TableBodyProps } from "./interface";
 import EditIcon from "~/assets/icons/EditIcon";
 import DeleteIcon from "~/assets/icons/DeleteIcon";
 import { displayMultiString } from "./display.multi.string";
@@ -26,7 +26,7 @@ export default function TableBody({
             return (
               <tr
                 key={d.id}
-                className="even:bg-white-100 odd:bg-primary-300 text-8"
+                className="text-8 odd:bg-primary-300 even:bg-white-100"
               >
                 {keys.map((k) => {
                   return (
@@ -39,7 +39,7 @@ export default function TableBody({
                     </td>
                   );
                 })}
-                <td className="text-right px-4 py-2">
+                <td className="px-4 py-2 text-right">
                   <div className="flex gap-x-2">
                     <div className="">
                       <Link

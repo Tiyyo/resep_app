@@ -1,4 +1,3 @@
-import { Form } from "@remix-run/react";
 import { useFetcher } from "react-router-dom";
 import SubmitButton from "../submit_button";
 import FileInput from "../file_input";
@@ -15,7 +14,7 @@ export function UpdateIconsForm({ icon }: UpdateIconsFormProps) {
       encType="multipart/form-data"
       action="/api/icons"
     >
-      <div className="flex flex-col justify-start items-start gap-y-4">
+      <div className="flex flex-col items-start justify-start gap-y-4">
         <input type="text" hidden name="id" defaultValue={icon.id} />
         <input type="text" hidden name="link" defaultValue={icon.link} />
         <input type="text" hidden name="key" defaultValue={icon.image_key} />

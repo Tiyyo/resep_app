@@ -1,5 +1,3 @@
-import type { Decimal } from "@prisma/client/runtime";
-
 export interface InputProps {
   name: string;
   error?: string;
@@ -13,10 +11,13 @@ export interface InputProps {
   style?: string;
   disabled?: boolean;
   placeholder?: string;
-  defaultValue?: string | null | number | Decimal;
+  defaultValue?: string | number;
   pattern?: string;
   variant?: "grid" | "flex";
   align?: "start" | "end" | "center";
+  sx?: string;
+  unitStyle?: string;
+  fixedUnit?: boolean;
 }
 
 export type TextAlign =

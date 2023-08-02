@@ -4,7 +4,7 @@ export default function BannerSlider({ title }: { title: string }) {
       <img
         src={`/images/banner_${title?.toLowerCase()}.webp`}
         alt="banner"
-        className=" object-cover rounded-2xl"
+        className=" rounded-2xl object-cover"
       />
     </div>
   );

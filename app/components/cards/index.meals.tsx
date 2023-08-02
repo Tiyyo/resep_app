@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
 import Input from "../input";
 import DeleteIcon from "~/assets/icons/DeleteIcon";
-import { MealCreateInput } from "~/session";
+import type { MealCreateInput } from "~/session";
 
 export interface CardMealsProps {
   handleServings: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -17,7 +17,7 @@ export default function CardMeals({
   return (
     <>
       <input name="recipeId" hidden defaultValue={recipe.recipe_id} />
-      <div className="flex border p-2 bg-main-100 shadow-md h-44 aspect-2/1">
+      <div className="flex aspect-2/1 h-44 border bg-main-100 p-2 shadow-md">
         <div className="aspect-square basis-1/3">
           <Link to={`/home/recipe/${recipe.recipe_id}`}>
             <img
@@ -32,7 +32,7 @@ export default function CardMeals({
             {recipe.recipe_name}
           </p>
           <div
-            className="flex items-center text-8 opacity-90 flex-grow "
+            className="flex flex-grow items-center text-8 opacity-90 "
             data-position={index}
           >
             <p className="text-7">Number of people for that recipes ? </p>
@@ -68,7 +68,7 @@ export default function CardMeals({
           </div>
           <div className="flex items-center justify-between">
             <Link to={`/home/finder/${index}`}>
-              <p className="opacity-70 text-7 underline self-end cursor-pointer">
+              <p className="cursor-pointer self-end text-7 underline opacity-70">
                 Change recipe
               </p>
             </Link>

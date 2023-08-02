@@ -6,7 +6,7 @@ export default function FractionContainer({
   numerator: number;
 }) {
   return (
-    <div className="flex justify-center h-8 max-h-8 text-8">
+    <div className="flex h-8 max-h-8 justify-center text-8">
       <span className="self-start">{numerator}</span>
       <span className="self-center">/</span>
       <span className="self-end">{denominator}</span>

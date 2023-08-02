@@ -1,34 +1,23 @@
-import { ActionArgs, LoaderArgs, json, redirect } from '@remix-run/node';
-import {
-  Form,
-  Link,
-  useActionData,
-  useFetcher,
-  useLoaderData,
-  useSubmit,
-} from '@remix-run/react';
-import { useRef, useState } from 'react';
+import type { ActionArgs, LoaderArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { Form, useFetcher, useLoaderData, useSubmit } from "@remix-run/react";
+import { useState, useEffect } from "react";
 
-import SubmitButton from '~/components/submit_button';
-import TitleLevel1 from '~/components/title/TitleLevel1';
-import { Recipe } from '~/types/recipe';
+import SubmitButton from "~/components/submit_button";
+import TitleLevel1 from "~/components/title/TitleLevel1";
 // import { buildShoppingList } from "~/service/shopping.builder.server";
-import { buildShoppingList } from '~/service/algo.builder.safer.server';
-import Input from '~/components/input';
+import { buildShoppingList } from "~/service/algo.builder.safer.server";
 // import type { RecipeCardShop } from "~/context/shoplist.context";
-import { useEffect } from 'react';
-import recipe from '~/api/recipe';
-import { mealPlanStorage } from '~/session';
-import meal_plans from '~/api/meal_plans';
-import { getProfile } from '~/utils/get.user.infos';
-import { MealPlanCreateInput } from '~/api/interfaces';
-import DeleteIcon from '~/assets/icons/DeleteIcon';
-import { getUserSession, storage } from '~/service/auth.server';
-import Intro from '~/components/meal_plans/index.intro';
-import ModalNotRoute from '~/components/modal/index.not.route';
-import shopping_lists from '~/api/shopping_lists';
-import DashedBtn from '~/components/button/DashedBtn';
-import CardMeals from '~/components/cards/index.meals';
+import recipe from "~/api/recipe";
+import meal_plans from "~/api/meal_plans";
+import { getProfile } from "~/utils/get.user.infos";
+import type { MealPlanCreateInput } from "~/api/interfaces";
+import { getUserSession, storage } from "~/service/auth.server";
+import Intro from "~/components/meal_plans/index.intro";
+import ModalNotRoute from "~/components/modal/index.not.route";
+import shopping_lists from "~/api/shopping_lists";
+import DashedBtn from "~/components/button/DashedBtn";
+import CardMeals from "~/components/cards/index.meals";
 
 export interface RecipeCardShop {
   id: number;
@@ -39,146 +28,146 @@ export interface RecipeCardShop {
 
 export async function loader({ request }: LoaderArgs) {
   const session = await getUserSession(request);
-  const mealPlan = session.get('meal_plan');
+  const mealPlan = session.get("meal_plan");
 
   if (mealPlan) {
     return json({ recipes: mealPlan });
   }
-  return json({ message: 'No plan saved in session' });
+  return json({ message: "No plan saved in session" });
 }
 
 export async function action({ request }: ActionArgs) {
   const profile = await getProfile(request);
   if (!profile) {
-    return redirect('/login');
+    return redirect("/login");
   }
   const formData = await request.formData();
-  const action = formData.get('action');
-  const position = Number(formData.get('position'));
+  const action = formData.get("action");
+  const position = Number(formData.get("position"));
 
   const session = await getUserSession(request);
-  const mealPlan = session.get('meal_plan');
+  const mealPlan = session.get("meal_plan");
 
   switch (action) {
-    case 'getRandom': {
-      const numRecipes = Number(formData.get('numRecipes'));
+    case "getRandom": {
+      const numRecipes = Number(formData.get("numRecipes"));
       // TODO send a message to users instead of formating the value for them
 
       if (isNaN(numRecipes)) {
         return json(
-          { error: { numRecipes: 'Please enter a number' } },
-          { status: 400 },
+          { error: { numRecipes: "Please enter a number" } },
+          { status: 400 }
         );
       }
       if (numRecipes < 1) {
         return json(
           {
             error: {
-              numRecipes: 'Please enter a number greater than 0',
+              numRecipes: "Please enter a number greater than 0",
             },
           },
-          { status: 400 },
+          { status: 400 }
         );
       }
       const numberOfRecipesToGenerate = Math.floor(Math.abs(numRecipes));
       const recipes = await recipe.findRandom(numberOfRecipesToGenerate);
-      session.set('meal_plan', recipes);
+      session.set("meal_plan", recipes);
       return json(
         { recipes },
         {
           headers: {
-            'Set-Cookie': await storage.commitSession(session),
+            "Set-Cookie": await storage.commitSession(session),
           },
           status: 201,
-        },
+        }
       );
     }
-    case 'getShoppingList': {
+    case "getShoppingList": {
       const mealPlanSaved = await meal_plans.add(profile.id, mealPlan);
       const shoppingList = await buildShoppingList(mealPlan);
 
       if (!mealPlanSaved)
         return json(
-          { message: 'Error while saving meal plan' },
-          { status: 500 },
+          { message: "Error while saving meal plan" },
+          { status: 500 }
         );
       const shoppingListSaved = await shopping_lists.add(
         Number(mealPlanSaved.id),
-        shoppingList,
+        shoppingList
       );
       if (!shoppingListSaved)
         return json(
-          { message: 'Error while saving shopping list' },
-          { status: 500 },
+          { message: "Error while saving shopping list" },
+          { status: 500 }
         );
-      session.unset('meal_plan');
+      session.unset("meal_plan");
       return redirect(`/home/meal_plans/my_plans/${mealPlanSaved.id}`, {
-        headers: { 'Set-Cookie': await storage.commitSession(session) },
+        headers: { "Set-Cookie": await storage.commitSession(session) },
         status: 301,
       });
       // return "hello world";
     }
-    case 'remove': {
-      const position = Number(formData.get('position'));
+    case "remove": {
+      const position = Number(formData.get("position"));
       mealPlan.splice(position, 1);
-      session.set('meal_plan', mealPlan);
+      session.set("meal_plan", mealPlan);
       return json(
         { recipes: mealPlan },
         {
           headers: {
-            'Set-Cookie': await storage.commitSession(session),
+            "Set-Cookie": await storage.commitSession(session),
           },
-        },
+        }
       );
     }
-    case 'increase': {
+    case "increase": {
       mealPlan[position].servings += 1;
-      session.set('meal_plan', mealPlan);
+      session.set("meal_plan", mealPlan);
       return json(
         { recipes: mealPlan },
         {
           headers: {
-            'Set-Cookie': await storage.commitSession(session),
+            "Set-Cookie": await storage.commitSession(session),
           },
-        },
+        }
       );
     }
-    case 'decrease': {
+    case "decrease": {
       if (mealPlan[position].servings - 1 >= 1) {
         mealPlan[position].servings -= 1;
       }
-      session.set('meal_plan', mealPlan);
+      session.set("meal_plan", mealPlan);
       return json(
         { recipes: mealPlan },
         {
           headers: {
-            'Set-Cookie': await storage.commitSession(session),
+            "Set-Cookie": await storage.commitSession(session),
           },
-        },
+        }
       );
     }
-    case 'restore': {
+    case "restore": {
       const mealPlan = await meal_plans.findLast(profile.id);
 
       if (!mealPlan)
-        return json({ message: 'No meal plan found' }, { status: 404 });
+        return json({ message: "No meal plan found" }, { status: 404 });
 
       const meals = mealPlan.meals.map((meal) => meal.meals);
-      session.set('meal_plan', meals);
+      session.set("meal_plan", meals);
 
       return json(
         { recipes: meals },
-        { headers: { 'Set-Cookie': await storage.commitSession(session) } },
+        { headers: { "Set-Cookie": await storage.commitSession(session) } }
       );
     }
     default:
-      return json({ message: 'No action' }, { status: 400 });
+      return json({ message: "No action" }, { status: 400 });
   }
 }
 
 export default function () {
   const [recipes, setRecipes] = useState<MealPlanCreateInput | null>(null);
-  const [action, setAction] = useState<'new' | 'old' | null>(null);
+  const [action, setAction] = useState<"new" | "old" | null>(null);
   const [hasToOpenModal, setHasToOpenModal] = useState(true);
   const fetchRandomRecipes = useFetcher();
   const updateServings = useSubmit();
@@ -186,12 +175,12 @@ export default function () {
     recipes: MealPlanCreateInput;
   }>();
 
-  const getActionToPerform = (action: 'new' | 'old' | null) => {
+  const getActionToPerform = (action: "new" | "old" | null) => {
     setAction(action);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLFormElement>) => {
-    updateServings(e.currentTarget, { method: 'POST' });
+    updateServings(e.currentTarget, { method: "POST" });
   };
 
   const handleIncrAndDecr = (value: string, copyArr: any, position: number) => {
@@ -203,7 +192,7 @@ export default function () {
       if (copyArr[position].servings - 1 >= 1) copyArr[position].servings--;
     };
 
-    value === 'increase' ? increaseServings() : decreaseServings();
+    value === "increase" ? increaseServings() : decreaseServings();
   };
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -232,13 +221,17 @@ export default function () {
   }, [cachedRecipes]);
 
   useEffect(() => {
-    if (action === 'new' || action === 'old') {
+    if (action === "new" || action === "old") {
       setHasToOpenModal(false);
     }
   }, [action]);
 
+  const handletest = () => {
+    console.log("test");
+  };
+
   return (
-    <>
+    <div onClick={handletest}>
       <ModalNotRoute
         getActionToPerform={getActionToPerform}
         isOpen={hasToOpenModal}
@@ -246,7 +239,7 @@ export default function () {
       <TitleLevel1 title="Meal plans creator" />
       {recipes && (
         <>
-          <div className="flex justify-center flex-wrap gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             {recipes.map((recipe, index: number) => {
               return (
                 <Form
@@ -264,12 +257,12 @@ export default function () {
             })}
           </div>
           <DashedBtn
-            value={'ADD ANOTHER RECIPE'}
+            value={"ADD ANOTHER RECIPE"}
             link={`/home/finder/${recipes.length}`}
           />
           <Form
             method="POST"
-            className="w-full flex justify-center my-10 cursor-pointer"
+            className="my-10 flex w-full cursor-pointer justify-center"
           >
             <SubmitButton
               text="Generate shopping list"
@@ -280,6 +273,6 @@ export default function () {
         </>
       )}
       {!recipes && <Intro action={action} />}
-    </>
+    </div>
   );
 }
