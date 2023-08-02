@@ -2,7 +2,6 @@ import { type V2_MetaFunction, type LoaderArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import recipe from "~/api/recipe";
 import Slider from "~/components/slider";
-import TitleLevel1 from "~/components/title/TitleLevel1";
 import useWindowSize from "~/hooks/useWindowsSize";
 import LayoutRecipePages from "~/layout/LayoutRecipesPage";
 import { getProfile } from "~/utils/get.user.infos";
