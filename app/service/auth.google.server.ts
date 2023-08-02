@@ -6,13 +6,14 @@ const randomize = require("randomatic");
 
 type User_Id = string;
 let googleCallbackUrl = "/auth/google/callback";
+// let googleCallbackUrl = "isError";
 
 export const authentificator = new Authenticator<User_Id>(storage, {
   sessionKey: "userId",
 });
 
 if (process.env.NODE_ENV !== "development") {
-  googleCallbackUrl = "http://resep.fly.dev/auth/google/callback"
+  googleCallbackUrl = "https://resep.fly.dev/auth/google/callback"
 }
 
 let googleStrategy = new GoogleStrategy(
