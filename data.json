@@ -1,0 +1,858 @@
+
+
+[
+    {
+        "id": 1,
+        "name": "Rice",
+        "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clip3rzqi0000b0vzg0yxa85q.png",
+        "image_key": "clip3rzqi0000b0vzg0yxa85q.png",
+        "tags": [
+            "basmati",
+            "feculent",
+            "rice"
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Yellow pepper",
+        "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clirym4hr00000ovzgqay741x.png",
+        "image_key": "clirym4hr00000ovzgqay741x.png",
+        "tags": [
+            "pepper",
+            "vegetables",
+            "yellow"
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Red pepper",
+        "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis0k8iu0000ycvz5zcr16xm.png",
+        "image_key": "clis0k8iu0000ycvz5zcr16xm.png",
+        "tags": [
+            "pepper",
+            "red",
+            "vegetables"
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Garlic",
+        "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1jmis0001ycvz1gmn5ekr.png",
+        "image_key": "clis1jmis0001ycvz1gmn5ekr.png",
+        "tags": [
+            "condiment",
+            "garlic"
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Curry",
+        "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1k1bh0002ycvza6aq3bkx.png",
+        "image_key": "clis1k1bh0002ycvza6aq3bkx.png",
+        "tags": [
+            "curry",
+            "spices"
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Salt ",
+        "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1kbfb0003ycvzef7q4u11.png",
+        "image_key": "clis1kbfb0003ycvzef7q4u11.png",
+        "tags": [
+            "condiment",
+            "salt"
+        ]
+    },
+    {
+        "id": 7,
+        "name": "Black pepper",
+        "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1ktg20004ycvz3dk1e104.png",
+        "image_key": "clis1ktg20004ycvz3dk1e104.png",
+        "tags": [
+            "black",
+            "condiment",
+            "pepper",
+            "seasoning"
+        ]
+    },
+    {
+        "id": 8,
+        "name": "Chicken breast",
+        "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1lwx10005ycvzh9oud0rr.png",
+        "image_key": "clis1lwx10005ycvzh9oud0rr.png",
+        "tags": [
+            "breast",
+            "chicken",
+            "meat"
+        ]
+    },
+    {
+        "id": 9,
+        "name": "Coconut milk",
+        "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1mdlv0006ycvz6e5zao8y.png",
+        "image_key": "clis1mdlv0006ycvz6e5zao8y.png",
+        "tags": [
+            "coconut",
+            "liquid",
+            "milk"
+        ]
+    },
+    {
+        "id": 10,
+        "name": "Red onion",
+        "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1mtmn0007ycvz9n1d0nvy.png",
+        "image_key": "clis1mtmn0007ycvz9n1d0nvy.png",
+        "tags": [
+            "onion",
+            "red",
+            "vegetables"
+        ]
+    }
+]
+[
+    {
+        "id": 1,
+        "food": "rice",
+        "calories": "114",
+        "proteins": "2",
+        "carbs": "24",
+        "fat": "0",
+        "water": "71"
+    },
+    {
+        "id": 2,
+        "food": "chicken",
+        "calories": "121",
+        "proteins": "26",
+        "carbs": "26",
+        "fat": "1",
+        "water": "72"
+    },
+    {
+        "id": 3,
+        "food": "pepper",
+        "calories": "29",
+        "proteins": "1",
+        "carbs": "2.4",
+        "fat": "0.2",
+        "water": "92"
+    },
+    {
+        "id": 4,
+        "food": "onions",
+        "calories": "36",
+        "proteins": "1",
+        "carbs": "1",
+        "fat": "0",
+        "water": "90"
+    },
+    {
+        "id": 5,
+        "food": "curry",
+        "calories": "301",
+        "proteins": "1",
+        "carbs": "1",
+        "fat": "14",
+        "water": "8"
+    },
+    {
+        "id": 6,
+        "food": "coconut milk",
+        "calories": "179",
+        "proteins": "2",
+        "carbs": "2",
+        "fat": "18",
+        "water": "0"
+    },
+    {
+        "id": 16,
+        "food": "garlic",
+        "calories": "130",
+        "proteins": "6",
+        "carbs": "6",
+        "fat": "0.4",
+        "water": "63.5"
+    },
+    {
+        "id": 20,
+        "food": null,
+        "calories": "463.4",
+        "proteins": "43.8",
+        "carbs": "64.8",
+        "fat": "15.2",
+        "water": "290.6"
+    },
+    {
+        "id": 21,
+        "food": null,
+        "calories": "463.4",
+        "proteins": "43.8",
+        "carbs": "64.8",
+        "fat": "15.2",
+        "water": "290.6"
+    },
+    {
+        "id": 22,
+        "food": null,
+        "calories": "463.4",
+        "proteins": "43.8",
+        "carbs": "64.8",
+        "fat": "15.2",
+        "water": "290.6"
+    }
+]
+[
+    {
+        "id": 5,
+        "name": "rice basmati",
+        "unit_weight": null,
+        "categoryId": 4,
+        "macrosId": 1,
+        "iconId": 1,
+        "category": {
+            "id": 4,
+            "name": "Feculent"
+        },
+        "macros": {
+            "id": 1,
+            "food": "rice",
+            "calories": "114",
+            "proteins": "2",
+            "carbs": "24",
+            "fat": "0",
+            "water": "71"
+        },
+        "icon": {
+            "id": 1,
+            "name": "Rice",
+            "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clip3rzqi0000b0vzg0yxa85q.png",
+            "image_key": "clip3rzqi0000b0vzg0yxa85q.png"
+        }
+    },
+    {
+        "id": 6,
+        "name": "chicken breast",
+        "unit_weight": "150",
+        "categoryId": 8,
+        "macrosId": 2,
+        "iconId": 8,
+        "category": {
+            "id": 8,
+            "name": "Meat"
+        },
+        "macros": {
+            "id": 2,
+            "food": "chicken",
+            "calories": "121",
+            "proteins": "26",
+            "carbs": "26",
+            "fat": "1",
+            "water": "72"
+        },
+        "icon": {
+            "id": 8,
+            "name": "Chicken breast",
+            "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1lwx10005ycvzh9oud0rr.png",
+            "image_key": "clis1lwx10005ycvzh9oud0rr.png"
+        }
+    },
+    {
+        "id": 15,
+        "name": "red pepper",
+        "unit_weight": "175",
+        "categoryId": 1,
+        "macrosId": 3,
+        "iconId": 3,
+        "category": {
+            "id": 1,
+            "name": "Vegetables"
+        },
+        "macros": {
+            "id": 3,
+            "food": "pepper",
+            "calories": "29",
+            "proteins": "1",
+            "carbs": "2.4",
+            "fat": "0.2",
+            "water": "92"
+        },
+        "icon": {
+            "id": 3,
+            "name": "Red pepper",
+            "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis0k8iu0000ycvz5zcr16xm.png",
+            "image_key": "clis0k8iu0000ycvz5zcr16xm.png"
+        }
+    },
+    {
+        "id": 17,
+        "name": "yellow pepper",
+        "unit_weight": "175",
+        "categoryId": 1,
+        "macrosId": 3,
+        "iconId": 2,
+        "category": {
+            "id": 1,
+            "name": "Vegetables"
+        },
+        "macros": {
+            "id": 3,
+            "food": "pepper",
+            "calories": "29",
+            "proteins": "1",
+            "carbs": "2.4",
+            "fat": "0.2",
+            "water": "92"
+        },
+        "icon": {
+            "id": 2,
+            "name": "Yellow pepper",
+            "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clirym4hr00000ovzgqay741x.png",
+            "image_key": "clirym4hr00000ovzgqay741x.png"
+        }
+    },
+    {
+        "id": 18,
+        "name": "red onions",
+        "unit_weight": "80",
+        "categoryId": 1,
+        "macrosId": 4,
+        "iconId": 10,
+        "category": {
+            "id": 1,
+            "name": "Vegetables"
+        },
+        "macros": {
+            "id": 4,
+            "food": "onions",
+            "calories": "36",
+            "proteins": "1",
+            "carbs": "1",
+            "fat": "0",
+            "water": "90"
+        },
+        "icon": {
+            "id": 10,
+            "name": "Red onion",
+            "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1mtmn0007ycvz9n1d0nvy.png",
+            "image_key": "clis1mtmn0007ycvz9n1d0nvy.png"
+        }
+    },
+    {
+        "id": 19,
+        "name": "curry",
+        "unit_weight": null,
+        "categoryId": 7,
+        "macrosId": 5,
+        "iconId": 5,
+        "category": {
+            "id": 7,
+            "name": "Spices"
+        },
+        "macros": {
+            "id": 5,
+            "food": "curry",
+            "calories": "301",
+            "proteins": "1",
+            "carbs": "1",
+            "fat": "14",
+            "water": "8"
+        },
+        "icon": {
+            "id": 5,
+            "name": "Curry",
+            "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1k1bh0002ycvza6aq3bkx.png",
+            "image_key": "clis1k1bh0002ycvza6aq3bkx.png"
+        }
+    },
+    {
+        "id": 20,
+        "name": "coconut milk",
+        "unit_weight": null,
+        "categoryId": 6,
+        "macrosId": 6,
+        "iconId": 9,
+        "category": {
+            "id": 6,
+            "name": "Liquids"
+        },
+        "macros": {
+            "id": 6,
+            "food": "coconut milk",
+            "calories": "179",
+            "proteins": "2",
+            "carbs": "2",
+            "fat": "18",
+            "water": "0"
+        },
+        "icon": {
+            "id": 9,
+            "name": "Coconut milk",
+            "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1mdlv0006ycvz6e5zao8y.png",
+            "image_key": "clis1mdlv0006ycvz6e5zao8y.png"
+        }
+    },
+    {
+        "id": 21,
+        "name": "garlic",
+        "unit_weight": "7",
+        "categoryId": 1,
+        "macrosId": 16,
+        "iconId": 4,
+        "category": {
+            "id": 1,
+            "name": "Vegetables"
+        },
+        "macros": {
+            "id": 16,
+            "food": "garlic",
+            "calories": "130",
+            "proteins": "6",
+            "carbs": "6",
+            "fat": "0.4",
+            "water": "63.5"
+        },
+        "icon": {
+            "id": 4,
+            "name": "Garlic",
+            "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1jmis0001ycvz1gmn5ekr.png",
+            "image_key": "clis1jmis0001ycvz1gmn5ekr.png"
+        }
+    },
+    {
+        "id": 22,
+        "name": "black pepper",
+        "unit_weight": null,
+        "categoryId": 5,
+        "macrosId": null,
+        "iconId": 7,
+        "category": {
+            "id": 5,
+            "name": "Condiments"
+        },
+        "macros": null,
+        "icon": {
+            "id": 7,
+            "name": "Black pepper",
+            "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1ktg20004ycvz3dk1e104.png",
+            "image_key": "clis1ktg20004ycvz3dk1e104.png"
+        }
+    },
+    {
+        "id": 23,
+        "name": "salt",
+        "unit_weight": null,
+        "categoryId": 5,
+        "macrosId": null,
+        "iconId": 6,
+        "category": {
+            "id": 5,
+            "name": "Condiments"
+        },
+        "macros": null,
+        "icon": {
+            "id": 6,
+            "name": "Salt ",
+            "link": "https://groc-app.s3.eu-west-3.amazonaws.com/clis1kbfb0003ycvzef7q4u11.png",
+            "image_key": "clis1kbfb0003ycvzef7q4u11.png"
+        }
+    }
+]
+[
+    {
+        "id": 1,
+        "name": "kilograms",
+        "abreviation": "kg",
+        "equivalent": "1000",
+        "unit": "grams"
+    },
+    {
+        "id": 2,
+        "name": "grams",
+        "abreviation": "g",
+        "equivalent": "1",
+        "unit": "grams"
+    },
+    {
+        "id": 3,
+        "name": "liters",
+        "abreviation": "L",
+        "equivalent": "1000",
+        "unit": "mililiters"
+    },
+    {
+        "id": 4,
+        "name": "centiliters",
+        "abreviation": "cl",
+        "equivalent": "10",
+        "unit": "mililiters"
+    },
+    {
+        "id": 5,
+        "name": "mililiters",
+        "abreviation": "ml",
+        "equivalent": "1",
+        "unit": "mililiters"
+    },
+    {
+        "id": 6,
+        "name": "tablespoon",
+        "abreviation": "tbsp",
+        "equivalent": "15",
+        "unit": "grams"
+    },
+    {
+        "id": 7,
+        "name": "teaspoon",
+        "abreviation": "tsp",
+        "equivalent": "5",
+        "unit": "grams"
+    },
+    {
+        "id": 8,
+        "name": "pods",
+        "abreviation": "pods",
+        "equivalent": "7",
+        "unit": "grams"
+    },
+    {
+        "id": 9,
+        "name": "pinch",
+        "abreviation": "pch",
+        "equivalent": "0.5",
+        "unit": "grams"
+    },
+    {
+        "id": 11,
+        "name": "pieces",
+        "abreviation": "pcs",
+        "equivalent": null,
+        "unit": "grams"
+    }
+]
+
+{
+    "id": 11,
+    "name": "Chicken Curry with Coconut milk",
+    "prep_time": 20,
+    "cook_time": 20,
+    "authorId": 2,
+    "created_at": "2023-06-20T08:50:31.047Z",
+    "picture": null,
+    "servings": 4,
+    "macro_recipeId": 22,
+    "favoriteId": null,
+    "youtube_link": null,
+    "level": "easy",
+    "author": {
+        "id": 2,
+        "userId": "e63d1975-8af5-45de-941b-d6f38b61bb43",
+        "avatar": "https://lh3.googleusercontent.com/a/AAcHTteewbYpoKF838c7XjZs0cuCNfCqLiCSHXMknkoo=s96-c",
+        "age": null,
+        "height": null,
+        "weight": null,
+        "genderId": null,
+        "activity_levelId": null
+    },
+    "macro_recipe": {
+        "id": 22,
+        "food": null,
+        "calories": "463.4",
+        "proteins": "43.8",
+        "carbs": "64.8",
+        "fat": "15.2",
+        "water": "290.6"
+    },
+    "measures": [
+        {
+            "qty": "360",
+            "unit_measure_id": 2,
+            "ingredientId": 5,
+            "recipeId": 11,
+            "ingredient": {
+                "id": 5,
+                "name": "rice basmati",
+                "unit_weight": null,
+                "categoryId": 4,
+                "macrosId": 1,
+                "iconId": 1,
+                "macros": {
+                    "id": 1,
+                    "food": "rice",
+                    "calories": "114",
+                    "proteins": "2",
+                    "carbs": "24",
+                    "fat": "0",
+                    "water": "71"
+                }
+            },
+            "unit_measure": {
+                "id": 2,
+                "name": "grams",
+                "abreviation": "g",
+                "equivalent": "1",
+                "unit": "grams"
+            }
+        },
+        {
+            "qty": "1",
+            "unit_measure_id": 11,
+            "ingredientId": 15,
+            "recipeId": 11,
+            "ingredient": {
+                "id": 15,
+                "name": "red pepper",
+                "unit_weight": "175",
+                "categoryId": 1,
+                "macrosId": 3,
+                "iconId": 3,
+                "macros": {
+                    "id": 3,
+                    "food": "pepper",
+                    "calories": "29",
+                    "proteins": "1",
+                    "carbs": "2.4",
+                    "fat": "0.2",
+                    "water": "92"
+                }
+            },
+            "unit_measure": {
+                "id": 11,
+                "name": "pieces",
+                "abreviation": "pcs",
+                "equivalent": null,
+                "unit": "grams"
+            }
+        },
+        {
+            "qty": "4",
+            "unit_measure_id": 11,
+            "ingredientId": 6,
+            "recipeId": 11,
+            "ingredient": {
+                "id": 6,
+                "name": "chicken breast",
+                "unit_weight": "150",
+                "categoryId": 8,
+                "macrosId": 2,
+                "iconId": 8,
+                "macros": {
+                    "id": 2,
+                    "food": "chicken",
+                    "calories": "121",
+                    "proteins": "26",
+                    "carbs": "26",
+                    "fat": "1",
+                    "water": "72"
+                }
+            },
+            "unit_measure": {
+                "id": 11,
+                "name": "pieces",
+                "abreviation": "pcs",
+                "equivalent": null,
+                "unit": "grams"
+            }
+        },
+        {
+            "qty": "1",
+            "unit_measure_id": 11,
+            "ingredientId": 17,
+            "recipeId": 11,
+            "ingredient": {
+                "id": 17,
+                "name": "yellow pepper",
+                "unit_weight": "175",
+                "categoryId": 1,
+                "macrosId": 3,
+                "iconId": 2,
+                "macros": {
+                    "id": 3,
+                    "food": "pepper",
+                    "calories": "29",
+                    "proteins": "1",
+                    "carbs": "2.4",
+                    "fat": "0.2",
+                    "water": "92"
+                }
+            },
+            "unit_measure": {
+                "id": 11,
+                "name": "pieces",
+                "abreviation": "pcs",
+                "equivalent": null,
+                "unit": "grams"
+            }
+        },
+        {
+            "qty": "2",
+            "unit_measure_id": 11,
+            "ingredientId": 18,
+            "recipeId": 11,
+            "ingredient": {
+                "id": 18,
+                "name": "red onions",
+                "unit_weight": "80",
+                "categoryId": 1,
+                "macrosId": 4,
+                "iconId": 10,
+                "macros": {
+                    "id": 4,
+                    "food": "onions",
+                    "calories": "36",
+                    "proteins": "1",
+                    "carbs": "1",
+                    "fat": "0",
+                    "water": "90"
+                }
+            },
+            "unit_measure": {
+                "id": 11,
+                "name": "pieces",
+                "abreviation": "pcs",
+                "equivalent": null,
+                "unit": "grams"
+            }
+        },
+        {
+            "qty": "1",
+            "unit_measure_id": 5,
+            "ingredientId": 19,
+            "recipeId": 11,
+            "ingredient": {
+                "id": 19,
+                "name": "curry",
+                "unit_weight": null,
+                "categoryId": 7,
+                "macrosId": 5,
+                "iconId": 5,
+                "macros": {
+                    "id": 5,
+                    "food": "curry",
+                    "calories": "301",
+                    "proteins": "1",
+                    "carbs": "1",
+                    "fat": "14",
+                    "water": "8"
+                }
+            },
+            "unit_measure": {
+                "id": 5,
+                "name": "mililiters",
+                "abreviation": "ml",
+                "equivalent": "1",
+                "unit": "mililiters"
+            }
+        },
+        {
+            "qty": "300",
+            "unit_measure_id": 5,
+            "ingredientId": 20,
+            "recipeId": 11,
+            "ingredient": {
+                "id": 20,
+                "name": "coconut milk",
+                "unit_weight": null,
+                "categoryId": 6,
+                "macrosId": 6,
+                "iconId": 9,
+                "macros": {
+                    "id": 6,
+                    "food": "coconut milk",
+                    "calories": "179",
+                    "proteins": "2",
+                    "carbs": "2",
+                    "fat": "18",
+                    "water": "0"
+                }
+            },
+            "unit_measure": {
+                "id": 5,
+                "name": "mililiters",
+                "abreviation": "ml",
+                "equivalent": "1",
+                "unit": "mililiters"
+            }
+        },
+        {
+            "qty": "2",
+            "unit_measure_id": 8,
+            "ingredientId": 21,
+            "recipeId": 11,
+            "ingredient": {
+                "id": 21,
+                "name": "garlic",
+                "unit_weight": "7",
+                "categoryId": 1,
+                "macrosId": 16,
+                "iconId": 4,
+                "macros": {
+                    "id": 16,
+                    "food": "garlic",
+                    "calories": "130",
+                    "proteins": "6",
+                    "carbs": "6",
+                    "fat": "0.4",
+                    "water": "63.5"
+                }
+            },
+            "unit_measure": {
+                "id": 8,
+                "name": "pods",
+                "abreviation": "pods",
+                "equivalent": "7",
+                "unit": "grams"
+            }
+        },
+        {
+            "qty": "1",
+            "unit_measure_id": 9,
+            "ingredientId": 22,
+            "recipeId": 11,
+            "ingredient": {
+                "id": 22,
+                "name": "black pepper",
+                "unit_weight": null,
+                "categoryId": 5,
+                "macrosId": null,
+                "iconId": 7,
+                "macros": null
+            },
+            "unit_measure": {
+                "id": 9,
+                "name": "pinch",
+                "abreviation": "pch",
+                "equivalent": "0.5",
+                "unit": "grams"
+            }
+        },
+        {
+            "qty": "1",
+            "unit_measure_id": 9,
+            "ingredientId": 23,
+            "recipeId": 11,
+            "ingredient": {
+                "id": 23,
+                "name": "salt",
+                "unit_weight": null,
+                "categoryId": 5,
+                "macrosId": null,
+                "iconId": 6,
+                "macros": null
+            },
+            "unit_measure": {
+                "id": 9,
+                "name": "pinch",
+                "abreviation": "pch",
+                "equivalent": "0.5",
+                "unit": "grams"
+            }
+        }
+    ],
+    "difficulty": {
+        "id": 1,
+        "name": "easy"
+    },
+    "favorite": null,
+    "reviews": []
+}
