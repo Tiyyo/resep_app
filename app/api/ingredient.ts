@@ -36,7 +36,6 @@ export default {
   //                 ON ingredients.macros_id = macros.id
   //             ORDER BY ingredients.id ASC;
   //             `;
-  //         console.log(result)
   //         await prisma.$disconnect()
 
   //         return result.map((ingredient: any) => {
@@ -62,7 +61,6 @@ export default {
   //             };
   //         });
   //     } catch (error) {
-  //         console.log(error);
   //         throw new Error("Server error can't acces data");
   //     }
   // },

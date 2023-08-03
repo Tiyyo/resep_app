@@ -15,7 +15,7 @@ export default function HeaderDesktop() {
       </div>
       <header className="col-start-3 col-end-4 hidden items-center justify-between px-5 xl:flex">
         <TodayDate />
-        <div className="flex items-center gap-x-4">
+        <div className="flex items-center gap-x-1">
           <ProfileLinksMenu />
         </div>
       </header>

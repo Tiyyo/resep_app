@@ -32,7 +32,7 @@ export default function HeaderMobile({ handleSideMenu }) {
         <TitleLogo />
       </div>
       <div className="navbar-end">
-        <div className="flex items-center gap-x-4">
+        <div className="flex items-baseline gap-x-1 ">
           <ProfileLinksMenu />
         </div>
       </div>

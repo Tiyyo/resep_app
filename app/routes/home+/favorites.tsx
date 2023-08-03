@@ -15,6 +15,7 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function FavoriteRecipes() {
   const { favoriteRecipes } = useLoaderData();
+  const message = "You haven't liked any recipe yet";
 
   return (
     <LayoutRecipePages title="Recipes you liked">
@@ -22,6 +23,7 @@ export default function FavoriteRecipes() {
         Card={RecipeCard}
         data={favoriteRecipes}
         likeByDefault={true}
+        messageIfEmpty={message}
       />
     </LayoutRecipePages>
   );

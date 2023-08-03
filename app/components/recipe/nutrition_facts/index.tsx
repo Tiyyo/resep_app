@@ -17,7 +17,7 @@ export default function NutritionFacts({
     <div className="macros">
       <div className="macros__head">
         <h2 className="text-8 leading-none">Nutrition Facts</h2>
-        <p className="pl-4 text-7 text-text-accent_soft">|serv</p>
+        <p className="pl-4 text-7 text-text-accent_soft">|per serving</p>
       </div>
       <div className="flex max-w-[600px] justify-evenly">
         <NutrientIndicator

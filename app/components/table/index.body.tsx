@@ -6,6 +6,7 @@ import { displayMultiString } from "./display.multi.string";
 import { displayContentToCells } from "./display.content.cells";
 import { Toast } from "../toast";
 import { extractEntityNameFromUrl } from "./extract.name.from.url";
+import { useEffect, useState } from "react";
 
 export default function TableBody({
   data,
@@ -14,8 +15,18 @@ export default function TableBody({
   image,
   search,
 }: TableBodyProps) {
+  const [deleteMessage, setDeleteMessage] = useState<string>();
   const deleteItem = useFetcher();
   const location = useLocation();
+
+  useEffect(() => {
+    if (deleteItem?.data?.message) {
+      setDeleteMessage(deleteItem?.data?.message);
+    }
+    if (deleteItem?.data?.error?.userMessage) {
+      setDeleteMessage(deleteItem?.data?.error?.userMessage);
+    }
+  }, [deleteItem?.data?.message, deleteItem?.data?.error?.userMessage]);
 
   return (
     <tbody>
@@ -74,7 +85,7 @@ export default function TableBody({
           </td>
         </tr>
       )}
-      <Toast message={deleteItem?.data?.message} />
+      <Toast message={deleteMessage} />
     </tbody>
   );
 }

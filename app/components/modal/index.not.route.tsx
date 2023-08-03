@@ -11,7 +11,6 @@ export default function ModalNotRoute({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log(e);
     const action = e.currentTarget.dataset.choice as "new" | "old";
     action ? getActionToPerform(action) : getActionToPerform(null);
     (window as any).my_modal_5.close();
