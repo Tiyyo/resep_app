@@ -36,7 +36,6 @@ export async function buildShoppingList(meals) {
 
   const sumList = initializeList(measuresWithCorrectServigns);
   const list = recursionOverList(sumList);
-  console.log(list);
   return list;
 }
 

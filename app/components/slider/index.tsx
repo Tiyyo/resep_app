@@ -34,7 +34,6 @@ export default function Slider({
 
   function prevSlide() {
     if (widthCard === null) return;
-    console.log(scrollXValue, "scrollXValue", widthCard, "widthCard");
 
     Math.abs(scrollXValue - widthCard * 1.05) > width
       ? setScrollXValue(-width)

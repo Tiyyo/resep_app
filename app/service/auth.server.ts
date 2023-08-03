@@ -1,11 +1,12 @@
 import { createCookieSessionStorage, json, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
-import type { User } from "~/models/user.server";
-import { getUserById } from "~/models/user.server";
+// import type { User } from "~/models/user.server";
+// import { getUserById } from "~/models/user.server";
 import type { RegisterForm, LoginForm } from "./types.server";
 import createUser from "~/utils/users.server";
 import { prisma } from "./db.server";
 import bcrypt from "bcryptjs";
+import UserInputError from "~/helpers/errors/user.inputs.error";
 
 
 invariant(process.env.USER_SESSION_SECRET, "USER_SESSION_SECRET must be set");
@@ -27,12 +28,7 @@ const PROFILE_SESSION_KEY = "profileId";
 export async function register(form: RegisterForm) {
   const exists = await prisma.users.count({ where: { email: form.email } });
 
-  if (exists) {
-    return json(
-      { error: `User already exists with that email` },
-      { status: 400 }
-    );
-  }
+  if (exists) throw new UserInputError("Email unique constraint", "User already exists with that email")
 
   const newUser = await createUser(form);
 
@@ -108,9 +104,10 @@ export async function getUserSession(request: Request) {
   return storage.getSession(request.headers.get("Cookie"));
 }
 
+// TODO declare a type User to replace any by User["id"]  | undefined
 export async function getUserId(
   request: Request
-): Promise<User["id"] | undefined> {
+): Promise<any> {
   const session = await getUserSession(request);
   const userId = session.get(USER_SESSION_KEY);
   if (!userId || typeof userId !== "string") return null;
@@ -158,11 +155,11 @@ export async function isAdmin(request: Request) {
   }
 }
 
-export async function requireUser(request: Request) {
-  const userId = await requireUserId(request);
+// export async function requireUser(request: Request) {
+//   const userId = await requireUserId(request);
 
-  const user = await getUserById(userId);
-  if (user) return user;
+//   const user = await getUserById(userId);
+//   if (user) return user;
 
-  throw await logout(request);
-}
+//   throw await logout(request);
+// }

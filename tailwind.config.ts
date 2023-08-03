@@ -107,7 +107,7 @@ export default {
       },
       gridTemplateColumns: {
         app: "minmax(75px, 95px) minmax(200px, 250px) 1fr",
-        card: "repeat(auto-fit, minmax(170px , 3fr))",
+        card: "repeat(auto-fit, minmax(145px , 3fr))",
         main: "300px 1fr",
         input: "1fr 4fr",
         250: "repeat(auto-fit, minmax(280px , 1fr))",

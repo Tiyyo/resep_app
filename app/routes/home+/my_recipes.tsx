@@ -21,10 +21,16 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function () {
   const { recipes, profileId } = useLoaderData();
+  const message = "You currently haven't post any recipes";
 
   return (
     <LayoutRecipePages title="Your recipes">
-      <RecipeContainer Card={RecipeCard} data={recipes} profileId={profileId} />
+      <RecipeContainer
+        Card={RecipeCard}
+        data={recipes}
+        profileId={profileId}
+        messageIfEmpty={message}
+      />
     </LayoutRecipePages>
   );
 }

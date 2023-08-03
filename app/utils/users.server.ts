@@ -1,6 +1,8 @@
 import type { RegisterForm } from "../service/types.server";
 import { prisma } from "../service/db.server";
 import bcrypt from "bcryptjs";
+import ResponseError from "~/helpers/response/response.error";
+import UserInputError from "~/helpers/errors/user.inputs.error";
 
 export default async function createUser(user: RegisterForm) {
   const hashedPassword = await bcrypt.hash(user.password, 10);
@@ -23,6 +25,11 @@ export default async function createUser(user: RegisterForm) {
     });
     return { id: newUser.id, email: user.email, username: user.username };
   } catch (error: any) {
-    console.log(error.message);
+    console.log(error)
+    if (error instanceof UserInputError) {
+      console.log('its an user error')
+      throw error
+    }
+    throw new UserInputError(error.message)
   }
 }

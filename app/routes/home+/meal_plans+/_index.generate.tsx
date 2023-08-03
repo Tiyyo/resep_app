@@ -226,17 +226,13 @@ export default function () {
     }
   }, [action]);
 
-  const handletest = () => {
-    console.log("test");
-  };
-
   return (
-    <div onClick={handletest}>
+    <div>
       <ModalNotRoute
         getActionToPerform={getActionToPerform}
         isOpen={hasToOpenModal}
       />
-      <TitleLevel1 title="Meal plans creator" />
+      <TitleLevel1 title="Meal plans generator" />
       {recipes && (
         <>
           <div className="flex flex-wrap justify-center gap-4">
