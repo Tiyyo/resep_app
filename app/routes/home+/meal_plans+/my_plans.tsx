@@ -51,6 +51,8 @@ export default function () {
   };
 
   useEffect(() => {
+    console.log(mealPlans);
+    if (!mealPlans[navMealPlansIndex]?.id) return;
     navigate(`/home/meal_plans/my_plans/${mealPlans[navMealPlansIndex].id}`);
   }, [navMealPlansIndex]);
 

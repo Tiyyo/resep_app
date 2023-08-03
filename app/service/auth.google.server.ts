@@ -5,16 +5,22 @@ import { prisma } from "./db.server";
 const randomize = require("randomatic");
 
 type User_Id = string;
+let googleCallbackUrl = "/auth/google/callback";
+// let googleCallbackUrl = "isError";
 
 export const authentificator = new Authenticator<User_Id>(storage, {
   sessionKey: "userId",
 });
 
+if (process.env.NODE_ENV !== "development") {
+  googleCallbackUrl = "https://resep.fly.dev/auth/google/callback"
+}
+
 let googleStrategy = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID!,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    callbackURL: "/auth/google/callback",
+    callbackURL: googleCallbackUrl,
   },
   async ({ accessToken, refreshToken, extraParams, profile }) => {
     try {

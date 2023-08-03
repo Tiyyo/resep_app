@@ -13,6 +13,7 @@ import {
 import { getUser } from "~/service/auth.server";
 import stylesheet from "~/tailwind.css";
 import Error404 from "./layout/Error404Page";
+import { upgradeToHttps } from "~/utils/upgrade.to.https";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -20,6 +21,9 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader = async ({ request }: LoaderArgs) => {
+  upgradeToHttps(request);
+
+  // Why retrun a json here ?
   return json({ user: await getUser(request) });
 };
 

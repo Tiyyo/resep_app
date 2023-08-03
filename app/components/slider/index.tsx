@@ -54,8 +54,6 @@ export default function Slider({
     }
   }, [content.length]);
 
-  console.log(scrollXValue);
-
   if (!content || content.length === 0) return null;
 
   return (
