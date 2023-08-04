@@ -11,7 +11,6 @@ import ResponseError from "~/helpers/response/response.error";
 import ServerError from "~/helpers/errors/server.error";
 import MethodError from "~/helpers/errors/method.error";
 import UserInputError from "~/helpers/errors/user.inputs.error";
-import DatabaseError from "~/helpers/errors/database.error";
 
 export const validator = withZod(
   Z.object({

@@ -1,5 +1,11 @@
 import type { LoaderArgs } from "@remix-run/node";
-import { NavLink, Outlet, useLoaderData, useNavigate } from "@remix-run/react";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLoaderData,
+  useNavigate,
+} from "@remix-run/react";
 import meal_plans from "~/api/meal_plans";
 import ArrowRightIcon from "~/assets/icons/ArrowRightIcon";
 import TitleLevel1 from "~/components/title/TitleLevel1";
@@ -58,7 +64,7 @@ export default function () {
   return (
     <div>
       <TitleLevel1 title="Meal plans" />
-      <div className="text-9 no-scrollbar hidden h-8 w-full flex-nowrap  justify-evenly overflow-x-scroll border-b-2 border-t-2 border-b-gray-950 border-t-gray-950 py-1 font-semibold sm:flex">
+      <div className="no-scrollbar hidden h-8 w-full flex-nowrap justify-evenly overflow-x-scroll  border-b-2 border-t-2 border-b-secondary-400 border-t-secondary-400 py-1 text-8 font-semibold lg:flex xl:text-7">
         {mealPlans.map((mealPlan) => (
           <NavLink to={`${mealPlan.id}`} key={mealPlan.id + 1}>
             <p className="w-screen sm:w-fit">
@@ -67,7 +73,7 @@ export default function () {
           </NavLink>
         ))}
       </div>
-      <div className="center text-9 no-scrollbar relative flex h-8 flex-nowrap overflow-x-scroll border-b-2 border-t-2 border-b-gray-950 border-t-gray-950 py-1 font-semibold sm:hidden">
+      <div className="center text-9 no-scrollbar 50 relative flex h-8 flex-nowrap overflow-x-scroll border-b-2 border-t-2 border-b-secondary-400 border-t-secondary-400 py-1 font-semibold lg:hidden">
         <button
           type="button"
           className="absolute left-1 z-10"
@@ -90,6 +96,21 @@ export default function () {
           <ArrowRightIcon />
         </button>
       </div>
+      {(!mealPlans || mealPlans.length === 0) && (
+        <>
+          <p>You have not generate any meal plan yet </p>
+          <p>
+            &#8608; &#8608;
+            <Link
+              to="/home/meal_plans/generate"
+              className="font-semibold underline"
+            >
+              Try here
+            </Link>
+            &#8606; &#8606;
+          </p>
+        </>
+      )}
       <Outlet />
     </div>
   );

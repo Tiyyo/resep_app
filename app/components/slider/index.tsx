@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState, useRef } from "react";
 import type { SliderProps } from "./interface";
 import SliderNav from "./index.nav";
-import useWindowSize from "~/hooks/useWindowsSize";
 
 export default function Slider({
   banner,
