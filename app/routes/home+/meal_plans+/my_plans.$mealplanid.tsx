@@ -59,45 +59,8 @@ export async function loader({ request, params }: LoaderArgs) {
 
 export default function () {
   const { mealPlans, groupByCategory } = useLoaderData();
-  // const [width, setWidth] = useState<number | null>(null);
-  // const [scrollXValue, setScrollXvalue] = useState<number>(0);
-  // const carousel = useRef<HTMLDivElement>(null);
-  // const innerCarousel = useRef<HTMLDivElement>(null);
-  // const params = useParams();
 
   const categoryName = Object.keys(groupByCategory);
-
-  // function nextSlide() {
-  //   if (!width) return;
-  //   if (Math.abs(scrollXValue - 200) > width) {
-  //     setScrollXvalue(-width);
-  //   } else {
-  //     setScrollXvalue(scrollXValue - 200);
-  //   }
-  // }
-
-  // function prevSlide() {
-  //   if (!width) return;
-  //   if (scrollXValue + 200 > 0) {
-  //     setScrollXvalue(0);
-  //   } else {
-  //     setScrollXvalue(scrollXValue + 200);
-  //   }
-  // }
-
-  // const handleClickNav = (e) => {
-  //   if (e.currentTarget.dataset.nav === "prev") {
-  //     prevSlide();
-  //   } else {
-  //     nextSlide();
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (carousel?.current) {
-  //     setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
-  //   }
-  // }, [params.mealplanid]);
 
   return (
     <>

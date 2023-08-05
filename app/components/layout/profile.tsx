@@ -35,7 +35,7 @@ export default function ProfileLinksMenu() {
     <>
       {profile.state === "loaded" && profile.profile ? (
         <>
-          <div className="dropdown dropdown-end dropdown-bottom ">
+          <div className="dropdown dropdown-end dropdown-bottom dark:border-0">
             <label
               tabIndex={0}
               className="btn relative m-0 h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent"

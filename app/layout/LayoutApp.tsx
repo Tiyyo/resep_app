@@ -20,12 +20,12 @@ export default function AppLayout({ menu }: { menu: Item[] }) {
     setSideMenuIsOpen(!sideMenuIsOpen);
   };
 
+  // force scroll to top on route change
   useEffect(() => {
-    console.log("mainContentRef", mainContentRef);
-    // window.scrollTo(0, 0);
-    if (mainContentRef?.current) {
+    if (mainContentRef.current) {
       mainContentRef.current.scrollTop = 0;
     }
+    window.scrollTo(0, 0);
   }, [location.pathname]);
 
   return (
@@ -50,7 +50,7 @@ export default function AppLayout({ menu }: { menu: Item[] }) {
         </div>
 
         <div
-          className="xl:no-scrollbar overflow-y-auto bg-primary-100 px-4 pb-12 pt-4 xl:h-body xl:border-l xl:border-secondary-300 xl:border-opacity-30 xl:pt-1"
+          className="xl:no-scrollbar overflow-y-auto bg-primary-100 px-4 pb-24 pt-4 xl:h-body xl:border-l xl:border-secondary-300 xl:border-opacity-30 xl:pb-12 xl:pt-1"
           ref={mainContentRef}
           onClick={() => setSideMenuIsOpen(false)}
         >
