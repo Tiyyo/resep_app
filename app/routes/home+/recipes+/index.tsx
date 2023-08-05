@@ -57,7 +57,7 @@ export default function () {
   return (
     <>
       <Outlet />
-      <ToastContainer />
+      <Toast />
       <LayoutRecipePages title={"Recommended for you"}>
         <Slider
           banner={false}

@@ -74,7 +74,7 @@ export default function () {
       addRecipe.state === "idle" &&
       addrecipeRef &&
       addrecipeRef.current &&
-      addRecipe.data?.status === 200
+      addRecipe.data?.name === "ResponseValid"
     ) {
       addrecipeRef.current.reset();
       setClear(true);

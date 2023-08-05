@@ -14,6 +14,7 @@ import { getUser } from "~/service/auth.server";
 import stylesheet from "~/tailwind.css";
 import Error404 from "./layout/Error404Page";
 import { upgradeToHttps } from "~/utils/upgrade.to.https";
+import { Toaster } from "react-hot-toast";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -37,6 +38,12 @@ export default function App() {
         <Links />
       </head>
       <body className="h-full">
+        <Toaster
+          position="top-left"
+          toastOptions={{
+            duration: 2500,
+          }}
+        />
         <Outlet />
         <ScrollRestoration />
         <Scripts />
