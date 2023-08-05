@@ -1,7 +1,6 @@
 import {
   Link,
   isRouteErrorResponse,
-  useActionData,
   useFetcher,
   useRouteError,
 } from "@remix-run/react";
@@ -14,7 +13,6 @@ import { Toast } from "~/components/toast";
 
 export default function () {
   const addIconFormRef = useRef<HTMLFormElement>(null);
-  const actionData = useActionData();
   const addIcons = useFetcher();
 
   useEffect(() => {

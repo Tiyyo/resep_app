@@ -1,7 +1,6 @@
 import type { RegisterForm } from "../service/types.server";
 import { prisma } from "../service/db.server";
 import bcrypt from "bcryptjs";
-import ResponseError from "~/helpers/response/response.error";
 import UserInputError from "~/helpers/errors/user.inputs.error";
 
 export default async function createUser(user: RegisterForm) {

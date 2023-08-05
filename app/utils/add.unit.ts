@@ -1,25 +1,32 @@
 const addUnit = (arg: string) => {
-  let unit: string;
+  let unit: string = "";
   switch (arg) {
     case "calories": {
-      return (unit = "(kcal)");
+      unit = "(kcal)"
+      break
     }
     case "proteins": {
-      return (unit = "(g)");
+      unit = "(g)"
+      break
     }
     case "carbs": {
-      return (unit = "(g)");
+      unit = "(g)"
+      break
     }
     case "fat": {
-      return (unit = "(g)");
+      unit = "(g)"
+      break
     }
     case "water": {
-      return (unit = "(ml)");
+      unit = "(ml)"
+      break
     }
     default: {
-      return unit = "";
+      unit = "";
+      break
     }
   }
+  return unit;
 };
 
 export default addUnit;

@@ -95,7 +95,7 @@ export async function action({ request }: ActionArgs) {
         ytLink,
         level,
         instructions,
-        image_recipe,
+        // image_recipe,
       } = formData.data;
 
       let measures: Array<{

@@ -6,7 +6,7 @@ export default function AddFavoriteIcon({
   onClick,
 }: AddFavoriteIconProps) {
   return (
-    <div onClick={onClick} className="text-secondary-400">
+    <div onClick={onClick} className="cursor-pointer text-secondary-400">
       {infos && infos.is_liked ? (
         <LikeIcon size="8" fill={true} />
       ) : (

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 export default function Dropzone({ name }: { name: string }) {
-  const [draggingOver, setDraggingOver] = useState(false);
+  const [, setDraggingOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const dropRef = useRef(null);
   const [file, setFile] = useState<File | null>(null);

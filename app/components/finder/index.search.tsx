@@ -37,7 +37,7 @@ export default function FinderSearch({
 
   useEffect(() => {
     setRecipes(firstLoadedRecipes);
-  }, []);
+  }, [firstLoadedRecipes]);
   return (
     <div className="mx-auto max-w-[1325px]">
       <customFetch.Form

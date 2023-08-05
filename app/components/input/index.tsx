@@ -32,7 +32,7 @@ export default function Input({
     } else {
       setTextAlign("text-center");
     }
-  }, [type]);
+  }, [type, align]);
 
   const variantFlexNoControl =
     " flex gap-x-1 items-center justify-between w-fit ";

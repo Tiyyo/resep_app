@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet, useLocation } from "@remix-run/react";
+import { Outlet, useLocation } from "@remix-run/react";
 import LayoutPage from "./LayoutPage";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
@@ -12,7 +12,7 @@ import type { Item } from "~/components/tree_menu/interface";
 export default function AppLayout({ menu }: { menu: Item[] }) {
   const sideMenuRef = useRef<HTMLDivElement | null>(null);
   const [sideMenuIsOpen, setSideMenuIsOpen] = useState<boolean>(false);
-  const [widthMenu, setWidthMenu] = useState<number>(-3500);
+  const [widthMenu] = useState<number>(-3500);
   const location = useLocation();
   const mainContentRef = useRef<HTMLDivElement | null>(null);
 

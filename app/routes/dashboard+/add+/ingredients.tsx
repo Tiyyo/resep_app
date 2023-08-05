@@ -26,7 +26,7 @@ export default function () {
   const [clear, setClear] = useState(false);
 
   // TODO check why this is not used currently
-  const [errorText, setErrorText] = useState("");
+  // const [errorText, setErrorText] = useState("");
 
   const { categories, macros, icons } = useLoaderData();
   const addIngredientFormRef = useRef<HTMLFormElement>(null);
@@ -38,13 +38,13 @@ export default function () {
       addIngredientFormRef &&
       addIngredientFormRef.current
     ) {
-      if (addIngredient?.data?.fields?.name) {
-        setErrorText(addIngredient?.data?.fields?.name);
-      }
-      if (addIngredient.data?.error) {
-        setErrorText(addIngredient.data?.error);
-      }
-      console.log("addIngredient.data?.status", addIngredient.data?.status);
+      // if (addIngredient?.data?.fields?.name) {
+      //   setErrorText(addIngredient?.data?.fields?.name);
+      // }
+      // if (addIngredient.data?.error) {
+      //   setErrorText(addIngredient.data?.error);
+      // }
+
       if (addIngredient.data?.name === "ResponseValid") {
         setClear(true);
         addIngredientFormRef.current.reset();

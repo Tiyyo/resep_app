@@ -2,7 +2,6 @@ import { json, type LoaderArgs } from "@remix-run/node";
 import {
   isRouteErrorResponse,
   Link,
-  ScrollRestoration,
   useFetcher,
   useLoaderData,
   useNavigate,
@@ -44,6 +43,7 @@ export async function loader({ params, request }: LoaderArgs) {
 
     if (profile) {
       const infos = await review.findByIds(profile.id, recipeId);
+      console.log(infos);
       response = { ...response, profile, infos };
     }
     return json(response);
@@ -80,6 +80,8 @@ export default function RecipePage() {
   const goBack = () => {
     navigate(-1);
   };
+
+  console.log(infosRecipeByUser);
 
   return (
     <>

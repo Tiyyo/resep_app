@@ -5,15 +5,20 @@ import { prisma } from "~/service/db.server";
 export default {
   async like(authorId: string, recipeId: string) {
     try {
-      const updatedInfos = await prisma.reviews.update({
+      const updatedInfos = await prisma.reviews.upsert({
         where: {
           author_id_recipe_id: {
             author_id: Number(authorId),
             recipe_id: Number(recipeId),
           },
         },
-        data: {
+        update: {
           is_liked: true,
+        },
+        create: {
+          is_liked: true,
+          author_id: Number(authorId),
+          recipe_id: Number(recipeId),
         },
       });
       return updatedInfos;
@@ -36,7 +41,7 @@ export default {
       });
       await prisma.$disconnect();
       return updatedInfos;
-    } catch (error) {
+    } catch (error: any) {
       throw new DatabaseError(error.message, "reviews", error);
     }
   },

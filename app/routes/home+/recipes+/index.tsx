@@ -52,7 +52,7 @@ export default function () {
     if (windowSize && windowSize.width > 1280) {
       setAxisCard("horizontal");
     }
-  }, [windowSize.width]);
+  }, [windowSize.width, windowSize]);
 
   return (
     <>

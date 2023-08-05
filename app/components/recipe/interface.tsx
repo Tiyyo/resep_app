@@ -6,7 +6,7 @@ interface Macro {
   water: number | null;
 }
 
-interface Ingredients {
+export interface Ingredients {
   name: string;
   category: string;
   unit_weight?: number | null;

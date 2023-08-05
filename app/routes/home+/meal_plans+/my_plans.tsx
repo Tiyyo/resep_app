@@ -59,7 +59,7 @@ export default function () {
   useEffect(() => {
     if (!mealPlans[navMealPlansIndex]?.id) return;
     navigate(`/home/meal_plans/my_plans/${mealPlans[navMealPlansIndex].id}`);
-  }, [navMealPlansIndex]);
+  }, [navMealPlansIndex, mealPlans, navigate]);
 
   return (
     <div>
