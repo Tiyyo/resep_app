@@ -12,7 +12,7 @@ export default function SideNav() {
       <NavLink to="/dashboard">
         <AddFileIcon size="6" />
       </NavLink>
-      <NavLink to="/settings">
+      <NavLink to="">
         <SettingIcons size="9" />
       </NavLink>
     </nav>

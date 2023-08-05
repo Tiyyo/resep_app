@@ -39,7 +39,7 @@ export default function AppLayout({ menu }: { menu: Item[] }) {
           <SideMenu menu={menu} />
         </div>
         <div
-          className="xl:no-scrollbar overflow-y-scroll bg-primary-100 px-4 pb-14 pt-4 xl:h-body xl:border-l xl:border-secondary-300 xl:border-opacity-30 xl:py-1 "
+          className="xl:no-scrollbar pb-18 overflow-y-scroll bg-primary-100 px-4 pt-4 xl:h-body xl:border-l xl:border-secondary-300 xl:border-opacity-30 xl:py-1"
           onClick={() => setSideMenuIsOpen(false)}
         >
           <Outlet />

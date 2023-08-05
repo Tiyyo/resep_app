@@ -12,14 +12,14 @@ export default function ProfileLinksMenu() {
     {
       Icon: <ProfileIcon />,
       text: "Profile",
-      endpoint: "/profile",
+      endpoint: "",
       height: "simple",
       handleClick: handleClick,
     },
     {
       Icon: <SettingIcons size="4" />,
       text: "Settings",
-      endpoint: "/settings",
+      endpoint: "",
       height: "simple",
       handleClick: handleClick,
     },
