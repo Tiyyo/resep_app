@@ -1,6 +1,6 @@
-import { Link, NavLink, Outlet } from "@remix-run/react";
+import { Link, NavLink, Outlet, useLocation } from "@remix-run/react";
 import LayoutPage from "./LayoutPage";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import SideMenu from "~/components/side_menu";
 import BottomNav from "~/components/layout/bottom.nav";
@@ -13,10 +13,20 @@ export default function AppLayout({ menu }: { menu: Item[] }) {
   const sideMenuRef = useRef<HTMLDivElement | null>(null);
   const [sideMenuIsOpen, setSideMenuIsOpen] = useState<boolean>(false);
   const [widthMenu, setWidthMenu] = useState<number>(-3500);
+  const location = useLocation();
+  const mainContentRef = useRef<HTMLDivElement | null>(null);
 
   const handleSideMenu = () => {
     setSideMenuIsOpen(!sideMenuIsOpen);
   };
+
+  useEffect(() => {
+    console.log("mainContentRef", mainContentRef);
+    // window.scrollTo(0, 0);
+    if (mainContentRef?.current) {
+      mainContentRef.current.scrollTop = 0;
+    }
+  }, [location.pathname]);
 
   return (
     <LayoutPage>
@@ -38,8 +48,10 @@ export default function AppLayout({ menu }: { menu: Item[] }) {
         <div className="col-start-2 col-end-3 row-start-2 hidden h-body xl:block">
           <SideMenu menu={menu} />
         </div>
+
         <div
-          className="xl:no-scrollbar pb-18 overflow-y-scroll bg-primary-100 px-4 pt-4 xl:h-body xl:border-l xl:border-secondary-300 xl:border-opacity-30 xl:py-1"
+          className="xl:no-scrollbar overflow-y-auto bg-primary-100 px-4 pb-12 pt-4 xl:h-body xl:border-l xl:border-secondary-300 xl:border-opacity-30 xl:pt-1"
+          ref={mainContentRef}
           onClick={() => setSideMenuIsOpen(false)}
         >
           <Outlet />
@@ -49,3 +61,5 @@ export default function AppLayout({ menu }: { menu: Item[] }) {
     </LayoutPage>
   );
 }
+
+// className="xl:no-scrollbar overflow-y-scroll bg-primary-100 px-4 pb-12 pt-4 xl:h-body xl:border-l xl:border-secondary-300 xl:border-opacity-30 xl:pt-1"

@@ -59,7 +59,7 @@ export default function Slider({
   return (
     <div
       className={`border- my-4 flex flex-col ${
-        shouldBeCentered ? "self-center" : ""
+        shouldBeCentered ? "xl:self-center" : ""
       }`}
     >
       <HeaderSlider title={title} linkText={linkText} link={link} />
