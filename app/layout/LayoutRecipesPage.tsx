@@ -8,7 +8,7 @@ export default function LayoutRecipePages({
   title: string;
 }) {
   return (
-    <div className="mx-auto flex h-full max-w-[1325px] flex-col">
+    <div className="mx-auto flex  max-w-[1325px] flex-col">
       <img
         src="/images/banner_recipe_page.webp"
         alt=""
@@ -16,6 +16,7 @@ export default function LayoutRecipePages({
       />
       <TitleLevel1 title={title} />
       {children}
+      <div className="h-14"></div>
     </div>
   );
 }

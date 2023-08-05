@@ -13,6 +13,8 @@ import ResponseError from "~/helpers/response/response.error";
 import { harmonzeUnit } from "~/utils/convert.grams.to.pieces";
 import { motion } from "framer-motion";
 import { getProfile } from "~/utils/get.user.infos";
+import Carousel from "~/components/slider/index.carousel";
+import MealPlanCard from "~/components/cards/index.meal.plan";
 
 export async function loader({ request, params }: LoaderArgs) {
   try {
@@ -55,114 +57,59 @@ export async function loader({ request, params }: LoaderArgs) {
   }
 }
 
-export default function ({}) {
+export default function () {
   const { mealPlans, groupByCategory } = useLoaderData();
-  const [width, setWidth] = useState<number | null>(2);
-  const [scrollXValue, setScrollXvalue] = useState<number>(0);
-  const carousel = useRef<HTMLDivElement>(null);
-  const innerCarousel = useRef<HTMLDivElement>(null);
-  const params = useParams();
+  // const [width, setWidth] = useState<number | null>(null);
+  // const [scrollXValue, setScrollXvalue] = useState<number>(0);
+  // const carousel = useRef<HTMLDivElement>(null);
+  // const innerCarousel = useRef<HTMLDivElement>(null);
+  // const params = useParams();
 
   const categoryName = Object.keys(groupByCategory);
 
-  function nextSlide() {
-    // if (widthCard === null) return;
-    console.log(scrollXValue, "scroll position");
-    console.log(scrollXValue - 200, "scroll + delta");
-    console.log(width, "width");
-    // if (scrollXValue + 200)
-    if (!width) return;
-    if (Math.abs(scrollXValue - 200) > width) {
-      console.log("is working");
-      setScrollXvalue(-width);
-    } else {
-      setScrollXvalue(scrollXValue - 200);
-    }
-  }
+  // function nextSlide() {
+  //   if (!width) return;
+  //   if (Math.abs(scrollXValue - 200) > width) {
+  //     setScrollXvalue(-width);
+  //   } else {
+  //     setScrollXvalue(scrollXValue - 200);
+  //   }
+  // }
 
-  function prevSlide() {
-    // if (widthCard === null) return;
-    if (!width) return;
-    if (scrollXValue + 200 > 0) {
-      setScrollXvalue(0);
-    } else {
-      setScrollXvalue(scrollXValue + 200);
-    }
-  }
+  // function prevSlide() {
+  //   if (!width) return;
+  //   if (scrollXValue + 200 > 0) {
+  //     setScrollXvalue(0);
+  //   } else {
+  //     setScrollXvalue(scrollXValue + 200);
+  //   }
+  // }
 
-  const handleClickNav = (e) => {
-    if (e.currentTarget.dataset.nav === "prev") {
-      prevSlide();
-    } else {
-      nextSlide();
-    }
-  };
+  // const handleClickNav = (e) => {
+  //   if (e.currentTarget.dataset.nav === "prev") {
+  //     prevSlide();
+  //   } else {
+  //     nextSlide();
+  //   }
+  // };
 
-  useEffect(() => {
-    if (carousel?.current) {
-      console.log(carousel.current.scrollWidth);
-      console.log(carousel.current.offsetWidth);
-      setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
-    }
-  }, [params.mealplanid]);
+  // useEffect(() => {
+  //   if (carousel?.current) {
+  //     setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
+  //   }
+  // }, [params.mealplanid]);
 
   return (
     <>
       <div className="no-scrollbar relative flex w-full">
-        <button
-          type="button"
-          className="absolute bottom-0 left-2 hidden cursor-pointer text-secondary-300 lg:flex"
-          data-nav="prev"
-          onClick={handleClickNav}
-        >
-          <LongArrowRightIcon />
-        </button>
-        <button
-          className="absolute bottom-0 right-2 hidden rotate-180 cursor-pointer text-secondary-300 lg:flex"
-          data-nav="next"
-          onClick={handleClickNav}
-        >
-          <LongArrowRightIcon />
-        </button>
-        <motion.div
-          className="no-scrollbar flex w-full gap-x-6 overflow-x-scroll px-6 py-8 "
-          ref={carousel}
-        >
-          <motion.div
-            drag="x"
-            whileTap={{ cursor: "grabbing" }}
-            // dragConstraints={{ right: 0, left: -width }}
-            className="flex w-full gap-x-6"
-            ref={innerCarousel}
-            animate={{ x: scrollXValue }}
-            transition={{ ease: "easeInOut", duration: 1 }}
-          >
-            {mealPlans &&
-              mealPlans.meals &&
-              mealPlans.meals.length > 0 &&
-              mealPlans.meals.map((recipe, index: number) => (
-                <div
-                  key={index}
-                  className="flex h-32 w-[120px] min-w-[120px] flex-col rounded-b-lg rounded-t-3xl bg-main-100 px-2 shadow-sober"
-                >
-                  <div className="relative -left-3 -top-2 flex items-center justify-between scroll-smooth">
-                    <img
-                      src={recipe.image}
-                      alt={recipe.recipe_name}
-                      className="aspect-square w-16 rounded-full "
-                    />
-                    <div className="flex">
-                      <ServingIcon size="4" />
-                      <p>{recipe.servings}</p>
-                    </div>
-                  </div>
-                  <p className="my-auto text-7 font-semibold text-text-accent">
-                    {recipe.recipe_name}
-                  </p>
-                </div>
-              ))}
-          </motion.div>
-        </motion.div>
+        <Carousel extraStyle="py-8" navPosition="spread">
+          {mealPlans &&
+            mealPlans.meals &&
+            mealPlans.meals.length > 0 &&
+            mealPlans.meals.map((recipe, index: number) => (
+              <MealPlanCard recipe={recipe} key={index} />
+            ))}
+        </Carousel>
       </div>
       <div className="flex w-full  flex-wrap content-start items-center justify-center gap-2">
         {categoryName.sort().map((name, index) => {

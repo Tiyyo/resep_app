@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState, useRef } from "react";
 import type { SliderProps } from "./interface";
 import SliderNav from "./index.nav";
+import Carousel from "./index.carousel";
 
 export default function Slider({
   banner,
@@ -16,6 +17,7 @@ export default function Slider({
   linkText,
   link,
   shouldBeCentered,
+  navPosition = "spread",
 }: SliderProps) {
   const [width, setWidth] = useState<number>(0);
   const [scrollXValue, setScrollXValue] = useState<number>(0);
@@ -65,39 +67,24 @@ export default function Slider({
         <div className="hidden xl:block">
           {banner && <BannerSlider title={title ?? ""} />}
         </div>
-        <motion.div
-          className="no-scrollbar overflow-x-scroll scroll-smooth px-6"
-          ref={carousel}
-          whileTap={{ cursor: "grabbing" }}
-        >
-          <motion.div
-            drag="x"
-            whileTap={{ cursor: "grabbing" }}
-            dragConstraints={{ right: 0, left: -width }}
-            className="flex w-full gap-x-6"
-            ref={innerCarousel}
-            animate={{ x: scrollXValue }}
-            transition={{ ease: "easeInOut", duration: 1 }}
-          >
-            {content &&
-              content.length > 0 &&
-              content.map((recipe: any): JSX.Element => {
-                return (
-                  <RecipeCard
-                    variant={cardAxis ?? "vertical"}
-                    tags={recipe.tags}
-                    key={recipe.id}
-                    recipeId={recipe.id}
-                    imageLink={recipe.image?.link}
-                    recipeName={recipe.name}
-                    recipeCalories={recipe.macros?.calories}
-                    isLiked={isLikedByUser(recipe, profileId)}
-                  />
-                );
-              })}
-          </motion.div>
-          <SliderNav handleClick={handleClick} />
-        </motion.div>
+        <Carousel deepth={1} navPosition={navPosition}>
+          {content &&
+            content.length > 0 &&
+            content.map((recipe: any): JSX.Element => {
+              return (
+                <RecipeCard
+                  variant={cardAxis ?? "vertical"}
+                  tags={recipe.tags}
+                  key={recipe.id}
+                  recipeId={recipe.id}
+                  imageLink={recipe.image?.link}
+                  recipeName={recipe.name}
+                  recipeCalories={recipe.macros?.calories}
+                  isLiked={isLikedByUser(recipe, profileId)}
+                />
+              );
+            })}
+        </Carousel>
       </div>
     </div>
   );

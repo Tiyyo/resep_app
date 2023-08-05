@@ -108,28 +108,28 @@ export const homeMenu = [
       {
         id: 6,
         name: "Categories",
-        link: "categories",
+        link: "",
         open: false,
         icon: null,
         children: [
           {
             id: 8,
             name: "New",
-            link: "categories/new",
+            link: "recipes/new",
             open: false,
             icon: null,
           },
           {
             id: 9,
             name: "Asia",
-            link: "categories/asia",
+            link: "recipes/asia",
             open: false,
             icon: null,
           },
           {
             id: 10,
             name: "Italy",
-            link: "categories/italy",
+            link: "recipes/italy",
             open: false,
             icon: null,
           },

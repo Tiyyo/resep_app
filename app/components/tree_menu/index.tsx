@@ -36,7 +36,7 @@ export default function TreeMenu({
         <div key={index + item.id}>
           <div
             onClick={openChildren(item.id)}
-            className="mt-2 flex items-center justify-between  rounded-md px-3 py-1 shadow-inner transition-colors hover:bg-main-300"
+            className="mt-2 flex cursor-pointer items-center  justify-between rounded-md px-3 py-1 shadow-inner transition-colors hover:bg-main-300"
           >
             <NavLink to={item.link} className={`pl-${paddingLeft} `}>
               {({ isActive }) => (
