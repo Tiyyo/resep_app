@@ -1,5 +1,6 @@
 import { Link } from "@remix-run/react";
 import type { CardRecipeImageProps } from "./interface";
+import LinkFixed from "~/components/link";
 
 export default function CardRecipeImage({
   variant,
@@ -15,7 +16,8 @@ export default function CardRecipeImage({
           : "mx-auto min-h-[120px] basis-2/3"
       }`}
     >
-      <Link to={`/home/recipe/${recipeId}`}>
+      <Link to={`/home/recipe/${recipeId}`} preventScrollReset={false}>
+        {/* <LinkFixed to={`/home/recipe/${recipeId}`}> */}
         {imageLink && (
           <img
             src={imageLink}
@@ -23,6 +25,7 @@ export default function CardRecipeImage({
             className="h-full rounded-md object-cover"
           />
         )}
+        {/* </LinkFixed> */}
       </Link>
     </div>
   );

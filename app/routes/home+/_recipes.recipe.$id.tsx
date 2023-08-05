@@ -2,6 +2,7 @@ import { json, type LoaderArgs } from "@remix-run/node";
 import {
   isRouteErrorResponse,
   Link,
+  ScrollRestoration,
   useFetcher,
   useLoaderData,
   useNavigate,
