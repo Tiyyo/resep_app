@@ -13,6 +13,7 @@ export default {
         },
       });
       await prisma.$disconnect();
+      console.log(relationalInfos, 'RelationalInfos')
       return relationalInfos;
     } catch (error: any) {
       throw new DatabaseError(error.message, "reviews", error);

@@ -1,10 +1,7 @@
 import { useParams } from "@remix-run/react";
 import RecipeCard from "../recipe/card";
 import type { Recipe } from "~/types/recipe";
-import isLikedByUser from "~/utils/is.liked.by.user";
-import LayoutRecipePages from "~/layout/LayoutRecipesPage";
 import RecipeContainer from "../container";
-import TitleLevel1 from "../title/TitleLevel1";
 
 export default function FinderCategories({
   recipes,

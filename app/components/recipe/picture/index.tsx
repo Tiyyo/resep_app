@@ -1,5 +1,6 @@
 import ArrowLeftCircle from "~/assets/icons/ArrowLeftCircle";
 import Bookmark from "~/assets/icons/Bookmark";
+import type { Picture } from "./interface";
 
 export default function Picture({ picture, author }: Picture) {
   return (

@@ -1,17 +1,13 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData, useParams } from "@remix-run/react";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useLoaderData } from "@remix-run/react";
 import category from "~/api/category";
 import meal_plans from "~/api/meal_plans";
-import LongArrowRightIcon from "~/assets/icons/LongArrowIcon";
-import ServingIcon from "~/assets/icons/ServingsIcon";
 import ItemsGroup from "~/components/shopping";
 import NotFoundError from "~/helpers/errors/not.found.error";
 import ServerError from "~/helpers/errors/server.error";
 import ResponseError from "~/helpers/response/response.error";
 import { harmonzeUnit } from "~/utils/convert.grams.to.pieces";
-import { motion } from "framer-motion";
 import { getProfile } from "~/utils/get.user.infos";
 import Carousel from "~/components/slider/index.carousel";
 import MealPlanCard from "~/components/cards/index.meal.plan";

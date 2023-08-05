@@ -80,7 +80,7 @@ export default function () {
       setClear(true);
     }
     return () => setClear(false);
-  }, [addRecipe.state, addRecipe.data?.status]);
+  }, [addRecipe.state, addRecipe.data?.status, addRecipe.data?.name]);
 
   return (
     <div className="p-8">

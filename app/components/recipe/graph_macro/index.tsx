@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import type { LinearMacrosProportionProps, Parts } from "./interface";
 
 export default function LinearMacrosProportion({
@@ -10,18 +10,18 @@ export default function LinearMacrosProportion({
     fat: null,
   });
 
-  const computeParts = () => {
+  const computeParts = useCallback(() => {
     const { proteins, carbs, fat } = macros;
     const total = +fat + +carbs + +proteins;
     const proteinPart = +((+proteins / total) * 100).toFixed(1);
     const carbsPart = +((+carbs / total) * 100).toFixed(1);
     const fatPart = +((+fat / total) * 100).toFixed(1);
     setParts({ proteins: proteinPart, carbs: carbsPart, fat: fatPart });
-  };
+  }, [macros]);
 
   useEffect(() => {
     computeParts();
-  }, []);
+  }, [computeParts]);
 
   return (
     <div className="flex w-full flex-col items-center gap-y-5">

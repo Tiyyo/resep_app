@@ -3,10 +3,9 @@ import {
   Link,
   isRouteErrorResponse,
   useActionData,
-  useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AtIcon from "~/assets/icons/AtIcon";
 import EyeIcon from "~/assets/icons/Eye";
 import EyeSlash from "~/assets/icons/EyeSlash";
@@ -23,7 +22,6 @@ import { register } from "~/service/auth.server";
 import LayoutAuth from "~/layout/LayoutAuth";
 import LayoutPage from "~/layout/LayoutPage";
 import Error404 from "~/layout/Error404Page";
-import { Toast } from "~/components/toast";
 import UserInputError from "~/helpers/errors/user.inputs.error";
 import ResponseError from "~/helpers/response/response.error";
 import Error from "~/components/error";
@@ -77,9 +75,8 @@ export async function action({ request }: ActionArgs) {
 
 export default function () {
   const actionData = useActionData();
-  const loaderData = useLoaderData();
 
-  const [formData, setFormData] = useState({
+  const [, setFormData] = useState({
     username: "",
     email: "",
     password: "",

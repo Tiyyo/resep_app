@@ -54,7 +54,7 @@ export async function action({ request }: ActionArgs) {
 export default function () {
   const actionData = useActionData();
 
-  const [formData, setFormData] = useState({
+  const [, setFormData] = useState({
     email: "",
     password: "",
   });

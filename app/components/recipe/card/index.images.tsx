@@ -1,6 +1,5 @@
 import { Link } from "@remix-run/react";
 import type { CardRecipeImageProps } from "./interface";
-import LinkFixed from "~/components/link";
 
 export default function CardRecipeImage({
   variant,

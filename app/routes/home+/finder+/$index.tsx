@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useNavigate, useParams } from "@remix-run/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import ArrowRightIcon from "~/assets/icons/ArrowRightIcon";
 import capitalize from "~/utils/capitalize";
 
@@ -8,16 +8,17 @@ export default function () {
 
   const navigate = useNavigate();
   const params = useParams();
-
-  const navFinder = [
-    "favorites",
-    "myrecipes",
-    "chicken",
-    "beef",
-    "fish",
-    "veggie",
-    "all",
-  ];
+  const navFinder = useMemo(() => {
+    return [
+      "favorites",
+      "myrecipes",
+      "chicken",
+      "beef",
+      "fish",
+      "veggie",
+      "all",
+    ];
+  }, []);
 
   const goNext = (index: number) => {
     index === navFinder.length - 1
@@ -43,7 +44,7 @@ export default function () {
 
   useEffect(() => {
     navigate(`/home/finder/${params.index}/${navFinder[navFinderLinksIndex]}`);
-  }, [navFinderLinksIndex]);
+  }, [navFinderLinksIndex, navigate, navFinder, params.index]);
 
   return (
     <>
