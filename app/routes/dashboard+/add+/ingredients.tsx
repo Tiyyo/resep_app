@@ -44,7 +44,8 @@ export default function () {
       if (addIngredient.data?.error) {
         setErrorText(addIngredient.data?.error);
       }
-      if (addIngredient.data?.status === 200) {
+      console.log("addIngredient.data?.status", addIngredient.data?.status);
+      if (addIngredient.data?.name === "ResponseValid") {
         setClear(true);
         addIngredientFormRef.current.reset();
       }
@@ -56,7 +57,7 @@ export default function () {
     addIngredient.state,
     addIngredient.data?.error,
     addIngredient.data?.fields?.name,
-    addIngredient.data?.status,
+    addIngredient.data?.name,
   ]);
 
   return (

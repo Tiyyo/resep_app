@@ -10,6 +10,7 @@ import {
 import category from "~/api/category";
 import OrientationScreen from "~/components/orientation";
 import Table from "~/components/table";
+import TitleLevel1 from "~/components/title/TitleLevel1";
 import NotFoundError from "~/helpers/errors/not.found.error";
 import ResponseError from "~/helpers/response/response.error";
 import Error404 from "~/layout/Error404Page";
@@ -31,8 +32,12 @@ export default function CategoryPanel() {
     <>
       <OrientationScreen />
       <div className="hidden xl:block">
+        <TitleLevel1 title={"Categories"} />
+        <p className="mb-6 ml-8 text-10 text-opacity-80">
+          Manage current categories available or add more
+        </p>
         <Outlet />
-        <div className="flex flex-col gap-y-4 overflow-y-scroll pt-5 ">
+        <div className="flex flex-col gap-y-4 overflow-y-scroll  pt-5">
           {categories && <Table data={categories} endpoint="/api/categories" />}
         </div>
       </div>

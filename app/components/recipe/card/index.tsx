@@ -16,14 +16,13 @@ export default function RecipeCard({
   pickedMeal,
   servings,
 }: RecipeCardProps) {
-  console.log(variant);
   return (
     <div
       key={recipeId}
       className={`flex border bg-main-100 px-2 py-4 shadow-md ${
         variant === "horizontal"
           ? " aspect-2/1 h-52 max-h-[200px]"
-          : "aspect-2/3 max-h-[305px] min-w-[170px] flex-col xl:w-48"
+          : "aspect-2/3 max-h-[305px] w-[40%] min-w-[145px] flex-col  sm:w-auto xl:w-48"
       } `}
     >
       <CardRecipeImage

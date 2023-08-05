@@ -12,14 +12,14 @@ export default function ProfileLinksMenu() {
     {
       Icon: <ProfileIcon />,
       text: "Profile",
-      endpoint: "/profile",
+      endpoint: "",
       height: "simple",
       handleClick: handleClick,
     },
     {
       Icon: <SettingIcons size="4" />,
       text: "Settings",
-      endpoint: "/settings",
+      endpoint: "",
       height: "simple",
       handleClick: handleClick,
     },
@@ -35,19 +35,19 @@ export default function ProfileLinksMenu() {
     <>
       {profile.state === "loaded" && profile.profile ? (
         <>
-          <div>
-            <NotificationIcon size="5" />
-          </div>
-          <div className="dropdown dropdown-end dropdown-bottom">
+          <div className="border-green dropdown dropdown-end dropdown-bottom ">
             <label
               tabIndex={0}
-              className="btn m-1 h-10 border-0 bg-transparent hover:bg-transparent"
+              className="btn relative m-0 h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent"
             >
+              <div className="absolute -left-3.5 -top-0">
+                <NotificationIcon size="4" />
+              </div>
               <img
                 tabIndex={0}
-                src={profile.profile.avatar}
+                src={profile.profile.avatar || "/images/default_avatar.png"}
                 alt=""
-                className="h-10 w-full rounded-full object-cover"
+                className="h-8 w-full rounded-full object-cover"
               />
             </label>
             <ul
@@ -67,7 +67,7 @@ export default function ProfileLinksMenu() {
           </div>
         </>
       ) : (
-        "signin/signup"
+        ""
       )}
     </>
   );

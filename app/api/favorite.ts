@@ -21,7 +21,7 @@ export default {
       throw new DatabaseError(error.message, "reviews", error);
     }
   },
-  async destroy(authorId: string, recipeId: string) {
+  async unlike(authorId: string, recipeId: string) {
     try {
       const updatedInfos = await prisma.reviews.update({
         where: {

@@ -105,14 +105,15 @@ export async function action({ request }: ActionArgs) {
     case "delete": {
       const formData = await request.formData();
       const ingredientId = formData.get("id");
-
-      if (typeof ingredientId === "string" && ingredientId) {
-        await ingredient.destroy(+ingredientId);
-        return new ResponseValid(204, "Successfully deleted", null);
+      try {
+        if (typeof ingredientId === "string" && ingredientId) {
+          await ingredient.destroy(+ingredientId);
+          return new ResponseValid(204, "Successfully deleted", null);
+        }
+        throw new ServerError("a valid id is mandatory to delete this item")
+      } catch (error) {
+        return new ResponseError(error).send()
       }
-      return new ResponseError(
-        new ServerError("a valid is mandatory to delete this item")
-      );
     }
     default: {
       return new ResponseError(new MethodError("Invalid method"));

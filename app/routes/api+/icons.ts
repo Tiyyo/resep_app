@@ -144,8 +144,11 @@ export async function action({ request }: ActionArgs) {
       try {
         if (!idNumber.id)
           return new ResponseError(new ServerError("wrong id")).send();
+
         const deletedIcon = await icon.destroy(idNumber.id);
+
         await deleteImageFromBucket(deletedIcon.image_key);
+
         return new ResponseValid(204, "Successfully deleted", null).send();
       } catch (error: any) {
         return new ResponseError(error).send();

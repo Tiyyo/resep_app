@@ -10,6 +10,7 @@ import {
 import icon from "~/api/icon";
 import OrientationScreen from "~/components/orientation";
 import Table from "~/components/table";
+import TitleLevel1 from "~/components/title/TitleLevel1";
 import ResponseError from "~/helpers/response/response.error";
 import Error404 from "~/layout/Error404Page";
 import type { Icon } from "~/types/recipe";
@@ -45,6 +46,10 @@ export default function EditIcons() {
     <>
       <OrientationScreen />
       <div className="hidden xl:block">
+        <TitleLevel1 title={"Icons"} />
+        <p className="mb-6 ml-8 text-10 text-opacity-80">
+          Manage current icons available or add more
+        </p>
         <Outlet />
         {data.icons && data.icons.length > 0 && (
           <Table

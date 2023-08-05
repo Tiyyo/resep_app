@@ -108,13 +108,13 @@ export default {
       throw new DatabaseError(error.message, "recipes", error);
     }
   },
-  async findLast() {
+  async findLast(all?: boolean) {
     try {
       const lastestRecipes = await prisma.recipes.findMany({
         orderBy: {
           created_at: "desc",
         },
-        take: 6,
+        take: all ? undefined : 6,
         include: {
           macros: true,
           tags: true,

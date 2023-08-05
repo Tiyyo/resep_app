@@ -6,6 +6,7 @@ import useWindowSize from "~/hooks/useWindowsSize";
 import LayoutRecipePages from "~/layout/LayoutRecipesPage";
 import { getProfile } from "~/utils/get.user.infos";
 import { useState, useEffect } from "react";
+import { Toast } from "~/components/toast";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -56,6 +57,7 @@ export default function () {
   return (
     <>
       <Outlet />
+      <Toast />
       <LayoutRecipePages title={"Recommended for you"}>
         <Slider
           banner={false}
@@ -63,8 +65,9 @@ export default function () {
           profileId={profileId}
           content={lastestRecipes}
           linkText="See all"
-          link="/"
+          link="/home/recipes/new"
           shouldBeCentered={true}
+          navPosition="end"
         />
         <Slider
           banner={true}
@@ -73,7 +76,8 @@ export default function () {
           content={asianRecipes}
           profileId={profileId}
           linkText="See all"
-          link="/"
+          link="/home/recipes/asia"
+          navPosition={"end"}
         />
         <Slider
           banner={true}
@@ -82,7 +86,8 @@ export default function () {
           content={italianRecipes}
           profileId={profileId}
           linkText="See all"
-          link="/"
+          link="/home/recipes/italy"
+          navPosition={"end"}
         />
       </LayoutRecipePages>
     </>

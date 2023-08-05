@@ -18,7 +18,6 @@ export default function Checkbox({
     setErrorText(error);
   }, [error]);
 
-  console.log(error, errorText);
   return (
     <div className="flex flex-col">
       <label className="label flex cursor-pointer items-center">

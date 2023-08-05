@@ -17,11 +17,11 @@ export default class ResponseValid {
     return json(
       {
         message: this.userMessage,
-        data: this.data,
+        data: this.data
       },
       {
-        status: this.status,
+        status: this.status
       }
-    );
+    )
   }
 }

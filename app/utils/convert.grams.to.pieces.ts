@@ -54,6 +54,7 @@ export function harmonzeUnit(arg: any) {
 // }
 
 function buildIngrListToDisplay(finalArray = [], itemList: any) {
+  console.log(itemList[0])
   itemList.forEach((item: any) => {
     if (unitToConvertToPieces.includes(item.unit_measure.abreviation)) {
       pushRoundUpQty(finalArray, item);
@@ -73,6 +74,7 @@ function pushRoundUpQty(finalArray: ItemListCard[], item: any) {
     name: item.ingredient.name,
     image: item.ingredient.icon.link,
     unit: item.unit_measure.abreviation,
+    category_id: item.ingredient.category_id
   };
   finalArray.push(ingr);
 }
@@ -84,6 +86,7 @@ function pushWithoutUnit(finalArray: ItemListCard[], item: any) {
     name: item.ingredient.name,
     image: item.ingredient.icon.link,
     unit: null,
+    category_id: item.ingredient.category_id
   };
   finalArray.push(ingr);
 }
@@ -95,6 +98,7 @@ function pushWithGramsOrMl(finalArray: ItemListCard[], item: any) {
     name: item.ingredient.name,
     image: item.ingredient.icon.link,
     unit: isLiquid(item, item.ingredient.category),
+    category_id: item.ingredient.category_id
   };
   finalArray.push(ingr);
 }

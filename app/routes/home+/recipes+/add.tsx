@@ -74,7 +74,7 @@ export default function () {
       addRecipe.state === "idle" &&
       addrecipeRef &&
       addrecipeRef.current &&
-      addRecipe.data?.status === 200
+      addRecipe.data?.name === "ResponseValid"
     ) {
       addrecipeRef.current.reset();
       setClear(true);
@@ -164,7 +164,7 @@ export default function () {
           </div>
         </div>
         <TagsGenerator />
-
+        <div className="my-2 h-0.5 w-full border-t border-dotted border-secondary-400 xl:hidden "></div>
         <div className="flex w-full flex-col justify-evenly xl:flex-row">
           <GenerateJSX
             buttonProps={buttonPropsMeasure}
@@ -172,6 +172,7 @@ export default function () {
             ElementToGenerate={Measure}
             elementProps={measureProps}
           />
+          <div className="my-2 h-0.5 w-full border-t border-dotted border-secondary-400 xl:hidden "></div>
           <div className="flex flex-col items-center">
             <GenerateJSX
               buttonProps={buttonPropsStep}

@@ -10,6 +10,7 @@ import {
 import macro from "~/api/macro";
 import OrientationScreen from "~/components/orientation";
 import Table from "~/components/table";
+import TitleLevel1 from "~/components/title/TitleLevel1";
 import Error404 from "~/layout/Error404Page";
 
 export async function loader({ request }: LoaderArgs) {
@@ -24,6 +25,10 @@ export default function MacrosPanel() {
     <>
       <OrientationScreen />
       <div className="hidden xl:block">
+        <TitleLevel1 title={"Macros"} />
+        <p className="mb-6 ml-8 text-10 text-opacity-80">
+          Manage current macros available or add more
+        </p>
         <Outlet />
         {macros && <Table data={macros} endpoint="/api/macros" search="food" />}
       </div>

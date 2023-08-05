@@ -1,3 +1,5 @@
+import type { SliderNavVariant } from "./index.nav";
+
 export interface HeaderSliderProps {
   title?: string;
   link?: string;
@@ -13,4 +15,5 @@ export interface SliderProps {
   linkText?: string;
   link?: string;
   shouldBeCentered?: boolean;
+  navPosition: SliderNavVariant;
 }

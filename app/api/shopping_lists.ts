@@ -35,4 +35,7 @@ export default {
       throw new DatabaseError(error.message, "shopping_lists", error);
     }
   },
+  async findAllGroupByCategories() {
+
+  }
 };

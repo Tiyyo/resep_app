@@ -16,8 +16,6 @@ export default function () {
   const addIconFormRef = useRef<HTMLFormElement>(null);
   const actionData = useActionData();
   const addIcons = useFetcher();
-  console.log(actionData);
-  console.log(addIcons);
 
   useEffect(() => {
     if (addIcons.state === "idle" && addIconFormRef && addIconFormRef.current) {
@@ -67,8 +65,6 @@ export default function () {
 
 export function ErrorBoundary() {
   const error = useRouteError();
-
-  console.log(error);
 
   if (!isRouteErrorResponse(error)) {
     return (

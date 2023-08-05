@@ -10,13 +10,14 @@ export async function action({ request }: ActionArgs) {
   const recipeId = formData.get("recipeId");
   const authorId = formData.get("authorId");
 
+  console.log(recipeId, authorId, 'Action')
+
   try {
     if (typeof authorId === "string" && typeof recipeId === "string") {
       const infos = await review.findByIds(+authorId, +recipeId);
 
-      infos && await favorite.like(authorId, recipeId);
       infos?.is_liked
-        ? await favorite.destroy(authorId, recipeId)
+        ? await favorite.unlike(authorId, recipeId)
         : await favorite.like(authorId, recipeId);
 
       return new ResponseValid(200, "Successfully added", null);

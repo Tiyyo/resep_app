@@ -3,9 +3,10 @@ import {
   Link,
   isRouteErrorResponse,
   useActionData,
+  useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AtIcon from "~/assets/icons/AtIcon";
 import EyeIcon from "~/assets/icons/Eye";
 import EyeSlash from "~/assets/icons/EyeSlash";
@@ -22,6 +23,10 @@ import { register } from "~/service/auth.server";
 import LayoutAuth from "~/layout/LayoutAuth";
 import LayoutPage from "~/layout/LayoutPage";
 import Error404 from "~/layout/Error404Page";
+import { Toast } from "~/components/toast";
+import UserInputError from "~/helpers/errors/user.inputs.error";
+import ResponseError from "~/helpers/response/response.error";
+import Error from "~/components/error";
 
 export const validator = withZod(
   Z.object({
@@ -33,7 +38,7 @@ export const validator = withZod(
     email: Z.string().email({ message: "This is not an valid email" }),
     password: Z.string()
       .min(8, { message: "Must contains at least 8 characters" })
-      .max(24, { message: "Must be 24 or fewer characters long" })
+      .max(36, { message: "Must be 36 or fewer characters long" })
       .trim()
       .refine((value) => /\w*[a-z]\w*/.test(value), {
         message: "Must contain one lowercase",
@@ -60,14 +65,19 @@ export async function action({ request }: ActionArgs) {
   if (data.error) return validationError(data.error);
 
   const { username, email, password } = data.data;
-
-  return await register({ username, email, password });
+  try {
+    return await register({ username, email, password });
+  } catch (error: any) {
+    if (error instanceof UserInputError) {
+      return new ResponseError(error).send();
+    }
+    return new ResponseError(error).send();
+  }
 }
 
 export default function () {
   const actionData = useActionData();
-
-  console.log(actionData);
+  const loaderData = useLoaderData();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -84,8 +94,10 @@ export default function () {
       [field]: event.target.value,
     }));
   };
+
   return (
     <LayoutAuth>
+      {/* <Toast message={actionData?.error?.userMessage} /> */}
       <Form
         method="post"
         className="flex w-4/5 max-w-[450px] flex-col xl:max-w-[600px] xl:rounded-2xl xl:bg-white-100 xl:px-8 xl:py-6 xl:shadow-xl"
@@ -133,15 +145,23 @@ export default function () {
             onChange={(e) => handleInputChange(e, "password")}
             error={actionData?.fieldErrors?.confirm}
           ></FormField>
+          <ul className="text-6 ">
+            <li className="my-1">Passowrds have certain requirements</li>
+            <li>
+              Include at least 8 characters, include at least 1 lowercase letter
+              (a-z), 1 uppercase letter (A-Z), 1 digit (0-9) and 1 special
+              character (e.g., !, @, #, $, etc.).
+            </li>
+          </ul>
         </div>
         <div className="flex justify-between px-2 text-7">
           <Checkbox
-            label="I confirm that I have read and agree to FreshBooks Terms of Service and Privacy Policy."
+            label="I confirm that I have read and agree to Resep Terms of Service and Privacy Policy."
             name="termsAndService"
             error={actionData?.fieldErrors?.termsAndService}
           />
         </div>
-        <div className="center my-6 flex gap-x-6 ">
+        <div className="center my-6 flex flex-col gap-x-6 ">
           <Button
             type="submit"
             value="Sign up"
@@ -149,6 +169,7 @@ export default function () {
           >
             <LoginIcon />
           </Button>
+          <Error message={actionData?.error?.userMessage} />
         </div>
         <p className="mt-4 self-center xl:absolute xl:bottom-2 xl:left-1/2 xl:-translate-x-1/2 ">
           Already have an account ?
