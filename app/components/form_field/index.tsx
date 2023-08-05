@@ -54,6 +54,7 @@ export function FormField({
         >
           {label}
         </label>
+
         <div
           className="absolute right-2 top-1/2 -translate-y-1/2 transform text-black-light peer-focus:text-secondary-300"
           onClick={() => {

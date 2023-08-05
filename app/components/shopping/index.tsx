@@ -45,8 +45,8 @@ export default function ItemsGroup({ data, categoryName }: ItemsGroupProps) {
               />
               <p className="flex-grow text-7 opacity-80">{item.name}</p>
               <p className="w-[12%] text-7 opacity-80">
-                {item.qty}
-                <span>{item.unit}</span>
+                {item.qty ? Number(item.qty).toFixed(1) : item.qty}
+                <span>{item.qty && item.unit}</span>
               </p>
             </div>
           );
