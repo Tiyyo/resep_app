@@ -1,13 +1,13 @@
 import recipe from "~/api/recipe";
 import ServerError from "~/helpers/errors/server.error";
-import type { RecipeRawForm } from "~/types/recipe";
+import type { RecipeRawForm } from "~/types/index";
 import computeTotalMacro from "./compute.macros.server";
 import getRecipeToBuild from "./get.recipe.to.build.server";
 
 export async function buildRecipe(rawForm: RecipeRawForm) {
   const partialRecipe = await getRecipeToBuild(rawForm);
 
-  if (!partialRecipe) {
+  if (!partialRecipe || !partialRecipe.measures) {
     throw new ServerError(
       "Couldn't add raw data to the database. Couldn't get recipe from database"
     );

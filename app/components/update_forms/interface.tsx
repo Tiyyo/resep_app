@@ -1,9 +1,4 @@
-import type { Icon, Macros } from "~/types/recipe";
-import type { Category } from "../categories/interface";
-
-export interface UpdateMacrosFormProps {
-  data: Macros;
-}
+import type { Macros, Category, Icon } from "~/types";
 
 export interface UpdateIngredientsFormProps {
   data: any;
@@ -11,10 +6,6 @@ export interface UpdateIngredientsFormProps {
   icons: Icon[];
   macros: Macros[];
 }
-
-// export interface UpdateRecipeFormProps {}
-
-// export interface UpdateUnitMeasuresFormProps {}
 
 export interface UpdateCategoriesFormProps {
   category: Category;

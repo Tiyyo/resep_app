@@ -1,11 +1,8 @@
-import type {
-  Ingredient,
-  UnitMeasure,
-} from "~/service/recipe_builder/index.server";
+import type { Ingredient, UnitMeasure } from "~/types";
 
 export interface MeasureProps {
-  ingredients: Array<Ingredient>;
-  units: Array<UnitMeasure>;
+  ingredients: Ingredient[];
+  units: UnitMeasure[];
   remove: (event: React.MouseEvent<HTMLElement>) => void;
   clear: boolean;
   index: number;

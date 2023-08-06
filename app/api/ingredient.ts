@@ -1,10 +1,10 @@
 import { prisma } from "~/service/db.server";
-import type { IngredientCreateForm, IngredientUpdateForm } from "./interfaces";
 import DatabaseError from "~/helpers/errors/database.error";
 import NotFoundError from "~/helpers/errors/not.found.error";
+import type { Ingredient, IngredientCreatInput } from "~/types";
 
 export default {
-  async findAll() {
+  async findAll(): Promise<Ingredient[]> {
     try {
       const ingredients = await prisma.ingredients.findMany({
         include: {
@@ -64,7 +64,7 @@ export default {
   //         throw new Error("Server error can't acces data");
   //     }
   // },
-  async findById(id: number) {
+  async findById(id: number): Promise<Ingredient> {
     try {
       const ingredient = await prisma.ingredients.findUnique({
         where: {
@@ -88,14 +88,14 @@ export default {
       );
     }
   },
-  async add(form: IngredientCreateForm) {
+  async add(form: IngredientCreatInput) {
     //--- Maybe not mandatory
-    if (form.macrosId === null) {
-      form.macrosId = undefined;
-    }
-    if (form.iconId === null) {
-      form.iconId = undefined;
-    }
+    // if (form.macros_id === null) {
+    //   form.macros_id = undefined;
+    // }
+    // if (form.icon_id === null) {
+    //   form.icon_id = undefined;
+    // }
     //---
 
     // cant solve typescript error
@@ -103,10 +103,13 @@ export default {
       const newIngredient = await prisma.ingredients.create({
         data: {
           name: form.name,
-          unit_weight: form.unitWeight,
-          category: form.categoryId && { connect: { id: form.categoryId } },
-          macros: form.macrosId && { connect: { id: form.macrosId } },
-          icon: form.iconId && { connect: { id: form.iconId } },
+          unit_weight: form.unit_weight,
+          category_id: form.category_id ?? undefined,
+          macros_id: form.macros_id ?? undefined,
+          icon_id: form.icon_id ?? undefined,
+          // category: form.category_id && { connect: { id: form.category_id }},
+          // macros: form.macros_id && { connect: { id: form.macros_id } },
+          // icon: form.icon_id && { connect: { id: form.icon_id } },
         },
       });
       await prisma.$disconnect();
@@ -115,18 +118,18 @@ export default {
       throw new DatabaseError(error.message, "ingredients", error);
     }
   },
-  async update(form: IngredientUpdateForm) {
+  async update(form: Ingredient) {
     try {
       await prisma.ingredients.update({
         where: {
-          id: form.ingredientId,
+          id: form.id,
         },
         data: {
           name: form.name,
-          unit_weight: form.unitWeight,
-          category_id: form.categoryId,
-          icon_id: form.iconId,
-          macros_id: form.macrosId,
+          unit_weight: form.unit_weight,
+          category_id: form.category_id,
+          icon_id: form.icon_id,
+          macros_id: form.macros_id,
         },
       });
       await prisma.$disconnect();

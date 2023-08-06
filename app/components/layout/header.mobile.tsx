@@ -1,7 +1,11 @@
 import TitleLogo from "../title/TitleLogo";
 import ProfileLinksMenu from "./profile";
 
-export default function HeaderMobile({ handleSideMenu }) {
+export default function HeaderMobile({
+  handleSideMenu,
+}: {
+  handleSideMenu: () => void;
+}) {
   return (
     <header className="navbar border-b bg-primary-100 xl:hidden">
       <div className="navbar-start">

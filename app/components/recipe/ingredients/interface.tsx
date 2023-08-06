@@ -1,11 +1,12 @@
-import type { Measure } from "~/types/recipe";
-
-export interface MeasureFetch extends Measure {
-  ingredient_id: number;
-  recipe_id: string;
-}
+import type { Measure } from "~/types/index";
 
 export interface IngredientItemProps {
-  measures: Array<MeasureFetch>;
+  measure: Measure;
+  servings: number;
+  originalServings: number;
+}
+
+export interface IngredientListProps {
+  measures: Measure[];
   servings: number;
 }

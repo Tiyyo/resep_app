@@ -1,8 +1,10 @@
 import { prisma } from "~/service/db.server";
 import DatabaseError from "~/helpers/errors/database.error";
+import type { UserRecipeInfo } from "~/types";
+import NotFoundError from "~/helpers/errors/not.found.error";
 
 export default {
-  async findByIds(authorId: number, recipeId: number) {
+  async findByIds(authorId: number, recipeId: number): Promise<UserRecipeInfo> {
     try {
       const relationalInfos = await prisma.reviews.findUnique({
         where: {
@@ -13,13 +15,13 @@ export default {
         },
       });
       await prisma.$disconnect();
-      console.log(relationalInfos, 'RelationalInfos')
+      if (!relationalInfos) throw new NotFoundError("Review not found");
       return relationalInfos;
     } catch (error: any) {
       throw new DatabaseError(error.message, "reviews", error);
     }
   },
-  async findAllByRecipeId(id: number) {
+  async findAllByRecipeId(id: number): Promise<UserRecipeInfo[]> {
     try {
       const reviews = await prisma.recipes
         .findUnique({
@@ -41,17 +43,13 @@ export default {
           ],
         });
       await prisma.$disconnect();
+      if (!reviews) throw new NotFoundError("Reviews not found")
       return reviews;
     } catch (error: any) {
       throw new DatabaseError(error.message, "reviews", error);
     }
   },
-  async add(form: {
-    rating: number | undefined;
-    comment: string | undefined;
-    author_id: number;
-    recipe_id: number;
-  }) {
+  async add(form: UserRecipeInfo) {
     try {
       const newReview = await prisma.reviews.create({
         data: {

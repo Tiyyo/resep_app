@@ -8,9 +8,9 @@ export default {
         nunito: ["Nunito", "sans-serif"],
       },
       fontWeight: {
-        light: 200,
-        normal: 400,
-        bold: 700,
+        'light': '200',
+        'normal': '400',
+        'bold': '700',
       },
       height: {
         body: "calc(100vh - 75px)",

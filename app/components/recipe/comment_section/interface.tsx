@@ -1,7 +1,7 @@
-import type { Reviews } from "~/types/recipe";
+import type { UserRecipeInfo } from "~/types";
 
 export interface CommentSectionProps {
-  reviews: Reviews;
+  reviews: UserRecipeInfo[];
   recipeId: number;
   authorId: number;
 }

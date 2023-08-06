@@ -11,6 +11,8 @@ import { harmonzeUnit } from "~/utils/convert.grams.to.pieces";
 import { getProfile } from "~/utils/get.user.infos";
 import Carousel from "~/components/slider/index.carousel";
 import MealPlanCard from "~/components/cards/index.meal.plan";
+import type { Recipe } from "~/types";
+import { groupIngrByCategory } from "~/service/group.list.by.cty.server";
 
 export async function loader({ request, params }: LoaderArgs) {
   try {
@@ -27,17 +29,8 @@ export async function loader({ request, params }: LoaderArgs) {
     if (!mealPlans) throw new NotFoundError("no meal plan found");
 
     const mealsHarmonize = harmonzeUnit(mealPlans);
-
-    // create a function to do this
-    const groupByCategory = {};
-
-    categories.map((c) => {
-      return (groupByCategory[c.name] = []);
-    });
-    mealsHarmonize.forEach((m) => {
-      const matchingCategory = categories.find((c) => c.id === m.category_id);
-      groupByCategory[matchingCategory.name].push(m);
-    });
+    if (!mealsHarmonize) throw new ServerError("Could not harmonize meals");
+    const groupByCategory = groupIngrByCategory(categories, mealsHarmonize);
 
     return json({
       mealPlans,
@@ -65,7 +58,7 @@ export default function () {
           {mealPlans &&
             mealPlans.meals &&
             mealPlans.meals.length > 0 &&
-            mealPlans.meals.map((recipe, index: number) => (
+            mealPlans.meals.map((recipe: Recipe, index: number) => (
               <MealPlanCard recipe={recipe} key={index} />
             ))}
         </Carousel>

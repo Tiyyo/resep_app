@@ -1,5 +1,5 @@
 import { NavLink } from "@remix-run/react";
-import type { Item, TreeMenuProps } from "./interface";
+import type { MenuItem, TreeMenuProps } from "./interface";
 import { useEffect, useState } from "react";
 import Chevron from "../chevron";
 import mapRecursive from "~/utils/recursive.menu";
@@ -10,7 +10,7 @@ export default function TreeMenu({
   menu: menuProps,
   ...props
 }: TreeMenuProps) {
-  const [menu, setMenu] = useState<Item[]>(menuProps || []);
+  const [menu, setMenu] = useState<MenuItem[]>(menuProps || []);
   const [paddingLeft, setPaddingleft] = useState<number>(0);
 
   const openChildren = (id: number) => () => {

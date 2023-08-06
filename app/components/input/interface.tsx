@@ -11,7 +11,7 @@ export interface InputProps {
   style?: string;
   disabled?: boolean;
   placeholder?: string;
-  defaultValue?: string | number;
+  defaultValue?: any;
   pattern?: string;
   variant?: "grid" | "flex";
   align?: "start" | "end" | "center";

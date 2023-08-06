@@ -1,10 +1,10 @@
-import type { Item } from "~/components/tree_menu/interface";
+import type { MenuItem } from "~/components/tree_menu/interface";
 
 const mapRecursive = (
-  oldArray: Item[],
-  callback: (item: Item) => Item,
-  newArray: Item[] = []
-): Item[] => {
+  oldArray: MenuItem[],
+  callback: (item: MenuItem) => MenuItem,
+  newArray: MenuItem[] = []
+): MenuItem[] => {
   if (oldArray.length <= 0) {
     return newArray;
   } else {

@@ -1,10 +1,10 @@
 import { prisma } from "~/service/db.server";
-import type { Meal } from "~/session";
 import NotFoundError from "~/helpers/errors/not.found.error";
 import DatabaseError from "~/helpers/errors/database.error";
+import type { MealCreateInput, MealPlan } from "~/types";
 
 export default {
-  async findAllByAuthor(author_id: number) {
+  async findAllByAuthor(author_id: number): Promise<MealPlan[]> {
     try {
       const result = await prisma.meal_plans.findMany({
         where: {
@@ -27,7 +27,7 @@ export default {
       throw new DatabaseError(error.message, "meal_plans", error);
     }
   },
-  async findById(id: number, author_id: number) {
+  async findById(id: number, author_id: number): Promise<MealPlan> {
     try {
       const result = await prisma.meal_plans.findFirst({
         where: {
@@ -66,13 +66,14 @@ export default {
       if (!result)
         throw new NotFoundError("Can't find item with associated id");
 
+
       const mealPlans = {
         id: result.id,
         author_id: result.author_id,
         created_at: result.created_at,
-        shopping:
-          result.shopping &&
-          result.shopping.items.map((item) => item.list_item),
+        shopping: {
+          items: result.shopping && result.shopping.items.map((item) => item.list_item)
+        },
         meals: result.meals.map((meal) => {
           return {
             recipe_id: meal.meals.recipe_id,
@@ -87,7 +88,7 @@ export default {
       throw new DatabaseError(error.message, "meal_plans", error);
     }
   },
-  async add(author_id: number, form: Array<Meal>) {
+  async add(author_id: number, form: Array<MealCreateInput>) {
     try {
       const mealPlan = await prisma.meal_plans.create({
         data: {
@@ -114,7 +115,7 @@ export default {
       throw new DatabaseError(error.message, "meal_plans", error);
     }
   },
-  async findLast(author_id: number) {
+  async findLast(author_id: number): Promise<MealPlan> {
     try {
       const mealPlan = await prisma.meal_plans.findFirst({
         where: {
@@ -131,7 +132,9 @@ export default {
           created_at: "desc",
         },
       });
+
       await prisma.$disconnect();
+      if (!mealPlan) throw new NotFoundError("Can't find item with associated id")
       return mealPlan;
     } catch (error: any) {
       throw new DatabaseError(error.message, "meal_plans", error);

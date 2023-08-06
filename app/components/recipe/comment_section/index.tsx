@@ -3,7 +3,7 @@ import Review from "../reviews";
 import ControlShow from "~/components/control_show";
 import FormReview from "~/components/form_review";
 import type { CommentSectionProps } from "./interface";
-import type { Reviews } from "~/types/recipe";
+import type { UserRecipeInfo } from "~/types";
 
 export default function CommentSection({
   reviews,
@@ -14,7 +14,7 @@ export default function CommentSection({
 
   const thereIsMoreThanThreeReviews = reviews.length > 3;
 
-  function controlSizeCommentSection(reviews: Reviews) {
+  function controlSizeCommentSection(reviews: UserRecipeInfo[]) {
     if (sectionIsOpen) {
       return reviews;
     }
@@ -36,7 +36,7 @@ export default function CommentSection({
                 key={index}
                 comment={review.comment}
                 rating={review.rating}
-                author={review.author?.username}
+                author={review.author?.username ? review.author.username : ""}
               />
             )
         )}

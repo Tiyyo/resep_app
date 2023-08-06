@@ -1,9 +1,10 @@
 import { useState } from "react";
 import AddPlusIcon from "~/assets/icons/AddPlusIcon";
 import MinusIcon from "~/assets/icons/MinusIcon";
+import type { IngredientListByCategory } from "~/service/group.list.by.cty.server";
 
 export interface ItemsGroupProps {
-  data: any;
+  data: IngredientListByCategory;
   categoryName: string;
 }
 
@@ -29,7 +30,7 @@ export default function ItemsGroup({ data, categoryName }: ItemsGroupProps) {
         </div>
       </div>
       {data[categoryName]
-        .sort((a, b) => a.name - b.name)
+        .sort((a, b) => Number(a.name) - Number(b.name)) // Not sure it's the best way to sort
         .map((item) => {
           return (
             <div

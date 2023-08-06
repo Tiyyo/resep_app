@@ -24,6 +24,7 @@ import ServerError from "~/helpers/errors/server.error";
 import ResponseError from "~/helpers/response/response.error";
 import Error404 from "~/layout/Error404Page";
 import ArrowReturn from "~/assets/icons/ArrowReturn";
+import type { UserRecipeInfo } from "~/types";
 
 export async function loader({ params, request }: LoaderArgs) {
   try {
@@ -43,7 +44,6 @@ export async function loader({ params, request }: LoaderArgs) {
 
     if (profile) {
       const infos = await review.findByIds(profile.id, recipeId);
-      console.log(infos);
       response = { ...response, profile, infos };
     }
     return json(response);
@@ -80,8 +80,6 @@ export default function RecipePage() {
   const goBack = () => {
     navigate(-1);
   };
-
-  console.log(infosRecipeByUser);
 
   return (
     <>
@@ -144,7 +142,7 @@ export default function RecipePage() {
           <div className="order-3 flex w-full flex-grow flex-col gap-y-6 px-4 md:max-w-[700px]">
             <InstructionsList instructions={recipe.instructions} />
             <CommentSection
-              reviews={reviews}
+              reviews={reviews as UserRecipeInfo[]}
               recipeId={recipe.id}
               authorId={profile?.id}
             />

@@ -2,7 +2,7 @@ import LogoutIcon from "~/assets/icons/LogoutIcon";
 import NotificationIcon from "~/assets/icons/NotificationIcon";
 import ProfileIcon from "~/assets/icons/ProfileIcon";
 import SettingIcons from "~/assets/icons/SettingIcon";
-import type { Profile } from "~/types/recipe";
+import type { Profile } from "~/types/index";
 import DropdownLink from "./index.link";
 
 export default function DropdownMenu({
@@ -48,8 +48,8 @@ export default function DropdownMenu({
         >
           <img
             tabIndex={0}
-            src={profile?.avatar}
-            alt=""
+            src={profile?.avatar ?? "/images/default_avatar.png"}
+            alt={"default avatar or profile"}
             className="h-10 w-full rounded-full object-cover"
           />
         </label>

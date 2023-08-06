@@ -11,13 +11,13 @@ import { buildShoppingList } from "~/service/algo.builder.safer.server";
 import recipe from "~/api/recipe";
 import meal_plans from "~/api/meal_plans";
 import { getProfile } from "~/utils/get.user.infos";
-import type { MealPlanCreateInput } from "~/api/interfaces";
 import { getUserSession, storage } from "~/service/auth.server";
 import Intro from "~/components/meal_plans/index.intro";
 import ModalNotRoute from "~/components/modal/index.not.route";
 import shopping_lists from "~/api/shopping_lists";
 import DashedBtn from "~/components/button/DashedBtn";
 import CardMeals from "~/components/cards/index.meals";
+import type { Meal } from "~/types";
 
 export interface RecipeCardShop {
   id: number;
@@ -91,6 +91,7 @@ export async function action({ request }: ActionArgs) {
           { message: "Error while saving meal plan" },
           { status: 500 }
         );
+
       const shoppingListSaved = await shopping_lists.add(
         Number(mealPlanSaved.id),
         shoppingList
@@ -149,7 +150,7 @@ export async function action({ request }: ActionArgs) {
     case "restore": {
       const mealPlan = await meal_plans.findLast(profile.id);
 
-      if (!mealPlan)
+      if (!mealPlan.meals)
         return json({ message: "No meal plan found" }, { status: 404 });
 
       const meals = mealPlan.meals.map((meal) => meal.meals);
@@ -166,14 +167,12 @@ export async function action({ request }: ActionArgs) {
 }
 
 export default function () {
-  const [recipes, setRecipes] = useState<MealPlanCreateInput | null>(null);
+  const [recipes, setRecipes] = useState<Meal[] | null>(null);
   const [action, setAction] = useState<"new" | "old" | null>(null);
   const [hasToOpenModal, setHasToOpenModal] = useState(true);
   const fetchRandomRecipes = useFetcher();
   const updateServings = useSubmit();
-  const { recipes: cachedRecipes } = useLoaderData<{
-    recipes: MealPlanCreateInput;
-  }>();
+  const { recipes: cachedRecipes } = useLoaderData();
 
   const getActionToPerform = (action: "new" | "old" | null) => {
     setAction(action);
@@ -197,7 +196,7 @@ export default function () {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     //TODO do a deep copy instead
-    let copyRecipes: MealPlanCreateInput | undefined = [];
+    let copyRecipes;
     if (!recipes) return;
     copyRecipes = [...recipes];
     const position = Number(e.currentTarget.dataset.position);
@@ -236,7 +235,7 @@ export default function () {
       {recipes && (
         <>
           <div className="flex flex-wrap justify-center gap-4">
-            {recipes.map((recipe, index: number) => {
+            {recipes.map((recipe: Meal, index: number) => {
               return (
                 <Form
                   method="POST"

@@ -1,11 +1,9 @@
 import { prisma } from "~/service/db.server";
 import DatabaseError from "~/helpers/errors/database.error";
 import UserInputError from "~/helpers/errors/user.inputs.error";
+import type { Category } from "~/types/index";
 
-export type Category = {
-  id: number;
-  name: string;
-};
+
 
 export default {
   async findAll(): Promise<Category[]> {

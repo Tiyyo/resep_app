@@ -7,9 +7,9 @@ import BottomNav from "~/components/layout/bottom.nav";
 import SideNav from "~/components/layout/sidenav";
 import HeaderDesktop from "~/components/layout/header.desktop";
 import HeaderMobile from "~/components/layout/header.mobile";
-import type { Item } from "~/components/tree_menu/interface";
+import type { MenuItem } from "~/components/tree_menu/interface";
 
-export default function AppLayout({ menu }: { menu: Item[] }) {
+export default function AppLayout({ menu }: { menu: MenuItem[] }) {
   const sideMenuRef = useRef<HTMLDivElement | null>(null);
   const [sideMenuIsOpen, setSideMenuIsOpen] = useState<boolean>(false);
   const [widthMenu] = useState<number>(-3500);

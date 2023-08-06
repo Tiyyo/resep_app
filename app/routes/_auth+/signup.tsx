@@ -181,10 +181,10 @@ export default function () {
 
 // Make a component for the error page handling
 export function ErrorBoundary() {
-  const error = useRouteError();
+  const error: any = useRouteError();
 
   if (!isRouteErrorResponse(error)) {
-    if (error.status === 500) {
+    if ((error as any).status === 500) {
       return (
         <LayoutPage>
           <h2>Something went wrong ... try again later</h2>

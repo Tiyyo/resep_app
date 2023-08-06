@@ -108,28 +108,27 @@ export async function action({ request }: ActionArgs) {
         measures.push({
           ingredient: ingredients[index],
           unit_measure: units[index],
-          qty: qty[index],
+          qty: qty[index] as string,
         });
       });
 
       const form = {
         name,
-        prepTime,
-        cookTime,
+        prep_time: prepTime,
+        cook_time: cookTime,
         author,
         tags,
         servings,
         ytLink,
         level,
-        qty,
         measures,
         instructions,
         image: imageKey &&
-          imageLink && {
-          imageKey: imageKey,
+          imageLink ? {
+          image_key: imageKey,
           link: imageLink,
           width: 400,
-        },
+        } : undefined,
       };
 
       try {

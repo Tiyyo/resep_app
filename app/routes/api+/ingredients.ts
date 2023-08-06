@@ -4,13 +4,13 @@ import { withZod } from "@remix-validated-form/with-zod";
 import * as Z from "zod";
 import convertStringToNumber from "~/utils/convert.to.number";
 import { validationError } from "remix-validated-form";
-import type { IngredientCreateForm, IngredientUpdateForm } from "~/api/interfaces";
 import ingredient from "~/api/ingredient";
 import ResponseValid from "~/helpers/response/response.ok";
 import ResponseError from "~/helpers/response/response.error";
 import ServerError from "~/helpers/errors/server.error";
 import MethodError from "~/helpers/errors/method.error";
 import UserInputError from "~/helpers/errors/user.inputs.error";
+import type { Ingredient, IngredientCreatInput } from "~/types";
 
 export const validator = withZod(
   Z.object({
@@ -43,15 +43,15 @@ export async function action({ request }: ActionArgs) {
       try {
         const formConverted = await convertStringToNumber(fieldToConvert);
 
-        let form: IngredientCreateForm | undefined = undefined;
+        let form: IngredientCreatInput | undefined = undefined;
 
         if (formConverted.categoryId) {
           form = {
             name,
-            categoryId: formConverted.categoryId,
-            iconId: formConverted.iconId,
-            macrosId: formConverted.macrosId,
-            unitWeight: formConverted.unitWeight,
+            category_id: formConverted.categoryId,
+            icon_id: formConverted.iconId,
+            macros_id: formConverted.macrosId,
+            unit_weight: formConverted.unitWeight,
           };
         }
 
@@ -83,16 +83,16 @@ export async function action({ request }: ActionArgs) {
         const formConverted = await convertStringToNumber(fieldToConvert);
 
         // TODO fix this typescript error
-        let form: IngredientUpdateForm = undefined;
+        let form = {} as Ingredient
 
         if (formConverted.categoryId && formConverted.ingredientId) {
           form = {
             name,
-            categoryId: formConverted.categoryId,
-            iconId: formConverted.iconId,
-            macrosId: formConverted.macrosId,
-            unitWeight: formConverted.unitWeight,
-            ingredientId: formConverted.ingredientId,
+            category_id: formConverted.categoryId,
+            icon_id: formConverted.iconId,
+            macros_id: formConverted.macrosId,
+            unit_weight: formConverted.unitWeight,
+            id: formConverted.ingredientId,
           };
         }
         if (!form) throw new UserInputError("Invalid values", "Invalid values");

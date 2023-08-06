@@ -7,7 +7,7 @@ export default class ResponseValid {
   userMessage?: string;
   data?: any;
 
-  constructor(status: number = 200, message?: string, data: any) {
+  constructor(status: number = 200, message?: string, data?: any) {
     this.name = "ResponseValid";
     this.status = status;
     this.userMessage = message;

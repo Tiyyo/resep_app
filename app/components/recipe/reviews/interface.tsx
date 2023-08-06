@@ -1,5 +1,5 @@
 export interface ReviewsProps {
-  comment?: string;
-  rating?: number;
+  comment?: string | null;
+  rating?: number | null;
   author?: string;
 }

@@ -1,12 +1,17 @@
 import macro from "~/api/macro";
 import computeTotalMacro from "./compute.macros.server";
 import recipe from "~/api/recipe";
+import NotFoundError from "~/helpers/errors/not.found.error";
 
 const computeNewMacroAfterToUpdateRecipe = async (recipeId: number) => {
   const foundRecipe = await recipe.findById(recipeId);
 
-  if (!recipe) {
-    throw new Error("Couldn't find recipe");
+  if (!foundRecipe) {
+    throw new NotFoundError("Couldn't find recipe");
+  }
+
+  if (!foundRecipe.measures) {
+    throw new NotFoundError("Couldn't find recipe measures");
   }
 
   const macroRecipe = await computeTotalMacro(

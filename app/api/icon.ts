@@ -1,11 +1,10 @@
 import { prisma } from "~/service/db.server";
-import type { FormIconProps, FormPropsEditIcon } from "./interfaces";
 import DatabaseError from "~/helpers/errors/database.error";
-import type { Icon } from "~/types/recipe";
 import NotFoundError from "~/helpers/errors/not.found.error";
+import type { Icon, IconCreatInput } from "~/types";
 
 export default {
-  async findAll() {
+  async findAll(): Promise<Icon[]> {
     try {
       const icons = await prisma.icons.findMany({
         include: {
@@ -24,7 +23,7 @@ export default {
       throw new DatabaseError(error.message, "icons", error);
     }
   },
-  async findById(id: number): Promise<Icon[]> {
+  async findById(id: number): Promise<Icon> {
     try {
       const icon = await prisma.icons.findUnique({
         where: {
@@ -42,7 +41,7 @@ export default {
       throw new DatabaseError(error.message, "icons", error);
     }
   },
-  async add(form: FormIconProps) {
+  async add(form: IconCreatInput) {
     try {
       if (form.tags) {
         let createTags = form.tags.map((tag) => {
@@ -63,8 +62,8 @@ export default {
         const createIcon = await prisma.icons.create({
           data: {
             name: form.name,
-            link: form.imageLink,
-            image_key: form.imageKey,
+            link: form.link,
+            image_key: form.image_key,
             tags: {
               create: createTags,
             },
@@ -78,8 +77,8 @@ export default {
         const createIcon = await prisma.icons.create({
           data: {
             name: form.name,
-            link: form.imageLink,
-            image_key: form.imageKey,
+            link: form.link,
+            image_key: form.image_key,
           },
         });
         return createIcon;
@@ -88,7 +87,7 @@ export default {
       throw new DatabaseError(error.message, "icons", error);
     }
   },
-  async update(form: FormPropsEditIcon) {
+  async update(form: Icon) {
     try {
       if (form.tags) {
         const createTags = form.tags.map((tag) => {
@@ -111,8 +110,8 @@ export default {
           },
           data: {
             name: form.name,
-            link: form.imageLink,
-            image_key: form.imageKey,
+            link: form.link,
+            image_key: form.image_key,
             tags: {
               deleteMany: {},
               create: createTags,
@@ -129,8 +128,8 @@ export default {
           },
           data: {
             name: form.name,
-            link: form.imageLink,
-            image_key: form.imageKey,
+            link: form.link,
+            image_key: form.image_key,
           },
         });
         return updateIcon;

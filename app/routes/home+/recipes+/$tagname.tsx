@@ -9,7 +9,7 @@ import LayoutRecipePages from "~/layout/LayoutRecipesPage";
 import capitalize from "~/utils/capitalize";
 import { groupedTags } from "~/constants/grouped.tags";
 
-export async function loader({ request, params }: LoaderArgs) {
+export async function loader({ params }: LoaderArgs) {
   const { tagname } = params;
   if (!tagname) throw new ServerError("Params tagname is missing");
   try {
@@ -17,7 +17,9 @@ export async function loader({ request, params }: LoaderArgs) {
       const recipes = await recipe.findLast(true);
       return json({ recipes });
     }
-    const recipes = await recipe.findByTags(groupedTags[tagname.toLowerCase()]);
+    const recipes = await recipe.findByTags(
+      groupedTags[tagname.toLowerCase() as keyof typeof groupedTags]
+    );
     return json({ recipes });
   } catch (error) {
     return new ResponseError(error).send();
@@ -29,8 +31,12 @@ export default function () {
   const params = useParams();
 
   return (
-    <LayoutRecipePages title={capitalize(params?.tagname)}>
-      <RecipeContainer data={recipes} Card={RecipeCard} />
-    </LayoutRecipePages>
+    <>
+      {params?.tagname && (
+        <LayoutRecipePages title={capitalize(params?.tagname)}>
+          <RecipeContainer data={recipes} Card={RecipeCard} />
+        </LayoutRecipePages>
+      )}
+    </>
   );
 }
