@@ -38,16 +38,16 @@ export default function ProfileLinksMenu() {
           <div className="dropdown dropdown-end dropdown-bottom dark:border-0">
             <label
               tabIndex={0}
-              className="btn relative m-0 h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent"
+              className="btn relative m-0 h-fit w-fit rounded-full border-0 bg-transparent p-0 hover:bg-transparent"
             >
-              <div className="absolute -left-3.5 -top-0">
+              <div className="absolute -left-3.5 -top-0 dark:text-text-accent">
                 <NotificationIcon size="4" />
               </div>
               <img
                 tabIndex={0}
                 src={profile.profile.avatar || "/images/default_avatar.png"}
                 alt=""
-                className="h-8 w-full rounded-full object-cover"
+                className="h-8 w-8 rounded-full object-cover"
               />
             </label>
             <ul

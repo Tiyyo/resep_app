@@ -21,36 +21,44 @@ import { getProfile } from "~/utils/get.user.infos";
 import recipe from "~/api/recipe";
 import review from "~/api/review";
 import ServerError from "~/helpers/errors/server.error";
-import ResponseError from "~/helpers/response/response.error";
 import Error404 from "~/layout/Error404Page";
 import ArrowReturn from "~/assets/icons/ArrowReturn";
 import type { UserRecipeInfo } from "~/types";
 
 export async function loader({ params, request }: LoaderArgs) {
+  if (!params.id) throw new ServerError("Invalid params");
+  const recipeId = +params.id;
+  let response = {};
+
+  const result = await Promise.all([
+    recipe.findById(recipeId),
+    review.findAllByRecipeId(recipeId),
+    review.aggretate(recipeId),
+  ])
+    .then((results) => {
+      const foundRecipe = results[0];
+      const reviews = results[1];
+      const aggregate = results[2];
+      return (response = { foundRecipe, reviews, aggregate });
+    })
+    .catch((error) => {
+      console.log("error", error.message);
+    });
+
+  response = { ...result };
+
   try {
-    if (!params.id) throw new ServerError("Invalid params");
-    const recipeId = +params.id;
-
-    let response;
-
-    // Promise all
-    const foundRecipe = await recipe.findById(recipeId);
-    const reviews = await review.findAllByRecipeId(recipeId);
-    const aggregate = await review.aggretate(recipeId);
-
-    response = { foundRecipe, reviews, aggregate };
-    //
     const profile = await getProfile(request);
+    response = { ...response, profile };
 
     if (profile) {
       const infos = await review.findByIds(profile.id, recipeId);
-      response = { ...response, profile, infos };
+      response = { ...response, infos };
     }
-    return json(response);
-  } catch (error) {
-    console.log(error);
-    return new ResponseError(error);
+  } catch (error: any) {
+    console.log(error.message);
   }
+  return json(response);
 }
 
 export default function RecipePage() {

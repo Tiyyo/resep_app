@@ -56,7 +56,6 @@ function pushWithoutUnit(finalArray: ItemListCard[], item: totalIngredientQty) {
   if (
     !item.ingredient ||
     !item.ingredient.name ||
-    !item.unit_measure ||
     !item.ingredient.icon) return
 
   const ingr = {
@@ -74,16 +73,15 @@ function pushWithGramsOrMl(finalArray: ItemListCard[], item: totalIngredientQty)
   if (
     !item.ingredient ||
     !item.ingredient.name ||
-    !item.ingredient.unit_weight ||
-    !item.unit_measure ||
-    !item.ingredient.category ||
-    !item.ingredient.icon) return
+    !item.ingredient.category
+  )
+    return
 
   const ingr = {
     id: item.id,
     qty: new Prisma.Decimal(item.qty as number),
     name: item.ingredient.name,
-    image: item.ingredient.icon.link,
+    image: item.ingredient.icon ? item.ingredient.icon.link : "",
     unit: isLiquid(item, item.ingredient.category),
     category_id: item.ingredient.category_id
   };

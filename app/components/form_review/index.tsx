@@ -4,6 +4,7 @@ import PickRating from "../rating/PickRating";
 import type { FormReviewProps } from "./interface";
 import { useEffect, useRef, useState } from "react";
 import Error from "../error";
+import { Toast } from "../toast";
 
 export default function FormReview({ authorId, recipeId }: FormReviewProps) {
   const styleTextaeraOpen =
@@ -32,46 +33,51 @@ export default function FormReview({ authorId, recipeId }: FormReviewProps) {
       if (addReview.data?.message) {
         setError(addReview.data?.message);
       }
-      if (addReview.data?.status === 200) {
+      if (addReview.data?.status == 201) {
         addReviewFormRef.current.reset();
       }
     }
   }, [addReview.state, addReview.data?.status, addReview.data?.message]);
 
   return (
-    <div
-      className="w-full rounded-xl border bg-main-100 px-4 py-2 shadow-xl "
-      onMouseLeave={handleHover}
-    >
-      <addReview.Form
-        ref={addReviewFormRef}
-        method="POST"
-        action="/api/reviews"
-        className="flex flex-col gap-y-4 "
+    <>
+      <Toast message={addReview.data?.userMessage} />
+      <div
+        className="w-full rounded-xl border bg-main-100 px-4 py-2 shadow-xl "
+        onMouseLeave={handleHover}
       >
-        <input type="number" hidden defaultValue={authorId} name="authorId" />
-        <input type="number" hidden defaultValue={recipeId} name="recipeId" />
-        <textarea
-          ref={textAera}
-          className={openReviewSection ? styleTextaeraOpen : styleTextaeraClose}
-          name="comment"
-          id="leaveReviewSection"
-          placeholder="Leave a comment"
-          onFocusCapture={() => setOpenLeaveReviewSection(true)}
-        ></textarea>
-        <div className="flex justify-between">
-          {openReviewSection ? (
-            <>
-              <PickRating numOfStars={5} />
-              <SubmitButton
-                text={authorId ? "Send" : "sign in to send"}
-                height="7"
-              />{" "}
-            </>
-          ) : null}
-        </div>
-      </addReview.Form>
-      <Error message={error} />
-    </div>
+        <addReview.Form
+          ref={addReviewFormRef}
+          method="POST"
+          action="/api/reviews"
+          className="flex flex-col gap-y-4 "
+        >
+          <input type="number" hidden defaultValue={authorId} name="authorId" />
+          <input type="number" hidden defaultValue={recipeId} name="recipeId" />
+          <textarea
+            ref={textAera}
+            className={
+              openReviewSection ? styleTextaeraOpen : styleTextaeraClose
+            }
+            name="comment"
+            id="leaveReviewSection"
+            placeholder="Leave a comment"
+            onFocusCapture={() => setOpenLeaveReviewSection(true)}
+          ></textarea>
+          <div className="flex justify-between">
+            {openReviewSection ? (
+              <>
+                <PickRating numOfStars={5} />
+                <SubmitButton
+                  text={authorId ? "Send" : "sign in to send"}
+                  height="7"
+                />{" "}
+              </>
+            ) : null}
+          </div>
+        </addReview.Form>
+        <Error message={error} />
+      </div>
+    </>
   );
 }

@@ -62,7 +62,7 @@ export default function () {
 
   return (
     <div className="center w-full ">
-      <Toast message={addIngredient?.data?.message} />
+      <Toast message={addIngredient?.data?.userMessage} />
       <addIngredient.Form
         method="POST"
         action="/api/ingredients"

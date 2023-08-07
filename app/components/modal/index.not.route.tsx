@@ -18,15 +18,17 @@ export default function ModalNotRoute({
 
   // force dialog to stay close for a certain amout of time on refresh
   function forceDialogClose() {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       setIsDialogOpen(true);
     }, 300);
+    return timeout;
   }
 
   useEffect(() => {
     if (isOpen) {
       forceDialogClose();
     }
+    return () => clearTimeout(forceDialogClose());
   }, [isOpen]);
 
   useEffect(() => {
@@ -62,14 +64,14 @@ export default function ModalNotRoute({
 
           <div className="center modal-action">
             <button
-              className="btn w-24"
+              className="btn w-24 text-text-accent hover:bg-slate-200 hover:opacity-80 dark:border-0 dark:bg-white-100"
               data-choice="new"
               onClick={handleClick}
             >
               No
             </button>
             <button
-              className="btn w-24 bg-secondary-200"
+              className="btn w-24 border-0 bg-secondary-200 text-text-accent hover:bg-secondary-200 hover:opacity-80"
               data-choice="new"
               name="action"
               value="restore"

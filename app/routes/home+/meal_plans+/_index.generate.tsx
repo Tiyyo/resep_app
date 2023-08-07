@@ -5,9 +5,7 @@ import { useState, useEffect } from "react";
 
 import SubmitButton from "~/components/submit_button";
 import TitleLevel1 from "~/components/title/TitleLevel1";
-// import { buildShoppingList } from "~/service/shopping.builder.server";
 import { buildShoppingList } from "~/service/algo.builder.safer.server";
-// import type { RecipeCardShop } from "~/context/shoplist.context";
 import recipe from "~/api/recipe";
 import meal_plans from "~/api/meal_plans";
 import { getProfile } from "~/utils/get.user.infos";
@@ -96,6 +94,7 @@ export async function action({ request }: ActionArgs) {
         Number(mealPlanSaved.id),
         shoppingList
       );
+
       if (!shoppingListSaved)
         return json(
           { message: "Error while saving shopping list" },
@@ -106,7 +105,6 @@ export async function action({ request }: ActionArgs) {
         headers: { "Set-Cookie": await storage.commitSession(session) },
         status: 301,
       });
-      // return "hello world";
     }
     case "remove": {
       const position = Number(formData.get("position"));

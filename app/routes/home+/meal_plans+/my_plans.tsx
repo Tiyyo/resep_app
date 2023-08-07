@@ -21,7 +21,7 @@ export async function loader({ request }: LoaderArgs) {
     const profile = await getProfile(request);
     if (!profile) throw new Error("no profile found");
 
-    const mealPlans = await meal_plans.findAllByAuthor(profile.id);
+    const mealPlans = await meal_plans.findAllByAuthor(profile.id, true);
     if (!mealPlans) throw new NotFoundError("no meal plans found");
 
     return mealPlans;
@@ -99,8 +99,10 @@ export default function () {
       </div>
       {(!mealPlans || mealPlans.length === 0) && (
         <>
-          <p>You have not generate any meal plan yet </p>
-          <p>
+          <p className="mt-8 text-center">
+            You have not generate any meal plan yet{" "}
+          </p>
+          <p className="my-2 text-center">
             &#8608; &#8608;
             <Link
               to="/home/meal_plans/generate"

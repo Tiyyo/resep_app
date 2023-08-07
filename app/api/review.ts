@@ -18,7 +18,9 @@ export default {
       if (!relationalInfos) throw new NotFoundError("Review not found");
       return relationalInfos;
     } catch (error: any) {
-      throw new DatabaseError(error.message, "reviews", error);
+      if (error.name !== "NotFoundError") {
+        throw new DatabaseError(error.message, "reviews", error);
+      }
     }
   },
   async findAllByRecipeId(id: number): Promise<UserRecipeInfo[]> {

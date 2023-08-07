@@ -64,7 +64,7 @@ export async function action({ request }: ActionArgs) {
             new ServerError("Could not add icon")
           ).send();
         }
-        return new ResponseValid(201, "Successfully added", null).send();
+        return new ResponseValid(201, "Successfully added", null);
       } catch (error: any) {
         return new ResponseError(error).send();
       }
@@ -120,7 +120,7 @@ export async function action({ request }: ActionArgs) {
         await icon.update(form);
         return redirect("/dashboard/icons");
       } catch (error) {
-        return new ResponseError(error).send();
+        return new ResponseError(error);
       }
     }
     case "delete": {
@@ -143,19 +143,19 @@ export async function action({ request }: ActionArgs) {
 
       try {
         if (!idNumber.id)
-          return new ResponseError(new ServerError("wrong id")).send();
+          return new ResponseError(new ServerError("wrong id"));
 
         const deletedIcon = await icon.destroy(idNumber.id);
 
         await deleteImageFromBucket(deletedIcon.image_key);
 
-        return new ResponseValid(204, "Successfully deleted", null).send();
+        return new ResponseValid(204, "Successfully deleted", null);
       } catch (error: any) {
         return new ResponseError(error).send();
       }
     }
     default: {
-      return new ResponseError(new MethodError("invalid method")).send();
+      return new ResponseError(new MethodError("invalid method"));
     }
   }
 }

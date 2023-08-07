@@ -92,7 +92,8 @@ export async function action({ request }: ActionArgs) {
         if (!formConverted.id) throw new ServerError("No id provided");
 
         await macro.destroy(formConverted.id);
-        return json({ message: "Successfully deleted" }, { status: 204 });
+
+        return new ResponseValid(204, "Successfully deleted", null);
       } catch (error) {
         return new ResponseError(error);
       }

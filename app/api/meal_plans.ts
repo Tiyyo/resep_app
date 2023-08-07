@@ -4,7 +4,7 @@ import DatabaseError from "~/helpers/errors/database.error";
 import type { MealCreateInput, MealPlan } from "~/types";
 
 export default {
-  async findAllByAuthor(author_id: number): Promise<MealPlan[]> {
+  async findAllByAuthor(author_id: number, limit: boolean = false): Promise<MealPlan[]> {
     try {
       const result = await prisma.meal_plans.findMany({
         where: {
@@ -20,6 +20,8 @@ export default {
         orderBy: {
           created_at: "desc",
         },
+        take: limit ? 7 : undefined,
+
       });
       await prisma.$disconnect();
       return result;

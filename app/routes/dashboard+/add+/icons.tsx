@@ -23,7 +23,7 @@ export default function () {
 
   return (
     <div>
-      <Toast message={addIcons?.data?.message} />
+      <Toast message={addIcons?.data?.userMessage} />
       <addIcons.Form
         method="POST"
         action="/api/icons"

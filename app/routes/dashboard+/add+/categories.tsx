@@ -20,7 +20,7 @@ export default function () {
 
   return (
     <>
-      <Toast message={addCategory?.data?.message} />
+      <Toast message={addCategory?.data?.userMessage} />
       <addCategory.Form method="post" action="/api/categories" ref={addFormRef}>
         <div className="mx-auto flex max-w-[80%] flex-col items-center justify-center gap-3 md:flex-row">
           <Input name="category" placeholder="Category name" align="start" />
