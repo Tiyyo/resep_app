@@ -2,7 +2,7 @@ import convertStringToNumber from "~/utils/convert.to.number";
 import { deleteImageFromBucket, uploadImage } from "~/service/s3.server";
 import type { ActionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import wordsToArray from "~/utils/wrodsToArray";
+import wordsToArray from "~/utils/word.to.array";
 import icon from "~/api/icon";
 import ResponseError from "~/helpers/response/response.error";
 import ServerError from "~/helpers/errors/server.error";
@@ -49,7 +49,7 @@ export async function action({ request }: ActionArgs) {
           image_key: imageKey,
         };
 
-        if (isEmptyObject(fieldErrors)) {
+        if (!isEmptyObject(fieldErrors)) {
           return new ResponseError(
             new UserInputError("Could not add icon"),
             fieldErrors
@@ -86,7 +86,7 @@ export async function action({ request }: ActionArgs) {
       let imageKey = "";
       let imageLink = "";
 
-      if (isEmptyObject(fieldErrors)) {
+      if (!isEmptyObject(fieldErrors)) {
         return new ResponseError(
           new UserInputError("Could not update icon"),
           fieldErrors
@@ -129,7 +129,7 @@ export async function action({ request }: ActionArgs) {
         fieldErrors.id = "An id should be provided";
       }
 
-      if (isEmptyObject(fieldErrors)) {
+      if (!isEmptyObject(fieldErrors)) {
         return new ResponseError(
           new UserInputError("Could not delete icon"),
           fieldErrors

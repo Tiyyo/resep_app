@@ -1,5 +1,7 @@
 const isEmptyObject = (obj: any) => {
-  return Object.keys(obj).length > 0;
+  const bool = Object.keys(obj).length > 0;
+  return !bool;
+
 };
 
 export default isEmptyObject;

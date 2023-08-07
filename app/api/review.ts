@@ -4,7 +4,7 @@ import type { UserRecipeInfo } from "~/types";
 import NotFoundError from "~/helpers/errors/not.found.error";
 
 export default {
-  async findByIds(authorId: number, recipeId: number): Promise<UserRecipeInfo> {
+  async findByIds(authorId: number, recipeId: number): Promise<UserRecipeInfo | undefined> {
     try {
       const relationalInfos = await prisma.reviews.findUnique({
         where: {

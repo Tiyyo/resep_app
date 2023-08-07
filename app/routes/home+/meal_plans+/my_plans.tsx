@@ -11,7 +11,7 @@ import ArrowRightIcon from "~/assets/icons/ArrowRightIcon";
 import TitleLevel1 from "~/components/title/TitleLevel1";
 import NotFoundError from "~/helpers/errors/not.found.error";
 import ResponseError from "~/helpers/response/response.error";
-import formatDate from "~/utils/format.data";
+import formatDate from "~/utils/format.date";
 import { getProfile } from "~/utils/get.user.infos";
 import { useState, useEffect } from "react";
 import type { MealPlan } from "~/types";
