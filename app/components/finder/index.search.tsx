@@ -13,7 +13,7 @@ export default function FinderSearch({
   profileId: number;
 }) {
   const customFetch = useFetcher();
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const params = useParams();
 
   const handleChange = async (e: React.ChangeEvent<HTMLFormElement>) => {

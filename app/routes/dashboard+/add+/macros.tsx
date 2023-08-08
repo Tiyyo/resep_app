@@ -23,7 +23,7 @@ export default function () {
       if (addMacros.data?.error) {
         setErrorText(addMacros.data?.error);
       }
-      if (addMacros.data?.status === 200) {
+      if (addMacros.data?.name === "ResponseValid") {
         addMacroFormRef.current.reset();
       }
     }
@@ -32,11 +32,12 @@ export default function () {
     addMacros?.data?.fields?.name,
     addMacros.data?.status,
     addMacros.data?.error,
+    addMacros.data?.name,
   ]);
 
   return (
     <div>
-      <Toast message={addMacros?.data?.message} />
+      <Toast message={addMacros?.data?.userMessage} />
       <addMacros.Form method="POST" action="/api/macros" ref={addMacroFormRef}>
         <div className="center flex flex-col gap-y-12">
           <Input

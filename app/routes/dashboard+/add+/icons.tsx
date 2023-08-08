@@ -23,7 +23,7 @@ export default function () {
 
   return (
     <div>
-      <Toast message={addIcons?.data?.message} />
+      <Toast message={addIcons?.data?.userMessage} />
       <addIcons.Form
         method="POST"
         action="/api/icons"
@@ -67,7 +67,7 @@ export function ErrorBoundary() {
   if (!isRouteErrorResponse(error)) {
     return (
       <div className="center h-full w-full flex-col gap-y-8">
-        <p>{error.message}</p>
+        <p>{(error as any).message}</p>
         <p>Please fill all required fields</p>
         <Link to="/dashboard/add/icons">Refresh</Link>
       </div>

@@ -26,7 +26,6 @@ export default async function createUser(user: RegisterForm) {
   } catch (error: any) {
     console.log(error)
     if (error instanceof UserInputError) {
-      console.log('its an user error')
       throw error
     }
     throw new UserInputError(error.message)

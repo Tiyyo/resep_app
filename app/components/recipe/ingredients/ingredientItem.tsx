@@ -14,12 +14,12 @@ export default function IngredientItem({
           alt=""
           className="h-8 w-8 rounded-full"
         />
-        <span className="text-8">{measure.ingredient.name}</span>
+        <span className="text-8">{measure.ingredient?.name}</span>
       </div>
       <div className="pr-6 text-8 text-text-300 opacity-80">
         {displayQty(
           Number(measure.qty),
-          measure.unit_measure.abreviation,
+          measure.unit_measure?.abreviation ?? "",
           servings,
           originalServings
         )}

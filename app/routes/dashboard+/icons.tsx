@@ -13,7 +13,7 @@ import Table from "~/components/table";
 import TitleLevel1 from "~/components/title/TitleLevel1";
 import ResponseError from "~/helpers/response/response.error";
 import Error404 from "~/layout/Error404Page";
-import type { Icon } from "~/types/recipe";
+import type { Icon } from "~/types/index";
 
 export async function loader({ request }: LoaderArgs) {
   try {

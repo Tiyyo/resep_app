@@ -1,6 +1,7 @@
+import type { Profile } from "~/types";
 import { storage } from "../service/auth.server";
 import { prisma } from "../service/db.server";
-import type { Profile } from "~/types/recipe";
+
 
 // if not expressely ask for full we return only profileId to avoid useless db query
 

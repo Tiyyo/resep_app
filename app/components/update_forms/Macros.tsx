@@ -2,11 +2,9 @@ import { useFetcher } from "@remix-run/react";
 import Error from "../error";
 import Input from "../input";
 import SubmitButton from "../submit_button";
-import type { UpdateMacrosFormProps } from "./interface";
+import type { Macros } from "~/types";
 
-export default function UpdateMacrosForm({
-  data: macros,
-}: UpdateMacrosFormProps) {
+export default function UpdateMacrosForm({ data: macros }: { data: Macros }) {
   const updateMacros = useFetcher();
 
   return (

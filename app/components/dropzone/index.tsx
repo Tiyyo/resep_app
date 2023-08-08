@@ -80,7 +80,6 @@ export default function Dropzone({ name }: { name: string }) {
       onDragEnd={preventDefaults}
       onDragOver={preventDefaults}
       onDrop={handleDrop}
-      onClick={() => fileInputRef.current?.click()}
     >
       <input
         id="dropzone-file"

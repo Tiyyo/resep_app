@@ -20,13 +20,17 @@ export default function TableBody({
   const location = useLocation();
 
   useEffect(() => {
-    if (deleteItem?.data?.message) {
-      setDeleteMessage(deleteItem?.data?.message);
+    if (deleteItem?.data?.userMessage) {
+      setDeleteMessage(deleteItem?.data?.userMessage);
     }
     if (deleteItem?.data?.error?.userMessage) {
       setDeleteMessage(deleteItem?.data?.error?.userMessage);
     }
-  }, [deleteItem?.data?.message, deleteItem?.data?.error?.userMessage]);
+  }, [
+    deleteItem?.data?.message,
+    deleteItem?.data?.error?.userMessage,
+    deleteItem,
+  ]);
 
   return (
     <tbody>

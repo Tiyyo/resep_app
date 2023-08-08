@@ -1,11 +1,11 @@
-import type { Measures } from "~/types/recipe";
+import type { Measures } from "~/types/index";
 import calcQty from "./calc.qty.server";
 
 
 const computeTotalMacro = async (measures: Measures, servings: number) => {
   const result = measures
     .map((m) => {
-      if (typeof m.ingredient === "number") return null;
+      if (!m.ingredient || typeof m.ingredient === "number") return null;
       if (!m.ingredient.macros) {
         return {
           calories: 0,

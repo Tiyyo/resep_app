@@ -1,9 +1,10 @@
 import DatabaseError from "~/helpers/errors/database.error";
 import NotFoundError from "~/helpers/errors/not.found.error";
 import { prisma } from "~/service/db.server";
+import type { Recipe, UserRecipeInfo } from "~/types";
 
 export default {
-  async like(authorId: string, recipeId: string) {
+  async like(authorId: string, recipeId: string): Promise<UserRecipeInfo> {
     try {
       const updatedInfos = await prisma.reviews.upsert({
         where: {
@@ -26,7 +27,7 @@ export default {
       throw new DatabaseError(error.message, "reviews", error);
     }
   },
-  async unlike(authorId: string, recipeId: string) {
+  async unlike(authorId: string, recipeId: string): Promise<UserRecipeInfo> {
     try {
       const updatedInfos = await prisma.reviews.update({
         where: {
@@ -45,7 +46,7 @@ export default {
       throw new DatabaseError(error.message, "reviews", error);
     }
   },
-  async findAllByAuthor(id: number) {
+  async findAllByAuthor(id: number): Promise<Recipe[]> {
     try {
       const recipes = await prisma.recipes.findMany({
         where: {

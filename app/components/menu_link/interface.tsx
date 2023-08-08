@@ -1,7 +1,7 @@
-import type { Item } from "../tree_menu/interface";
+import type { MenuItem } from "../tree_menu/interface";
 
 export interface MenuLinkProps {
   active: Boolean;
-  item: Item;
+  item: MenuItem;
   level: number;
 }

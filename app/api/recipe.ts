@@ -1,12 +1,13 @@
 import { prisma } from "~/service/db.server";
-import type { Macros, MacrosCreatInput, Measure } from "~/types/recipe";
-import type { RecipeCreateInput } from "./interfaces";
+import type { RecipeCreateInput, Recipe, MacrosCreatInput, Macros } from "~/types/index";
 import DatabaseError from "~/helpers/errors/database.error";
 import UserInputError from "~/helpers/errors/user.inputs.error";
 import NotFoundError from "~/helpers/errors/not.found.error";
+import { Prisma } from "@prisma/client";
+
 
 export default {
-  async findAll() {
+  async findAll(): Promise<Recipe[]> {
     try {
       const recipes = await prisma.recipes.findMany({
         include: {
@@ -53,7 +54,7 @@ export default {
       throw new DatabaseError(error.message, "recipes", error);
     }
   },
-  async findById(id: number) {
+  async findById(id: number): Promise<Recipe> {
     try {
       const recipe = await prisma.recipes.findUnique({
         where: {
@@ -108,7 +109,7 @@ export default {
       throw new DatabaseError(error.message, "recipes", error);
     }
   },
-  async findLast(all?: boolean) {
+  async findLast(all?: boolean): Promise<Recipe[]> {
     try {
       const lastestRecipes = await prisma.recipes.findMany({
         orderBy: {
@@ -128,21 +129,22 @@ export default {
       });
       await prisma.$disconnect();
       // const lastestRecipes = await prisma.$queryRaw`SELECT recipes.id as recipe_id , recipes.name as recipe_name, images.link as image, recipes.servings FROM recipes LEFT JOIN images ON recipes.image_id = images.id ORDER BY created_at DESC LIMIT 6 `;
+      if (!lastestRecipes) throw new NotFoundError("Can't find item with associated id")
       return lastestRecipes;
     } catch (error: any) {
       throw new DatabaseError(error.message, "recipes", error);
     }
   },
-  async findRandom(num: number) {
+  async findRandom(num: number): Promise<Recipe[]> {
     try {
       const recipes =
         await prisma.$queryRaw`SELECT recipes.id as recipe_id , recipes.name as recipe_name, images.link as image, recipes.servings FROM recipes LEFT JOIN images ON recipes.image_id = images.id ORDER BY RANDOM() LIMIT ${num} `;
-      return recipes;
+      return recipes as Recipe[];
     } catch (error: any) {
       throw new DatabaseError(error.message, "recipes", error);
     }
   },
-  async findByAuthor(authorId: number) {
+  async findByAuthor(authorId: number): Promise<Recipe[]> {
     try {
       const recipes = await prisma.recipes.findMany({
         where: {
@@ -203,7 +205,7 @@ export default {
       throw new DatabaseError(error.message, "recipes", error);
     }
   },
-  async findLikedByUser(authorId: number) {
+  async findLikedByUser(authorId: number): Promise<Recipe[]> {
     try {
       const favoriteRecipes = await prisma.recipes.findMany({
         where: {
@@ -230,7 +232,7 @@ export default {
       throw new DatabaseError(error.message, "recipes", error);
     }
   },
-  async findByTags(tags: string[]) {
+  async findByTags(tags: string[]): Promise<Recipe[]> {
     const tagsQuery = tags.map((tag: string) => {
       return {
         tag: {
@@ -294,11 +296,13 @@ export default {
       };
     });
 
-    const createMeasure = form.measures.map((m: Measure) => {
+    const createMeasure = form.measures.map((m) => {
       return {
-        qty: m.qty,
-        unit_measure_id: m.unit_measure,
-        ingredient_id: m.ingredient,
+        qty: new Prisma.Decimal(Number(m.qty)),
+        unit_measure_id: m.unit_measure_id,
+        ingredient: m.ingredient,
+        ingredient_id: m.ingredient_id,
+        unit_measure: m.unit_measure,
       };
     });
 
@@ -306,32 +310,31 @@ export default {
       const newRecipe = await prisma.recipes.create({
         data: {
           name: form.name,
-          prep_time: form.prepTime,
-          cook_time: form.cookTime,
+          prep_time: form.prep_time,
+          cook_time: form.cook_time,
           author: {
             connect: {
               id: form.author_id,
             },
           },
           servings: form.servings,
-          macro_recipe: form.macrosId ?? undefined,
           difficulty: {
             connectOrCreate: {
               where: {
-                name: form.difficulty,
+                name: form.level,
               },
               create: {
-                name: form.difficulty,
+                name: form.level,
               },
             },
           },
-          image: form.image && {
+          image: form.image ? {
             create: {
               link: form.image.link,
-              imageKey: form.image.imageKey,
+              imageKey: form.image.image_key,
               width: form.image.width,
-            },
-          },
+            }
+          } : undefined,
           tags: form.tags && {
             create: form.tags.map((tag: string) => {
               return {
@@ -394,13 +397,15 @@ export default {
         },
         data: {
           macros: {
-            proteins: form.proteins,
-            calories: form.calories,
-            carbs: form.carbs,
-            fat: form.fat,
-            water: form.water,
-          },
-        },
+            update: {
+              proteins: form.proteins,
+              calories: form.calories,
+              carbs: form.carbs,
+              fat: form.fat,
+              water: form.water,
+            }
+          }
+        }
       });
       await prisma.$disconnect();
       return updateRecipe;

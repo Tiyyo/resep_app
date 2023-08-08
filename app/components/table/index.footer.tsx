@@ -19,19 +19,19 @@ export default function TableFooter({
       <tr>
         <td colSpan={numColums}>
           <div className="center flex w-full py-2">
-            <div className="join">
+            <div className="join ">
               <button
-                className="btn join-item bg-primary-300 hover:border-0 hover:bg-primary-100 hover:bg-opacity-70"
+                className="btn join-item bg-primary-300 font-semibold text-text-accent hover:border-0 hover:bg-primary-100 hover:bg-opacity-70 dark:border-0"
                 data-page-nav="prev"
                 onClick={handleClick}
               >
                 «
               </button>
-              <button className="btn join-item bg-primary-300 hover:border-0 hover:bg-primary-100 hover:bg-opacity-70">
+              <button className="btn join-item bg-primary-300 font-semibold text-text-accent hover:border-0 hover:bg-primary-100 hover:bg-opacity-70 dark:border-0">
                 Page {page}
               </button>
               <button
-                className="btn join-item bg-primary-300 hover:border-0 hover:bg-primary-100 hover:bg-opacity-50"
+                className="btn join-item bg-primary-300 font-semibold text-text-accent hover:border-0 hover:bg-primary-300 hover:bg-opacity-50 dark:border-0"
                 data-page-nav="next"
                 onClick={handleClick}
               >

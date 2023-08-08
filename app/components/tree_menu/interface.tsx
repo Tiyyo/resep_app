@@ -1,14 +1,14 @@
-export type Item = {
+export type MenuItem = {
   id: number;
   name: string;
   link: string;
   open: boolean;
   icon: any;
-  children?: Item[];
+  children?: MenuItem[];
 };
 
 export interface TreeMenuProps {
   level: number;
-  menu: Item[];
+  menu: MenuItem[];
   props?: any;
 }

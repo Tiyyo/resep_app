@@ -7,12 +7,12 @@ import AddPlusIcon from "~/assets/icons/AddPlusIcon";
 import MinusIcon from "~/assets/icons/MinusIcon";
 import IngredientItem from "./ingredientItem";
 import TitleLevel3 from "~/components/title/TilteLevel3";
-import type { IngredientItemProps, MeasureFetch } from "./interface";
+import type { IngredientListProps } from "./interface";
 
 export default function IngredientsList({
   measures,
   servings: originalServings,
-}: IngredientItemProps) {
+}: IngredientListProps) {
   const [servings, setServings] = useState<number>(originalServings);
   const [listIsOpen, setListIsOpen] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(false);
@@ -83,8 +83,8 @@ export default function IngredientsList({
               {measures.length} Items
             </p>
           </div>
-          {measures.map((measure: MeasureFetch) => {
-            const measureId = measure.ingredient_id + measure.recipe_id;
+          {measures.map((measure) => {
+            const measureId = measure.ingredient_id;
             return (
               <IngredientItem
                 key={measureId}

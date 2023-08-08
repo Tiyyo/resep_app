@@ -2,6 +2,7 @@ import { prisma } from "~/service/db.server";
 import type { Prisma } from "@prisma/client";
 import DatabaseError from "~/helpers/errors/database.error";
 import UserInputError from "~/helpers/errors/user.inputs.error";
+import type { Macros } from "~/types";
 
 export default {
   /**
@@ -10,7 +11,7 @@ export default {
    * @throws DatabaseError
    * @description Returns all macros from database except those with null food field
    */
-  async findAll() {
+  async findAll(): Promise<Macros[]> {
     try {
       const macros = await prisma.macros.findMany({
         where: {
@@ -25,7 +26,7 @@ export default {
       throw new DatabaseError(error.message, "macros", error);
     }
   },
-  async findById(id: number) {
+  async findById(id: number): Promise<Macros> {
     try {
       const macros = await prisma.macros.findUnique({
         where: {

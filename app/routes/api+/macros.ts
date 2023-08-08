@@ -1,10 +1,10 @@
 import type { ActionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { withZod } from "@remix-validated-form/with-zod";
 import convertStringToNumber from "~/utils/convert.to.number";
 import * as Z from "zod";
 import { validationError } from "remix-validated-form";
-import type { Macros } from "~/types/recipe";
+import type { Macros } from "~/types/index";
 import macro from "~/api/macro";
 import ResponseError from "~/helpers/response/response.error";
 import ResponseValid from "~/helpers/response/response.ok";
@@ -92,7 +92,8 @@ export async function action({ request }: ActionArgs) {
         if (!formConverted.id) throw new ServerError("No id provided");
 
         await macro.destroy(formConverted.id);
-        return json({ message: "Successfully deleted" }, { status: 204 });
+
+        return new ResponseValid(204, "Successfully deleted", null);
       } catch (error) {
         return new ResponseError(error);
       }

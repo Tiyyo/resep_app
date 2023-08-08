@@ -1,6 +1,6 @@
-import type { InfosRecipeByUser } from "~/types/recipe";
+import type { UserRecipeInfo } from "~/types/index";
 
 export interface AddFavoriteIconProps {
-  infosRecipeByUser: InfosRecipeByUser;
+  infosRecipeByUser: UserRecipeInfo;
   onClick: (event: React.MouseEvent) => void;
 }

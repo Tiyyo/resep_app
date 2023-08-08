@@ -3,7 +3,7 @@ import FractionContainer from "~/components/fraction";
 
 export default function findNearestFraction(number: number, tape: number) {
   const fraction = new Fraction(
-    Math.round(tape * Fraction(number).valueOf()),
+    Math.round(tape * new Fraction(number).valueOf()),
     tape
   );
   if (fraction.d === 1) return fraction.n;

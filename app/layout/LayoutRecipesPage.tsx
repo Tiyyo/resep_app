@@ -8,7 +8,7 @@ export default function LayoutRecipePages({
   title: string;
 }) {
   return (
-    <div className="mx-auto flex  max-w-[1325px] flex-col">
+    <div className="mx-auto flex  w-full max-w-[1325px] flex-col">
       <img
         src="/images/banner_recipe_page.webp"
         alt=""

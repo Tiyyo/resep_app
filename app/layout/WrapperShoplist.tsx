@@ -1,35 +1,36 @@
-import { Form } from "@remix-run/react";
-import { useContext } from "react";
-import Input from "~/components/input";
-import SubmitButton from "~/components/submit_button";
-import TitleLevel1 from "~/components/title/TitleLevel1";
-import { ShoppingContext } from "~/context/shoplist.context";
+// import { Form } from "@remix-run/react";
+// import { useContext } from "react";
+// import Input from "~/components/input";
+// import SubmitButton from "~/components/submit_button";
+// import TitleLevel1 from "~/components/title/TitleLevel1";
+// import { ShoppingContext } from "~/context/shoplist.context";
+// import type { Recipe } from "~/types";
 
 export default function Wrapper({ children }: { children?: React.ReactNode }) {
-  const { recipes, setNumRecipes } = useContext(ShoppingContext);
+  // const { recipes, setNumRecipes } = useContext(ShoppingContext);
 
-  const handleClickGenerate = (
-    e: React.MouseEvent<HTMLFormElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    const value: number = Number(e.currentTarget.numRecipes.value);
-    setNumRecipes(Math.abs(value));
-  };
+  // const handleClickGenerate = (
+  //   e: React.MouseEvent<HTMLFormElement, MouseEvent>
+  // ) => {
+  //   e.preventDefault();
+  //   const value: number = Number(e.currentTarget.numRecipes.value);
+  //   setNumRecipes(Math.abs(value));
+  // };
   return (
     <div>
-      <div>
+      {/* <div>
         <TitleLevel1 title="Shopping" />
         {recipes && (
           <Form method="POST">
             <div className="flex flex-wrap justify-center gap-4">
-              {recipes.map((recipe) => {
+              {recipes.map((recipe: Recipe) => {
                 return (
                   <div key={recipe.id}>
                     <input name="recipeId" hidden defaultValue={recipe.id} />
                     <div className="flex aspect-2/1 h-44 border bg-main-100 p-2 shadow-md">
                       <div className="aspect-square basis-1/3">
                         <img
-                          src={recipe.link}
+                          src={recipe.link} // TODO: change to recipe.image issue with bigInt
                           alt={recipe.name}
                           className="h-full rounded-full p-2"
                         />
@@ -76,7 +77,7 @@ export default function Wrapper({ children }: { children?: React.ReactNode }) {
             <SubmitButton text="Let's Go !" />
           </form>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

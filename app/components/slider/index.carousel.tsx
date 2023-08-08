@@ -17,7 +17,7 @@ export default function Carousel({
   navPosition = "spread",
   extraStyle,
 }: CarouselProps) {
-  const [width, setWidth] = useState<number | null>(null);
+  const [width, setWidth] = useState<number | 1>(1);
   const [widthCard, setWidthCard] = useState<number | null>(null);
   const [scrollXValue, setScrollXvalue] = useState<number>(0);
   const carousel = useRef<HTMLDivElement>(null);

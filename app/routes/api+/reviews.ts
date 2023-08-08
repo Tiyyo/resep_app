@@ -8,6 +8,7 @@ import * as Z from "zod";
 import { validationError } from "remix-validated-form";
 import ResponseValid from "~/helpers/response/response.ok";
 import ServerError from "~/helpers/errors/server.error";
+import type { UserRecipeInfo } from "~/types";
 
 export const validator = withZod(
   Z.object({
@@ -36,18 +37,21 @@ export async function action({ request }: ActionArgs) {
           recipeId,
         });
 
-        const body = {
-          rating: fieldConverted.rating ?? undefined,
-          author_id: fieldConverted.authorId,
-          recipe_id: fieldConverted.recipeId,
-          comment: comment ?? undefined,
-        };
 
-        if (typeof body.author_id === null || typeof body.recipe_id === null)
-          throw new ServerError("author id or recipe id is missing");
-        // No sense error
-        await review.add(body);
-        return new ResponseValid(201, "Successfully added", null);
+        if (typeof fieldConverted.authorId === 'number' && typeof fieldConverted.recipeId === 'number') {
+          let body: UserRecipeInfo = {
+            rating: fieldConverted.rating || undefined,
+            author_id: fieldConverted.authorId,
+            recipe_id: fieldConverted.recipeId,
+            comment: comment ?? undefined,
+          };
+          if (!body)
+            throw new ServerError("author id or recipe id is missing");
+
+          await review.add(body);
+          return new ResponseValid(201, "Successfully added", null);
+        }
+        throw new ServerError("author id or recipe id is missing");
       } catch (error: any) {
         return new ResponseError(error);
       }

@@ -6,9 +6,12 @@
 
 import { installGlobals } from "@remix-run/node";
 import { parse } from "cookie";
+import createUser from "../../app/utils/users.server"
+import { createUserSession } from "../../app/service/auth.server"
 
-import { createUser } from "~/models/user.server";
-import { createUserSession } from "~/session.server";
+// import { createUser } from "~/models/user.server";
+// import { createUserSession } from "~/session.server";
+
 
 installGlobals();
 
@@ -20,14 +23,16 @@ async function createAndLogin(email: string) {
     throw new Error("All test emails must end in @example.com");
   }
 
-  const user = await createUser(email, "myreallystrongpassword");
+  const infosUser = {
+    username: "John",
+    email: email,
+    password: "myreallystrongpassword"
+  }
 
-  const response = await createUserSession({
-    request: new Request("test://test"),
-    userId: user.id,
-    remember: false,
-    redirectTo: "/",
-  });
+  const user = await createUser(infosUser);
+
+  const response = await createUserSession(user.id, "/", false);
+
 
   const cookieValue = response.headers.get("Set-Cookie");
   if (!cookieValue) {

@@ -1,17 +1,13 @@
-import type { Measure } from "~/types/recipe";
+import type { Measure } from "~/types/index";
 
 const calcQty = (measure: Measure): number => {
   let qty = 1;
-  if (
-    typeof measure.unit_measure === "number" ||
-    typeof measure.ingredient === "number"
-  )
-    return 0;
+  if (!measure.ingredient || !measure.unit_measure) return qty
 
-  if (
-    measure.unit_measure.name === "pieces" &&
-    measure.ingredient.unit_weight
-  ) {
+  // why ??
+  if (typeof measure.unit_measure === "number" || typeof measure.ingredient === "number") return 0;
+
+  if (measure.unit_measure.name === "pieces" && measure.ingredient.unit_weight) {
     qty = (measure.qty as number) * (measure.ingredient?.unit_weight as number);
     return qty;
   }

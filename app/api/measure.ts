@@ -1,8 +1,10 @@
 import DatabaseError from "~/helpers/errors/database.error";
+import NotFoundError from "~/helpers/errors/not.found.error";
 import { prisma } from "~/service/db.server";
+import type { Measure } from "~/types";
 
 export default {
-  async findManyByIds(ids: number[]) {
+  async findManyByIds(ids: number[]): Promise<Measure[]> {
     try {
       const measures = await prisma.ingredients_on_recipes.findMany({
         where: {
@@ -25,6 +27,7 @@ export default {
         },
       });
       await prisma.$disconnect();
+      if (!measures) throw new NotFoundError("Measures not found");
       return measures;
     } catch (error: any) {
       throw new DatabaseError(error.message, "ingredients_on_recipes", error);

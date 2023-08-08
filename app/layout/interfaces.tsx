@@ -1,5 +1,5 @@
-import type { Item } from "../components/tree_menu/interface";
+import type { MenuItem } from "../components/tree_menu/interface";
 
 export interface LayoutMainProp {
-  menu?: Item;
+  menu?: MenuItem;
 }

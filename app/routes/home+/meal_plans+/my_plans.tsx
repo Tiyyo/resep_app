@@ -11,16 +11,17 @@ import ArrowRightIcon from "~/assets/icons/ArrowRightIcon";
 import TitleLevel1 from "~/components/title/TitleLevel1";
 import NotFoundError from "~/helpers/errors/not.found.error";
 import ResponseError from "~/helpers/response/response.error";
-import formatDate from "~/utils/format.data";
+import formatDate from "~/utils/format.date";
 import { getProfile } from "~/utils/get.user.infos";
 import { useState, useEffect } from "react";
+import type { MealPlan } from "~/types";
 
 export async function loader({ request }: LoaderArgs) {
   try {
     const profile = await getProfile(request);
     if (!profile) throw new Error("no profile found");
 
-    const mealPlans = await meal_plans.findAllByAuthor(profile.id);
+    const mealPlans = await meal_plans.findAllByAuthor(profile.id, true);
     if (!mealPlans) throw new NotFoundError("no meal plans found");
 
     return mealPlans;
@@ -59,13 +60,13 @@ export default function () {
   useEffect(() => {
     if (!mealPlans[navMealPlansIndex]?.id) return;
     navigate(`/home/meal_plans/my_plans/${mealPlans[navMealPlansIndex].id}`);
-  }, [navMealPlansIndex, mealPlans, navigate]);
+  }, [navMealPlansIndex, navigate]);
 
   return (
     <div>
       <TitleLevel1 title="Meal plans" />
       <div className="no-scrollbar hidden h-8 w-full flex-nowrap justify-evenly overflow-x-scroll  border-b-2 border-t-2 border-b-secondary-400 border-t-secondary-400 py-1 text-8 font-semibold lg:flex xl:text-7">
-        {mealPlans.map((mealPlan) => (
+        {mealPlans.map((mealPlan: MealPlan) => (
           <NavLink to={`${mealPlan.id}`} key={mealPlan.id + 1}>
             <p className="w-screen sm:w-fit">
               {mealPlan?.created_at && formatDate(mealPlan?.created_at)}
@@ -98,8 +99,10 @@ export default function () {
       </div>
       {(!mealPlans || mealPlans.length === 0) && (
         <>
-          <p>You have not generate any meal plan yet </p>
-          <p>
+          <p className="mt-8 text-center">
+            You have not generate any meal plan yet{" "}
+          </p>
+          <p className="my-2 text-center">
             &#8608; &#8608;
             <Link
               to="/home/meal_plans/generate"

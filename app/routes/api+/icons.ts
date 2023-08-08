@@ -2,15 +2,15 @@ import convertStringToNumber from "~/utils/convert.to.number";
 import { deleteImageFromBucket, uploadImage } from "~/service/s3.server";
 import type { ActionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import wordsToArray from "~/utils/wrodsToArray";
+import wordsToArray from "~/utils/word.to.array";
 import icon from "~/api/icon";
-import type { FormPropsEditIcon } from "~/api/interfaces";
 import ResponseError from "~/helpers/response/response.error";
 import ServerError from "~/helpers/errors/server.error";
 import ResponseValid from "~/helpers/response/response.ok";
 import UserInputError from "~/helpers/errors/user.inputs.error";
 import isEmptyObject from "~/utils/is.empty.object";
 import MethodError from "~/helpers/errors/method.error";
+import type { Icon, IconCreatInput } from "~/types";
 
 export async function action({ request }: ActionArgs) {
   const copyRequest = request.clone();
@@ -42,14 +42,14 @@ export async function action({ request }: ActionArgs) {
           tags = wordsToArray(rawTags);
         }
 
-        const form = {
+        const form: IconCreatInput = {
           name,
           tags,
-          imageLink,
-          imageKey,
+          link: imageLink,
+          image_key: imageKey,
         };
 
-        if (isEmptyObject(fieldErrors)) {
+        if (!isEmptyObject(fieldErrors)) {
           return new ResponseError(
             new UserInputError("Could not add icon"),
             fieldErrors
@@ -59,12 +59,12 @@ export async function action({ request }: ActionArgs) {
         const icons = await icon.add(form);
 
         if (!icons) {
-          await deleteImageFromBucket(form.imageKey);
+          await deleteImageFromBucket(form.image_key);
           return new ResponseError(
             new ServerError("Could not add icon")
           ).send();
         }
-        return new ResponseValid(201, "Successfully added", null).send();
+        return new ResponseValid(201, "Successfully added", null);
       } catch (error: any) {
         return new ResponseError(error).send();
       }
@@ -86,7 +86,7 @@ export async function action({ request }: ActionArgs) {
       let imageKey = "";
       let imageLink = "";
 
-      if (isEmptyObject(fieldErrors)) {
+      if (!isEmptyObject(fieldErrors)) {
         return new ResponseError(
           new UserInputError("Could not update icon"),
           fieldErrors
@@ -114,13 +114,13 @@ export async function action({ request }: ActionArgs) {
         tags = wordsToArray(rawTags);
       }
 
-      const form: FormPropsEditIcon = { name, id, tags, imageKey, imageLink };
+      const form: Icon = { name, id, tags, image_key: imageKey, link: imageLink };
 
       try {
         await icon.update(form);
         return redirect("/dashboard/icons");
       } catch (error) {
-        return new ResponseError(error).send();
+        return new ResponseError(error);
       }
     }
     case "delete": {
@@ -129,7 +129,7 @@ export async function action({ request }: ActionArgs) {
         fieldErrors.id = "An id should be provided";
       }
 
-      if (isEmptyObject(fieldErrors)) {
+      if (!isEmptyObject(fieldErrors)) {
         return new ResponseError(
           new UserInputError("Could not delete icon"),
           fieldErrors
@@ -143,19 +143,19 @@ export async function action({ request }: ActionArgs) {
 
       try {
         if (!idNumber.id)
-          return new ResponseError(new ServerError("wrong id")).send();
+          return new ResponseError(new ServerError("wrong id"));
 
         const deletedIcon = await icon.destroy(idNumber.id);
 
         await deleteImageFromBucket(deletedIcon.image_key);
 
-        return new ResponseValid(204, "Successfully deleted", null).send();
+        return new ResponseValid(204, "Successfully deleted", null);
       } catch (error: any) {
         return new ResponseError(error).send();
       }
     }
     default: {
-      return new ResponseError(new MethodError("invalid method")).send();
+      return new ResponseError(new MethodError("invalid method"));
     }
   }
 }

@@ -1,10 +1,10 @@
-import type { RecipeRawForm } from "~/types/recipe";
+import type { RecipeRawForm } from "~/types/index";
 
 const convertRecipeFormToNumber = (rawForm: RecipeRawForm) => {
   const convertRecipe = {
     name: rawForm.name,
-    prepTime: parseInt(rawForm.prepTime, 10),
-    cookTime: parseInt(rawForm.cookTime, 10),
+    prep_time: parseInt(rawForm.prep_time, 10),
+    cook_time: parseInt(rawForm.cook_time, 10),
     author_id: parseInt(rawForm.author),
     servings: parseInt(rawForm.servings, 10),
     level: rawForm.level,
@@ -15,8 +15,8 @@ const convertRecipeFormToNumber = (rawForm: RecipeRawForm) => {
     measures: rawForm.measures.map((m) => {
       return {
         qty: parseFloat(m.qty),
-        ingredient: parseInt(m.ingredient, 10),
-        unit_measure: parseInt(m.unit_measure, 10),
+        ingredient_id: parseInt(m.ingredient, 10),
+        unit_measure_id: parseInt(m.unit_measure, 10),
       };
     }),
   };

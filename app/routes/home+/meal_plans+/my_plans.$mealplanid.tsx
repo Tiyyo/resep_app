@@ -11,6 +11,9 @@ import { harmonzeUnit } from "~/utils/convert.grams.to.pieces";
 import { getProfile } from "~/utils/get.user.infos";
 import Carousel from "~/components/slider/index.carousel";
 import MealPlanCard from "~/components/cards/index.meal.plan";
+import type { Recipe } from "~/types";
+import { groupIngrByCategory } from "~/service/group.list.by.cty.server";
+import { useMemo } from "react";
 
 export async function loader({ request, params }: LoaderArgs) {
   try {
@@ -21,26 +24,18 @@ export async function loader({ request, params }: LoaderArgs) {
 
     if (!profile) throw new Error("no profile found");
 
-    const mealPlans = await meal_plans.findById(Number(mealplanid), profile.id);
+    const mealPlan = await meal_plans.findById(Number(mealplanid), profile.id);
+
     const categories = await category.findAll();
 
-    if (!mealPlans) throw new NotFoundError("no meal plan found");
+    if (!mealPlan) throw new NotFoundError("no meal plan found");
 
-    const mealsHarmonize = harmonzeUnit(mealPlans);
-
-    // create a function to do this
-    const groupByCategory = {};
-
-    categories.map((c) => {
-      return (groupByCategory[c.name] = []);
-    });
-    mealsHarmonize.forEach((m) => {
-      const matchingCategory = categories.find((c) => c.id === m.category_id);
-      groupByCategory[matchingCategory.name].push(m);
-    });
+    const mealsHarmonize = harmonzeUnit(mealPlan);
+    if (!mealsHarmonize) throw new ServerError("Could not harmonize meals");
+    const groupByCategory = groupIngrByCategory(categories, mealsHarmonize);
 
     return json({
-      mealPlans,
+      mealPlan,
       groupByCategory,
       categories,
       profileId: profile.id,
@@ -54,33 +49,43 @@ export async function loader({ request, params }: LoaderArgs) {
 }
 
 export default function () {
-  const { mealPlans, groupByCategory } = useLoaderData();
+  const { mealPlan, groupByCategory } = useLoaderData();
 
-  const categoryName = Object.keys(groupByCategory);
+  const categoryName = useMemo(() => {
+    if (groupByCategory) {
+      return Object.keys(groupByCategory);
+    }
+  }, [groupByCategory]);
 
   return (
     <>
       <div className="no-scrollbar relative flex w-full">
         <Carousel extraStyle="py-8" navPosition="spread">
-          {mealPlans &&
-            mealPlans.meals &&
-            mealPlans.meals.length > 0 &&
-            mealPlans.meals.map((recipe, index: number) => (
+          {mealPlan &&
+            mealPlan.meals &&
+            mealPlan.meals.length > 0 &&
+            mealPlan.meals.map((recipe: Recipe, index: number) => (
               <MealPlanCard recipe={recipe} key={index} />
             ))}
         </Carousel>
       </div>
       <div className="flex w-full  flex-wrap content-start items-center justify-center gap-2">
-        {categoryName.sort().map((name, index) => {
-          if (groupByCategory[name].length <= 0) return null;
-          return (
-            <ItemsGroup
-              key={index}
-              data={groupByCategory}
-              categoryName={name}
-            />
-          );
-        })}
+        {categoryName && (
+          <>
+            {(categoryName as string[])
+              .sort()
+              .map((name: string, index: number) => {
+                if (groupByCategory[name].length <= 0) return null;
+                return (
+                  <ItemsGroup
+                    key={index}
+                    data={groupByCategory}
+                    categoryName={name}
+                  />
+                );
+              })}
+          </>
+        )}
       </div>
     </>
   );

@@ -20,7 +20,7 @@ export default function Slider({
 
   return (
     <div
-      className={`border- my-4 flex flex-col ${
+      className={`border- 3xl my-4 flex flex-col ${
         shouldBeCentered ? "xl:self-center" : ""
       }`}
     >

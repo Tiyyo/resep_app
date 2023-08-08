@@ -16,7 +16,9 @@ import { FormField } from "~/components/form_field";
 import { withZod } from "@remix-validated-form/with-zod";
 import { validationError } from "remix-validated-form";
 import * as Z from "zod";
-import { redirect, type ActionArgs } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
+import type { LoaderArgs, ActionArgs } from "@remix-run/node";
+
 import { getUser, login } from "~/service/auth.server";
 import ErrorIcon from "~/assets/icons/ErrorIcon";
 import LayoutAuth from "~/layout/LayoutAuth";
@@ -153,7 +155,7 @@ export default function () {
 }
 
 export function ErrorBoundary() {
-  const error = useRouteError();
+  const error: any = useRouteError();
 
   if (!isRouteErrorResponse(error)) {
     if (error.status === 500) {

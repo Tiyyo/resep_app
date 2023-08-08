@@ -10,7 +10,6 @@ export async function action({ request }: ActionArgs) {
   const recipeId = formData.get("recipeId");
   const authorId = formData.get("authorId");
 
-  console.log(recipeId, authorId, 'Action')
 
   try {
     if (typeof authorId === "string" && typeof recipeId === "string") {

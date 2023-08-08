@@ -68,7 +68,7 @@ export default function Input({
           disabled={disabled ? true : false}
           // onChange={onChange}
           className={` 
-        h-9 rounded-md bg-main-300 pl-4 text-8 placeholder:pl-1 placeholder:text-7 focus-visible:outline-secondary-300 
+        h-9 rounded-md bg-main-300 pl-4 text-8 placeholder:pl-1 placeholder:text-7 autofill:bg-main-300 focus-visible:outline-secondary-300 
         w-${width ?? "40"} ${textAlign}
         ${sx ?? ""}
         `}
