@@ -54,10 +54,14 @@ export async function login(form: LoginForm) {
     where: { email: form.email },
     include: { profile: true },
   });
+  // if (!user) throw new UserInputError("Wrong credentials", "Wrong credentials");
 
-  if (!user || (await bcrypt.compare(form.password, user.password))) {
+  // // if (!(await bcrypt.compare(form.password, user.password))) return json({ error: "Wrong credentials" }, { status: 400 });
+
+  if (!user || !(await bcrypt.compare(form.password, user.password))) {
     return json({ error: "Wrong credentials" }, { status: 400 });
   }
+  console.log('is passed');
   return user.profile === null
     ? createUserSession(user.id, "/", form.rememberMe, undefined)
     : createUserSession(user.id, "/", form.rememberMe, user.profile.id);
