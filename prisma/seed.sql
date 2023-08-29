@@ -2,9 +2,9 @@ INSERT INTO _prisma_migrations VALUES('4d435d0c-dab9-4a08-9de6-0984a2e7f70e','b2
 INSERT INTO _prisma_migrations VALUES('fa22d569-475a-4804-aa45-8d1f20809715','b258889f597a8e4478b679749b533075c982b38f6ff6dea2b82170a958ecb78b',1690048851708,'20230722180051_01_init_db',NULL,NULL,1690048851494,1);
 INSERT INTO genders VALUES (1,'Male');
 INSERT INTO genders VALUES (2,'Female');
-INSERT INTO difficulties VALUES (1,'Easy');
-INSERT INTO difficulties VALUES (2,'Medium');
-INSERT INTO difficulties VALUES (3,'Hard');
+INSERT INTO difficulties VALUES (1,'easy');
+INSERT INTO difficulties VALUES (2,'medium');
+INSERT INTO difficulties VALUES (3,'hard');
 INSERT INTO images VALUES(5,'clj7reg57000298vzgpji6zbf.jpg','https://groc-app.s3.eu-west-3.amazonaws.com/clj7reg57000298vzgpji6zbf.jpg',400);
 INSERT INTO images VALUES(6,'clj9bjl3i000gkwvz7hixgrgr.jpg','https://groc-app.s3.eu-west-3.amazonaws.com/clj9bjl3i000gkwvz7hixgrgr.jpg',400);
 INSERT INTO images VALUES(7,'cljk15sol000u18vz6sn124b0.jpg','https://groc-app.s3.eu-west-3.amazonaws.com/cljk15sol000u18vz6sn124b0.jpg',400);

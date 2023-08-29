@@ -13,9 +13,9 @@ const convertStringToNumber = async (values: {
       if (
         isNaN(value) ||
         value < 0 ||
-        value === Infinity ||
-        value === null ||
-        value === undefined
+        value === Infinity
+        // value === null ||
+        // value === undefined
       ) {
         throw new UserInputError("Invalid values", "Values must be positive");
       }

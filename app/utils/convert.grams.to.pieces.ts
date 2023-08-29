@@ -10,7 +10,7 @@ export interface ItemListCard {
   category_id: number;
 }
 
-const unitToConvertToPieces = ["pods", "pcs"];
+export const unitToConvertToPieces = ["pods", "pcs"];
 
 export function harmonzeUnit(mealPlan: MealPlan) {
   const itemList = mealPlan.shopping as totalIngredientList;
@@ -19,7 +19,7 @@ export function harmonzeUnit(mealPlan: MealPlan) {
   return finalList;
 }
 
-function buildIngrListToDisplay(finalArray: ItemListCard[] = [], itemList: totalIngredientList) {
+export function buildIngrListToDisplay(finalArray: ItemListCard[] = [], itemList: totalIngredientList) {
   itemList.items.forEach((item: totalIngredientQty) => {
     if (!item.unit_measure) return
     if (unitToConvertToPieces.includes(item.unit_measure.abreviation)) {
@@ -33,7 +33,7 @@ function buildIngrListToDisplay(finalArray: ItemListCard[] = [], itemList: total
   return finalArray;
 }
 
-function pushRoundUpQty(finalArray: ItemListCard[], item: totalIngredientQty) {
+export function pushRoundUpQty(finalArray: ItemListCard[], item: totalIngredientQty) {
   if (
     !item.ingredient ||
     !item.ingredient.name ||
@@ -52,7 +52,7 @@ function pushRoundUpQty(finalArray: ItemListCard[], item: totalIngredientQty) {
   finalArray.push(ingr);
 }
 
-function pushWithoutUnit(finalArray: ItemListCard[], item: totalIngredientQty) {
+export function pushWithoutUnit(finalArray: ItemListCard[], item: totalIngredientQty) {
   if (
     !item.ingredient ||
     !item.ingredient.name ||
@@ -69,7 +69,7 @@ function pushWithoutUnit(finalArray: ItemListCard[], item: totalIngredientQty) {
   finalArray.push(ingr);
 }
 
-function pushWithGramsOrMl(finalArray: ItemListCard[], item: totalIngredientQty) {
+export function pushWithGramsOrMl(finalArray: ItemListCard[], item: totalIngredientQty) {
   if (
     !item.ingredient ||
     !item.ingredient.name ||
@@ -90,6 +90,7 @@ function pushWithGramsOrMl(finalArray: ItemListCard[], item: totalIngredientQty)
 
 export function isLiquid(item: totalIngredientQty, category: Category) {
   if (!item.unit_measure) return ""
+  if (!category.name) return ""
   if (
     category.name.toLowerCase() === "liquids" ||
     item.unit_measure.abreviation === "cup"
